@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMS - My Medical Sanctuary</title>
+    <!-- Load Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #ffffff; 
+            color: #1e293b; 
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- LUXURY COLORS --- */
+        :root {
+            --navy: #09172b; /* Deep luxury navy */
+            --gold: #D6B56D;
+            --gold-light: #ead6a8;
+            --cream: #f8f6f2;
+            --slate: #f1f5f9;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            padding: 20px 0;
+        }
+        .nav-inner {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600; font-size: 26px; color: var(--navy); letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--gold); }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links button {
+            background: none; border: none;
+            font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;
+            color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+        }
+        .nav-links button:hover, .nav-links button.active { color: var(--gold); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: var(--navy);
+            padding: 140px 0 160px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Subtle gold glow effect in the background */
+        .hero::before {
+            content: ''; position: absolute; top: -50%; right: -20%;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(214, 181, 109, 0.08) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none;
+        }
+        .hero-tag {
+            color: var(--gold-light); 
+            text-transform: uppercase; 
+            letter-spacing: 0.25em; 
+            font-size: 13px; 
+            font-weight: 500;
+            margin-bottom: 24px;
+            position: relative; z-index: 2;
+        }
+        .hero h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-weight: 400; 
+            font-size: clamp(48px, 6.5vw, 80px); 
+            line-height: 1.05; 
+            max-width: 900px;
+            color: #ffffff;
+            position: relative; z-index: 2;
+        }
+        .hero h1 span { color: var(--gold); font-weight: 600; }
+        .hero p { 
+            font-size: 20px; 
+            color: #94a3b8; 
+            max-width: 580px; 
+            margin-top: 30px; 
+            font-weight: 300; 
+            line-height: 1.7;
+            position: relative; z-index: 2;
+        }
+        .hero-btns { display: flex; gap: 16px; margin-top: 45px; flex-wrap: wrap; position: relative; z-index: 2; }
+        
+        .btn-primary {
+            background: var(--gold); color: var(--navy); padding: 16px 36px;
+            border-radius: 60px; font-weight: 600; font-size: 15px;
+            text-decoration: none; transition: all 0.3s ease; display: inline-block;
+            box-shadow: 0 4px 14px rgba(214, 181, 109, 0.3);
+        }
+        .btn-primary:hover { 
+            background: #c4a25c; 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(214, 181, 109, 0.4);
+        }
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.2); color: #ffffff; padding: 16px 36px;
+            border-radius: 60px; font-weight: 500; font-size: 15px;
+            text-decoration: none; transition: all 0.3s ease; display: inline-block;
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.4); }
+
+        /* --- SECTIONS --- */
+        section { padding: 100px 0; }
+        .section-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(36px, 3.5vw, 48px); 
+            font-weight: 400; 
+            color: var(--text-dark); 
+            letter-spacing: -0.5px;
+        }
+        .section-title span { color: var(--gold); font-weight: 600; }
+        .section-sub { color: var(--text-muted); font-size: 18px; max-width: 500px; margin-top: 12px; }
+
+        /* --- GRIDS --- */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; margin-top: 48px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 48px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+
+        /* --- CARDS --- */
+        .card { 
+            background: #ffffff; 
+            padding: 40px 32px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            transition: all 0.4s ease; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(11, 23, 45, 0.06);
+            border-color: var(--gold-light);
+        }
+        .card h3 { font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+        .card p { color: var(--text-muted); font-size: 16px; line-height: 1.7; }
+        
+        .service-card { 
+            background: #ffffff; padding: 28px 24px; border-radius: 16px; 
+            border: 1px solid #e2e8f0; transition: all 0.3s ease; cursor: default;
+            text-align: center;
+        }
+        .service-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .service-card p { font-size: 15px; font-weight: 500; color: var(--text-dark); }
+        .service-card small { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-top: 6px;}
+
+        /* --- CORPORATE BOX --- */
+        .corporate-box { 
+            background: var(--navy); color: white; padding: 56px 48px; border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(11, 23, 45, 0.08);
+        }
+        .corporate-box .tag { color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px; font-weight: 600; }
+        .corporate-box h3 { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 400; margin-top: 16px; line-height: 1.2; }
+        .corporate-box h3 span { color: var(--gold); font-weight: 600; }
+
+        /* --- CONTACT FORM --- */
+        .form-container { 
+            background: var(--cream); padding: 56px; border-radius: 24px; 
+            margin-top: 40px; border: 1px solid #e2e8f0;
+        }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 16px 18px; border: 1px solid #e2e8f0; border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-size: 15px; outline: none; transition: 0.3s; background: #ffffff;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(214, 181, 109, 0.1); }
+        
+        .btn-submit {
+            width: 100%; background: var(--gold); color: var(--navy); padding: 18px;
+            border: none; border-radius: 60px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        .btn-submit:hover { background: var(--gold-hover); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        footer { background: var(--navy); color: #94a3b8; padding: 60px 0; margin-top: 40px; }
+        footer p { font-size: 14px; line-height: 1.8; max-width: 800px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .grid-2 { grid-template-columns: 1fr; gap: 40px; }
+            .container { padding: 0 24px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Hide nav on mobile for simplicity */
+            .hero h1 { font-size: 42px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">MMS <span>Sanctuary</span></div>
+            <div class="nav-links">
+                <button onclick="showPage('home')" class="active">Home</button>
+                <button onclick="showPage('about')">About</button>
+                <button onclick="showPage('services')">Services</button>
+                <button onclick="showPage('contact')">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <div id="app-content">
+
+        <!-- HOME PAGE -->
+        <div id="page-home">
+            <section class="hero">
+                <div class="container">
+                    <p class="hero-tag">My Medical Sanctuary</p>
+                    <h1>Preventive Care.<br><span>Personalised Longevity.</span></h1>
+                    <p>A premium preventive healthcare and personalised longevity platform for individuals, families and organisations.</p>
+                    <div class="hero-btns">
+                        <a href="#" onclick="showPage('contact')" class="btn-primary">Book Consultation</a>
+                        <a href="https://wa.me/60123456789" target="_blank" class="btn-outline">WhatsApp Us</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="container">
+                <div class="grid-3">
+                    <div class="card"><h3>Prevent</h3><p>Early detection and proactive health planning through advanced screenings and risk assessments.</p></div>
+                    <div class="card"><h3>Personalise</h3><p>Care journeys tailored to individual biology, lifestyle and longevity goals.</p></div>
+                    <div class="card"><h3>Partner</h3><p>Long-term clinical partnerships extending beyond episodic care.</p></div>
+                </div>
+            </section>
+
+            <section class="container" style="padding-top: 40px;">
+                <h2 class="section-title">Our <span>Services</span></h2>
+                <p class="section-sub">Evidence-informed therapies subject to clinical assessment.</p>
+                <div class="grid-4">
+                    <div class="service-card"><p>Health Screening</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>IV Therapy</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>NAD+</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>PRP</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>Exosomes</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>Weight Management</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>Hormone Optimisation</p><small>Subject to assessment</small></div>
+                    <div class="service-card"><p>Hyperbaric Oxygen</p><small>Subject to assessment</small></div>
+                </div>
+            </section>
+
+            <section class="container" style="padding-top: 40px;">
+                <div class="grid-2">
+                    <div>
+                        <h2 class="section-title">Corporate <span>Health Partnership</span></h2>
+                        <p style="color: var(--text-muted); font-size: 18px; margin-top: 16px; line-height: 1.8;">
+                            Helping organisations build healthier, more resilient workforces through preventive health assessments, executive health planning, education and ongoing clinical support.
+                        </p>
+                    </div>
+                    <div class="corporate-box">
+                        <p class="tag">For Companies</p>
+                        <h3>Healthier People. <br><span>Stronger Organisations.</span></h3>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ABOUT PAGE -->
+        <div id="page-about" style="display: none;">
+            <section class="container" style="padding: 120px 0;">
+                <h2 class="section-title">About <span>My Medical Sanctuary</span></h2>
+                <p style="font-size: 18px; color: var(--text-muted); max-width: 700px; margin-top: 20px; line-height: 1.8;">
+                    Founded with the belief that healthcare should be proactive, not reactive. We combine advanced clinical diagnostics with personalised lifestyle medicine to support longevity.
+                </p>
+                <p style="font-size: 16px; color: var(--text-muted); max-width: 700px; margin-top: 16px; line-height: 1.8;">
+                    Our approach is evidence-informed and tailored to individual biology. We do not offer generic solutions — every plan is subject to clinical assessment and designed to meet the unique health goals of our members.
+                </p>
+            </section>
+        </div>
+
+        <!-- SERVICES PAGE -->
+        <div id="page-services" style="display: none;">
+            <section class="container" style="padding: 120px 0;">
+                <h2 class="section-title">Our <span>Services</span></h2>
+                <p style="font-size: 18px; color: var(--text-muted); max-width: 700px; margin-top: 20px;">
+                    We offer a curated range of premium therapies and assessments. Each service may support your health goals and is subject to clinical assessment.
+                </p>
+                <div class="grid-2" style="margin-top: 40px;">
+                    <div class="card"><h3>Health Screening</h3><p>May support overall wellness and longevity. Subject to clinical assessment.</p></div>
+                    <div class="card"><h3>IV Therapy</h3><p>May support overall wellness and longevity. Subject to clinical assessment.</p></div>
+                    <div class="card"><h3>NAD+</h3><p>May support overall wellness and longevity. Subject to clinical assessment.</p></div>
+                    <div class="card"><h3>PRP</h3><p>May support overall wellness and longevity. Subject to clinical assessment.</p></div>
+                    <div class="card"><h3>Exosomes</h3><p>May support overall wellness and longevity. Subject to clinical assessment.</p></div>
+                    <div class="card"><h3>Weight Management</h3><p>May support overall wellness and longevity. Subject to clinical assessment.</p></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CONTACT PAGE -->
+        <div id="page-contact" style="display: none;">
+            <section class="container" style="padding: 120px 0;">
+                <h2 class="section-title">Book a <span>Consultation</span></h2>
+                <p style="font-size: 18px; color: var(--text-muted); margin-top: 20px;">Fill in the details below and our concierge team will reach out to you.</p>
+                
+                <div class="form-container">
+                    <form onsubmit="event.preventDefault(); alert('Thank you! Our team will contact you shortly. (Backend integration pending)');">
+                        <div class="grid-2" style="gap: 20px;">
+                            <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name" required></div>
+                            <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@example.com" required></div>
+                        </div>
+                        <div class="form-group"><label>Message</label><textarea rows="4" placeholder="How can we help you?" required></textarea></div>
+                        <button type="submit" class="btn-submit">Submit Inquiry</button>
+                        <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 16px;">By submitting, you agree to our privacy policy. We will handle your data securely.</p>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ===== LING AI ASSISTANT WIDGET with MMS LOGO ===== -->
+    <style>
+        /* Floating chat button & window */
+        #ling-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #ling-toggle {
+            background: #09172b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(9, 23, 43, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #ling-toggle:hover {
+            background: #1a3a5a;
+            transform: scale(1.05);
+        }
+
+        #ling-toggle img {
+            height: 32px;
+            width: auto;
+            border-radius: 6px;
+        }
+
+        #ling-window {
+            display: none;
+            width: 380px;
+            max-width: 90vw;
+            height: 520px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 16px 60px rgba(0,0,0,0.25);
+            overflow: hidden;
+            margin-bottom: 16px;
+            flex-direction: column;
+            border: 1px solid #e0e8f0;
+        }
+
+        #ling-window.open {
+            display: flex;
+        }
+
+        #ling-header {
+            background: linear-gradient(135deg, #09172b, #1a3a5a);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        #ling-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        #ling-header-left img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+            background: white;
+            padding: 4px 8px;
+            flex-shrink: 0;
+        }
+
+        #ling-header-left .header-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 0;
+        }
+
+        #ling-header-left .header-text .ling-name {
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        #ling-header-left .header-text .ling-title {
+            font-weight: normal;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        #ling-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        #ling-close:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        #ling-messages {
+            flex: 1;
+            padding: 16px 20px;
+            overflow-y: auto;
+            background: #f7faff;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ling-msg {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: lingFade 0.3s ease;
+        }
+
+        .ling-msg.bot {
+            background: white;
+            color: #1a2a3a;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .ling-msg.user {
+            background: #09172b;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ling-msg.typing {
+            background: white;
+            color: #888;
+            align-self: flex-start;
+            font-style: italic;
+            padding: 12px 20px;
+        }
+
+        @keyframes lingFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #ling-input-area {
+            display: flex;
+            padding: 12px 16px;
+            border-top: 1px solid #e8ecf0;
+            background: white;
+            flex-shrink: 0;
+            gap: 10px;
+        }
+
+        #ling-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #dce2ea;
+            border-radius: 30px;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        #ling-input:focus {
+            border-color: #D6B56D;
+        }
+
+        #ling-send {
+            background: #D6B56D;
+            color: #09172b;
+            border: none;
+            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        #ling-send:hover {
+            background: #c4a25c;
+        }
+
+        /* Quick reply buttons */
+        #ling-quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 4px 16px 12px 16px;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .ling-quick-btn {
+            background: #edf3f8;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: #1a3a5a;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .ling-quick-btn:hover {
+            background: #d5e3ee;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            #ling-window {
+                width: 100vw;
+                max-width: 100vw;
+                height: 80vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 16px 16px 0 0;
+            }
+            #ling-toggle {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            #ling-toggle img {
+                height: 26px;
+            }
+            #ling-header-left img {
+                height: 32px;
+            }
+            #ling-header-left .header-text .ling-name {
+                font-size: 15px;
+            }
+            #ling-header-left .header-text .ling-title {
+                font-size: 10px;
+            }
+        }
+    </style>
+
+    <div id="ling-container">
+        <!-- Chat Window -->
+        <div id="ling-window">
+            <div id="ling-header">
+                <div id="ling-header-left">
+                    <!-- MMS LOGO - UPDATE THE FILENAME IF NEEDED -->
+                    <img src="MMS_Logo.png" alt="My Medical Sanctuary" />
+                    <div class="header-text">
+                        <span class="ling-name">Ling</span>
+                        <span class="ling-title">Your Virtual Health Guide</span>
+                    </div>
+                </div>
+                <button id="ling-close" onclick="toggleLing()">✕</button>
+            </div>
+            <div id="ling-messages">
+                <div class="ling-msg bot">👋 Hello! I'm Ling, your Virtual Health Guide at <strong>My Medical Sanctuary</strong>.<br /><br />How can I help you today?</div>
+            </div>
+            <div id="ling-quick-replies">
+                <button class="ling-quick-btn" onclick="quickReply('Book an appointment')">📅 Book appointment</button>
+                <button class="ling-quick-btn" onclick="quickReply('Medication reminder')">💊 Medication</button>
+                <button class="ling-quick-btn" onclick="quickReply('Health tips')">🌿 Health tips</button>
+                <button class="ling-quick-btn" onclick="quickReply('Clinic hours')">🕐 Clinic hours</button>
+            </div>
+            <div id="ling-input-area">
+                <input type="text" id="ling-input" placeholder="Ask Ling anything..." onkeypress="if(event.key==='Enter') sendMessage()" />
+                <button id="ling-send" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+
+        <!-- Toggle Button with MMS Logo -->
+        <button id="ling-toggle" onclick="toggleLing()">
+            <img src="MMS_Logo.png" alt="My Medical Sanctuary" />
+            Chat with Ling
+        </button>
+    </div>
+
+    <script>
+        // Toggle chat window
+        function toggleLing() {
+            const window = document.getElementById('ling-window');
+            const toggle = document.getElementById('ling-toggle');
+            window.classList.toggle('open');
+            if (window.classList.contains('open')) {
+                toggle.style.display = 'none';
+                document.getElementById('ling-input').focus();
+            } else {
+                toggle.style.display = 'flex';
+            }
+        }
+
+        // Quick reply handler
+        function quickReply(text) {
+            document.getElementById('ling-input').value = text;
+            sendMessage();
+        }
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('ling-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            addMessage(msg, 'user');
+            input.value = '';
+
+            const typingId = addTypingIndicator();
+
+            try {
+                const response = await getLingResponse(msg);
+                removeTypingIndicator(typingId);
+                addMessage(response, 'bot');
+            } catch (error) {
+                removeTypingIndicator(typingId);
+                addMessage("⚠️ I'm having trouble connecting right now. Please try again later or contact our clinic directly.", 'bot');
+            }
+        }
+
+        function addMessage(text, sender) {
+            const container = document.getElementById('ling-messages');
+            const div = document.createElement('div');
+            div.className = `ling-msg ${sender}`;
+            div.innerHTML = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const container = document.getElementById('ling-messages');
+            const div = document.createElement('div');
+            div.className = 'ling-msg typing';
+            div.id = 'ling-typing-' + Date.now();
+            div.textContent = 'Ling is typing...';
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            return div.id;
+        }
+
+        function removeTypingIndicator(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        // ============================================================
+        // 👇 REPLACE THIS WITH YOUR ACTUAL AI BACKEND CALL
+        // ============================================================
+        async function getLingResponse(userMessage) {
+            return mockLingResponse(userMessage);
+        }
+
+        // ---------- MOCK RESPONSE (for demo - replace with real AI) ----------
+        function mockLingResponse(msg) {
+            const lower = msg.toLowerCase();
+            if (lower.includes('appointment') || lower.includes('book')) {
+                return "📅 I can help you book an appointment! Please visit our Appointments page, or call us at <strong>(555) 123-4567</strong> to speak with a coordinator.";
+            }
+            if (lower.includes('medication') || lower.includes('pill') || lower.includes('drug')) {
+                return "💊 For medication reminders and refills, please log in to your <strong>My Medical Sanctuary</strong> patient portal. Would you like me to direct you there?";
+            }
+            if (lower.includes('hour') || lower.includes('time') || lower.includes('open')) {
+                return "🕐 Our clinic is open <strong>Monday–Friday, 8:00 AM – 6:00 PM</strong>, and <strong>Saturday 9:00 AM – 2:00 PM</strong>. We're closed on Sundays and public holidays.";
+            }
+            if (lower.includes('tip') || lower.includes('wellness') || lower.includes('health')) {
+                return "🌿 Here's a wellness tip from Ling: Stay hydrated, get 7–8 hours of sleep, and take a 10-minute walk after meals. Your body will thank you! 😊";
+            }
+            if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+                return "Hello there! 👋 I'm Ling, your Virtual Health Guide at <strong>My Medical Sanctuary</strong>. Feel free to ask me about appointments, medications, clinic hours, or general wellness tips.";
+            }
+            return `Thank you for your question about "<strong>${msg}</strong>". I've noted it down. For specific medical advice, please consult with one of our healthcare providers at <strong>My Medical Sanctuary</strong>. Is there anything else I can assist you with?`;
+        }
+    </script>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2026 My Medical Sanctuary. All rights reserved.</p>
+            <p style="margin-top: 16px;">
+                Information on this website is for general education only and does not replace medical advice. 
+                Services are subject to clinical assessment and local regulatory requirements. 
+                We use evidence-informed practices and outcomes may vary by individual.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // --- PAGE NAVIGATION ---
+        function showPage(pageId) {
+            document.querySelectorAll('#app-content > div').forEach(el => el.style.display = 'none');
+            document.getElementById('page-' + pageId).style.display = 'block';
+            // Update active button state
+            document.querySelectorAll('.nav-links button').forEach(btn => btn.classList.remove('active'));
+            // Find the button that matches the page and mark it active
+            const buttons = document.querySelectorAll('.nav-links button');
+            const pageMap = {
+                'home': 0,
+                'about': 1,
+                'services': 2,
+                'contact': 3
+            };
+            if (pageMap[pageId] !== undefined) {
+                buttons[pageMap[pageId]].classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+</body>
+</html>
