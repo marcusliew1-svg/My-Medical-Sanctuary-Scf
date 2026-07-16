@@ -1,6 +1,6 @@
 export type Membership = {
   name: string;
-  price: string;
+  accessNote: string;
   tagline: string;
   whoItSuits: string;
   coordination: string;
@@ -10,7 +10,7 @@ export type Membership = {
 export const memberships: Membership[] = [
   {
     name: "Ascend",
-    price: "From RM 1,500 / year",
+    accessNote: "Discovery-first membership pathway",
     tagline: "Start with clarity.",
     whoItSuits:
       "Individuals beginning a structured wellness journey who want screening, coordination and professional review.",
@@ -25,7 +25,7 @@ export const memberships: Membership[] = [
   },
   {
     name: "Evolve",
-    price: "From RM 4,800 / year",
+    accessNote: "Personalised coordination pathway",
     tagline: "Optimise your potential.",
     whoItSuits:
       "Members who want closer coordination for energy, weight, metabolic health and lifestyle optimisation.",
@@ -40,7 +40,7 @@ export const memberships: Membership[] = [
   },
   {
     name: "Eterna",
-    price: "From RM 9,800 / year",
+    accessNote: "Long-term preventive care pathway",
     tagline: "Protect your future.",
     whoItSuits:
       "Members planning for preventive care, personalised longevity and long-term wellness oversight.",
@@ -55,7 +55,7 @@ export const memberships: Membership[] = [
   },
   {
     name: "Pinnacle",
-    price: "By suitability assessment",
+    accessNote: "By invitation and suitability assessment",
     tagline: "Private, highly coordinated care.",
     whoItSuits:
       "Executives, founders and families seeking a highly coordinated preventive care relationship.",
