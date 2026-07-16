@@ -10,7 +10,7 @@ export function MembershipCard({ membership }: MembershipCardProps) {
     <article className="flex h-full flex-col rounded-lg border border-gold-light/60 bg-ivory p-6 shadow-premium">
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gold">{membership.tagline}</p>
       <h3 className="mt-3 font-serif text-3xl text-navy">{membership.name}</h3>
-      <p className="mt-2 text-lg font-semibold text-deep-green">{membership.price}</p>
+      <p className="mt-2 text-lg font-semibold text-deep-green">{membership.accessNote}</p>
       <p className="mt-5 leading-7 text-warm-gray">{membership.whoItSuits}</p>
       <p className="mt-4 leading-7 text-charcoal">{membership.coordination}</p>
       <ul className="mt-5 grid gap-2 text-sm text-warm-gray">
