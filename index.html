@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About MMS | My Medical Sanctuary</title>
+    <meta
+      name="description"
+      content="My Medical Sanctuary helps patients move from reactive treatment to proactive health planning through doctor-led preventive healthcare."
+    />
+    <style>
+      :root {
+        --ink: #162024;
+        --muted: #5d6b70;
+        --line: #dbe5e5;
+        --paper: #fbfcfb;
+        --soft: #edf5f2;
+        --teal: #0e766e;
+        --teal-dark: #075c56;
+        --sage: #78a596;
+        --gold: #b68b3f;
+        --white: #ffffff;
+        --shadow: 0 24px 70px rgba(15, 38, 44, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .site-shell {
+        overflow: hidden;
+      }
+
+      .nav {
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 28px 0;
+        color: var(--white);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 760;
+        letter-spacing: 0;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        aspect-ratio: 1;
+        border: 1px solid rgba(255, 255, 255, 0.52);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+      }
+
+      .brand-mark::before {
+        content: "";
+        width: 18px;
+        aspect-ratio: 1;
+        border-top: 3px solid var(--white);
+        border-right: 3px solid var(--white);
+        transform: rotate(45deg);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        font-size: 0.93rem;
+        font-weight: 650;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        font-size: 0.95rem;
+        font-weight: 760;
+        text-decoration: none;
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        background: var(--teal);
+        color: var(--white);
+        box-shadow: 0 16px 32px rgba(14, 118, 110, 0.24);
+      }
+
+      .button-primary:hover {
+        background: var(--teal-dark);
+      }
+
+      .button-light {
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--ink);
+      }
+
+      .button-outline {
+        border-color: rgba(22, 32, 36, 0.2);
+        color: var(--ink);
+        background: transparent;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 92vh;
+        display: grid;
+        align-items: end;
+        isolation: isolate;
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background-image: url("mms-about-hero.png");
+        background-size: cover;
+        background-position: center right;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+          linear-gradient(90deg, rgba(9, 28, 31, 0.92), rgba(9, 28, 31, 0.62) 42%, rgba(9, 28, 31, 0.2) 74%),
+          linear-gradient(0deg, rgba(9, 28, 31, 0.78), transparent 52%);
+      }
+
+      .hero-inner {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 150px 0 74px;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 18px;
+        font-size: 0.78rem;
+        font-weight: 820;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .kicker::before {
+        content: "";
+        width: 36px;
+        height: 1px;
+        background: var(--gold);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin-bottom: 20px;
+        font-size: clamp(3rem, 8vw, 6.6rem);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 650px;
+        margin-bottom: 30px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: clamp(1.05rem, 2vw, 1.35rem);
+      }
+
+      .section {
+        padding: 92px 0;
+      }
+
+      .section-alt {
+        background: var(--soft);
+      }
+
+      .wrap {
+        width: min(1080px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+        gap: clamp(36px, 7vw, 86px);
+        align-items: start;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--teal);
+        font-size: 0.76rem;
+        font-weight: 820;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        color: var(--muted);
+        font-size: clamp(1.03rem, 1.6vw, 1.2rem);
+      }
+
+      .statement {
+        border-left: 3px solid var(--gold);
+        padding-left: 28px;
+      }
+
+      .pillars {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 38px;
+      }
+
+      .pillar {
+        min-height: 250px;
+        padding: 30px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 18px 48px rgba(22, 32, 36, 0.06);
+      }
+
+      .pillar-number {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        aspect-ratio: 1;
+        margin-bottom: 26px;
+        border-radius: 50%;
+        background: var(--soft);
+        color: var(--teal);
+        font-weight: 820;
+      }
+
+      h3 {
+        margin-bottom: 12px;
+        font-size: 1.28rem;
+        line-height: 1.2;
+      }
+
+      .pillar p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .doctor-led {
+        position: relative;
+        background: var(--ink);
+        color: var(--white);
+      }
+
+      .doctor-led .wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 410px);
+        gap: clamp(32px, 6vw, 78px);
+        align-items: center;
+      }
+
+      .doctor-led .lead {
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .ling-panel {
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: var(--shadow);
+      }
+
+      .ling-panel p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .ling-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 26px;
+        color: var(--white);
+        font-weight: 780;
+      }
+
+      .pulse {
+        width: 44px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 50% 50%, var(--sage) 0 28%, transparent 29%),
+          radial-gradient(circle at 50% 50%, rgba(120, 165, 150, 0.24) 0 64%, transparent 65%);
+      }
+
+      .culture-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .culture-card {
+        min-height: 210px;
+        padding: 30px;
+        border-radius: 8px;
+        background: var(--white);
+        border: 1px solid var(--line);
+      }
+
+      .culture-card strong {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--teal);
+        font-size: 0.84rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .promise {
+        background: var(--white);
+      }
+
+      .promise-box {
+        padding: clamp(34px, 7vw, 70px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(237, 245, 242, 0.92), rgba(255, 255, 255, 0.98)),
+          var(--white);
+      }
+
+      .journey {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1px;
+        margin-top: 34px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--line);
+      }
+
+      .journey span {
+        min-height: 92px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: var(--white);
+        color: var(--ink);
+        font-weight: 760;
+        text-align: center;
+      }
+
+      .vision {
+        text-align: center;
+        background: var(--soft);
+      }
+
+      .vision .wrap {
+        max-width: 870px;
+      }
+
+      .vision h2 {
+        margin-bottom: 18px;
+      }
+
+      .final-cta {
+        padding: 86px 0;
+        background: var(--ink);
+        color: var(--white);
+      }
+
+      .final-cta .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+      }
+
+      .final-cta h2 {
+        max-width: 650px;
+        margin-bottom: 0;
+        font-size: clamp(2rem, 4vw, 3.6rem);
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      @media (max-width: 860px) {
+        .nav {
+          width: min(100% - 32px, 1180px);
+          padding-top: 20px;
+        }
+
+        .nav-link {
+          display: none;
+        }
+
+        .hero {
+          min-height: 760px;
+        }
+
+        .hero::before {
+          background-position: 60% center;
+        }
+
+        .hero::after {
+          background:
+            linear-gradient(90deg, rgba(9, 28, 31, 0.92), rgba(9, 28, 31, 0.62)),
+            linear-gradient(0deg, rgba(9, 28, 31, 0.84), transparent 54%);
+        }
+
+        .hero-inner,
+        .wrap {
+          width: min(100% - 32px, 1080px);
+        }
+
+        .split,
+        .doctor-led .wrap,
+        .culture-grid,
+        .final-cta .wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .pillars,
+        .journey {
+          grid-template-columns: 1fr;
+        }
+
+        .pillar {
+          min-height: auto;
+        }
+
+        .final-cta .wrap {
+          display: grid;
+        }
+
+        .cta-buttons {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .brand span {
+          max-width: 150px;
+          line-height: 1.15;
+        }
+
+        .button {
+          width: 100%;
+          min-height: 52px;
+        }
+
+        .nav .button {
+          display: none;
+        }
+
+        .hero-inner {
+          padding-bottom: 54px;
+        }
+
+        .section {
+          padding: 68px 0;
+        }
+
+        .statement {
+          padding-left: 20px;
+        }
+
+        .culture-card,
+        .pillar,
+        .ling-panel {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="site-shell">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="My Medical Sanctuary home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>My Medical Sanctuary</span>
+        </a>
+        <div class="nav-actions">
+          <a class="nav-link" href="#philosophy">Philosophy</a>
+          <a class="nav-link" href="#promise">Promise</a>
+          <a class="button button-light" href="#start">Start</a>
+        </div>
+      </nav>
+
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <p class="kicker">About MMS</p>
+          <h1>A New Standard for Preventive Healthcare.</h1>
+          <p class="hero-copy">
+            My Medical Sanctuary was created to help people move from reactive treatment to
+            proactive health planning.
+          </p>
+          <a class="button button-primary" href="#start">Start Your Health Journey</a>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wrap split">
+          <div>
+            <p class="eyebrow">Why We Exist</p>
+            <h2>Because healthcare should be clearer, earlier, and more personal.</h2>
+          </div>
+          <div class="statement">
+            <p class="lead">
+              Many people experience symptoms, feel tired, gain weight, sleep poorly, or worry
+              about ageing, yet they often do not know where to start. MMS brings together doctors,
+              diagnostics, wellness programmes, education, and technology to help patients
+              understand their health before problems become bigger.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="philosophy">
+        <div class="wrap">
+          <p class="eyebrow">Our Philosophy</p>
+          <h2>Preventive care works best when it is early, personal, and understood.</h2>
+          <div class="pillars">
+            <article class="pillar">
+              <span class="pillar-number">01</span>
+              <h3>Prevention First</h3>
+              <p>Detect risks early and act before illness progresses.</p>
+            </article>
+            <article class="pillar">
+              <span class="pillar-number">02</span>
+              <h3>Personalised Longevity</h3>
+              <p>Create programmes based on individual health status, goals, and doctor review.</p>
+            </article>
+            <article class="pillar">
+              <span class="pillar-number">03</span>
+              <h3>Education Before Treatment</h3>
+              <p>Every patient should leave more informed than when they arrived.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section doctor-led">
+        <div class="wrap">
+          <div>
+            <p class="eyebrow">Doctor-Led, AI-Supported</p>
+            <h2>Technology supports care. It does not replace doctors.</h2>
+            <p class="lead">
+              Ling, our AI Health Education Companion, helps patients understand health concepts and
+              prepare for consultations. Personalised medical recommendations remain doctor-led.
+            </p>
+          </div>
+          <aside class="ling-panel" aria-label="Ling AI education companion">
+            <div class="ling-label">
+              <span>Ling supports understanding</span>
+              <span class="pulse" aria-hidden="true"></span>
+            </div>
+            <p>
+              Patients can arrive prepared, ask better questions, and leave with clearer context
+              while clinical decisions stay with qualified medical professionals.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wrap split">
+          <div>
+            <p class="eyebrow">Our Culture</p>
+            <h2>Respect and be respected.</h2>
+          </div>
+          <div class="culture-grid">
+            <article class="culture-card">
+              <strong>How We Work</strong>
+              <p>
+                MMS is built on humility, integrity, and professionalism. We believe patients,
+                doctors, nurses, health relationship managers, and staff all deserve respect.
+              </p>
+            </article>
+            <article class="culture-card">
+              <strong>What We Protect</strong>
+              <p>
+                Strong systems create consistency, but people create excellence.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section promise" id="promise">
+        <div class="wrap promise-box">
+          <p class="eyebrow">Our Promise</p>
+          <h2>We are not here to sell random treatments.</h2>
+          <p class="lead">
+            MMS is not in the business of selling ad-hoc vials or products. We provide structured
+            preventive health journeys, beginning with screening, doctor review, personalised
+            recommendations, and long-term follow-up.
+          </p>
+          <div class="journey" aria-label="Preventive health journey steps">
+            <span>Screening</span>
+            <span>Doctor Review</span>
+            <span>Personalised Recommendations</span>
+            <span>Long-Term Follow-Up</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section vision">
+        <div class="wrap">
+          <p class="eyebrow">Our Vision</p>
+          <h2>Our Vision</h2>
+          <p class="lead">
+            To become ASEAN's most trusted preventive healthcare and personalised longevity
+            ecosystem.
+          </p>
+        </div>
+      </section>
+
+      <section class="final-cta" id="start">
+        <div class="wrap">
+          <h2>Your health journey starts with understanding.</h2>
+          <div class="cta-buttons">
+            <a class="button button-primary" href="#top">Book Health Screening</a>
+            <a class="button button-light" href="#top">Ask Ling</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

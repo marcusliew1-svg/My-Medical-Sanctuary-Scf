@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Malaysia Executive Health Screening | My Medical Sanctuary</title>
+    <meta
+      name="description"
+      content="Doctor-led preventive health screening in Malaysia for executives, families, frequent travellers, and adults planning for healthy ageing."
+    />
+    <meta
+      name="keywords"
+      content="Malaysia Executive Health Screening, Preventive Healthcare Malaysia, Longevity Health Screening, Health Screening Kuala Lumpur, Health Screening Petaling Jaya, Executive Medical Check-up, Preventive Medicine Malaysia"
+    />
+    <style>
+      :root {
+        --ink: #172125;
+        --muted: #637176;
+        --line: #d9e4e4;
+        --paper: #fbfcfb;
+        --white: #ffffff;
+        --mist: #eef6f3;
+        --teal: #0d756d;
+        --teal-dark: #075d58;
+        --aqua: #9fcfc4;
+        --gold: #b88d42;
+        --graphite: #2d3a3e;
+        --shadow: 0 22px 58px rgba(16, 36, 42, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .site-shell {
+        overflow: hidden;
+      }
+
+      .nav {
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 28px 0;
+        color: var(--white);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 780;
+        letter-spacing: 0;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        aspect-ratio: 1;
+        border: 1px solid rgba(255, 255, 255, 0.52);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+      }
+
+      .brand-mark::before {
+        content: "";
+        width: 18px;
+        aspect-ratio: 1;
+        border-top: 3px solid var(--white);
+        border-right: 3px solid var(--white);
+        transform: rotate(45deg);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 0.92rem;
+        font-weight: 680;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        font-size: 0.95rem;
+        font-weight: 780;
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+          transform 180ms ease,
+          background 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        background: var(--teal);
+        color: var(--white);
+        box-shadow: 0 16px 34px rgba(13, 117, 109, 0.24);
+      }
+
+      .button-primary:hover {
+        background: var(--teal-dark);
+      }
+
+      .button-light {
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--ink);
+      }
+
+      .button-outline {
+        border-color: rgba(23, 33, 37, 0.2);
+        color: var(--ink);
+        background: transparent;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 92vh;
+        display: grid;
+        align-items: end;
+        isolation: isolate;
+        color: var(--white);
+        background: var(--ink);
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background-image: url("mms-health-screening-hero.png");
+        background-size: cover;
+        background-position: center right;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+          linear-gradient(90deg, rgba(9, 28, 31, 0.93), rgba(9, 28, 31, 0.62) 43%, rgba(9, 28, 31, 0.18) 76%),
+          linear-gradient(0deg, rgba(9, 28, 31, 0.76), transparent 52%);
+      }
+
+      .wrap {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .hero-inner {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 152px 0 72px;
+      }
+
+      .kicker,
+      .eyebrow {
+        margin: 0 0 14px;
+        font-size: 0.76rem;
+        font-weight: 840;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .kicker::before {
+        content: "";
+        width: 36px;
+        height: 1px;
+        background: var(--gold);
+      }
+
+      .eyebrow {
+        color: var(--teal);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin-bottom: 20px;
+        font-size: clamp(3rem, 7.5vw, 6.4rem);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 690px;
+        margin-bottom: 30px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: clamp(1.04rem, 2vw, 1.32rem);
+      }
+
+      .hero-actions,
+      .cta-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .section {
+        padding: 88px 0;
+      }
+
+      .section-alt {
+        background: var(--mist);
+      }
+
+      .section-dark {
+        background: var(--ink);
+        color: var(--white);
+      }
+
+      .section-header {
+        max-width: 800px;
+        margin-bottom: 38px;
+      }
+
+      .section-header.center {
+        margin-inline: auto;
+        text-align: center;
+      }
+
+      h2 {
+        margin-bottom: 18px;
+        font-size: clamp(2rem, 4.6vw, 4rem);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        color: var(--muted);
+        font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+      }
+
+      .section-dark .lead {
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        min-height: 220px;
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 18px 46px rgba(20, 42, 48, 0.06);
+      }
+
+      .card h3 {
+        margin-bottom: 10px;
+        font-size: 1.16rem;
+        line-height: 1.25;
+      }
+
+      .card p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .mini-icon {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        aspect-ratio: 1;
+        margin-bottom: 24px;
+        border-radius: 50%;
+        background: var(--mist);
+        color: var(--teal);
+      }
+
+      .mini-icon svg {
+        width: 21px;
+        height: 21px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .philosophy {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(34px, 6vw, 78px);
+        align-items: center;
+      }
+
+      .flow {
+        display: grid;
+        gap: 12px;
+      }
+
+      .flow-step {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 16px;
+        align-items: center;
+        min-height: 72px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .flow-step span {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: rgba(159, 207, 196, 0.18);
+        color: var(--aqua);
+        font-weight: 840;
+      }
+
+      .flow-step strong {
+        font-size: 1.12rem;
+      }
+
+      .include-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .include-item {
+        min-height: 138px;
+        display: grid;
+        align-content: space-between;
+        gap: 18px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+      }
+
+      .include-item strong {
+        line-height: 1.2;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--line);
+        counter-reset: step;
+      }
+
+      .timeline-step {
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 24px;
+        background: var(--white);
+      }
+
+      .timeline-step::before {
+        counter-increment: step;
+        content: "0" counter(step);
+        color: var(--teal);
+        font-size: 0.84rem;
+        font-weight: 840;
+        letter-spacing: 0.08em;
+      }
+
+      .timeline-step strong {
+        font-size: 1.08rem;
+        line-height: 1.2;
+      }
+
+      .audience {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .audience span {
+        min-height: 74px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 20px;
+        border-radius: 8px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        font-weight: 720;
+      }
+
+      .audience span::before {
+        content: "";
+        width: 18px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background:
+          linear-gradient(135deg, transparent 48%, var(--teal) 49% 64%, transparent 65%),
+          var(--mist);
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      details {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        overflow: hidden;
+      }
+
+      summary {
+        cursor: pointer;
+        padding: 22px 24px;
+        font-weight: 780;
+        list-style: none;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details p {
+        margin: 0;
+        padding: 0 24px 24px;
+        color: var(--muted);
+      }
+
+      .comparison {
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .comparison-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+      }
+
+      .comparison-row:first-child {
+        border-top: 0;
+      }
+
+      .comparison-cell {
+        padding: 22px 24px;
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .comparison-cell + .comparison-cell {
+        border-left: 1px solid rgba(255, 255, 255, 0.14);
+      }
+
+      .comparison-head {
+        color: var(--white);
+        font-weight: 840;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .comparison-cell.preventive {
+        color: var(--aqua);
+      }
+
+      .final-cta {
+        padding: 84px 0;
+        background: var(--mist);
+      }
+
+      .final-panel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 28px;
+        align-items: center;
+        padding: clamp(32px, 6vw, 62px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+
+      .final-panel h2 {
+        margin-bottom: 12px;
+      }
+
+      .final-panel p {
+        max-width: 690px;
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 980px) {
+        .cards,
+        .include-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .timeline {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 820px) {
+        .nav {
+          width: min(100% - 32px, 1180px);
+          padding-top: 20px;
+        }
+
+        .nav-links a:not(.button) {
+          display: none;
+        }
+
+        .hero {
+          min-height: 760px;
+        }
+
+        .hero::before {
+          background-position: 62% center;
+        }
+
+        .hero::after {
+          background:
+            linear-gradient(90deg, rgba(9, 28, 31, 0.94), rgba(9, 28, 31, 0.62)),
+            linear-gradient(0deg, rgba(9, 28, 31, 0.84), transparent 54%);
+        }
+
+        .wrap,
+        .hero-inner {
+          width: min(100% - 32px, 1120px);
+        }
+
+        .philosophy,
+        .faq-grid,
+        .final-panel {
+          grid-template-columns: 1fr;
+        }
+
+        .audience {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .final-panel {
+          align-items: start;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .brand span {
+          max-width: 150px;
+          line-height: 1.15;
+        }
+
+        .nav .button {
+          display: none;
+        }
+
+        .button {
+          width: 100%;
+          min-height: 52px;
+        }
+
+        .hero-inner {
+          padding-bottom: 54px;
+        }
+
+        .section {
+          padding: 66px 0;
+        }
+
+        .cards,
+        .include-grid,
+        .timeline,
+        .audience {
+          grid-template-columns: 1fr;
+        }
+
+        .comparison-row {
+          grid-template-columns: 1fr;
+        }
+
+        .comparison-cell + .comparison-cell {
+          border-left: 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.14);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="site-shell">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="My Medical Sanctuary home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>My Medical Sanctuary</span>
+        </a>
+        <div class="nav-links">
+          <a href="#why">Why Screening</a>
+          <a href="#next">Journey</a>
+          <a class="button button-light" href="#book">Book</a>
+        </div>
+      </nav>
+
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <p class="kicker">Health Screening</p>
+          <h1>Your Health Journey Starts With Understanding.</h1>
+          <p class="hero-copy">
+            A personalised health screening helps identify current health status, detect potential
+            risks early, and provides a doctor-led foundation for your long-term wellness plan.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#book">Book Health Screening</a>
+            <a class="button button-light" href="#faq">Ask Ling</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="why">
+        <div class="wrap">
+          <div class="section-header">
+            <p class="eyebrow">Why Health Screening Matters</p>
+            <h2>We help you understand your health before problems become more serious.</h2>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <span class="mini-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9" /><path d="M21 3l-9 9" /><path d="M15 3h6v6" /></svg>
+              </span>
+              <h3>Detect Early</h3>
+              <p>Identify potential health risks before symptoms develop.</p>
+            </article>
+            <article class="card">
+              <span class="mini-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 19h16" /><path d="M8 15l3-4 3 2 4-6" /></svg>
+              </span>
+              <h3>Build Your Baseline</h3>
+              <p>Know where your health stands today.</p>
+            </article>
+            <article class="card">
+              <span class="mini-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3v18" /><path d="M5 8h14" /><path d="M7 16h10" /></svg>
+              </span>
+              <h3>Personalised Insights</h3>
+              <p>Every health profile is unique.</p>
+            </article>
+            <article class="card">
+              <span class="mini-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3v18" /><path d="M18 3v18" /><path d="M6 7h12" /><path d="M6 17h12" /><path d="M9 11h6" /></svg>
+              </span>
+              <h3>Plan Ahead</h3>
+              <p>Make informed decisions with your doctor.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="wrap philosophy">
+          <div>
+            <p class="eyebrow">Our Screening Philosophy</p>
+            <h2>Not generic packages. Actionable screening.</h2>
+            <p class="lead">
+              MMS screening is designed to create clarity first, then support better next steps
+              through medical review and personalised planning.
+            </p>
+          </div>
+          <div class="flow" aria-label="Screening philosophy flow">
+            <div class="flow-step"><span>01</span><strong>Doctor-led</strong></div>
+            <div class="flow-step"><span>02</span><strong>Evidence-informed</strong></div>
+            <div class="flow-step"><span>03</span><strong>Personalised</strong></div>
+            <div class="flow-step"><span>04</span><strong>Actionable Screening</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="wrap">
+          <div class="section-header center">
+            <p class="eyebrow">What Your Screening May Include</p>
+            <h2>Designed around your health profile and doctor review.</h2>
+            <p class="lead">Programmes may evolve, so inclusions are confirmed during booking and consultation.</p>
+          </div>
+          <div class="include-grid">
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M9 2h6" /><path d="M10 2v7l-4 7a4 4 0 0 0 3.5 6h5a4 4 0 0 0 3.5-6l-4-7V2" /></svg></span><strong>Blood Investigations</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6" /></svg></span><strong>ECG</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M4 15a8 8 0 0 1 16 0" /><path d="M8 15a4 4 0 0 1 8 0" /><path d="M12 15v6" /></svg></span><strong>Ultrasound</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M6 21a6 6 0 0 1 12 0" /></svg></span><strong>Body Composition</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M12 2v5" /><path d="M12 17v5" /><path d="M4.2 4.2l3.5 3.5" /><path d="M16.3 16.3l3.5 3.5" /><circle cx="12" cy="12" r="4" /></svg></span><strong>Biological Age Indicators</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16" /><path d="M4 12h10" /><path d="M4 18h7" /></svg></span><strong>Lifestyle Assessment</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-8 0v2" /><circle cx="12" cy="7" r="4" /><path d="M19 8v6" /><path d="M16 11h6" /></svg></span><strong>Doctor Consultation</strong></div>
+            <div class="include-item"><span class="mini-icon"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z" /><path d="M14 3v5h4" /><path d="M10 13h5" /><path d="M10 17h5" /></svg></span><strong>Personalised Report</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="next">
+        <div class="wrap">
+          <div class="section-header">
+            <p class="eyebrow">What Happens Next?</p>
+            <h2>A clear journey from screening to doctor-led planning.</h2>
+          </div>
+          <div class="timeline" aria-label="Health screening journey timeline">
+            <div class="timeline-step"><strong>Book Screening</strong></div>
+            <div class="timeline-step"><strong>Visit MMS</strong></div>
+            <div class="timeline-step"><strong>Health Assessment</strong></div>
+            <div class="timeline-step"><strong>Doctor Review</strong></div>
+            <div class="timeline-step"><strong>Personalised Health Plan</strong></div>
+            <div class="timeline-step"><strong>Optional Membership Journey</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="wrap">
+          <div class="section-header">
+            <p class="eyebrow">Who Should Consider A Health Screening?</p>
+            <h2>For people who want clarity before they decide what comes next.</h2>
+          </div>
+          <div class="audience">
+            <span>Busy professionals</span>
+            <span>Business owners</span>
+            <span>Frequent travellers</span>
+            <span>Parents</span>
+            <span>Adults planning for healthy ageing</span>
+            <span>Anyone wanting a better understanding of their current health</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="wrap">
+          <div class="section-header">
+            <p class="eyebrow">Frequently Asked Questions</p>
+            <h2>Simple answers before you book.</h2>
+          </div>
+          <div class="faq-grid">
+            <details open>
+              <summary>Do I need to fast?</summary>
+              <p>Some screening components may require fasting. MMS will confirm your preparation instructions before your appointment.</p>
+            </details>
+            <details>
+              <summary>How long does it take?</summary>
+              <p>Timing depends on the screening scope. The team will advise the expected duration when your appointment is confirmed.</p>
+            </details>
+            <details>
+              <summary>Can international patients book?</summary>
+              <p>Yes. International patients can enquire and coordinate appointment timing with the MMS team before travelling.</p>
+            </details>
+            <details>
+              <summary>Will I see a doctor?</summary>
+              <p>Yes. Screening is designed around doctor review, so your results can support a personalised health plan.</p>
+            </details>
+            <details>
+              <summary>Can Ling interpret my results?</summary>
+              <p>No. Ling helps explain general health concepts but does not interpret individual medical results.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="wrap">
+          <div class="section-header">
+            <p class="eyebrow">Why MMS?</p>
+            <h2>From reactive decisions to preventive strategy.</h2>
+            <p class="lead">
+              MMS reinforces doctor-led preventive healthcare without criticising other providers.
+              The difference is when and how the health journey begins.
+            </p>
+          </div>
+          <div class="comparison" aria-label="Reactive healthcare versus preventive healthcare comparison">
+            <div class="comparison-row">
+              <div class="comparison-cell comparison-head">Reactive Healthcare</div>
+              <div class="comparison-cell comparison-head">Preventive Healthcare</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell">Wait until symptoms</div>
+              <div class="comparison-cell preventive">Assess early</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell">Treat disease</div>
+              <div class="comparison-cell preventive">Reduce future risk</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell">One-off visit</div>
+              <div class="comparison-cell preventive">Long-term health planning</div>
+            </div>
+            <div class="comparison-row">
+              <div class="comparison-cell">Reactive decisions</div>
+              <div class="comparison-cell preventive">Personalised strategy</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta" id="book">
+        <div class="wrap final-panel">
+          <div>
+            <p class="eyebrow">Begin With Understanding</p>
+            <h2>Your future health starts today.</h2>
+            <p class="lead">
+              Book a comprehensive health screening and begin your personalised preventive
+              healthcare journey.
+            </p>
+          </div>
+          <div class="cta-row">
+            <a class="button button-primary" href="#top">Book Appointment</a>
+            <a class="button button-outline" href="#faq">Speak With Ling</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
