@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CorporateCTA } from "@/components/CorporateCTA";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { EducationCard } from "@/components/EducationCard";
@@ -9,6 +10,7 @@ import { StepCard } from "@/components/StepCard";
 import { WellnessAreaCard } from "@/components/WellnessAreaCard";
 import { educationPosts } from "@/data/educationPosts";
 import { memberships } from "@/data/memberships";
+import { platformModules } from "@/data/platformModules";
 import { steps } from "@/data/steps";
 import { wellnessAreas } from "@/data/wellnessAreas";
 
@@ -108,6 +110,31 @@ export default function HomePage() {
               Dr Ling content is for education only. It is not medical advice and should not be used as a personalised recommendation.
             </p>
           </DisclaimerBox>
+        </div>
+      </section>
+
+      <section className="bg-ivory px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
+            eyebrow="Future Platform"
+            title="Health journeys supported by intelligence, systems and future capability."
+            description="MMS stays patient-facing. These platform modules explain how the ecosystem can grow without turning the website into a product catalogue."
+          />
+          <div className="grid gap-5 md:grid-cols-3">
+            {platformModules.map((module) => (
+              <Link
+                key={module.href}
+                href={module.href}
+                className="rounded-lg border border-gold-light bg-white p-6 transition hover:-translate-y-1 hover:border-gold"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
+                  {module.eyebrow}
+                </p>
+                <h3 className="mt-3 font-serif text-2xl text-navy">{module.title}</h3>
+                <p className="mt-4 leading-7 text-warm-gray">{module.text}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

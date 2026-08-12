@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { Hero } from "@/components/Hero";
 import { SectionHeader } from "@/components/SectionHeader";
+import { platformModules } from "@/data/platformModules";
 
 export const metadata: Metadata = {
   title: "About MMS",
@@ -45,6 +47,30 @@ export default function AboutMMSPage() {
                 MMS aims to develop deeper clinical and lab capability in 2027, subject to regulatory, licensing, funding, technical and professional requirements.
               </p>
             </DisclaimerBox>
+          </div>
+        </div>
+      </section>
+      <section className="bg-warm-white px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
+            eyebrow="Platform Direction"
+            title="MMS is the patient journey. Platform modules support the future."
+            description="Lab capability, medicine access intelligence and Ling should strengthen patient clarity while staying inside safe professional boundaries."
+          />
+          <div className="grid gap-5 md:grid-cols-3">
+            {platformModules.map((module) => (
+              <Link
+                key={module.href}
+                href={module.href}
+                className="rounded-lg border border-gold-light bg-ivory p-6 transition hover:-translate-y-1 hover:border-gold"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
+                  {module.eyebrow}
+                </p>
+                <h2 className="mt-3 font-serif text-2xl text-navy">{module.title}</h2>
+                <p className="mt-4 leading-7 text-warm-gray">{module.text}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

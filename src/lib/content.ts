@@ -15,6 +15,12 @@ export const legalLinks = [
   { label: "Terms", href: "/terms" },
 ];
 
+export const platformLinks = [
+  { label: "SCF Lab Roadmap", href: "/scf-lab-roadmap" },
+  { label: "Medicine Access Intelligence", href: "/international-medicine-access" },
+  { label: "Ling", href: "/ling" },
+];
+
 export const lingDisclaimer =
   "Ling is an AI Health Education Companion. Ling provides educational information only and does not diagnose, prescribe, or replace an MMS doctor.";
 
