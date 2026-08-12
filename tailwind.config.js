@@ -14,11 +14,12 @@ module.exports = {
         "warm-gray": "#6B6B72",
       },
       fontFamily: {
-        serif: ['"Playfair Display"', "Georgia", "serif"],
-        sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ["var(--font-playfair)", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        premium: "0 24px 80px rgba(11, 26, 46, 0.12)",
+        premium: "0 20px 55px rgba(11, 26, 46, 0.10)",
+        soft: "0 10px 30px rgba(11, 26, 46, 0.08)",
       },
     },
   },
