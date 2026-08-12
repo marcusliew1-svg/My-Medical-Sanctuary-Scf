@@ -13,6 +13,8 @@ type BookingForm = {
   preferredAppointmentDate?: string;
   message?: string;
   consentToContact?: string;
+  consentVersion?: string;
+  sourcePath?: string;
 };
 
 async function readBookingForm(request: NextRequest): Promise<BookingForm> {
@@ -35,11 +37,15 @@ async function readBookingForm(request: NextRequest): Promise<BookingForm> {
     preferredAppointmentDate: String(formData.get("preferredAppointmentDate") ?? ""),
     message: String(formData.get("message") ?? ""),
     consentToContact: String(formData.get("consentToContact") ?? ""),
+    consentVersion: String(formData.get("consentVersion") ?? ""),
+    sourcePath: String(formData.get("sourcePath") ?? ""),
   };
 }
 
 export async function POST(request: NextRequest) {
   const form = await readBookingForm(request);
+  const consentGranted = form.consentToContact === "true";
+  const consentVersion = form.consentVersion === "MMS-WEB-2026-08-v1" ? form.consentVersion : null;
   const zohoLeadPayload = {
     "Full Name": form.fullName,
     Mobile: form.mobileNumber,
@@ -50,9 +56,22 @@ export async function POST(request: NextRequest) {
     "Preferred Contact Method": form.preferredContactMethod,
     "Next Follow-up / Appointment Preference": form.preferredAppointmentDate,
     Source: "Website",
-    "Consent to Contact": form.consentToContact === "true",
+    "Consent to Contact": consentGranted,
+    "Consent Version": consentVersion,
+    "Consent Timestamp": consentGranted ? new Date().toISOString() : null,
+    "Source Path": form.sourcePath,
     Message: form.message,
   };
+
+  if (!consentGranted || consentVersion == null) {
+    return NextResponse.json(
+      {
+        status: "invalid",
+        message: "Consent is required before MMS can contact the visitor.",
+      },
+      { status: 400 },
+    );
+  }
 
   return NextResponse.json({
     status: "placeholder",
@@ -60,6 +79,6 @@ export async function POST(request: NextRequest) {
       "Zoho CRM integration-ready route. Add lead creation after Zoho credentials and consent flow are configured.",
     mapping: zohoLeadFieldMapping,
     zohoModule: "Leads",
-    zohoLeadPayload,
+    acceptedFields: Object.keys(zohoLeadPayload),
   });
 }

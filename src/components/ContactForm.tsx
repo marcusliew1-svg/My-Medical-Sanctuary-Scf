@@ -17,14 +17,49 @@ const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "O
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
-    console.log("Zoho-ready MMS enquiry payload", payload);
-    setSubmitted(true);
-    event.currentTarget.reset();
+    setError(null);
+    setIsSubmitting(true);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      fullName: String(formData.get("fullName") ?? ""),
+      mobileNumber: String(formData.get("phone") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      country: String(formData.get("countryCity") ?? ""),
+      preferredLanguage: "",
+      interestedIn: String(formData.get("mainInterest") ?? ""),
+      preferredContactMethod: "Not specified",
+      preferredAppointmentDate: String(formData.get("preferredContactTime") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      consentToContact: formData.get("consent") === "on" ? "true" : "false",
+      consentVersion: "MMS-WEB-2026-08-v1",
+      sourcePath: window.location.pathname,
+    };
+
+    try {
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Submission failed");
+      }
+
+      setSubmitted(true);
+      form.reset();
+    } catch {
+      setError("We could not submit the enquiry. Please contact MMS directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -98,8 +133,15 @@ export function ContactForm() {
           I consent to My Medical Sanctuary contacting me about my enquiry. I understand this form does not create a medical relationship.
         </span>
       </label>
+      {error ? (
+        <p role="alert" className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700 md:col-span-2">
+          {error}
+        </p>
+      ) : null}
       <div className="md:col-span-2">
-        <CTAButton type="submit">Submit Discovery Enquiry</CTAButton>
+        <CTAButton type="submit" className={isSubmitting ? "pointer-events-none opacity-70" : ""}>
+          {isSubmitting ? "Submitting..." : "Submit Discovery Enquiry"}
+        </CTAButton>
       </div>
     </form>
   );

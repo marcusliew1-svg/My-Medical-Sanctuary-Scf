@@ -22,5 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Typecheck
+        run: npx tsc --noEmit --pretty false
+
+      - name: Lint
+        run: npm run lint
+
       - name: Build
         run: npm run build

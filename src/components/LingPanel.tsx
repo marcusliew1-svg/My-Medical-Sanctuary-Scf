@@ -34,7 +34,7 @@ export function LingPanel() {
       </div>
       {selected ? (
         <p className="mt-5 rounded-lg bg-stone-50 p-4 text-sm leading-6 text-stone-600">
-          Ling can help you understand general concepts related to "{selected}" and prepare
+          Ling can help you understand general concepts related to &quot;{selected}&quot; and prepare
           better questions for your MMS doctor.
         </p>
       ) : null}

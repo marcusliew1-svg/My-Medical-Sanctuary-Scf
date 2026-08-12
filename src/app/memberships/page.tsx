@@ -25,7 +25,7 @@ export default function MembershipsPage() {
           <SectionHeader
             eyebrow="Membership Tiers"
             title="Ascend, Evolve, Eterna and Pinnacle."
-            description="Pricing is indicative for v0.1 planning and may be refined before launch."
+            description="Membership pathways are discussed after discovery, professional review and suitability assessment."
           />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {memberships.map((membership) => (
