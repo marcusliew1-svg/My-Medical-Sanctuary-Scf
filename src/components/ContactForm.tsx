@@ -17,6 +17,11 @@ const interests = [
 
 const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "Other"];
 
+const fieldClass =
+  "min-h-12 rounded-md border border-gold-light/50 bg-ivory/40 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none";
+
+const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
+
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +71,8 @@ export function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-lg border border-gold-light bg-ivory p-8 shadow-premium">
+      <div className="rounded-lg border border-gold-light bg-white/[0.94] p-8 shadow-premium">
+        <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-gold">Enquiry Received</p>
         <h3 className="font-serif text-3xl text-navy">Thank you.</h3>
         <p className="mt-4 leading-7 text-warm-gray">
           Your discovery enquiry has been captured. The MMS team can connect this flow to Zoho later.
@@ -79,57 +85,61 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 rounded-lg border border-warm-white bg-white p-6 shadow-premium md:grid-cols-2 md:p-8">
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-lg border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:grid-cols-2 md:p-8">
+      <div className="md:col-span-2">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Discovery Enquiry</p>
+        <h3 className="mt-2 font-serif text-3xl text-navy">Tell MMS where to begin.</h3>
+      </div>
+      <label className={labelClass}>
         Full name
-        <input name="fullName" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal" />
+        <input name="fullName" required className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Phone
-        <input name="phone" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal" />
+        <input name="phone" required className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Email
-        <input name="email" type="email" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal" />
+        <input name="email" type="email" required className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Country / City
-        <input name="countryCity" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal" />
+        <input name="countryCity" required className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Main interest
-        <select name="mainInterest" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal">
+        <select name="mainInterest" required className={fieldClass}>
           {interests.map((interest) => (
             <option key={interest}>{interest}</option>
           ))}
         </select>
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Preferred membership
-        <select name="preferredMembership" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal">
+        <select name="preferredMembership" required className={fieldClass}>
           <option>Not sure yet</option>
           {memberships.map((membership) => (
             <option key={membership.name}>{membership.name}</option>
           ))}
         </select>
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Enquiring for
-        <select name="enquiringFor" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal">
+        <select name="enquiringFor" required className={fieldClass}>
           {enquiringFor.map((item) => (
             <option key={item}>{item}</option>
           ))}
         </select>
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal">
+      <label className={labelClass}>
         Preferred contact time
-        <input name="preferredContactTime" required className="min-h-12 rounded-md border border-warm-white px-4 font-normal" />
+        <input name="preferredContactTime" required className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-charcoal md:col-span-2">
+      <label className={`${labelClass} md:col-span-2`}>
         Message
-        <textarea name="message" rows={5} className="rounded-md border border-warm-white p-4 font-normal" />
+        <textarea name="message" rows={5} className={`${fieldClass} py-3`} />
       </label>
-      <label className="flex gap-3 rounded-md bg-warm-white p-4 text-sm leading-6 text-charcoal md:col-span-2">
+      <label className="flex gap-3 rounded-md border border-gold-light/40 bg-ivory p-4 text-sm leading-6 text-charcoal md:col-span-2">
         <input name="consent" type="checkbox" required className="mt-1 size-4 accent-gold" />
         <span>
           I consent to My Medical Sanctuary contacting me about my enquiry. I understand this form does not create a medical relationship.

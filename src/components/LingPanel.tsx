@@ -52,14 +52,14 @@ export function LingPanel() {
   const selectedGuidance = selected ? guidance[selected] : null;
 
   return (
-    <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-[0_22px_58px_rgba(16,36,42,0.10)] md:p-8">
+    <div className="rounded-lg border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:p-8">
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-teal-700">Ling</p>
-          <h3 className="mt-2 text-2xl font-semibold">What brings you here today?</h3>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Ling</p>
+          <h3 className="mt-2 font-serif text-3xl text-navy">What brings you here today?</h3>
         </div>
-        <span className="grid size-12 place-items-center rounded-full bg-teal-50 text-teal-800">
-          <span className="size-3 rounded-full bg-teal-700" />
+        <span className="grid size-12 place-items-center rounded-full border border-gold-light bg-ivory">
+          <span className="size-3 rounded-full bg-deep-green" />
         </span>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -67,10 +67,10 @@ export function LingPanel() {
           <button
             key={option}
             onClick={() => setSelected(option)}
-            className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition ${
+            className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition duration-300 ${
               selected === option
-                ? "border-teal-700 bg-teal-50 text-teal-900"
-                : "border-stone-200 bg-white text-stone-700 hover:border-teal-300"
+                ? "border-gold bg-ivory text-navy shadow-soft"
+                : "border-stone-200 bg-white text-stone-700 hover:border-gold-light hover:bg-ivory"
             }`}
           >
             {option}
@@ -78,11 +78,11 @@ export function LingPanel() {
         ))}
       </div>
       {selectedGuidance ? (
-        <div className="mt-5 rounded-lg bg-stone-50 p-4">
+        <div className="mt-5 rounded-lg border border-gold-light/50 bg-ivory p-5">
           <p className="text-sm leading-6 text-stone-600">{selectedGuidance.text}</p>
           <Link
             href={selectedGuidance.href}
-            className="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-teal-700 px-4 text-sm font-semibold text-teal-800 transition hover:bg-teal-700 hover:text-white"
+            className="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy transition hover:bg-gold hover:text-navy"
           >
             {selectedGuidance.label}
           </Link>

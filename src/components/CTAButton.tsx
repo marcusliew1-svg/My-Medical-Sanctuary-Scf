@@ -11,9 +11,11 @@ type CTAButtonProps = {
 };
 
 const variants = {
-  primary: "bg-gold text-navy hover:bg-gold-light",
-  secondary: "bg-navy text-ivory hover:bg-deep-green",
-  outline: "border border-gold text-gold hover:bg-gold hover:text-navy",
+  primary:
+    "bg-gold text-navy shadow-[0_14px_34px_rgba(212,175,55,0.24)] hover:bg-gold-light",
+  secondary: "bg-navy text-ivory shadow-soft hover:bg-deep-green",
+  outline:
+    "border border-gold/80 bg-transparent text-gold hover:bg-gold hover:text-navy",
 };
 
 export function CTAButton({
@@ -24,7 +26,7 @@ export function CTAButton({
   onClick,
   className = "",
 }: CTAButtonProps) {
-  const classes = `inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold transition ${variants[variant]} ${className}`;
+  const classes = `inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold transition duration-300 hover:-translate-y-0.5 ${variants[variant]} ${className}`;
 
   if (href) {
     return (

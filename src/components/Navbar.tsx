@@ -15,16 +15,16 @@ const navItems = [
 export function Navbar() {
   return (
     <header className="absolute inset-x-0 top-0 z-40 px-4 py-5">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-5 rounded-full border border-ivory/20 bg-navy/80 px-4 py-3 text-ivory backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-5 rounded-full border border-ivory/18 bg-navy/[0.72] px-4 py-3 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.18)] backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-3">
-          <span className="grid h-10 w-14 place-items-center rounded-full bg-ivory p-1.5">
+          <span className="grid h-10 w-14 place-items-center rounded-full bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.22)]">
             <Image src="/mms-logo-mark.png" alt="My Medical Sanctuary" width={430} height={310} className="h-full w-full object-contain" priority />
           </span>
-          <span className="hidden text-sm font-semibold md:block">My Medical Sanctuary</span>
+          <span className="hidden text-sm font-semibold tracking-wide md:block">My Medical Sanctuary</span>
         </Link>
         <nav aria-label="Primary navigation" className="hidden items-center gap-5 text-sm font-medium lg:flex">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="text-ivory/78 transition hover:text-gold-light">
+            <Link key={item.href} href={item.href} className="text-ivory/76 transition hover:text-gold-light">
               {item.label}
             </Link>
           ))}

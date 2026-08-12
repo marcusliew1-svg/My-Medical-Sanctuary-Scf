@@ -7,8 +7,8 @@ type StepCardProps = {
 
 export function StepCard({ step, index }: StepCardProps) {
   return (
-    <article className="rounded-lg border border-warm-white bg-white p-6">
-      <p className="text-xs font-bold uppercase tracking-[0.16em] text-gold">
+    <article className="group rounded-lg border border-gold-light/40 bg-white/[0.92] p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-gold/70 hover:shadow-premium">
+      <p className="grid size-10 place-items-center rounded-full border border-gold-light bg-ivory text-xs font-bold text-gold transition group-hover:border-gold">
         {String(index + 1).padStart(2, "0")}
       </p>
       <h3 className="mt-5 font-serif text-2xl text-navy">{step.title}</h3>
