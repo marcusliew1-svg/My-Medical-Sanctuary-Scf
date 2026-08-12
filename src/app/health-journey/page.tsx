@@ -1,5 +1,6 @@
 import { ButtonLink } from "@/components/ButtonLink";
 import { Section } from "@/components/Section";
+import { platformModules } from "@/data/platformModules";
 import { journeyCards } from "@/lib/content";
 
 const steps = [
@@ -49,6 +50,27 @@ export default function HealthJourneyPage() {
             <article key={card.title} className="rounded-lg border border-stone-200 bg-white p-7">
               <h2 className="text-xl font-semibold">{card.title}</h2>
               <p className="mt-4 leading-7 text-stone-600">{card.text}</p>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        eyebrow="Platform Support"
+        title="Some journeys need better intelligence before the next decision."
+        lead="Ling, medicine access intelligence and the SCF roadmap sit around the MMS journey as supporting capabilities, not shortcuts around professional review."
+      >
+        <div className="grid gap-5 md:grid-cols-3">
+          {platformModules.map((module) => (
+            <article key={module.href} className="rounded-lg border border-stone-200 bg-white p-7">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+                {module.eyebrow}
+              </p>
+              <h2 className="mt-3 text-xl font-semibold">{module.title}</h2>
+              <p className="mt-4 leading-7 text-stone-600">{module.text}</p>
+              <ButtonLink href={module.href} variant="outline" className="mt-5">
+                Learn More
+              </ButtonLink>
             </article>
           ))}
         </div>

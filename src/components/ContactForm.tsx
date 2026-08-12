@@ -10,6 +10,8 @@ const interests = [
   "Health screening",
   "Personalised longevity",
   "Corporate executive wellness",
+  "International medicine access intelligence",
+  "SCF lab roadmap",
   "Education with Dr Ling",
 ];
 

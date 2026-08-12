@@ -1,5 +1,6 @@
 import { ButtonLink } from "@/components/ButtonLink";
 import { Section } from "@/components/Section";
+import { platformModules } from "@/data/platformModules";
 import { knowledgeCategories } from "@/lib/content";
 
 export default function KnowledgeHubPage() {
@@ -30,6 +31,28 @@ export default function KnowledgeHubPage() {
               <p className="mt-4 leading-7 text-stone-600">
                 Clear explainers, patient questions, and clinically reviewed educational content.
               </p>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        eyebrow="Platform Education"
+        title="Advanced topics need careful public education."
+        lead="These pages help visitors understand the direction of MMS without turning future capability or medicine access into a sales menu."
+        className="bg-warm-white"
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          {platformModules.map((module) => (
+            <article key={module.href} className="rounded-lg border border-stone-200 bg-white p-7">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+                {module.eyebrow}
+              </p>
+              <h2 className="mt-3 text-xl font-semibold">{module.title}</h2>
+              <p className="mt-4 leading-7 text-stone-600">{module.text}</p>
+              <ButtonLink href={module.href} variant="outline" className="mt-5">
+                Read More
+              </ButtonLink>
             </article>
           ))}
         </div>
