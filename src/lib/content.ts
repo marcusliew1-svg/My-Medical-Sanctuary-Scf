@@ -148,6 +148,8 @@ export const lingOptions = [
   "I want to improve my energy",
   "I want to manage my weight",
   "I want to learn about longevity",
+  "I want to understand medicine access",
+  "I want to understand the SCF lab roadmap",
   "I'm looking for regenerative medicine",
   "I'm not sure where to start",
 ];
