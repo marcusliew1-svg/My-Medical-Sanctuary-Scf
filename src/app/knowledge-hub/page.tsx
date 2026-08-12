@@ -1,4 +1,5 @@
 import { ButtonLink } from "@/components/ButtonLink";
+import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { platformModules } from "@/data/platformModules";
 import { knowledgeCategories } from "@/lib/content";
@@ -6,18 +7,13 @@ import { knowledgeCategories } from "@/lib/content";
 export default function KnowledgeHubPage() {
   return (
     <main>
-      <section className="bg-stone-950 px-4 pb-20 pt-36 text-white md:pt-44">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-teal-200">Knowledge Hub</p>
-          <h1 className="max-w-5xl text-balance text-5xl font-semibold leading-tight md:text-7xl">
-            Education before decisions.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/[0.72]">
-            MMS content should help people understand their health and prepare for better doctor
-            conversations.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Knowledge Hub"
+        title="Education before decisions."
+        lead="MMS content helps people understand their health and prepare for better doctor conversations."
+        primaryHref="/ling"
+        primaryLabel="Ask Ling"
+      />
 
       <Section
         eyebrow="Categories"
@@ -26,9 +22,10 @@ export default function KnowledgeHubPage() {
       >
         <div className="grid gap-4 md:grid-cols-4">
           {knowledgeCategories.map((category) => (
-            <article key={category} className="rounded-lg border border-stone-200 bg-white p-7">
-              <h2 className="text-xl font-semibold">{category}</h2>
-              <p className="mt-4 leading-7 text-stone-600">
+            <article key={category} className="rounded-lg border border-gold-light/40 bg-white/[0.92] p-7 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-gold/70 hover:shadow-premium">
+              <div className="mb-5 h-px w-12 bg-gold" />
+              <h2 className="font-serif text-2xl text-navy">{category}</h2>
+              <p className="mt-4 leading-7 text-warm-gray">
                 Clear explainers, patient questions, and clinically reviewed educational content.
               </p>
             </article>
@@ -44,12 +41,12 @@ export default function KnowledgeHubPage() {
       >
         <div className="grid gap-4 md:grid-cols-3">
           {platformModules.map((module) => (
-            <article key={module.href} className="rounded-lg border border-stone-200 bg-white p-7">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+            <article key={module.href} className="rounded-lg border border-gold-light/40 bg-white/[0.92] p-7 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-gold/70 hover:shadow-premium">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">
                 {module.eyebrow}
               </p>
-              <h2 className="mt-3 text-xl font-semibold">{module.title}</h2>
-              <p className="mt-4 leading-7 text-stone-600">{module.text}</p>
+              <h2 className="mt-3 font-serif text-2xl text-navy">{module.title}</h2>
+              <p className="mt-4 leading-7 text-warm-gray">{module.text}</p>
               <ButtonLink href={module.href} variant="outline" className="mt-5">
                 Read More
               </ButtonLink>
@@ -59,9 +56,9 @@ export default function KnowledgeHubPage() {
       </Section>
 
       <section className="px-4 pb-20">
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 rounded-lg bg-[#eef6f3] p-8 md:flex-row md:items-center md:p-12">
-          <h2 className="max-w-2xl text-3xl font-semibold md:text-5xl">Not sure what to read first?</h2>
-          <ButtonLink href="/ling">Ask Ling</ButtonLink>
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 rounded-lg border border-gold-light/50 bg-navy p-8 text-ivory shadow-premium md:flex-row md:items-center md:p-12">
+          <h2 className="max-w-2xl font-serif text-4xl leading-tight md:text-5xl">Not sure what to read first?</h2>
+          <ButtonLink href="/ling" variant="light">Ask Ling</ButtonLink>
         </div>
       </section>
     </main>

@@ -6,9 +6,9 @@ type EducationCardProps = {
 
 export function EducationCard({ post }: EducationCardProps) {
   return (
-    <article className="rounded-lg border border-warm-white bg-white p-6">
+    <article className="rounded-lg border border-gold-light/40 bg-white/[0.92] p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-gold/70 hover:shadow-premium">
       <div className="mb-5 flex items-center justify-between gap-3">
-        <span className="rounded-full bg-gold-light px-3 py-1 text-xs font-semibold text-navy">
+        <span className="rounded-full border border-gold-light bg-ivory px-3 py-1 text-xs font-semibold text-navy">
           {post.format}
         </span>
         <span className="text-xs font-semibold uppercase tracking-[0.14em] text-warm-gray">

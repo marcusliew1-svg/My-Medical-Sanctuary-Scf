@@ -1,21 +1,17 @@
 import { ButtonLink } from "@/components/ButtonLink";
+import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { membershipTiers } from "@/lib/content";
 
 export default function MembershipPage() {
   return (
     <main>
-      <section className="bg-stone-950 px-4 pb-20 pt-36 text-white md:pt-44">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-teal-200">Membership</p>
-          <h1 className="max-w-5xl text-balance text-5xl font-semibold leading-tight md:text-7xl">
-            Long-term preventive care for different stages of life.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/[0.72]">
-            Membership comes after doctor review, when your health baseline and goals are clearer.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Membership"
+        title="Long-term preventive care for different stages of life."
+        lead="Membership comes after doctor review, when your health baseline and goals are clearer."
+        primaryLabel="Start With Screening"
+      />
 
       <Section
         eyebrow="Four Tiers"
@@ -24,12 +20,12 @@ export default function MembershipPage() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           {membershipTiers.map((tier) => (
-            <article key={tier.name} className="rounded-lg border border-stone-200 bg-white p-8 shadow-[0_18px_46px_rgba(20,42,48,0.06)]">
-              <h2 className="text-3xl font-semibold">{tier.name}</h2>
-              <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-teal-700">
+            <article key={tier.name} className="rounded-lg border border-gold-light/40 bg-white/[0.92] p-8 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-gold/70 hover:shadow-premium">
+              <h2 className="font-serif text-4xl text-navy">{tier.name}</h2>
+              <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-gold">
                 {tier.promise}
               </p>
-              <p className="mt-6 leading-7 text-stone-600">{tier.text}</p>
+              <p className="mt-6 leading-7 text-warm-gray">{tier.text}</p>
             </article>
           ))}
         </div>
