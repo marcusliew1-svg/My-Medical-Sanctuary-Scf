@@ -4,15 +4,11 @@ import { CTAButton } from "@/components/CTAButton";
 import { MobileNav } from "@/components/MobileNav";
 
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about-mms" },
   { label: "Memberships", href: "/memberships" },
   { label: "How It Works", href: "/how-it-works" },
   { label: "Medicine Intelligence", href: "/medicine-intelligence" },
   { label: "SCF", href: "/scf-lab-roadmap" },
   { label: "Insights", href: "/insights" },
-  { label: "Media", href: "/media-room" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
