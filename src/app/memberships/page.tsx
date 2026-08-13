@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 
 export default function MembershipsPage() {
   const levels = [
-    { name: "Ascend", rate: "5%", icon: "△", promise: "Discover", cadence: "Milestone follow-up", access: "Guided" },
-    { name: "Evolve", rate: "10%", icon: "◇", promise: "Optimise", cadence: "Quarterly", access: "Structured" },
-    { name: "Eterna", rate: "15%", icon: "♧", promise: "Protect", cadence: "Ongoing roadmap", access: "Priority" },
-    { name: "Pinnacle", rate: "20%", icon: "♛", promise: "Coordinate", cadence: "Bespoke", access: "Dedicated" },
+    { name: "Ascend", rate: "5%", icon: "△", promise: "Discover", cadence: "Milestone follow-up", access: "Guided", signal: "Baseline", forWhom: "Starting preventive care" },
+    { name: "Evolve", rate: "10%", icon: "◇", promise: "Optimise", cadence: "Quarterly", access: "Structured", signal: "Momentum", forWhom: "Improving energy or metabolism" },
+    { name: "Eterna", rate: "15%", icon: "♧", promise: "Protect", cadence: "Ongoing roadmap", access: "Priority", signal: "Continuity", forWhom: "Long-term health oversight" },
+    { name: "Pinnacle", rate: "20%", icon: "♛", promise: "Coordinate", cadence: "Bespoke", access: "Dedicated", signal: "Concierge", forWhom: "Executives and families" },
   ];
   return (
     <main>
@@ -51,7 +51,7 @@ export default function MembershipsPage() {
             <div className="grid gap-6 lg:grid-cols-[.7fr_1.3fr] lg:items-center">
               <div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">See the difference</p><h2 className="mt-3 font-serif text-4xl text-navy">Four levels at a glance.</h2><p className="mt-3 text-warm-gray">Each level adds continuity—not simply more items.</p></div>
               <div className="grid gap-3 sm:grid-cols-2">
-                {levels.map((level,index)=><div key={level.name} className="flex items-center gap-4 rounded-2xl border border-stone-200 bg-ivory p-4"><span className="grid size-11 shrink-0 place-items-center rounded-full bg-deep-green font-bold text-white">0{index+1}</span><div><p className="font-serif text-xl text-navy">{level.name}</p><p className="text-sm text-warm-gray">{level.access} · {level.cadence}</p></div></div>)}
+                {levels.map((level,index)=><div key={level.name} className="rounded-2xl border border-stone-200 bg-ivory p-4"><div className="flex items-center gap-3"><span className="grid size-11 shrink-0 place-items-center rounded-full bg-deep-green font-bold text-white">0{index+1}</span><div><p className="font-serif text-xl text-navy">{level.name}</p><p className="text-xs font-bold uppercase tracking-[.12em] text-gold">{level.signal}</p></div></div><p className="mt-3 text-sm font-semibold text-navy">{level.forWhom}</p><p className="mt-1 text-sm text-warm-gray">{level.access} · {level.cadence}</p></div>)}
               </div>
             </div>
           </div>

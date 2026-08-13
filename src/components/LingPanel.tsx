@@ -50,7 +50,17 @@ const guidance: Record<string, { text: string; href: string; label: string }> = 
 
 export function LingPanel() {
   const [selected, setSelected] = useState<string | null>(null);
+  const [question, setQuestion] = useState("");
+  const [askedQuestion, setAskedQuestion] = useState("");
   const selectedGuidance = selected ? guidance[selected] : null;
+
+  function askLing() {
+    const clean = question.trim();
+    if (!clean) return;
+    setAskedQuestion(clean);
+    setSelected("I'm not sure where to start");
+    setQuestion("");
+  }
 
   return (
     <div className="rounded-lg border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:p-8">
@@ -78,11 +88,16 @@ export function LingPanel() {
           </button>
         ))}
       </div>
+      <div className="mt-5 flex gap-2 rounded-2xl border border-stone-200 bg-white p-2 shadow-soft">
+        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder="Or type your question for Ling…" className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
+        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">Ask Ling</button>
+      </div>
       {selectedGuidance ? (
         <div className="mt-5 rounded-lg border border-gold-light/50 bg-ivory p-5">
           <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-deep-green"><span className="size-2 animate-pulse rounded-full bg-deep-green" />Ling has prepared a next step</div>
+          {askedQuestion ? <p className="mb-3 rounded-xl bg-white px-4 py-3 text-sm italic text-warm-gray">“{askedQuestion}”</p> : null}
           <p className="text-sm leading-6 text-stone-600">{selectedGuidance.text}</p>
-          <div className="mt-4 flex flex-wrap gap-2"><Link href={selectedGuidance.href} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">{selectedGuidance.label}</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={()=>setSelected(null)} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
+          <div className="mt-4 flex flex-wrap gap-2"><Link href={selectedGuidance.href} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">{selectedGuidance.label}</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={()=>{setSelected(null);setAskedQuestion("");}} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
         </div>
       ) : null}
       <p className="mt-5 text-xs leading-6 text-stone-500">
