@@ -6,8 +6,8 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { educationPosts } from "@/data/educationPosts";
 
 export const metadata: Metadata = {
-  title: "Education | Dr Ling",
-  description: "Educational articles and videos from Dr Ling for preventive care and personalised longevity learning.",
+  title: "Education | Ling",
+  description: "Educational articles and videos from Ling for preventive care and personalised longevity learning.",
 };
 
 export default function EducationPage() {
@@ -15,7 +15,7 @@ export default function EducationPage() {
     <main>
       <Hero
         eyebrow="Education"
-        title="Dr Ling helps members learn before they decide."
+        title="Ling helps members learn before they decide."
         subtitle="Education supports better discovery discussions and more informed professional review."
         image="/mms-about-hero.png"
       />
@@ -32,9 +32,9 @@ export default function EducationPage() {
             ))}
           </div>
           <div className="mt-8">
-            <DisclaimerBox title="Dr Ling disclaimer">
+            <DisclaimerBox title="Ling disclaimer">
               <p>
-                Dr Ling provides educational information only. She does not diagnose, prescribe or replace professional review.
+                Ling provides educational information only. She does not diagnose, prescribe or replace professional review.
               </p>
             </DisclaimerBox>
           </div>
