@@ -8,12 +8,12 @@ import { EducationCard } from "@/components/EducationCard";
 import { Hero } from "@/components/Hero";
 import { MembershipCard } from "@/components/MembershipCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { StepCard } from "@/components/StepCard";
 import { WellnessAreaCard } from "@/components/WellnessAreaCard";
+import { EcosystemVisual } from "@/components/EcosystemVisual";
+import { JourneyVisual } from "@/components/JourneyVisual";
 import { educationPosts } from "@/data/educationPosts";
 import { memberships } from "@/data/memberships";
 import { platformModules } from "@/data/platformModules";
-import { steps } from "@/data/steps";
 import { wellnessAreas } from "@/data/wellnessAreas";
 
 export const metadata: Metadata = {
@@ -75,6 +75,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="bg-warm-white px-4 py-20"><div className="mx-auto max-w-6xl"><SectionHeader eyebrow="The MMS Ecosystem" title="Everything connected around you." description="Intelligence, coordination, clinical authority and future science." /><EcosystemVisual /></div></section>
+
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <SectionHeader
@@ -94,14 +96,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="How It Works"
-            title="An 8-step path from discovery to review."
-            description="The journey is structured so recommendations follow context and professional review."
+            title="Five stages. One continuous journey."
+            description="See who supports you at every step."
           />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {steps.map((step, index) => (
-              <StepCard key={step.title} step={step} index={index} />
-            ))}
-          </div>
+          <JourneyVisual />
         </div>
       </section>
 

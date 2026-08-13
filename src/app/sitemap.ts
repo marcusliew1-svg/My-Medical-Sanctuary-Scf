@@ -23,6 +23,8 @@ const routes = [
   "/ling",
   "/international-medicine-access",
   "/medicine-intelligence",
+  "/insights",
+  "/media-room",
   "/malaysia-thailand-care",
   "/register",
   "/login",

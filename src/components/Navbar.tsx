@@ -8,9 +8,10 @@ const navItems = [
   { label: "About", href: "/about-mms" },
   { label: "Memberships", href: "/memberships" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Health Discovery", href: "/health-discovery" },
-  { label: "Malaysia–Thailand", href: "/malaysia-thailand-care" },
-  { label: "Ling", href: "/ling" },
+  { label: "Medicine Intelligence", href: "/medicine-intelligence" },
+  { label: "SCF", href: "/scf-lab-roadmap" },
+  { label: "Insights", href: "/insights" },
+  { label: "Media", href: "/media-room" },
   { label: "Contact", href: "/contact" },
 ];
 

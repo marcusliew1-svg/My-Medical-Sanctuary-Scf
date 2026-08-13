@@ -8,6 +8,8 @@ const links = [
   ["How It Works", "/how-it-works"],
   ["Health Discovery", "/health-discovery"],
   ["Malaysia–Thailand Care", "/malaysia-thailand-care"],
+  ["MMS Insights", "/insights"],
+  ["Video & Media Room", "/media-room"],
   ["Education", "/education"],
   ["Contact", "/contact"],
   ["Privacy / Disclaimer", "/privacy-disclaimer"],

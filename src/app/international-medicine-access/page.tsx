@@ -42,6 +42,11 @@ export default function InternationalMedicineAccessPage() {
         </div>
       </Section>
 
+      <Section eyebrow="Illustrative comparison" title="Same molecule. Different market context." lead="A structured comparison exposes genuine differences without bypassing clinical or regulatory controls." className="bg-warm-white">
+        <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-soft"><table className="w-full min-w-[680px] text-left text-sm"><thead className="bg-deep-green text-white"><tr><th className="p-4">Verified factor</th><th className="p-4">Malaysia</th><th className="p-4">Thailand</th></tr></thead><tbody>{[["Active molecule","Same","Same"],["Strength & form","Matched","Matched"],["Registration","Verify","Verify"],["Indicative market cost","May differ","May differ"],["Licensed supply","Required","Required"],["Doctor / pharmacist clearance","Required","Required"]].map((row,i)=><tr key={row[0]} className={i%2 ? "bg-ivory" : ""}>{row.map(cell=><td key={cell} className="border-t border-stone-100 p-4">{cell}</td>)}</tr>)}</tbody></table></div>
+        <p className="mt-4 text-xs text-warm-gray">Illustrative framework only. No medicine, price or availability is represented as current.</p>
+      </Section>
+
       <Section
         eyebrow="MMS Role"
         title="A coordination and education layer, not a public medicine shop."

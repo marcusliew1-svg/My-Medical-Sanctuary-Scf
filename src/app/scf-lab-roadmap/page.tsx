@@ -30,19 +30,20 @@ export default function SCFLabRoadmapPage() {
     <main>
       <PageHero
         eyebrow="SCF Lab Roadmap"
-        title="Future capability, built carefully."
-        lead="MMS is patient-facing. SCF represents a longer-term biotechnology and laboratory capability roadmap that must develop responsibly."
+        title="The future-science engine behind MMS."
+        lead="SCF develops the capability roadmap. MMS turns it into a governed patient journey."
         primaryLabel="Start Discovery"
       />
 
       <Section
         eyebrow="Positioning"
-        title="MMS remains the health journey. SCF supports the future platform."
-        lead="The public website should build trust by showing ambition without overstating what exists today."
+        title="From scientific capability to patient value."
+        lead="A staged roadmap with visible status at every level."
       >
         <div className="grid gap-5 md:grid-cols-3">
-          {roadmap.map((item) => (
+          {roadmap.map((item, index) => (
             <article key={item.title} className="rounded-lg border border-stone-200 bg-white p-6">
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Stage 0{index + 1} · {index === 0 ? "Current foundation" : "Future roadmap"}</p>
               <h2 className="font-serif text-2xl text-navy">{item.title}</h2>
               <p className="mt-4 leading-7 text-warm-gray">{item.text}</p>
             </article>
