@@ -6,8 +6,9 @@ const links = [
   ["About MMS", "/about-mms"],
   ["Memberships", "/memberships"],
   ["How It Works", "/how-it-works"],
+  ["Health Discovery", "/health-discovery"],
+  ["Malaysia–Thailand Care", "/malaysia-thailand-care"],
   ["Education", "/education"],
-  ["Corporate Wellness", "/corporate-executive-wellness"],
   ["Contact", "/contact"],
   ["Privacy / Disclaimer", "/privacy-disclaimer"],
 ];

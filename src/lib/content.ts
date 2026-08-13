@@ -2,6 +2,8 @@ export const navigation = [
   { label: "Home", href: "/" },
   { label: "About MMS", href: "/about-mms" },
   { label: "Our Philosophy", href: "/our-philosophy" },
+  { label: "Health Discovery", href: "/health-discovery" },
+  { label: "Malaysia–Thailand Care", href: "/malaysia-thailand-care" },
   { label: "Membership", href: "/membership" },
   { label: "Knowledge Hub", href: "/health-articles" },
   { label: "Ling", href: "/ling" },

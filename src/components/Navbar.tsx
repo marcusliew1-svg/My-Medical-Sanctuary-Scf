@@ -8,8 +8,9 @@ const navItems = [
   { label: "About", href: "/about-mms" },
   { label: "Memberships", href: "/memberships" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Education", href: "/education" },
-  { label: "Corporate", href: "/corporate-executive-wellness" },
+  { label: "Health Discovery", href: "/health-discovery" },
+  { label: "Malaysia–Thailand", href: "/malaysia-thailand-care" },
+  { label: "Ling", href: "/ling" },
   { label: "Contact", href: "/contact" },
 ];
 
