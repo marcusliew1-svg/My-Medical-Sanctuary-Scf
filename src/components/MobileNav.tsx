@@ -2,17 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-
-const navigation = [
-  { label: "How MMS Works", href: "/how-it-works" },
-  { label: "Memberships", href: "/memberships" },
-  { label: "Medicine Intelligence", href: "/medicine-intelligence" },
-  { label: "SCF & Future Medicine", href: "/scf-lab-roadmap" },
-  { label: "MMS Insights", href: "/insights" },
-  { label: "Video & Media Room", href: "/media-room" },
-  { label: "Regional Care Access", href: "/malaysia-thailand-care" },
-  { label: "About MMS", href: "/about-mms" },
-];
+import { navigation } from "@/lib/content";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -34,7 +24,7 @@ export function MobileNav() {
       </button>
 
       {open ? (
-        <div className="absolute inset-x-2 top-20 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-2xl border border-white/20 bg-navy/98 p-4 text-white shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:inset-x-4 sm:p-5">
+        <div className="absolute inset-x-4 top-20 rounded-lg border border-white/20 bg-stone-950/96 p-5 text-white shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
           <nav aria-label="Mobile navigation" className="grid gap-1">
             {navigation.map((item) => (
               <Link
@@ -49,18 +39,18 @@ export function MobileNav() {
           </nav>
           <div className="mt-4 grid gap-2 border-t border-white/10 pt-4">
             <Link
-              href="/login"
+              href="/health-screening"
               onClick={() => setOpen(false)}
               className="rounded-md bg-white px-3 py-3 text-sm font-semibold text-stone-950"
             >
-              Patient login
+              Health Screening
             </Link>
             <Link
-              href="/register"
+              href="/contact"
               onClick={() => setOpen(false)}
-              className="rounded-md bg-gold px-3 py-3 text-sm font-semibold text-navy"
+              className="rounded-md bg-teal-700 px-3 py-3 text-sm font-semibold text-white"
             >
-              Start with Ling
+              Book Appointment
             </Link>
           </div>
         </div>

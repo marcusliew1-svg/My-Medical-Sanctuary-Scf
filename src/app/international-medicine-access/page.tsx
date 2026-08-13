@@ -4,6 +4,7 @@ import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { medicineAccessFactors } from "@/data/platformModules";
+import { CapabilityStatus } from "@/components/CapabilityStatus";
 
 export const metadata: Metadata = {
   title: "International Medicine Access Intelligence | My Medical Sanctuary",
@@ -33,6 +34,7 @@ export default function InternationalMedicineAccessPage() {
         title="The same medicine can sit inside different systems."
         lead="Availability, cost, timing and access pathways may vary across countries because healthcare systems, registration rules and supply structures are not identical."
       >
+        <div className="mb-6"><CapabilityStatus status="pilot" /></div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {medicineAccessFactors.map((factor) => (
             <article key={factor} className="rounded-lg border border-stone-200 bg-white p-6">

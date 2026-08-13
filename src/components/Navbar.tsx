@@ -4,11 +4,15 @@ import { CTAButton } from "@/components/CTAButton";
 import { MobileNav } from "@/components/MobileNav";
 
 const navItems = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about-mms" },
   { label: "Memberships", href: "/memberships" },
   { label: "How It Works", href: "/how-it-works" },
   { label: "Medicine Intelligence", href: "/medicine-intelligence" },
   { label: "SCF", href: "/scf-lab-roadmap" },
   { label: "Insights", href: "/insights" },
+  { label: "Media", href: "/media-room" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -30,7 +34,7 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-2">
           <Link href="/login" className="hidden text-sm font-semibold text-ivory/80 transition hover:text-ivory md:block">Patient login</Link>
-          <CTAButton href="/register" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
+          <CTAButton href="/register" className="min-h-10 px-4 text-xs">Start with Ling</CTAButton>
           <MobileNav />
         </div>
       </div>

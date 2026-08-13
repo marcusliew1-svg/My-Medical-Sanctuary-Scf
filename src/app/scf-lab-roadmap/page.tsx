@@ -3,6 +3,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
+import { CapabilityStatus } from "@/components/CapabilityStatus";
 
 export const metadata: Metadata = {
   title: "SCF Lab Roadmap | My Medical Sanctuary",
@@ -43,7 +44,8 @@ export default function SCFLabRoadmapPage() {
         <div className="grid gap-5 md:grid-cols-3">
           {roadmap.map((item, index) => (
             <article key={item.title} className="rounded-lg border border-stone-200 bg-white p-6">
-              <p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Stage 0{index + 1} · {index === 0 ? "Current foundation" : "Future roadmap"}</p>
+              <CapabilityStatus status={index === 0 ? "development" : "roadmap"} />
+              <p className="mt-4 text-xs font-bold uppercase tracking-[.16em] text-gold">Stage 0{index + 1}</p>
               <h2 className="font-serif text-2xl text-navy">{item.title}</h2>
               <p className="mt-4 leading-7 text-warm-gray">{item.text}</p>
             </article>

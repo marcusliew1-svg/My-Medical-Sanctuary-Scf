@@ -12,7 +12,7 @@ const interests = [
   "Corporate executive wellness",
   "International medicine access intelligence",
   "SCF lab roadmap",
-  "Education with Dr Ling",
+  "Education with Ling",
 ];
 
 const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "Other"];
