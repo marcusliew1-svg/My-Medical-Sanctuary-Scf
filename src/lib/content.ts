@@ -2,9 +2,12 @@ export const navigation = [
   { label: "Home", href: "/" },
   { label: "About MMS", href: "/about-mms" },
   { label: "Our Philosophy", href: "/our-philosophy" },
+  { label: "Health Discovery", href: "/health-discovery" },
+  { label: "Malaysia–Thailand Care", href: "/malaysia-thailand-care" },
   { label: "Membership", href: "/membership" },
   { label: "Knowledge Hub", href: "/health-articles" },
   { label: "Ling", href: "/ling" },
+  { label: "Patient Login", href: "/login" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -22,7 +25,7 @@ export const platformLinks = [
 ];
 
 export const lingDisclaimer =
-  "Ling is an AI Health Education Companion. Ling provides educational information only and does not diagnose, prescribe, or replace an MMS doctor.";
+  "Ling can analyse and organise possibilities for the MMS team. She does not diagnose or prescribe; every clinical decision and recommendation requires approval from a qualified doctor.";
 
 export const journeyCards = [
   {

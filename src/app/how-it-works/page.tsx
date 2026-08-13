@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/Hero";
 import { SectionHeader } from "@/components/SectionHeader";
-import { StepCard } from "@/components/StepCard";
-import { steps } from "@/data/steps";
+import { JourneyVisual } from "@/components/JourneyVisual";
+import { EcosystemVisual } from "@/components/EcosystemVisual";
 
 export const metadata: Metadata = {
   title: "How It Works",
@@ -14,21 +14,20 @@ export default function HowItWorksPage() {
     <main>
       <Hero
         eyebrow="How It Works"
-        title="A clear journey from discovery to review."
-        subtitle="MMS gives members a structured process before personalised wellness decisions are made."
+        title="From first question to ongoing care."
+        subtitle="See exactly who helps, who coordinates and who decides."
+        primaryLabel="Start with Ling"
+        primaryHref="/register"
       />
       <section className="bg-ivory px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <SectionHeader
-            eyebrow="8 Steps"
-            title="Designed for clarity and safe boundaries."
-            description="This sequence keeps the experience calm, coordinated and professionally reviewed."
+            eyebrow="The MMS Journey"
+            title="Your care, moving forward."
+            description="Ling organises. MMS coordinates. Doctors decide."
           />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {steps.map((step, index) => (
-              <StepCard key={step.title} step={step} index={index} />
-            ))}
-          </div>
+          <JourneyVisual />
+          <div className="mt-16"><SectionHeader eyebrow="The Ecosystem" title="Built around the patient." description="Four roles, one continuous relationship." /><EcosystemVisual /></div>
         </div>
       </section>
     </main>

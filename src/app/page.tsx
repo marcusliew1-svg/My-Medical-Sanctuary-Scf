@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { CorporateCTA } from "@/components/CorporateCTA";
-import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { EducationCard } from "@/components/EducationCard";
+import { CTAButton } from "@/components/CTAButton";
 import { Hero } from "@/components/Hero";
-import { MembershipCard } from "@/components/MembershipCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { StepCard } from "@/components/StepCard";
-import { WellnessAreaCard } from "@/components/WellnessAreaCard";
-import { educationPosts } from "@/data/educationPosts";
+import { EcosystemVisual } from "@/components/EcosystemVisual";
+import { JourneyVisual } from "@/components/JourneyVisual";
+import { ServiceExplorer } from "@/components/ServiceExplorer";
 import { memberships } from "@/data/memberships";
-import { platformModules } from "@/data/platformModules";
-import { steps } from "@/data/steps";
-import { wellnessAreas } from "@/data/wellnessAreas";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -26,43 +22,49 @@ export default function HomePage() {
       <Hero
         eyebrow="My Medical Sanctuary"
         title="Preventive Care. Personalised Longevity."
-        subtitle="A premium membership-based wellness journey built around discovery before recommendation, HRM coordination and professional review."
+        subtitle="A private, intelligently coordinated health journey across Malaysia and Thailand—with every medical decision led by a qualified doctor."
+        primaryLabel="Start with Ling"
+        primaryHref="/register"
+        secondaryLabel="See how MMS works"
+        secondaryHref="/how-it-works"
       />
 
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Why MMS"
-            title="Discovery before recommendation."
-            description="MMS is designed for people who want calm, structured guidance rather than random wellness purchases."
-          />
-          <div className="grid gap-4 md:grid-cols-4">
-            {[
-              "Discovery-led conversations",
-              "HRM coordination",
-              "Preventive care focus",
-              "Professional review",
-            ].map((item) => (
-              <div key={item} className="rounded-lg border border-warm-white bg-white p-6">
-                <h3 className="font-serif text-2xl text-navy">{item}</h3>
-              </div>
-            ))}
+      <section className="bg-warm-white px-4 py-20">
+        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] border border-gold-light/45 bg-white shadow-premium md:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative min-h-[420px] bg-ivory md:min-h-[560px]">
+            <Image src="/ling-mms-guide.png" alt="Ling, MMS intelligent health guide" fill priority className="object-cover object-[50%_22%]" sizes="(min-width: 768px) 42vw, 100vw" />
+          </div>
+          <div className="flex flex-col justify-center p-8 md:p-14">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Meet Ling</p>
+            <h2 className="mt-4 text-balance font-serif text-4xl leading-tight text-navy md:text-5xl">Your intelligent guide through every stage of the MMS journey.</h2>
+            <p className="mt-6 text-lg leading-8 text-warm-gray">Ask general questions without registering. When you want Ling to remember your preferences, organise records or support care coordination, create a secure patient account.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <CTAButton href="/ling">Chat with Ling</CTAButton>
+              <CTAButton href="/login" variant="outline">Patient login</CTAButton>
+            </div>
+            <p className="mt-6 border-l-2 border-gold-light pl-4 text-sm leading-6 text-warm-gray">Ling may develop potential options internally. Medical recommendations reach patients only after review and approval by a qualified doctor.</p>
           </div>
         </div>
       </section>
 
+      <section className="bg-warm-white px-4 py-20"><div className="mx-auto max-w-6xl"><SectionHeader eyebrow="The MMS Ecosystem" title="Everything connected around you." description="Intelligence, coordination, clinical authority and future science." /><EcosystemVisual /></div></section>
+
+      <section className="bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl"><SectionHeader eyebrow="What MMS can coordinate" title="Care shaped around real life." description="Choose an area to see what the pathway may include." /><ServiceExplorer /></div></section>
+
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Memberships"
-            title="Choose a structured wellness journey."
-            description="Each tier is designed around coordination, clarity and suitability assessment."
-          />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {memberships.map((membership) => (
-              <MembershipCard key={membership.name} membership={membership} />
+          <SectionHeader eyebrow="Memberships" title="Four levels of continuity." description="No public pricing. Choose by need, depth and coordination." />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {memberships.map((membership, index) => (
+              <Link key={membership.name} href="/memberships" className="group rounded-2xl border border-gold-light/40 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-gold">
+                <div className="flex items-center justify-between"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Level {index + 1}</p><span className="text-deep-green transition group-hover:translate-x-1">→</span></div>
+                <h3 className="mt-5 font-serif text-3xl text-navy">{membership.name}</h3>
+                <p className="mt-2 text-sm font-semibold text-deep-green">{membership.tagline}</p>
+                <p className="mt-4 text-sm leading-6 text-warm-gray">{membership.accessNote}</p>
+              </Link>
             ))}
           </div>
+          <div className="mt-8 text-center"><CTAButton href="/memberships" variant="outline">Compare all memberships</CTAButton></div>
         </div>
       </section>
 
@@ -70,90 +72,43 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="How It Works"
-            title="An 8-step path from discovery to review."
-            description="The journey is structured so recommendations follow context and professional review."
+            title="Five stages. One continuous journey."
+            description="See who supports you at every step."
           />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {steps.map((step, index) => (
-              <StepCard key={step.title} step={step} index={index} />
-            ))}
+          <JourneyVisual />
+        </div>
+      </section>
+
+      <section className="bg-ivory px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader eyebrow="Platform Strategy" title="Care today. Capability tomorrow." description="Two strategic engines extend the MMS patient relationship." />
+          <div className="grid gap-5 md:grid-cols-2">
+            <Link href="/medicine-intelligence" className="rounded-[1.5rem] border border-gold-light/40 bg-white p-8 shadow-soft transition hover:-translate-y-1"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Global Medicine Price Compare</p><h3 className="mt-3 font-serif text-3xl text-navy">See what the same medicine may cost elsewhere.</h3><div className="mt-6 flex items-end gap-2" aria-hidden="true"><span className="h-8 flex-1 rounded-t bg-sage"/><span className="h-12 flex-1 rounded-t bg-gold-light"/><span className="h-16 flex-1 rounded-t bg-terracotta/60"/><span className="h-24 flex-1 rounded-t bg-deep-green"/></div><p className="mt-4 text-sm text-warm-gray">Thailand · Malaysia · Singapore · UAE · United States</p></Link>
+            <Link href="/scf-lab-roadmap" className="rounded-[1.5rem] border border-gold-light/40 bg-deep-green p-8 text-ivory shadow-soft transition hover:-translate-y-1"><div className="flex items-center justify-between gap-4"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">SCF wellness & longevity</p><span className="relative h-16 w-28 overflow-hidden"><Image src="/scf-logo-new.png" alt="SCF" fill className="object-contain" sizes="112px" /></span></div><h3 className="mt-4 font-serif text-3xl">Doctor-led pathways. Future science capability.</h3><div className="mt-6 grid grid-cols-3 gap-2 text-center text-xs text-ivory/80"><span className="rounded-xl border border-gold/30 px-2 py-3">Screen</span><span className="rounded-xl border border-gold/30 px-2 py-3">Review</span><span className="rounded-xl border border-gold/30 px-2 py-3">Plan</span></div></Link>
           </div>
         </div>
       </section>
 
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Wellness Support Areas"
-            title="Educational categories, not a price menu."
-            description="These areas help members understand what may be discussed during discovery and suitability assessment."
-          />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {wellnessAreas.map((area) => (
-              <WellnessAreaCard key={area.title} area={area} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-navy px-4 py-20 text-ivory">
-        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1fr_0.9fr] md:items-center">
-          <div>
-            <SectionHeader
-              eyebrow="Education"
-              title="Meet Dr Ling."
-              description="Dr Ling is the MMS education layer for plain-language wellness learning. She supports understanding but does not replace professional review."
-            />
-          </div>
-          <DisclaimerBox title="Dr Ling boundary">
-            <p>
-              Dr Ling content is for education only. It is not medical advice and should not be used as a personalised recommendation.
-            </p>
-          </DisclaimerBox>
-        </div>
-      </section>
-
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Future Platform"
-            title="Health journeys supported by intelligence, systems and future capability."
-            description="MMS stays patient-facing. These platform modules explain how the ecosystem can grow without turning the website into a product catalogue."
-          />
+          <SectionHeader eyebrow="Access MMS your way" title="At a clinic, online or across borders." description="Choose the access route that suits where you are now." />
           <div className="grid gap-5 md:grid-cols-3">
-            {platformModules.map((module) => (
-              <Link
-                key={module.href}
-                href={module.href}
-                className="rounded-lg border border-gold-light bg-white p-6 transition hover:-translate-y-1 hover:border-gold"
-              >
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
-                  {module.eyebrow}
-                </p>
-                <h3 className="mt-3 font-serif text-2xl text-navy">{module.title}</h3>
-                <p className="mt-4 leading-7 text-warm-gray">{module.text}</p>
-              </Link>
-            ))}
+            <Link href="/clinics" className="group overflow-hidden rounded-[1.5rem] border border-gold-light/40 bg-white shadow-soft transition hover:-translate-y-1">
+              <div className="relative h-52"><Image src="/mms-health-screening-hero.png" alt="" fill className="object-cover" /></div>
+              <div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Clinic network</p><h3 className="mt-2 font-serif text-3xl text-navy">Visit MMS.</h3><p className="mt-2 text-sm text-warm-gray">Explore Malaysia and Thailand care locations.</p></div>
+            </Link>
+            <Link href="/online-doctor" className="group rounded-[1.5rem] bg-deep-green p-7 text-ivory shadow-soft transition hover:-translate-y-1">
+              <span className="grid size-14 place-items-center rounded-full border border-gold/50 text-2xl text-gold-light">◉</span><p className="mt-8 text-xs font-bold uppercase tracking-[.16em] text-gold-light">Online doctor</p><h3 className="mt-2 font-serif text-3xl">Consult from anywhere.</h3><p className="mt-3 text-sm text-ivory/70">Ling prepares. A qualified doctor leads.</p>
+            </Link>
+            <Link href="/medical-tourism" className="group overflow-hidden rounded-[1.5rem] border border-gold-light/40 bg-white shadow-soft transition hover:-translate-y-1">
+              <div className="relative h-52"><Image src="/mms-membership-journey.webp" alt="" fill className="object-cover" /></div>
+              <div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Care travel</p><h3 className="mt-2 font-serif text-3xl text-navy">Malaysia ↔ Thailand.</h3><p className="mt-2 text-sm text-warm-gray">Clinic matching, travel and follow-up.</p></div>
+            </Link>
           </div>
         </div>
       </section>
 
       <CorporateCTA />
-
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Education Hub"
-            title="Latest education placeholders."
-            description="Blog and video content will support future SEO, patient education and Dr Ling learning flows."
-          />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {educationPosts.map((post) => (
-              <EducationCard key={post.title} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="bg-navy px-4 py-20 text-ivory">
         <div className="mx-auto max-w-4xl text-center">

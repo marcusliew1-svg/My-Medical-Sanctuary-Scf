@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
+import { MobileNav } from "@/components/MobileNav";
 
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about-mms" },
   { label: "Memberships", href: "/memberships" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Education", href: "/education" },
-  { label: "Corporate", href: "/corporate-executive-wellness" },
-  { label: "Contact", href: "/contact" },
+  { label: "Medicine Price Compare", href: "/medicine-intelligence" },
+  { label: "Care Travel", href: "/medical-tourism" },
+  { label: "SCF", href: "/scf-lab-roadmap" },
+  { label: "Insights", href: "/insights" },
 ];
 
 export function Navbar() {
@@ -17,7 +17,7 @@ export function Navbar() {
     <header className="absolute inset-x-0 top-0 z-40 px-4 py-5">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-5 rounded-full border border-ivory/18 bg-navy/[0.72] px-4 py-3 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.18)] backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-3">
-          <span className="grid h-10 w-14 place-items-center rounded-full bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.22)]">
+          <span className="grid h-10 w-14 place-items-center rounded-full bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(181,111,91,0.22)]">
             <Image src="/mms-logo-mark.png" alt="My Medical Sanctuary" width={430} height={310} className="h-full w-full object-contain" priority />
           </span>
           <span className="hidden text-sm font-semibold tracking-wide md:block">My Medical Sanctuary</span>
@@ -29,9 +29,14 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
-        <CTAButton href="/contact" className="min-h-10 px-4 text-xs">
-          Start Discovery
-        </CTAButton>
+        <div className="flex items-center gap-2">
+          <Link href="/online-doctor" className="hidden text-sm font-semibold text-gold-light transition hover:text-ivory xl:block">Online doctor</Link>
+          <Link href="/ms" className="hidden text-xs text-ivory/65 hover:text-white sm:block">BM</Link>
+          <Link href="/zh" className="hidden text-xs text-ivory/65 hover:text-white sm:block">中文</Link>
+          <Link href="/login" className="hidden text-sm font-semibold text-ivory/80 transition hover:text-ivory md:block">Patient login</Link>
+          <CTAButton href="/register" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
+          <MobileNav />
+        </div>
       </div>
     </header>
   );

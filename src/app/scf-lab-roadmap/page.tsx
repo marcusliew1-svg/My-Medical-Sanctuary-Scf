@@ -3,9 +3,11 @@ import { CTAButton } from "@/components/CTAButton";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
+import { CapabilityStatus } from "@/components/CapabilityStatus";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "SCF Lab Roadmap | My Medical Sanctuary",
+  title: "SCF Lab Roadmap",
   description:
     "Learn how MMS frames future clinical and lab capability through a careful roadmap subject to regulatory, licensing and professional requirements.",
 };
@@ -30,19 +32,34 @@ export default function SCFLabRoadmapPage() {
     <main>
       <PageHero
         eyebrow="SCF Lab Roadmap"
-        title="Future capability, built carefully."
-        lead="MMS is patient-facing. SCF represents a longer-term biotechnology and laboratory capability roadmap that must develop responsibly."
+        title="The future-science engine behind MMS."
+        lead="SCF develops the capability roadmap. MMS turns it into a governed patient journey."
         primaryLabel="Start Discovery"
       />
 
+      <section className="bg-ivory px-4 py-12">
+        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] bg-[#06382f] text-ivory shadow-premium md:grid-cols-[.72fr_1.28fr]">
+          <div className="grid min-h-[280px] place-items-center bg-black p-8">
+            <div className="relative h-44 w-full max-w-sm"><Image src="/scf-logo-new.png" alt="SCF" fill className="object-contain" sizes="380px" /></div>
+          </div>
+          <div className="flex flex-col justify-center p-8 md:p-12">
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Science · Care · Future capability</p>
+            <h2 className="mt-4 font-serif text-4xl">SCF builds the science layer.</h2>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">{[["01","Clinical need"],["02","Governance"],["03","ASEAN readiness"]].map(([number,label])=><div key={number} className="rounded-xl border border-gold/30 bg-white/5 p-4"><span className="text-xs text-gold-light">{number}</span><p className="mt-1 font-serif text-lg">{label}</p></div>)}</div>
+          </div>
+        </div>
+      </section>
+
       <Section
         eyebrow="Positioning"
-        title="MMS remains the health journey. SCF supports the future platform."
-        lead="The public website should build trust by showing ambition without overstating what exists today."
+        title="From scientific capability to patient value."
+        lead="A staged roadmap with visible status at every level."
       >
         <div className="grid gap-5 md:grid-cols-3">
-          {roadmap.map((item) => (
+          {roadmap.map((item, index) => (
             <article key={item.title} className="rounded-lg border border-stone-200 bg-white p-6">
+              <CapabilityStatus status={index === 0 ? "development" : "roadmap"} />
+              <p className="mt-4 text-xs font-bold uppercase tracking-[.16em] text-gold">Stage 0{index + 1}</p>
               <h2 className="font-serif text-2xl text-navy">{item.title}</h2>
               <p className="mt-4 leading-7 text-warm-gray">{item.text}</p>
             </article>

@@ -25,7 +25,7 @@ export const educationPosts: EducationPost[] = [
     category: "Membership",
     format: "Video",
     summary:
-      "A future Dr Ling explainer on member coordination, appointment support and follow-up.",
+      "A future Ling explainer on member coordination, appointment support and follow-up.",
   },
   {
     title: "Questions To Ask Before Starting IV Wellness Support",
