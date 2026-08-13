@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
@@ -58,8 +59,8 @@ export function LingPanel() {
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Ling</p>
           <h3 className="mt-2 font-serif text-3xl text-navy">What brings you here today?</h3>
         </div>
-        <span className="grid size-12 place-items-center rounded-full border border-gold-light bg-ivory">
-          <span className="size-3 rounded-full bg-deep-green" />
+        <span className="relative size-16 overflow-hidden rounded-full border-2 border-gold-light bg-ivory shadow-soft">
+          <Image src="/ling-mms-guide.png" alt="Ling, the MMS intelligent health guide" fill className="object-cover object-[50%_24%]" sizes="64px" />
         </span>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">

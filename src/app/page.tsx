@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { CorporateCTA } from "@/components/CorporateCTA";
+import { CTAButton } from "@/components/CTAButton";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { EducationCard } from "@/components/EducationCard";
 import { Hero } from "@/components/Hero";
@@ -26,8 +28,30 @@ export default function HomePage() {
       <Hero
         eyebrow="My Medical Sanctuary"
         title="Preventive Care. Personalised Longevity."
-        subtitle="A premium membership-based wellness journey built around discovery before recommendation, HRM coordination and professional review."
+        subtitle="A private, intelligently coordinated health journey across Malaysia and Thailand—with every medical decision led by a qualified doctor."
+        primaryLabel="Start with Ling"
+        primaryHref="/register"
+        secondaryLabel="See how MMS works"
+        secondaryHref="/how-it-works"
       />
+
+      <section className="bg-warm-white px-4 py-20">
+        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] border border-gold-light/45 bg-white shadow-premium md:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative min-h-[420px] bg-ivory md:min-h-[560px]">
+            <Image src="/ling-mms-guide.png" alt="Ling, MMS intelligent health guide" fill priority className="object-cover object-[50%_22%]" sizes="(min-width: 768px) 42vw, 100vw" />
+          </div>
+          <div className="flex flex-col justify-center p-8 md:p-14">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Meet Ling</p>
+            <h2 className="mt-4 text-balance font-serif text-4xl leading-tight text-navy md:text-5xl">Your intelligent guide through every stage of the MMS journey.</h2>
+            <p className="mt-6 text-lg leading-8 text-warm-gray">Ask general questions without registering. When you want Ling to remember your preferences, organise records or support care coordination, create a secure patient account.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <CTAButton href="/ling">Chat with Ling</CTAButton>
+              <CTAButton href="/login" variant="outline">Patient login</CTAButton>
+            </div>
+            <p className="mt-6 border-l-2 border-gold-light pl-4 text-sm leading-6 text-warm-gray">Ling may develop potential options internally. Medical recommendations reach patients only after review and approval by a qualified doctor.</p>
+          </div>
+        </div>
+      </section>
 
       <section className="bg-ivory px-4 py-20">
         <div className="mx-auto max-w-6xl">
