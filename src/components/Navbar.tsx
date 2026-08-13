@@ -30,7 +30,7 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-2">
           <Link href="/login" className="hidden text-sm font-semibold text-ivory/80 transition hover:text-ivory md:block">Patient login</Link>
-          <CTAButton href="/register" className="min-h-10 px-4 text-xs">Start with Ling</CTAButton>
+          <CTAButton href="/register" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
           <MobileNav />
         </div>
       </div>

@@ -4,7 +4,6 @@ import Image from "next/image";
 import { CorporateCTA } from "@/components/CorporateCTA";
 import { CTAButton } from "@/components/CTAButton";
 import { Hero } from "@/components/Hero";
-import { MembershipCard } from "@/components/MembershipCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { EcosystemVisual } from "@/components/EcosystemVisual";
 import { JourneyVisual } from "@/components/JourneyVisual";
@@ -52,11 +51,17 @@ export default function HomePage() {
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <SectionHeader eyebrow="Memberships" title="Four levels of continuity." description="No public pricing. Choose by need, depth and coordination." />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {memberships.map((membership) => (
-              <MembershipCard key={membership.name} membership={membership} />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {memberships.map((membership, index) => (
+              <Link key={membership.name} href="/memberships" className="group rounded-2xl border border-gold-light/40 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-gold">
+                <div className="flex items-center justify-between"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Level {index + 1}</p><span className="text-deep-green transition group-hover:translate-x-1">→</span></div>
+                <h3 className="mt-5 font-serif text-3xl text-navy">{membership.name}</h3>
+                <p className="mt-2 text-sm font-semibold text-deep-green">{membership.tagline}</p>
+                <p className="mt-4 text-sm leading-6 text-warm-gray">{membership.accessNote}</p>
+              </Link>
             ))}
           </div>
+          <div className="mt-8 text-center"><CTAButton href="/memberships" variant="outline">Compare all memberships</CTAButton></div>
         </div>
       </section>
 
