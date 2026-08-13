@@ -1,21 +1,8 @@
-import { ConversionPanel } from "@/components/ConversionPanel";
+import type { Metadata } from "next";
+import Image from "next/image";
+import { CTAButton } from "@/components/CTAButton";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
-
-export default function MedicalTourismPage() {
-  return (
-    <main>
-      <PageHero
-        eyebrow="Medical Tourism"
-        title="Malaysia-first, ASEAN-ready preventive healthcare."
-        lead="This future-ready page prepares MMS for international patients seeking screening, doctor review, and wellness planning in Malaysia."
-      />
-      <Section
-        eyebrow="Future Expansion"
-        title="Built for coordinated patient journeys."
-        lead="Future workflows may include travel coordination, multilingual content, concierge support, and clinic location selection."
-      />
-      <ConversionPanel title="Register interest for international patient support." />
-    </main>
-  );
-}
+export const metadata: Metadata = { title: "Malaysia–Thailand Care Travel", description: "A coordinated medical tourism and preventive-care journey across Malaysia and Thailand." };
+const journey = [["01","Tell Ling","Goals, dates and preferred country"],["02","Doctor triage","Human review of the care request"],["03","Match clinic","Verified capability and availability"],["04","Plan travel","Appointment, stay and local support"],["05","Continue care","Records, follow-up and home-country handoff"]];
+export default function MedicalTourismPage() {return <main><PageHero eyebrow="Malaysia–Thailand Care Travel" title="Care across borders, without the confusion." lead="One concierge journey from your first question to clinic selection, travel and follow-up." primaryHref="/register" primaryLabel="Plan with Ling" /><Section eyebrow="How it moves" title="Five steps. One care coordinator."><div className="grid overflow-hidden rounded-[2rem] border border-gold/35 bg-[#06382f] text-ivory shadow-premium lg:grid-cols-5">{journey.map(([number,title,text],index)=><article key={number} className="relative border-gold/25 p-6 lg:border-l first:border-l-0"><span className="text-xs text-gold-light">{number}</span><h2 className="mt-3 font-serif text-2xl">{title}</h2><p className="mt-3 text-sm leading-6 text-ivory/65">{text}</p>{index<4?<span className="absolute -right-3 top-1/2 z-10 hidden size-6 place-items-center rounded-full bg-gold text-navy lg:grid">→</span>:null}</article>)}</div></Section><Section eyebrow="Two-country corridor" title="Choose by need—not guesswork." className="bg-warm-white"><div className="grid gap-5 md:grid-cols-2"><article className="overflow-hidden rounded-[2rem] bg-white shadow-soft"><div className="relative h-64"><Image src="/mms-health-screening-hero.png" alt="" fill className="object-cover"/></div><div className="p-7"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Malaysia</p><h2 className="mt-2 font-serif text-3xl text-navy">Screening & continuity</h2><p className="mt-3 text-warm-gray">Preventive screening, doctor review, wellness planning and future SCF-supported pathways.</p></div></article><article className="overflow-hidden rounded-[2rem] bg-deep-green text-ivory shadow-soft"><div className="relative h-64"><Image src="/mms-about-hero.png" alt="" fill className="object-cover opacity-80"/></div><div className="p-7"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">Thailand</p><h2 className="mt-2 font-serif text-3xl">Recovery & specialist access</h2><p className="mt-3 text-ivory/70">Suitable partner pathways, hospitality coordination and continued MMS follow-up.</p></div></article></div><div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/clinics">Explore clinic network</CTAButton><CTAButton href="/online-doctor" variant="outline">Speak to a doctor online</CTAButton></div></Section></main>;}

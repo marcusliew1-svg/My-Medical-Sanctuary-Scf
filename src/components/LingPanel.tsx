@@ -80,13 +80,9 @@ export function LingPanel() {
       </div>
       {selectedGuidance ? (
         <div className="mt-5 rounded-lg border border-gold-light/50 bg-ivory p-5">
+          <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-deep-green"><span className="size-2 animate-pulse rounded-full bg-deep-green" />Ling has prepared a next step</div>
           <p className="text-sm leading-6 text-stone-600">{selectedGuidance.text}</p>
-          <Link
-            href={selectedGuidance.href}
-            className="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy transition hover:bg-gold hover:text-navy"
-          >
-            {selectedGuidance.label}
-          </Link>
+          <div className="mt-4 flex flex-wrap gap-2"><Link href={selectedGuidance.href} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">{selectedGuidance.label}</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={()=>setSelected(null)} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
         </div>
       ) : null}
       <p className="mt-5 text-xs leading-6 text-stone-500">

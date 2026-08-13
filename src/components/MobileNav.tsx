@@ -6,7 +6,10 @@ import { useState } from "react";
 const navigation = [
   { label: "How MMS Works", href: "/how-it-works" },
   { label: "Memberships", href: "/memberships" },
-  { label: "Medicine Intelligence", href: "/medicine-intelligence" },
+  { label: "Medicine Price Compare", href: "/medicine-intelligence" },
+  { label: "Malaysia–Thailand Care Travel", href: "/medical-tourism" },
+  { label: "Book Online Doctor", href: "/online-doctor" },
+  { label: "Our Clinics", href: "/clinics" },
   { label: "SCF & Future Medicine", href: "/scf-lab-roadmap" },
   { label: "MMS Insights", href: "/insights" },
   { label: "Video & Media Room", href: "/media-room" },
@@ -48,6 +51,7 @@ export function MobileNav() {
             ))}
           </nav>
           <div className="mt-4 grid gap-2 border-t border-white/10 pt-4">
+            <div className="grid grid-cols-3 gap-2 text-center text-xs"><Link href="/" className="rounded-md border border-white/20 p-2">EN</Link><Link href="/ms" className="rounded-md border border-white/20 p-2">BM</Link><Link href="/zh" className="rounded-md border border-white/20 p-2">中文</Link></div>
             <Link
               href="/login"
               onClick={() => setOpen(false)}

@@ -31,7 +31,7 @@ export default function InternationalMedicineAccessPage() {
   return (
     <main>
       <PageHero
-        eyebrow="International Medicine Access Intelligence"
+        eyebrow="Global Medicine Price Comparison"
         title="See where medicine costs differ—and why."
         lead="MMS compares like-for-like products before licensed professional review."
         primaryLabel="Request Discussion"
@@ -69,7 +69,10 @@ export default function InternationalMedicineAccessPage() {
             {markets.map((market,index)=><div key={market.country} className={`relative border-stone-200 p-5 lg:border-l first:border-l-0 ${market.tone}`}>
               <div className="flex items-center justify-between"><span className="grid size-10 place-items-center rounded-full bg-navy text-xs font-bold text-white">{market.flag}</span><span className="text-xs text-warm-gray">#{index+1}</span></div>
               <p className="mt-5 text-sm font-semibold text-warm-gray">{market.country}</p><p className="mt-1 font-serif text-3xl text-navy">{market.amount}</p>
-              <div className="mt-5 h-24 rounded-full bg-stone-200/80 p-1"><div className="w-full rounded-full bg-gradient-to-t from-deep-green to-gold" style={{height: `${Math.max(25, market.index/3)}%`, marginTop: `${100-Math.max(25, market.index/3)}%`}} /></div>
+              <div className="mt-5">
+                <div className="mb-2 flex items-center justify-between text-xs text-warm-gray"><span>Relative price</span><span>{market.index}%</span></div>
+                <div className="h-3 overflow-hidden rounded-full bg-stone-200"><div className="h-full rounded-full bg-gradient-to-r from-deep-green to-gold" style={{width: `${Math.min(100, market.index / 2.9)}%`}} /></div>
+              </div>
               <p className="mt-3 text-xs leading-5 text-warm-gray">{market.note}</p>
             </div>)}
           </div>
