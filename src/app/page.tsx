@@ -3,18 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { CorporateCTA } from "@/components/CorporateCTA";
 import { CTAButton } from "@/components/CTAButton";
-import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { EducationCard } from "@/components/EducationCard";
 import { Hero } from "@/components/Hero";
-import { MembershipCard } from "@/components/MembershipCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { WellnessAreaCard } from "@/components/WellnessAreaCard";
 import { EcosystemVisual } from "@/components/EcosystemVisual";
 import { JourneyVisual } from "@/components/JourneyVisual";
-import { educationPosts } from "@/data/educationPosts";
+import { ServiceExplorer } from "@/components/ServiceExplorer";
 import { memberships } from "@/data/memberships";
-import { platformModules } from "@/data/platformModules";
-import { wellnessAreas } from "@/data/wellnessAreas";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -53,42 +47,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Why MMS"
-            title="Discovery before recommendation."
-            description="MMS is designed for people who want calm, structured guidance rather than random wellness purchases."
-          />
-          <div className="grid gap-4 md:grid-cols-4">
-            {[
-              "Discovery-led conversations",
-              "HRM coordination",
-              "Preventive care focus",
-              "Professional review",
-            ].map((item) => (
-              <div key={item} className="rounded-lg border border-warm-white bg-white p-6">
-                <h3 className="font-serif text-2xl text-navy">{item}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="bg-warm-white px-4 py-20"><div className="mx-auto max-w-6xl"><SectionHeader eyebrow="The MMS Ecosystem" title="Everything connected around you." description="Intelligence, coordination, clinical authority and future science." /><EcosystemVisual /></div></section>
+
+      <section className="bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl"><SectionHeader eyebrow="What MMS can coordinate" title="Care shaped around real life." description="Choose an area to see what the pathway may include." /><ServiceExplorer /></div></section>
 
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Memberships"
-            title="Choose a structured wellness journey."
-            description="Each tier is designed around coordination, clarity and suitability assessment."
-          />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {memberships.map((membership) => (
-              <MembershipCard key={membership.name} membership={membership} />
+          <SectionHeader eyebrow="Memberships" title="Four levels of continuity." description="No public pricing. Choose by need, depth and coordination." />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {memberships.map((membership, index) => (
+              <Link key={membership.name} href="/memberships" className="group rounded-2xl border border-gold-light/40 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-gold">
+                <div className="flex items-center justify-between"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Level {index + 1}</p><span className="text-deep-green transition group-hover:translate-x-1">→</span></div>
+                <h3 className="mt-5 font-serif text-3xl text-navy">{membership.name}</h3>
+                <p className="mt-2 text-sm font-semibold text-deep-green">{membership.tagline}</p>
+                <p className="mt-4 text-sm leading-6 text-warm-gray">{membership.accessNote}</p>
+              </Link>
             ))}
           </div>
+          <div className="mt-8 text-center"><CTAButton href="/memberships" variant="outline">Compare all memberships</CTAButton></div>
         </div>
       </section>
 
@@ -103,79 +79,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Wellness Support Areas"
-            title="Educational categories, not a price menu."
-            description="These areas help members understand what may be discussed during discovery and suitability assessment."
-          />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {wellnessAreas.map((area) => (
-              <WellnessAreaCard key={area.title} area={area} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-navy px-4 py-20 text-ivory">
-        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1fr_0.9fr] md:items-center">
-          <div>
-            <SectionHeader
-              eyebrow="Education"
-              title="Meet Dr Ling."
-              description="Dr Ling is the MMS education layer for plain-language wellness learning. She supports understanding but does not replace professional review."
-            />
-          </div>
-          <DisclaimerBox title="Dr Ling boundary">
-            <p>
-              Dr Ling content is for education only. It is not medical advice and should not be used as a personalised recommendation.
-            </p>
-          </DisclaimerBox>
-        </div>
-      </section>
-
       <section className="bg-ivory px-4 py-20">
         <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Future Platform"
-            title="Health journeys supported by intelligence, systems and future capability."
-            description="MMS stays patient-facing. These platform modules explain how the ecosystem can grow without turning the website into a product catalogue."
-          />
-          <div className="grid gap-5 md:grid-cols-3">
-            {platformModules.map((module) => (
-              <Link
-                key={module.href}
-                href={module.href}
-                className="rounded-lg border border-gold-light bg-white p-6 transition hover:-translate-y-1 hover:border-gold"
-              >
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
-                  {module.eyebrow}
-                </p>
-                <h3 className="mt-3 font-serif text-2xl text-navy">{module.title}</h3>
-                <p className="mt-4 leading-7 text-warm-gray">{module.text}</p>
-              </Link>
-            ))}
+          <SectionHeader eyebrow="Platform Strategy" title="Care today. Capability tomorrow." description="Two strategic engines extend the MMS patient relationship." />
+          <div className="grid gap-5 md:grid-cols-2">
+            <Link href="/medicine-intelligence" className="rounded-[1.5rem] border border-gold-light/40 bg-white p-8 shadow-soft transition hover:-translate-y-1"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Medicine Intelligence</p><h3 className="mt-3 font-serif text-3xl text-navy">Compare markets responsibly.</h3><p className="mt-3 text-warm-gray">Like-for-like intelligence with licensed professional clearance.</p></Link>
+            <Link href="/scf-lab-roadmap" className="rounded-[1.5rem] border border-gold-light/40 bg-deep-green p-8 text-ivory shadow-soft transition hover:-translate-y-1"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">SCF</p><h3 className="mt-3 font-serif text-3xl">Build future capability.</h3><p className="mt-3 text-ivory/70">The science and laboratory roadmap behind tomorrow’s MMS.</p></Link>
           </div>
         </div>
       </section>
 
       <CorporateCTA />
-
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Education Hub"
-            title="Latest education placeholders."
-            description="Blog and video content will support future SEO, patient education and Dr Ling learning flows."
-          />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {educationPosts.map((post) => (
-              <EducationCard key={post.title} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="bg-navy px-4 py-20 text-ivory">
         <div className="mx-auto max-w-4xl text-center">

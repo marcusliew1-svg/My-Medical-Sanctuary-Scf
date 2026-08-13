@@ -13,10 +13,10 @@ export function SectionHeader({ eyebrow, title, description, center = false }: S
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-5xl">
+      <h2 className="text-balance font-serif text-4xl leading-[1.08] text-navy md:text-[3.4rem]">
         {title}
       </h2>
-      {description ? <p className="mt-5 text-lg leading-8 text-warm-gray">{description}</p> : null}
+      {description ? <p className="mt-4 max-w-2xl text-base leading-7 text-warm-gray md:text-lg">{description}</p> : null}
     </div>
   );
 }

@@ -14,8 +14,8 @@ export default function HowItWorksPage() {
     <main>
       <Hero
         eyebrow="How It Works"
-        title="A clear journey from discovery to review."
-        subtitle="One guided journey. Human clinical authority at every medical decision."
+        title="From first question to ongoing care."
+        subtitle="See exactly who helps, who coordinates and who decides."
         primaryLabel="Start with Ling"
         primaryHref="/register"
       />
@@ -23,7 +23,7 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="The MMS Journey"
-            title="Five clear stages."
+            title="Your care, moving forward."
             description="Ling organises. MMS coordinates. Doctors decide."
           />
           <JourneyVisual />

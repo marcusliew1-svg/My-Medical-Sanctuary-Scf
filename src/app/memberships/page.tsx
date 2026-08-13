@@ -3,6 +3,7 @@ import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { Hero } from "@/components/Hero";
 import { SectionHeader } from "@/components/SectionHeader";
 import { memberships } from "@/data/memberships";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Memberships",
@@ -17,19 +18,15 @@ export default function MembershipsPage() {
         eyebrow="Memberships"
         title="Structured wellness journeys, not random purchases."
         subtitle="Each MMS membership is designed around discovery, HRM coordination, professional review and suitability assessment."
-        image="/mms-about-hero.png"
+        image="/mms-about-hero.webp"
       />
       <section className="bg-ivory px-4 py-20">
         <div className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Membership Tiers"
-            title="Ascend, Evolve, Eterna and Pinnacle."
-            description="Membership pathways are discussed after discovery, professional review and suitability assessment."
-          />
+          <div className="mb-12 grid overflow-hidden rounded-[2rem] bg-deep-green text-ivory shadow-premium md:grid-cols-[1.05fr_.95fr]"><div className="relative min-h-[360px]"><Image src="/mms-membership-journey.webp" alt="Four MMS membership journeys for changing life and health priorities" fill className="object-cover" sizes="50vw" /></div><div className="flex flex-col justify-center p-8 md:p-12"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">Find your fit</p><h2 className="mt-4 font-serif text-4xl leading-tight">Four journeys. Different depths of support.</h2><p className="mt-4 text-ivory/70">Choose by your goals and desired level of coordination—not by a public price list.</p></div></div>
           <div className="grid gap-5 md:grid-cols-2">
             {memberships.map((membership, index) => (
               <article key={membership.name} className="rounded-[1.5rem] border border-gold-light/40 bg-white p-7 shadow-soft">
-                <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">{membership.accessNote}</p><h2 className="mt-2 font-serif text-4xl text-navy">{membership.name}</h2></div><span className="rounded-full bg-deep-green px-3 py-1 text-xs font-bold text-white">Level {index + 1}</span></div>
+                <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">{membership.accessNote}</p><h2 className="mt-2 font-serif text-4xl text-navy">{membership.name}</h2></div><span className="grid size-12 place-items-center rounded-full bg-deep-green text-lg font-bold text-white">0{index + 1}</span></div>
                 <p className="mt-3 text-lg font-semibold text-deep-green">{membership.tagline}</p>
                 <div className="mt-6 grid gap-5 sm:grid-cols-2"><div><h3 className="text-xs font-bold uppercase tracking-[.14em] text-gold">Best suited for</h3><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p></div><div><h3 className="text-xs font-bold uppercase tracking-[.14em] text-gold">Coordination</h3><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.coordination}</p></div></div>
                 <h3 className="mt-6 text-xs font-bold uppercase tracking-[.14em] text-gold">Your opening journey</h3><ul className="mt-3 grid gap-2 sm:grid-cols-2">{membership.firstThirtyDays.map(item => <li key={item} className="rounded-lg bg-ivory px-3 py-2 text-sm text-navy">✓ {item}</li>)}</ul>
