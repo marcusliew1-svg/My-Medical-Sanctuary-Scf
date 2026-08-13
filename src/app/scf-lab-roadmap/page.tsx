@@ -4,6 +4,7 @@ import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { CapabilityStatus } from "@/components/CapabilityStatus";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "SCF Lab Roadmap | My Medical Sanctuary",
@@ -35,6 +36,19 @@ export default function SCFLabRoadmapPage() {
         lead="SCF develops the capability roadmap. MMS turns it into a governed patient journey."
         primaryLabel="Start Discovery"
       />
+
+      <section className="bg-ivory px-4 py-12">
+        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] bg-[#06382f] text-ivory shadow-premium md:grid-cols-[.72fr_1.28fr]">
+          <div className="grid min-h-[280px] place-items-center bg-black p-8">
+            <div className="relative h-44 w-full max-w-sm"><Image src="/scf-logo-new.png" alt="SCF" fill className="object-contain" sizes="380px" /></div>
+          </div>
+          <div className="flex flex-col justify-center p-8 md:p-12">
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Science · Care · Future capability</p>
+            <h2 className="mt-4 font-serif text-4xl">SCF builds the science layer.</h2>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">{[["01","Clinical need"],["02","Governance"],["03","ASEAN readiness"]].map(([number,label])=><div key={number} className="rounded-xl border border-gold/30 bg-white/5 p-4"><span className="text-xs text-gold-light">{number}</span><p className="mt-1 font-serif text-lg">{label}</p></div>)}</div>
+          </div>
+        </div>
+      </section>
 
       <Section
         eyebrow="Positioning"

@@ -21,6 +21,13 @@ const pathway = [
 ];
 
 export default function InternationalMedicineAccessPage() {
+  const markets = [
+    { country: "Thailand", flag: "TH", amount: "RM 82", index: 69, tone: "bg-[#dce8e1]", note: "Lowest in this example" },
+    { country: "Malaysia", flag: "MY", amount: "RM 118", index: 100, tone: "bg-white", note: "Reference market" },
+    { country: "Singapore", flag: "SG", amount: "RM 206", index: 175, tone: "bg-[#efe3dc]", note: "Higher retail context" },
+    { country: "UAE", flag: "AE", amount: "RM 268", index: 227, tone: "bg-[#e6dfcf]", note: "Illustrative Middle East" },
+    { country: "United States", flag: "US", amount: "RM 342", index: 290, tone: "bg-[#d9dde2]", note: "Illustrative cash price" },
+  ];
   return (
     <main>
       <PageHero
@@ -52,12 +59,23 @@ export default function InternationalMedicineAccessPage() {
         <p className="mt-4 text-xs text-warm-gray">Illustrative framework only. No medicine, price or availability is represented as current.</p>
       </Section>
 
-      <Section eyebrow="Synthetic product examples" title="What a patient could understand at a glance." lead="Example figures below are fictional and demonstrate the comparison model only.">
-        <div className="grid gap-5 md:grid-cols-3">{[
-          ["CardioCare 10 mg","30 tablets","RM 118","THB 640","≈ RM 82"],
-          ["MetaBalance 500 mg","60 tablets","RM 96","THB 490","≈ RM 63"],
-          ["BoneSupport 70 mg","4 tablets","RM 164","THB 980","≈ RM 126"],
-        ].map(([name,pack,my,th,converted])=><article key={name} className="overflow-hidden rounded-2xl border border-gold-light/40 bg-white shadow-soft"><div className="bg-deep-green p-5 text-white"><p className="text-xs uppercase tracking-[.16em] text-gold-light">Synthetic example</p><h3 className="mt-2 font-serif text-2xl">{name}</h3><p className="text-sm text-white/65">{pack}</p></div><div className="grid grid-cols-2 gap-px bg-stone-100"><div className="bg-white p-4"><p className="text-xs text-warm-gray">Malaysia</p><p className="mt-1 text-xl font-bold text-navy">{my}</p></div><div className="bg-[#dce8e1] p-4"><p className="text-xs text-warm-gray">Thailand</p><p className="mt-1 text-xl font-bold text-deep-green">{th}</p><p className="text-xs text-warm-gray">{converted}</p></div></div><p className="p-4 text-xs leading-5 text-warm-gray">Professional clearance, current availability and total fulfilment cost still required.</p></article>)}</div>
+      <Section eyebrow="Five-market price lens" title="One product. Five market contexts." lead="A visual example of how the same matched pack could differ across Thailand, Malaysia, Singapore, the UAE and the United States.">
+        <div className="overflow-hidden rounded-[2rem] border border-gold-light/40 bg-white shadow-premium">
+          <div className="grid gap-6 bg-deep-green p-6 text-ivory md:grid-cols-[1fr_auto] md:items-end md:p-8">
+            <div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">Synthetic matched product</p><h2 className="mt-2 font-serif text-3xl">CardioCare 10 mg · 30 tablets</h2><p className="mt-2 text-sm text-ivory/65">Same molecule · strength · form · pack size</p></div>
+            <div className="rounded-2xl border border-gold/40 bg-white/5 px-5 py-3 text-center"><p className="text-xs uppercase tracking-[.12em] text-ivory/60">Observed range</p><p className="mt-1 font-serif text-3xl text-gold-light">4.2×</p></div>
+          </div>
+          <div className="grid lg:grid-cols-5">
+            {markets.map((market,index)=><div key={market.country} className={`relative border-stone-200 p-5 lg:border-l first:border-l-0 ${market.tone}`}>
+              <div className="flex items-center justify-between"><span className="grid size-10 place-items-center rounded-full bg-navy text-xs font-bold text-white">{market.flag}</span><span className="text-xs text-warm-gray">#{index+1}</span></div>
+              <p className="mt-5 text-sm font-semibold text-warm-gray">{market.country}</p><p className="mt-1 font-serif text-3xl text-navy">{market.amount}</p>
+              <div className="mt-5 h-24 rounded-full bg-stone-200/80 p-1"><div className="w-full rounded-full bg-gradient-to-t from-deep-green to-gold" style={{height: `${Math.max(25, market.index/3)}%`, marginTop: `${100-Math.max(25, market.index/3)}%`}} /></div>
+              <p className="mt-3 text-xs leading-5 text-warm-gray">{market.note}</p>
+            </div>)}
+          </div>
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-4">{[["01","Match product"],["02","Convert currency"],["03","Verify licensed supply"],["04","Add fulfilment costs"]].map(([number,label])=><div key={number} className="flex items-center gap-3 rounded-xl bg-ivory p-4"><span className="grid size-9 place-items-center rounded-full bg-deep-green text-xs font-bold text-white">{number}</span><p className="text-sm font-semibold text-navy">{label}</p></div>)}</div>
+        <p className="mt-4 text-xs leading-5 text-warm-gray">All figures are fictional design examples, converted to RM for readability. They are not current quotations. Real comparisons require a named medicine, manufacturer, strength, pack, date, licensed source and total fulfilment cost.</p>
       </Section>
 
       <Section
