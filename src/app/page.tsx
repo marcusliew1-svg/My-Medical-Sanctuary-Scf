@@ -89,6 +89,25 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="bg-warm-white px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader eyebrow="Access MMS your way" title="At a clinic, online or across borders." description="Choose the access route that suits where you are now." />
+          <div className="grid gap-5 md:grid-cols-3">
+            <Link href="/clinics" className="group overflow-hidden rounded-[1.5rem] border border-gold-light/40 bg-white shadow-soft transition hover:-translate-y-1">
+              <div className="relative h-52"><Image src="/mms-health-screening-hero.png" alt="" fill className="object-cover" /></div>
+              <div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Clinic network</p><h3 className="mt-2 font-serif text-3xl text-navy">Visit MMS.</h3><p className="mt-2 text-sm text-warm-gray">Explore Malaysia and Thailand care locations.</p></div>
+            </Link>
+            <Link href="/online-doctor" className="group rounded-[1.5rem] bg-deep-green p-7 text-ivory shadow-soft transition hover:-translate-y-1">
+              <span className="grid size-14 place-items-center rounded-full border border-gold/50 text-2xl text-gold-light">◉</span><p className="mt-8 text-xs font-bold uppercase tracking-[.16em] text-gold-light">Online doctor</p><h3 className="mt-2 font-serif text-3xl">Consult from anywhere.</h3><p className="mt-3 text-sm text-ivory/70">Ling prepares. A qualified doctor leads.</p>
+            </Link>
+            <Link href="/medical-tourism" className="group overflow-hidden rounded-[1.5rem] border border-gold-light/40 bg-white shadow-soft transition hover:-translate-y-1">
+              <div className="relative h-52"><Image src="/mms-membership-journey.webp" alt="" fill className="object-cover" /></div>
+              <div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Care travel</p><h3 className="mt-2 font-serif text-3xl text-navy">Malaysia ↔ Thailand.</h3><p className="mt-2 text-sm text-warm-gray">Clinic matching, travel and follow-up.</p></div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <CorporateCTA />
 
       <section className="bg-navy px-4 py-20 text-ivory">
