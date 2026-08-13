@@ -8,7 +8,7 @@ import { CapabilityStatus } from "@/components/CapabilityStatus";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "International Medicine Access Intelligence | My Medical Sanctuary",
+  title: "Medicine Access Intelligence",
   description:
     "Understand why medicine availability and costs can differ between countries, with MMS positioned as an education and coordination layer.",
 };
@@ -41,8 +41,8 @@ export default function InternationalMedicineAccessPage() {
 
       <Section
         eyebrow="Why It Matters"
-        title="The same medicine can sit inside different systems."
-        lead="Availability, cost, timing and access pathways may vary across countries because healthcare systems, registration rules and supply structures are not identical."
+        title="Price is more than currency."
+        lead="Registration, supply, taxes and dispensing rules shape the final cost."
       >
         <div className="mb-6"><CapabilityStatus status="pilot" /></div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -80,8 +80,8 @@ export default function InternationalMedicineAccessPage() {
 
       <Section
         eyebrow="MMS Role"
-        title="A coordination and education layer, not a public medicine shop."
-        lead="The website should explain how MMS can help people ask better questions while respecting medical, pharmacy and jurisdictional requirements."
+        title="Compare first. Decide with professionals."
+        lead="MMS organises the question. Licensed professionals clear the medical and supply pathway."
         className="bg-warm-white"
       >
         <div className="grid gap-5 md:grid-cols-4">
@@ -98,8 +98,8 @@ export default function InternationalMedicineAccessPage() {
 
       <Section
         eyebrow="Important Boundary"
-        title="Access discussions require professional and jurisdictional review."
-        lead="MMS should not collect prescriptions or sensitive medical records through this public page at this stage."
+        title="Professional clearance is essential."
+        lead="Public comparisons never replace prescribing, pharmacy or jurisdictional review."
       >
         <DisclaimerBox title="Medicine access boundary">
           <p>

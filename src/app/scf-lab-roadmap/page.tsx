@@ -7,7 +7,7 @@ import { CapabilityStatus } from "@/components/CapabilityStatus";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "SCF Lab Roadmap | My Medical Sanctuary",
+  title: "SCF Lab Roadmap",
   description:
     "Learn how MMS frames future clinical and lab capability through a careful roadmap subject to regulatory, licensing and professional requirements.",
 };
