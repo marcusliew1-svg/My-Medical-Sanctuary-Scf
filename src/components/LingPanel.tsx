@@ -112,7 +112,7 @@ export function LingPanel() {
     setQuestion("");
   }
 
-  function useSuggestedPrompt(prompt: string) {
+  function handleSuggestedPrompt(prompt: string) {
     setAskedQuestion(prompt);
     routeQuestion(prompt);
   }
@@ -190,7 +190,7 @@ export function LingPanel() {
 
             <div className="mt-4">
               <p className="text-[10px] font-bold uppercase tracking-[.14em] text-warm-gray">Or choose the closest description</p>
-              <div className="mt-3 flex flex-wrap gap-2">{clarification.suggestedPrompts.map((prompt)=><button key={prompt} onClick={()=>useSuggestedPrompt(prompt)} className="rounded-full border border-deep-green/15 bg-white px-3 py-2 text-xs font-semibold text-deep-green transition hover:border-deep-green">{prompt}</button>)}</div>
+              <div className="mt-3 flex flex-wrap gap-2">{clarification.suggestedPrompts.map((prompt)=><button key={prompt} onClick={()=>handleSuggestedPrompt(prompt)} className="rounded-full border border-deep-green/15 bg-white px-3 py-2 text-xs font-semibold text-deep-green transition hover:border-deep-green">{prompt}</button>)}</div>
             </div>
 
             <div className="mt-4 rounded-xl bg-[#edf2ef] px-4 py-3 text-xs leading-5 text-warm-gray">Ling will combine what you tell her across the next few messages. The goal is to find a useful concern pathway, not to turn the conversation into a diagnosis.</div>
