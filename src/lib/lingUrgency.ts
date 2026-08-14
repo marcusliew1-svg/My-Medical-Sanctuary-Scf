@@ -156,12 +156,29 @@ function normalise(value: string) {
     .trim();
 }
 
+const localNegation = /(?:\bno|\bwithout|\bdenies|\bdeny|\bnever had|\bhave not had|\bhaven't had|\bdo not have|\bdon't have|\bdoes not have|\bdoesn't have|\bdid not have|\bdidn't have|\bnot currently having|\bnot having)(?:\s+\w+){0,3}\s*$/;
+
+function hasPositiveOccurrence(text: string, term: string) {
+  let from = 0;
+  while (from < text.length) {
+    const index = text.indexOf(term, from);
+    if (index === -1) return false;
+    const before = text.slice(Math.max(0, index - 55), index);
+    if (!localNegation.test(before)) return true;
+    from = index + term.length;
+  }
+  return false;
+}
+
 export function matchLingUrgency(input: string): LingUrgencyMatch | null {
   const q = normalise(input);
   if (!q) return null;
 
   for (const rule of urgencyRules) {
-    const matchedTerms = rule.terms.filter((term) => q.includes(normalise(term)));
+    const matchedTerms = rule.terms.filter((term) => {
+      const normalisedTerm = normalise(term);
+      return hasPositiveOccurrence(q, normalisedTerm);
+    });
     if (!matchedTerms.length) continue;
     return {
       id: rule.id,
