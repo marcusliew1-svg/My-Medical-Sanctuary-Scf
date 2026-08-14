@@ -3,9 +3,12 @@ import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { healthConcerns } from "@/data/healthConcerns";
 
+const indexHealthEducation = (process.env.MMS_HEALTH_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
+
 export const metadata: Metadata = {
   title: "Health Concerns & Treatment Research",
   description: "Plain-English guides connecting common health concerns with screening and treatment topics to discuss with qualified medical professionals.",
+  robots: { index: indexHealthEducation, follow: indexHealthEducation },
 };
 
 const evidenceTone: Record<string, string> = {
@@ -33,7 +36,7 @@ export default function HealthConcernsPage() {
 
       <section className="bg-ivory px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 rounded-[2rem] border border-stone-200 bg-white p-7 shadow-soft md:p-9"><p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Important</p><h2 className="mt-3 font-serif text-4xl text-navy">These are research pathways, not personalised recommendations.</h2><p className="mt-4 max-w-4xl leading-7 text-warm-gray">A symptom can have many causes. The pages below are designed to improve health literacy and search visibility while keeping the medical boundary clear: they do not diagnose, prescribe, promise outcomes or replace consultation with a qualified healthcare professional.</p></div>
+          <div className="mb-10 rounded-[2rem] border border-stone-200 bg-white p-7 shadow-soft md:p-9"><p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Important</p><h2 className="mt-3 font-serif text-4xl text-navy">These are research pathways, not personalised recommendations.</h2><p className="mt-4 max-w-4xl leading-7 text-warm-gray">A symptom can have many causes. The pages below are designed to improve health literacy and search visibility while keeping the medical boundary clear: they do not diagnose, prescribe, promise outcomes or replace consultation with a qualified healthcare professional.</p><p className="mt-3 text-xs leading-5 text-warm-gray">Search indexing remains disabled by default until MMS completes clinical, regulatory and advertising review. It can be enabled later with the server-side MMS_HEALTH_EDUCATION_INDEXABLE flag.</p></div>
 
           <div className="grid gap-5 md:grid-cols-2">
             {healthConcerns.map((concern, index) => (
