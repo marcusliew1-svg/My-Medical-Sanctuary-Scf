@@ -34,7 +34,7 @@ export function Navbar() {
           <Link href="/ms" className="hidden text-xs text-ivory/65 hover:text-white sm:block">BM</Link>
           <Link href="/zh" className="hidden text-xs text-ivory/65 hover:text-white sm:block">中文</Link>
           <Link href="/login" className="hidden text-sm font-semibold text-ivory/80 transition hover:text-ivory md:block">Patient login</Link>
-          <CTAButton href="/register" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
+          <CTAButton href="/ling" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
           <MobileNav />
         </div>
       </div>
