@@ -24,7 +24,8 @@ export default function LingPage() {
             <p className="text-xs font-bold uppercase tracking-[.22em] text-gold-light">Meet Ling · MMS intelligent guide</p>
             <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.03] md:text-7xl">A calmer way to navigate your health journey.</h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-ivory/72">Ask first. Organise what matters. Move to human care when it is time.</p>
-            <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/register">Start with Ling</CTAButton><CTAButton href="/how-it-works" variant="outline">See the MMS journey</CTAButton></div>
+            <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="#try-ling">Ask Ling now</CTAButton><CTAButton href="/how-it-works" variant="outline">See the MMS journey</CTAButton></div>
+            <p className="mt-3 text-xs leading-5 text-ivory/58">No registration is needed to start asking general questions.</p>
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-2">{modes.map(mode => <div key={mode.number} className="rounded-2xl border border-white/10 bg-white/5 p-4"><span className="text-xs text-gold-light">{mode.number}</span><p className="mt-2 font-serif text-xl">{mode.title}</p></div>)}</div>
           </div>
           <div className="relative min-h-[560px]">
@@ -38,7 +39,7 @@ export default function LingPage() {
         </div>
       </section>
 
-      <section className="bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl">
+      <section id="try-ling" className="scroll-mt-24 bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl">
         <div className="grid gap-6 lg:grid-cols-[.72fr_1.28fr] lg:items-start">
           <div className="lg:sticky lg:top-28"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Try Ling</p><h2 className="mt-3 font-serif text-4xl leading-tight text-navy md:text-5xl">Start with a question, not a form.</h2><p className="mt-4 leading-7 text-warm-gray">{lingDisclaimer}</p><div className="mt-6 grid gap-2">{examples.map(example => <div key={example} className="rounded-xl bg-white px-4 py-3 text-sm text-navy shadow-soft">“{example}”</div>)}</div></div>
           <LingPanel />
