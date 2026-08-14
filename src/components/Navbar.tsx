@@ -5,11 +5,11 @@ import { MobileNav } from "@/components/MobileNav";
 
 const navItems = [
   { label: "Memberships", href: "/memberships" },
+  { label: "Treatments", href: "/treatments" },
+  { label: "Health Concerns", href: "/health-concerns" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Medicine Price Compare", href: "/medicine-intelligence" },
   { label: "Care Travel", href: "/medical-tourism" },
   { label: "SCF", href: "/scf-lab-roadmap" },
-  { label: "Insights", href: "/insights" },
 ];
 
 export function Navbar() {
@@ -22,7 +22,7 @@ export function Navbar() {
           </span>
           <span className="hidden text-sm font-semibold tracking-wide md:block">My Medical Sanctuary</span>
         </Link>
-        <nav aria-label="Primary navigation" className="hidden items-center gap-5 text-sm font-medium lg:flex">
+        <nav aria-label="Primary navigation" className="hidden items-center gap-4 text-sm font-medium xl:flex">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className="text-ivory/76 transition hover:text-gold-light">
               {item.label}
@@ -30,11 +30,11 @@ export function Navbar() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Link href="/online-doctor" className="hidden text-sm font-semibold text-gold-light transition hover:text-ivory xl:block">Online doctor</Link>
+          <Link href="/online-doctor" className="hidden text-sm font-semibold text-gold-light transition hover:text-ivory 2xl:block">Online doctor</Link>
           <Link href="/ms" className="hidden text-xs text-ivory/65 hover:text-white sm:block">BM</Link>
           <Link href="/zh" className="hidden text-xs text-ivory/65 hover:text-white sm:block">中文</Link>
           <Link href="/login" className="hidden text-sm font-semibold text-ivory/80 transition hover:text-ivory md:block">Patient login</Link>
-          <CTAButton href="/register" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
+          <CTAButton href="/ling" className="hidden min-h-10 px-4 text-xs sm:inline-flex">Start with Ling</CTAButton>
           <MobileNav />
         </div>
       </div>

@@ -1,131 +1,42 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { CTAButton } from "@/components/CTAButton";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { PageHero } from "@/components/PageHero";
-import { Section } from "@/components/Section";
-import { medicineAccessFactors } from "@/data/platformModules";
 import { CapabilityStatus } from "@/components/CapabilityStatus";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Medicine Access Intelligence",
-  description:
-    "Understand why medicine availability and costs can differ between countries, with MMS positioned as an education and coordination layer.",
+  description: "Visual medicine access intelligence across markets, with professional and regulatory review built into the pathway.",
 };
 
-const pathway = [
-  "Understand the medicine question",
-  "Identify country and access considerations",
-  "Review professional and regulatory boundaries",
-  "Coordinate next steps with appropriate licensed parties where suitable",
+const markets = [
+  { country: "Thailand", flag: "TH", amount: "RM 82", index: 24, note: "Illustrative lower-cost market" },
+  { country: "Malaysia", flag: "MY", amount: "RM 118", index: 35, note: "Reference market" },
+  { country: "Singapore", flag: "SG", amount: "RM 206", index: 60, note: "Illustrative higher retail context" },
+  { country: "UAE", flag: "AE", amount: "RM 268", index: 78, note: "Illustrative Middle East market" },
+  { country: "United States", flag: "US", amount: "RM 342", index: 100, note: "Illustrative cash-price context" },
 ];
 
+const factors = ["Same molecule", "Same strength", "Same dosage form", "Same pack", "Licensed source", "Total fulfilment cost"];
+
 export default function InternationalMedicineAccessPage() {
-  const markets = [
-    { country: "Thailand", flag: "TH", amount: "RM 82", index: 69, tone: "bg-[#dce8e1]", note: "Lowest in this example" },
-    { country: "Malaysia", flag: "MY", amount: "RM 118", index: 100, tone: "bg-white", note: "Reference market" },
-    { country: "Singapore", flag: "SG", amount: "RM 206", index: 175, tone: "bg-[#efe3dc]", note: "Higher retail context" },
-    { country: "UAE", flag: "AE", amount: "RM 268", index: 227, tone: "bg-[#e6dfcf]", note: "Illustrative Middle East" },
-    { country: "United States", flag: "US", amount: "RM 342", index: 290, tone: "bg-[#d9dde2]", note: "Illustrative cash price" },
-  ];
   return (
     <main>
-      <PageHero
-        eyebrow="Global Medicine Price Comparison"
-        title="See where medicine costs differ—and why."
-        lead="MMS compares like-for-like products before licensed professional review."
-        primaryLabel="Request Discussion"
-      />
-
-      <section className="bg-ivory px-4 py-16"><div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] border border-gold-light/40 bg-white shadow-premium md:grid-cols-2"><div className="relative min-h-[360px]"><Image src="/mms-medicine-intelligence.webp" alt="Illustrative cross-market medicine intelligence comparison" fill className="object-cover" sizes="50vw" /></div><div className="flex flex-col justify-center p-8 md:p-12"><CapabilityStatus status="pilot"/><h2 className="mt-5 font-serif text-4xl leading-tight text-navy">Compare the exact product—not just the brand name.</h2><div className="mt-6 grid grid-cols-2 gap-3">{["Molecule","Strength","Pack size","Registration"].map(item=><div key={item} className="rounded-xl bg-ivory p-3 text-sm font-semibold text-deep-green">✓ {item}</div>)}</div></div></div></section>
-
-      <Section
-        eyebrow="Why It Matters"
-        title="Price is more than currency."
-        lead="Registration, supply, taxes and dispensing rules shape the final cost."
-      >
-        <div className="mb-6"><CapabilityStatus status="pilot" /></div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {medicineAccessFactors.map((factor) => (
-            <article key={factor} className="rounded-lg border border-stone-200 bg-white p-6">
-              <h2 className="font-serif text-2xl text-navy">{factor}</h2>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <Section eyebrow="Illustrative comparison" title="Same molecule. Different market context." lead="A structured comparison exposes genuine differences without bypassing clinical or regulatory controls." className="bg-warm-white">
-        <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-soft"><table className="w-full min-w-[680px] text-left text-sm"><thead className="bg-deep-green text-white"><tr><th className="p-4">Verified factor</th><th className="p-4">Malaysia</th><th className="p-4">Thailand</th></tr></thead><tbody>{[["Active molecule","Same","Same"],["Strength & form","Matched","Matched"],["Registration","Verify","Verify"],["Indicative market cost","May differ","May differ"],["Licensed supply","Required","Required"],["Doctor / pharmacist clearance","Required","Required"]].map((row,i)=><tr key={row[0]} className={i%2 ? "bg-ivory" : ""}>{row.map(cell=><td key={cell} className="border-t border-stone-100 p-4">{cell}</td>)}</tr>)}</tbody></table></div>
-        <p className="mt-4 text-xs text-warm-gray">Illustrative framework only. No medicine, price or availability is represented as current.</p>
-      </Section>
-
-      <Section eyebrow="Five-market price lens" title="One product. Five market contexts." lead="A visual example of how the same matched pack could differ across Thailand, Malaysia, Singapore, the UAE and the United States.">
-        <div className="overflow-hidden rounded-[2rem] border border-gold-light/40 bg-white shadow-premium">
-          <div className="grid gap-6 bg-deep-green p-6 text-ivory md:grid-cols-[1fr_auto] md:items-end md:p-8">
-            <div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">Synthetic matched product</p><h2 className="mt-2 font-serif text-3xl">CardioCare 10 mg · 30 tablets</h2><p className="mt-2 text-sm text-ivory/65">Same molecule · strength · form · pack size</p></div>
-            <div className="rounded-2xl border border-gold/40 bg-white/5 px-5 py-3 text-center"><p className="text-xs uppercase tracking-[.12em] text-ivory/60">Observed range</p><p className="mt-1 font-serif text-3xl text-gold-light">4.2×</p></div>
-          </div>
-          <div className="grid lg:grid-cols-5">
-            {markets.map((market,index)=><div key={market.country} className={`relative border-stone-200 p-5 lg:border-l first:border-l-0 ${market.tone}`}>
-              <div className="flex items-center justify-between"><span className="grid size-10 place-items-center rounded-full bg-navy text-xs font-bold text-white">{market.flag}</span><span className="text-xs text-warm-gray">#{index+1}</span></div>
-              <p className="mt-5 text-sm font-semibold text-warm-gray">{market.country}</p><p className="mt-1 font-serif text-3xl text-navy">{market.amount}</p>
-              <div className="mt-5">
-                <div className="mb-2 flex items-center justify-between text-xs text-warm-gray"><span>Relative price</span><span>{market.index}%</span></div>
-                <div className="h-3 overflow-hidden rounded-full bg-stone-200"><div className="h-full rounded-full bg-gradient-to-r from-deep-green to-gold" style={{width: `${Math.min(100, market.index / 2.9)}%`}} /></div>
-              </div>
-              <p className="mt-3 text-xs leading-5 text-warm-gray">{market.note}</p>
-            </div>)}
-          </div>
-        </div>
-        <div className="mt-5 grid gap-3 md:grid-cols-4">{[["01","Match product"],["02","Convert currency"],["03","Verify licensed supply"],["04","Add fulfilment costs"]].map(([number,label])=><div key={number} className="flex items-center gap-3 rounded-xl bg-ivory p-4"><span className="grid size-9 place-items-center rounded-full bg-deep-green text-xs font-bold text-white">{number}</span><p className="text-sm font-semibold text-navy">{label}</p></div>)}</div>
-        <p className="mt-4 text-xs leading-5 text-warm-gray">All figures are fictional design examples, converted to RM for readability. They are not current quotations. Real comparisons require a named medicine, manufacturer, strength, pack, date, licensed source and total fulfilment cost.</p>
-      </Section>
-
-      <Section
-        eyebrow="MMS Role"
-        title="Compare first. Decide with professionals."
-        lead="MMS organises the question. Licensed professionals clear the medical and supply pathway."
-        className="bg-warm-white"
-      >
-        <div className="grid gap-5 md:grid-cols-4">
-          {pathway.map((item, index) => (
-            <article key={item} className="rounded-lg border border-gold-light bg-ivory p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold">
-                Step {index + 1}
-              </p>
-              <h2 className="mt-3 font-serif text-2xl text-navy">{item}</h2>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Important Boundary"
-        title="Professional clearance is essential."
-        lead="Public comparisons never replace prescribing, pharmacy or jurisdictional review."
-      >
-        <DisclaimerBox title="Medicine access boundary">
-          <p>
-            Information on this page is educational and coordination-focused. MMS does not
-            provide diagnosis, prescribing, dosage recommendations, dispensing services or
-            promises of medicine availability through this website. Any medicine-related
-            pathway must follow applicable laws and involve appropriate licensed professionals.
-          </p>
-        </DisclaimerBox>
-      </Section>
-
-      <section className="bg-navy px-4 py-20 text-ivory">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="font-serif text-4xl md:text-6xl">Start with a clear access question.</h2>
-          <p className="mt-5 text-lg leading-8 text-ivory/72">
-            MMS can help route the discussion before any professional or licensed-party next step.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <CTAButton href="/contact">Request Discussion</CTAButton>
-            <CTAButton href="/ling" variant="outline">Ask Ling</CTAButton>
-          </div>
+      <section className="relative isolate overflow-hidden bg-[#071e2c] px-4 pb-16 pt-28 text-ivory md:pt-36">
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_76%_30%,rgba(84,153,128,.22),transparent_30%),radial-gradient(circle_at_18%_78%,rgba(212,190,133,.13),transparent_34%)]" />
+        <div className="mx-auto grid min-h-[620px] max-w-6xl items-center gap-10 lg:grid-cols-[.9fr_1.1fr]">
+          <div><CapabilityStatus status="pilot"/><p className="mt-7 text-xs font-bold uppercase tracking-[.2em] text-gold-light">Medicine access intelligence</p><h1 className="mt-4 text-balance font-serif text-5xl leading-[1.03] md:text-7xl">One medicine. Very different market realities.</h1><p className="mt-6 max-w-xl text-lg leading-8 text-ivory/72">Compare like-for-like products before a licensed professional reviews the medical and supply pathway.</p><div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/contact">Request a comparison</CTAButton><CTAButton href="/ling" variant="outline">Ask Ling first</CTAButton></div></div>
+          <div className="relative min-h-[520px]"><div className="absolute inset-0 overflow-hidden rounded-[2.2rem] border border-white/10 bg-white/5 shadow-2xl"><Image src="/mms-medicine-intelligence.webp" alt="Illustrative global medicine comparison" fill priority className="object-cover" sizes="(min-width:1024px) 50vw,100vw"/><div className="absolute inset-0 bg-gradient-to-t from-[#071e2c] via-transparent to-transparent"/></div><div className="absolute bottom-6 left-6 right-6 grid grid-cols-3 gap-2">{[["5","markets"],["1","matched pack"],["0","shortcuts"]].map(([value,label])=><div key={label} className="rounded-2xl border border-white/10 bg-[#071e2c]/82 p-4 text-center backdrop-blur-md"><p className="font-serif text-3xl text-gold-light">{value}</p><p className="mt-1 text-xs text-ivory/60">{label}</p></div>)}</div></div>
         </div>
       </section>
+
+      <section className="bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl"><div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr] lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Match before you compare</p><h2 className="mt-3 font-serif text-5xl leading-tight text-navy">The label is not enough.</h2><p className="mt-5 leading-7 text-warm-gray">A meaningful comparison starts only when the product itself is truly matched.</p></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{factors.map((factor,index)=><div key={factor} className={`rounded-[1.4rem] p-5 shadow-soft ${index===5?"bg-deep-green text-ivory":"bg-white text-navy"}`}><span className={`text-xs font-bold ${index===5?"text-gold-light":"text-gold"}`}>0{index+1}</span><p className="mt-3 font-serif text-2xl">{factor}</p></div>)}</div></div></div></section>
+
+      <section className="bg-warm-white px-4 py-20"><div className="mx-auto max-w-6xl"><div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Five-market lens</p><h2 className="mt-2 font-serif text-5xl text-navy">See the spread instantly.</h2></div><p className="max-w-md text-sm leading-6 text-warm-gray">Synthetic design example only. Real prices require named products, dates and licensed sources.</p></div><div className="grid gap-4 lg:grid-cols-5">{markets.map((market,index)=><article key={market.country} className={`relative overflow-hidden rounded-[1.6rem] border border-stone-200 p-5 shadow-soft ${index===0?"bg-[#dce8e1]":index===4?"bg-navy text-ivory":"bg-white"}`}><div className="flex items-center justify-between"><span className={`grid size-11 place-items-center rounded-full text-xs font-bold ${index===4?"bg-white/10 text-white":"bg-deep-green text-white"}`}>{market.flag}</span><span className={`text-xs ${index===4?"text-ivory/50":"text-warm-gray"}`}>#{index+1}</span></div><p className={`mt-6 text-sm font-semibold ${index===4?"text-ivory/60":"text-warm-gray"}`}>{market.country}</p><p className="mt-1 font-serif text-4xl">{market.amount}</p><div className={`mt-6 h-28 rounded-2xl p-3 ${index===4?"bg-white/5":"bg-ivory"}`}><div className="flex h-full items-end"><div className="w-full rounded-xl bg-gradient-to-t from-deep-green to-gold-light" style={{height:`${Math.max(24,market.index)}%`}} /></div></div><p className={`mt-4 text-xs leading-5 ${index===4?"text-ivory/55":"text-warm-gray"}`}>{market.note}</p></article>)}</div><p className="mt-5 text-center text-xs text-warm-gray">All figures above are fictional examples converted to RM for visual explanation. They are not current quotations or claims of availability.</p></div></section>
+
+      <section className="bg-[#07372f] px-4 py-20 text-ivory"><div className="mx-auto max-w-6xl"><div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">MMS role</p><h2 className="mt-3 font-serif text-5xl leading-tight">Compare first. Decide with professionals.</h2><p className="mt-5 leading-7 text-ivory/68">MMS organises the question. Licensed professionals clear prescribing, dispensing, import and jurisdictional requirements.</p></div><div className="grid gap-3 sm:grid-cols-2">{[["01","Identify the exact product"],["02","Compare valid markets"],["03","Check regulatory boundaries"],["04","Coordinate licensed next steps"]].map(([number,label])=><div key={number} className="rounded-[1.4rem] border border-white/10 bg-white/5 p-5"><span className="text-xs text-gold-light">{number}</span><p className="mt-2 font-serif text-2xl">{label}</p></div>)}</div></div></div></section>
+
+      <section className="bg-ivory px-4 py-16"><div className="mx-auto max-w-5xl"><DisclaimerBox title="Medicine access boundary"><p>Information is educational and coordination-focused. MMS does not provide diagnosis, prescribing, dosage recommendations, dispensing or promises of medicine availability through this website. Any medicine-related pathway must follow applicable laws and involve appropriate licensed professionals.</p></DisclaimerBox></div></section>
     </main>
   );
 }
