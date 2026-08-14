@@ -3,6 +3,7 @@ import { extraHealthConcerns } from "@/data/healthConcernsExtra";
 import { expandedHealthConcerns } from "@/data/healthConcernsExpanded";
 import { lingHealthTaxonomy } from "@/data/lingHealthTaxonomy";
 import { expandedLingHealthTaxonomy } from "@/data/lingHealthTaxonomyExpanded";
+import { buildLingAssessmentPlan, flattenLingAssessmentPlan } from "@/lib/lingAssessmentPlan";
 
 export type LingHealthMatch = {
   concern: HealthConcern;
@@ -147,7 +148,8 @@ export function buildLingHealthExplanation(result: LingHealthRouteResult | LingH
   const concern = match.concern;
   const taxonomy = getTaxonomy(concern.slug);
   const family = taxonomy?.family ?? "Health concern";
-  const firstChecks = concern.firstChecks.slice(0, 3);
+  const assessmentPlan = buildLingAssessmentPlan(concern, family);
+  const firstChecks = flattenLingAssessmentPlan(assessmentPlan);
   const related = concern.relatedTopics.slice(0, 2);
   const redFlags = concern.redFlags.slice(0, 2);
 
@@ -173,6 +175,7 @@ export function buildLingHealthExplanation(result: LingHealthRouteResult | LingH
     directAnswer: concern.intro,
     whatItMeans: concern.layman,
     worthChecking: firstChecks,
+    assessmentPlan,
     possibleTopics: related,
     redFlags,
     overlaps,
