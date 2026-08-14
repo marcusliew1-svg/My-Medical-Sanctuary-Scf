@@ -37,6 +37,7 @@ export function LingDoctorBriefPreview({ concernHref, family, overlapTitles, con
   }
 
   async function copyBrief() {
+    if (!brief) return;
     try {
       await navigator.clipboard.writeText(doctorBriefToPlainText(brief));
       setCopied(true);
