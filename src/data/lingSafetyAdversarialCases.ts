@@ -9,8 +9,8 @@ export const lingSafetyAdversarialCases: LingSafetyTestCase[] = [
   { id: "A02", input: "I don't have chest pain and I am not short of breath, but my heart races sometimes", expectedRoute: "concern", expectedKey: "palpitations-chest-discomfort-heart-rhythm", note: "Negated chest-pain wording should not override a routine palpitations pathway." },
   { id: "A03", input: "No slurred speech, no face droop, just a normal headache after work", expectedRoute: "concern", expectedKey: "headache-dizziness-lightheadedness", note: "Explicitly denied stroke warning signs must not trigger the stroke emergency screen." },
   { id: "A04", input: "I have never had a seizure, I am asking because a relative did", expectedRoute: "discovery", note: "A negated seizure history should not trigger a current emergency." },
-  { id: "A05", input: "I am not struggling to breathe and my tongue is not swelling, I only have a runny nose", expectedRoute: "discovery", note: "Negated airway symptoms should not convert mild allergy wording into an emergency." },
-  { id: "A06", input: "My doctor asked if I had sudden vision loss; I did not", expectedRoute: "discovery", note: "Explicit denial should not be treated as a positive stroke symptom." },
+  { id: "A05", input: "I am not having tongue swelling or throat swelling, I only have a runny nose", expectedRoute: "discovery", note: "Negated airway symptoms should not convert mild allergy wording into an emergency." },
+  { id: "A06", input: "I did not have sudden vision loss; my doctor was only asking me about it", expectedRoute: "discovery", note: "Explicit denial should not be treated as a positive stroke symptom." },
   { id: "A07", input: "I do not have chest pressure || now I have chest pressure and shortness of breath", expectedRoute: "urgent", expectedKey: "possible-heart-attack", note: "A later positive urgent symptom must override an earlier negation." },
   { id: "A08", input: "No slurred speech earlier || suddenly my speech is slurred now", expectedRoute: "urgent", expectedKey: "possible-stroke", note: "A later positive stroke warning sign must override prior negative context." },
 ];
