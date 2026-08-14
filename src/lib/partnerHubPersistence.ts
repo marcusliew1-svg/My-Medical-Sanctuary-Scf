@@ -74,11 +74,14 @@ export interface PartnerHubRepository {
   createLead(input: Omit<LeadRecord, "id" | "createdAt" | "updatedAt">): Promise<LeadRecord>;
   appendOwnershipEvent(input: Omit<LeadOwnershipEvent, "id" | "createdAt">): Promise<LeadOwnershipEvent>;
   createApplication(input: Omit<MembershipApplicationRecord, "id" | "createdAt" | "updatedAt">): Promise<MembershipApplicationRecord>;
+  getApplicationById(id: string): Promise<MembershipApplicationRecord | null>;
   updateApplicationStatus(id: string, status: MembershipApplicationRecord["status"]): Promise<MembershipApplicationRecord>;
   appendCommissionLedger(input: Omit<CommissionLedgerEntry, "id" | "createdAt">): Promise<CommissionLedgerEntry>;
+  getCommissionLedger(applicationId: string): Promise<CommissionLedgerEntry[]>;
 }
 
 /**
  * Production adapters should implement this interface against the MMS source of truth.
  * Do not place Zoho secrets or database credentials in client code.
+ * Ledger entries must be append-only; do not expose update/delete methods for commission history.
  */
