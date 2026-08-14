@@ -24,7 +24,7 @@ const sessionBySlug: Record<string, SessionVisual> = {
     ],
     note: "Screening is not a guarantee that every condition will be detected. Test choice should be risk-based rather than package-driven.",
   },
-  "ecg-cardiovascular-risk": {
+  "ecg-cardiovascular-risk-review": {
     title: "What an ECG review may look like",
     intro: "An ECG is usually quick and painless, but it is only one part of cardiovascular assessment.",
     setting: "Consultation + ECG room",
@@ -108,7 +108,7 @@ const sessionBySlug: Record<string, SessionVisual> = {
     ],
     note: "PRGF and PRP are related but not interchangeable terms. Evidence should match the exact preparation and intended use.",
   },
-  "gut-health-microbiome": {
+  "gut-health-microbiome-support": {
     title: "What a gut-health review may look like",
     intro: "The most useful starting point is usually symptom pattern, diet and medical history rather than immediately ordering a microbiome test.",
     setting: "Consultation + nutrition review",
