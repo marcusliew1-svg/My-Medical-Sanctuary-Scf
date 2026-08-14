@@ -13,7 +13,7 @@ export const expandedHealthConcerns: HealthConcern[] = [
     redFlags: ["A sudden severe or rapidly peaking headache", "New weakness, facial droop, speech difficulty, confusion, seizure or loss of consciousness", "Headache after significant head injury", "Dizziness with chest pain, fainting, severe breathlessness or new neurological symptoms"],
     relatedTopics: [
       { label: "General medical assessment", href: "/health-discovery", evidence: "Assessment first", note: "The symptom pattern usually determines whether blood pressure, neurological, ear, cardiovascular or other evaluation is needed." },
-      { label: "Cardiovascular review", href: "/treatments/ecg-cardiovascular-risk", evidence: "Assessment first", note: "Useful when dizziness is associated with faintness, palpitations, exertion or cardiovascular risk; an ECG is only one part of the assessment." },
+      { label: "Cardiovascular review", href: "/treatments/ecg-cardiovascular-risk-review", evidence: "Assessment first", note: "Useful when dizziness is associated with faintness, palpitations, exertion or cardiovascular risk; an ECG is only one part of the assessment." },
     ],
     seoTerms: ["headache dizziness", "lightheadedness causes", "dizzy spells", "headache checkup", "dizziness assessment"],
   },
@@ -26,7 +26,7 @@ export const expandedHealthConcerns: HealthConcern[] = [
     firstChecks: ["How long episodes last, how often they occur and what triggers them", "Whether there is chest discomfort, breathlessness, fainting or marked dizziness", "Medication, caffeine, alcohol, stimulant and supplement review", "Pulse, blood pressure and ECG where clinically appropriate", "Blood tests or longer rhythm monitoring when the clinician thinks they are needed"],
     redFlags: ["Chest pain or pressure, especially with sweating, nausea or breathlessness", "Fainting or near-fainting with palpitations", "Severe breathlessness or collapse", "A sustained very fast or irregular heartbeat with significant symptoms"],
     relatedTopics: [
-      { label: "ECG & cardiovascular risk review", href: "/treatments/ecg-cardiovascular-risk", evidence: "Established clinical pathway", note: "An ECG can help identify some rhythm abnormalities, but intermittent symptoms may need additional monitoring or investigation." },
+      { label: "ECG & cardiovascular risk review", href: "/treatments/ecg-cardiovascular-risk-review", evidence: "Established clinical pathway", note: "An ECG can help identify some rhythm abnormalities, but intermittent symptoms may need additional monitoring or investigation." },
       { label: "Thyroid / metabolic review", href: "/health-discovery", evidence: "Assessment first", note: "Thyroid problems, anaemia and electrolyte disturbances can contribute to palpitations in some patients." },
     ],
     seoTerms: ["heart palpitations", "racing heartbeat", "irregular heartbeat", "palpitations ECG", "chest discomfort heart check"],
