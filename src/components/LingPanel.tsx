@@ -6,6 +6,7 @@ import { useState } from "react";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
 import { buildLingHealthExplanation, matchHealthConcerns } from "@/lib/lingHealthRouter";
 import { getLingClarification, type LingClarification } from "@/lib/lingClarification";
+import { matchLingUrgency, type LingUrgencyMatch } from "@/lib/lingUrgency";
 
 const guidance: Record<string, { text: string; href: string; label: string }> = {
   "I want a health screening": {
@@ -56,15 +57,29 @@ export function LingPanel() {
   const [askedQuestion, setAskedQuestion] = useState("");
   const [healthAnswer, setHealthAnswer] = useState<ReturnType<typeof buildLingHealthExplanation> | null>(null);
   const [clarification, setClarification] = useState<LingClarification | null>(null);
+  const [urgency, setUrgency] = useState<LingUrgencyMatch | null>(null);
   const [conversationContext, setConversationContext] = useState<string[]>([]);
   const selectedGuidance = selected ? guidance[selected] : null;
 
   function routeQuestion(clean: string, priorContext: string[] = conversationContext) {
     const nextContext = [...priorContext, clean].slice(-4);
     const combined = nextContext.join(" ");
-    const result = matchHealthConcerns(combined);
 
+    // Urgency always wins. When a conservative emergency rule matches, suppress normal
+    // concern, treatment, screening and promotional routing until the patient starts over.
+    const urgent = matchLingUrgency(combined) ?? matchLingUrgency(clean);
+    if (urgent) {
+      setUrgency(urgent);
+      setHealthAnswer(null);
+      setClarification(null);
+      setSelected(null);
+      setConversationContext(nextContext);
+      return;
+    }
+
+    const result = matchHealthConcerns(combined);
     if (result) {
+      setUrgency(null);
       setHealthAnswer(buildLingHealthExplanation(result));
       setClarification(null);
       setSelected(null);
@@ -74,6 +89,7 @@ export function LingPanel() {
 
     const followUp = getLingClarification(combined) ?? getLingClarification(clean);
     if (followUp) {
+      setUrgency(null);
       setClarification(followUp);
       setHealthAnswer(null);
       setSelected(null);
@@ -81,6 +97,7 @@ export function LingPanel() {
       return;
     }
 
+    setUrgency(null);
     setHealthAnswer(null);
     setClarification(null);
     setSelected("I'm not sure where to start");
@@ -105,6 +122,7 @@ export function LingPanel() {
     setAskedQuestion("");
     setHealthAnswer(null);
     setClarification(null);
+    setUrgency(null);
     setConversationContext([]);
   }
 
@@ -124,7 +142,7 @@ export function LingPanel() {
         {lingOptions.map((option) => (
           <button
             key={option}
-            onClick={() => { setSelected(option); setHealthAnswer(null); setClarification(null); setAskedQuestion(""); setConversationContext([]); }}
+            onClick={() => { setSelected(option); setHealthAnswer(null); setClarification(null); setUrgency(null); setAskedQuestion(""); setConversationContext([]); }}
             className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition duration-300 ${selected === option ? "border-gold bg-ivory text-navy shadow-soft" : "border-stone-200 bg-white text-stone-700 hover:border-gold-light hover:bg-ivory"}`}
           >
             {option}
@@ -143,6 +161,20 @@ export function LingPanel() {
         <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder={clarification ? "Add the next detail — Ling will keep your earlier answer in context…" : "Or ask in your own words — e.g. ‘Why am I always tired?’"} className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
         <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">{clarification ? "Add detail" : "Ask Ling"}</button>
       </div>
+
+      {urgency ? (
+        <div className="mt-5 overflow-hidden rounded-2xl border border-[#a94a3d]/40 bg-[#fff4f1] shadow-soft">
+          {askedQuestion ? <p className="border-b border-[#a94a3d]/20 bg-white px-5 py-4 text-sm italic text-warm-gray">“{askedQuestion}”</p> : null}
+          <div className="p-5 md:p-6">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-[#8f382e]"><span className="grid size-6 place-items-center rounded-full bg-[#8f382e] text-xs text-white">!</span>Urgent medical priority</div>
+            <h4 className="mt-4 font-serif text-3xl text-[#57231d]">{urgency.title}</h4>
+            <p className="mt-4 text-sm leading-7 text-navy">{urgency.message}</p>
+            <div className="mt-4 rounded-xl bg-[#8f382e] p-4 text-sm font-semibold leading-6 text-white">{urgency.action}</div>
+            <p className="mt-4 text-xs leading-5 text-warm-gray">Ling is intentionally not showing treatments, wellness options, screening packages or routine booking pathways here. In a possible emergency, urgent assessment takes priority.</p>
+            <button onClick={reset} className="mt-5 inline-flex min-h-10 items-center justify-center rounded-full border border-[#8f382e]/30 bg-white px-4 text-sm font-semibold text-[#8f382e]">Start a new Ling conversation</button>
+          </div>
+        </div>
+      ) : null}
 
       {clarification ? (
         <div className="mt-5 overflow-hidden rounded-2xl border border-[#c9b68e]/55 bg-[#fbf7ef]">
