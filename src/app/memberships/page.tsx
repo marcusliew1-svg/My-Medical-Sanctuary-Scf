@@ -55,23 +55,6 @@ export default function MembershipsPage() {
         </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">At a glance</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-6xl">More continuity as you move up.</h2></div>
-          <div className="relative grid gap-4 lg:grid-cols-4">
-            {levels.map((level, index) => (
-              <article key={level.name} className="relative rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-soft">
-                {index < levels.length - 1 ? <span className="absolute -right-3 top-10 z-10 hidden size-7 place-items-center rounded-full bg-deep-green text-sm text-white lg:grid">→</span> : null}
-                <div className="flex items-center justify-between"><span className="grid size-12 place-items-center rounded-full bg-ivory font-serif text-2xl text-deep-green">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">{level.signal}</span></div>
-                <h3 className="mt-5 font-serif text-3xl text-navy">{level.name}</h3>
-                <p className="mt-2 text-sm font-semibold text-deep-green">{level.promise}</p>
-                <p className="mt-5 text-sm leading-6 text-warm-gray">{level.forWhom}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 grid gap-5 md:grid-cols-[.7fr_1.3fr] md:items-end">
