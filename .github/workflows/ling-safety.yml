@@ -3,6 +3,8 @@ name: Ling Safety Regression
 on:
   pull_request:
     paths:
+      - "src/components/LingPanel.tsx"
+      - "src/components/LingDoctorBriefPreview.tsx"
       - "src/data/healthConcerns*.ts"
       - "src/data/lingHealthTaxonomy*.ts"
       - "src/data/lingSafetyTestCases.ts"
@@ -23,6 +25,8 @@ on:
     branches:
       - visual-refresh-phase2
     paths:
+      - "src/components/LingPanel.tsx"
+      - "src/components/LingDoctorBriefPreview.tsx"
       - "src/data/healthConcerns*.ts"
       - "src/data/lingHealthTaxonomy*.ts"
       - "src/data/lingSafetyTestCases.ts"
