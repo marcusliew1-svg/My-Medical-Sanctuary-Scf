@@ -10,6 +10,10 @@ import { expandedHealthConcerns } from "@/data/healthConcernsExpanded";
 const indexHealthEducation = (process.env.MMS_HEALTH_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
 const allConcerns = [...healthConcerns, ...extraHealthConcerns, ...expandedHealthConcerns];
 
+type HealthConcernPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
 function getConcern(slug: string) {
   return allConcerns.find((item) => item.slug === slug);
 }
@@ -18,8 +22,9 @@ export function generateStaticParams() {
   return allConcerns.map((item) => ({ slug: item.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const concern = getConcern(params.slug);
+export async function generateMetadata({ params }: HealthConcernPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const concern = getConcern(slug);
   if (!concern) return {};
   return {
     title: concern.searchTitle,
@@ -61,8 +66,9 @@ function topicHref(label: string, href?: string) {
   return href;
 }
 
-export default function HealthConcernDetailPage({ params }: { params: { slug: string } }) {
-  const concern = getConcern(params.slug);
+export default async function HealthConcernDetailPage({ params }: HealthConcernPageProps) {
+  const { slug } = await params;
+  const concern = getConcern(slug);
   if (!concern) notFound();
 
   return (
