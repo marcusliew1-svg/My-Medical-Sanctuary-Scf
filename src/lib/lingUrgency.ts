@@ -158,6 +158,45 @@ function normalise(value: string) {
 
 const localNegation = /(?:\bno|\bwithout|\bdenies|\bdeny|\bnever had|\bhave not had|\bhaven't had|\bdo not have|\bdon't have|\bdoes not have|\bdoesn't have|\bdid not have|\bdidn't have|\bnot currently having|\bnot having)(?:\s+\w+){0,3}\s*$/;
 
+const nonCurrentMarkers = [
+  "last year",
+  "years ago",
+  "year ago",
+  "months ago",
+  "weeks ago",
+  "two years ago",
+  "assessed at the time",
+  "well now",
+  "reading about",
+  "article",
+  "what does",
+  "what is",
+  "doctor asked",
+  "asking because",
+  "a relative did",
+  "relative did",
+];
+
+const currentMarkers = [
+  "right now",
+  "now i have",
+  "now i am",
+  "now has",
+  "now she has",
+  "now he has",
+  "currently",
+  "at the moment",
+  "suddenly",
+  "just started",
+  "started now",
+];
+
+function isClearlyNonCurrentInput(text: string) {
+  const hasNonCurrentMarker = nonCurrentMarkers.some((marker) => text.includes(marker));
+  if (!hasNonCurrentMarker) return false;
+  return !currentMarkers.some((marker) => text.includes(marker));
+}
+
 function hasPositiveOccurrence(text: string, term: string) {
   let from = 0;
   while (from < text.length) {
@@ -173,6 +212,7 @@ function hasPositiveOccurrence(text: string, term: string) {
 export function matchLingUrgency(input: string): LingUrgencyMatch | null {
   const q = normalise(input);
   if (!q) return null;
+  if (isClearlyNonCurrentInput(q)) return null;
 
   for (const rule of urgencyRules) {
     const matchedTerms = rule.terms.filter((term) => {
