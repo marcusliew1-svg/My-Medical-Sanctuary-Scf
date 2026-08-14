@@ -8,16 +8,14 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
 
 ## Core flow
 
-1. **Run the urgent-symptom priority layer first**
-   - Before normal concern matching, clarification, treatment research, screening or promotional routing, Ling checks for a small set of clinically reviewed time-critical symptom patterns.
-   - Current prototype examples include possible heart-attack warning patterns, possible stroke warning patterns, severe breathing/allergic reactions, and selected seizure/unresponsiveness patterns.
-   - If an urgent rule matches, routine treatment, wellness, screening and booking prompts are suppressed and Ling tells the person to contact local emergency medical services or seek emergency assessment.
-   - This layer is deliberately conservative and must receive clinical safety review before live patient use.
-   - It is not a diagnosis engine and should not attempt to determine which emergency condition the person definitely has.
-
-2. **Understand the patient's words**
+1. **Understand the patient's words**
    - Accept everyday language, symptoms, goals and concerns.
    - Do not require the patient to know medical terminology.
+
+2. **Run urgent priority before ordinary health routing**
+   - A conservative, clinically reviewed urgent layer must run before concern matching, clarification, screening, treatment education or promotional pathways.
+   - If an urgent pattern is matched, Ling suppresses routine wellness/treatment content and directs the person toward local emergency medical care.
+   - Ling should say the symptoms *could need urgent assessment* rather than claiming a diagnosis.
 
 3. **Match to one or more relevant health-concern pathways when the question is specific enough**
    - Examples now include fatigue, metabolic health, menopause, blood pressure, prediabetes, sleep apnoea, gut symptoms, joint pain, cancer-screening questions, headaches/dizziness, palpitations, urinary/prostate symptoms, thyroid questions, hair loss, memory changes, muscle loss and bone health.
@@ -47,9 +45,8 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
    - Where Ling stops and a qualified professional takes over.
 
 7. **Show red flags early**
-   - If the concern library contains urgent warning signs, Ling should surface them clearly.
+   - If the concern library contains urgent warning signs that do not already trigger emergency priority, Ling should surface them clearly.
    - Ling must not bury urgent-care advice below promotional content.
-   - A concern-page red flag is not the same as the top-level urgent-priority router: the urgent-priority router is allowed to interrupt the normal conversation entirely.
 
 8. **Connect to treatment education only after context**
    - Treatments are topics for discussion, not automatically recommended solutions.
@@ -57,27 +54,6 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
 
 9. **Escalate to human care**
    - Personal diagnosis, prescribing, treatment selection, contraindication assessment and interpretation of patient-specific investigations belong to qualified professionals.
-
-## Urgent-symptom priority layer
-
-The current prototype includes `src/lib/lingUrgency.ts`. Its job is intentionally narrow: identify a small number of patient phrases that should stop ordinary MMS routing.
-
-Priority order in the prototype is:
-
-1. urgent-symptom match;
-2. reviewed health-concern match;
-3. clarification for vague input;
-4. general discovery fallback.
-
-When the urgent layer matches, Ling should:
-
-- use plain, calm language;
-- explain why the wording may need emergency assessment without claiming a diagnosis;
-- direct the patient to local emergency medical services or an emergency department;
-- suppress treatment, wellness, screening and routine booking CTAs;
-- keep the event available for audit/version tracking in a production system.
-
-The urgent rules should remain deliberately limited. Adding more triggers is not automatically safer: broad or ambiguous terms can create false alarms, while missing important combinations can create false reassurance. Clinical review of both sensitivity and wording is required.
 
 ## Current taxonomy fields
 
@@ -140,19 +116,19 @@ Ling should say that areas “may overlap” or “may also be worth discussing.
 
 ## Recommended production architecture
 
-The current website prototype uses deterministic urgency rules, concern matching and clarification logic for demonstration. A production Ling should use reviewed routing rules plus retrieval rather than rely on a large model's memory alone.
+The current website prototype uses deterministic urgent matching, concern matching and clarification logic for demonstration. A production Ling should use retrieval rather than rely on a large model's memory alone.
 
-Suggested execution/retrieval order:
+Suggested routing / retrieval order:
 
-1. clinically reviewed urgent-symptom priority rules;
-2. MMS Health Concern Library;
-3. Ling Health Concern Taxonomy / aliases / overlap graph;
-4. Ling clarification rules for vague inputs;
-5. MMS Treatment Education Library;
-6. MMS approved screening and membership rules;
-7. MMS clinical SOP / approved medical knowledge base;
-8. authoritative external evidence sources when enabled and reviewed;
-9. patient-specific records only after authentication, consent and role checks.
+1. Clinically reviewed urgent-priority rules
+2. MMS Health Concern Library
+3. Ling Health Concern Taxonomy / aliases / overlap graph
+4. Ling clarification rules for vague inputs
+5. MMS Treatment Education Library
+6. MMS approved screening and membership rules
+7. MMS clinical SOP / approved medical knowledge base
+8. Authoritative external evidence sources when enabled and reviewed
+9. Patient-specific records only after authentication, consent and role checks
 
 The AI model should generate the explanation **from retrieved reviewed material**, not invent a treatment plan from general model knowledge.
 
@@ -181,6 +157,23 @@ A production answer should ideally be structured before it is rendered to the pa
 
 This structure allows the website, app, clinician view and audit log to use the same governed answer.
 
+## Safety regression matrix
+
+The repository contains `src/data/lingSafetyTestCases.ts` and `docs/Ling_Clinical_Safety_Test_Matrix.md`.
+
+The initial matrix contains 70 patient-style inputs covering urgent warning patterns, non-urgent controls, specific concern routing, vague-input clarification, multi-turn context, treatment-shopping questions and general discovery.
+
+Recommended release gate:
+
+- 100% pass on urgent-priority cases;
+- 100% pass where a later urgent turn must override earlier routine context;
+- no urgent response may show treatment, wellness, screening, membership or routine booking CTAs;
+- false-positive emergency routing must be reviewed using non-urgent controls;
+- every change to urgent rules, taxonomy or clarification logic should re-run the safety matrix;
+- clinician sign-off is required before patient use.
+
+This matrix is a regression/safety tool, not clinical validation of Ling as a diagnostic system.
+
 ## Source governance
 
 The repository includes `docs/Health_Concern_Source_Register.md` to record authoritative references used while drafting and reviewing concern content and urgent-routing language.
@@ -188,10 +181,9 @@ The repository includes `docs/Health_Concern_Source_Register.md` to record autho
 Production rules:
 
 - every patient-facing concern has a named clinical reviewer;
-- every urgent-routing rule has a named clinical safety reviewer;
+- urgent rules have a named clinical safety reviewer;
 - external source updates do not automatically change the patient answer;
-- the MMS-reviewed concern record remains the first retrieval layer for routine education;
-- clinically reviewed urgent routing runs before routine retrieval;
+- the MMS-reviewed concern/urgent record remains the governed retrieval layer;
 - source and review-version identifiers should travel with the internal answer object;
 - outdated or unreviewed content should be withdrawable without changing model code.
 
@@ -202,7 +194,7 @@ Ling must not:
 - say a patient definitely has a condition based only on their question;
 - display a disease probability unless a validated clinical tool specifically supports it;
 - use follow-up questions to create the appearance of a diagnosis;
-- continue promotional or routine treatment routing after an urgent-priority match;
+- continue wellness or treatment promotion after an urgent-priority match;
 - say a treatment is suitable without qualified professional review;
 - imply an advanced or regulated therapy is automatically available;
 - convert experimental evidence into an established-treatment claim;
@@ -236,16 +228,17 @@ Every clarification pattern should be reviewed for:
 - whether the follow-up questions are understandable and genuinely useful;
 - whether any answer combination should trigger urgent escalation rather than routine routing.
 
-Every urgent rule should be reviewed for:
+Every urgent-priority rule should be reviewed for:
 
-- source support and clinical wording;
-- ambiguous phrases that could trigger too easily;
-- important combinations that may be missed;
-- whether the emergency action is suitable for Malaysia/Thailand patient use;
-- whether the interface fully suppresses promotional pathways after a match.
+- sensitivity to clinically important wording;
+- false-positive risk;
+- negation handling;
+- colloquial and multilingual phrasing;
+- local emergency-service wording in Malaysia and Thailand;
+- whether an urgent match fully suppresses ordinary commercial pathways.
 
 Before live clinical use, the library should move from static website content into a governed content store with review status and auditability.
 
 ## Positioning
 
-Ling should feel like a knowledgeable health navigator that can explain complex health topics in normal language, recognise when concerns overlap, ask useful follow-up questions when a person is vague and immediately step out of the wellness conversation when the wording suggests a possible emergency. She is not positioned as an autonomous doctor.
+Ling should feel like a knowledgeable health navigator that can explain complex health topics in normal language, recognise when concerns overlap, ask useful follow-up questions when a person is vague, prioritise possible emergencies conservatively and prepare patients for better decisions. She is not positioned as an autonomous doctor.
