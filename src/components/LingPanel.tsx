@@ -56,28 +56,35 @@ export function LingPanel() {
   const [askedQuestion, setAskedQuestion] = useState("");
   const [healthAnswer, setHealthAnswer] = useState<ReturnType<typeof buildLingHealthExplanation> | null>(null);
   const [clarification, setClarification] = useState<LingClarification | null>(null);
+  const [conversationContext, setConversationContext] = useState<string[]>([]);
   const selectedGuidance = selected ? guidance[selected] : null;
 
-  function routeQuestion(clean: string) {
-    const result = matchHealthConcerns(clean);
+  function routeQuestion(clean: string, priorContext: string[] = conversationContext) {
+    const nextContext = [...priorContext, clean].slice(-4);
+    const combined = nextContext.join(" ");
+    const result = matchHealthConcerns(combined);
+
     if (result) {
       setHealthAnswer(buildLingHealthExplanation(result));
       setClarification(null);
       setSelected(null);
+      setConversationContext(nextContext);
       return;
     }
 
-    const followUp = getLingClarification(clean);
+    const followUp = getLingClarification(combined) ?? getLingClarification(clean);
     if (followUp) {
       setClarification(followUp);
       setHealthAnswer(null);
       setSelected(null);
+      setConversationContext(nextContext);
       return;
     }
 
     setHealthAnswer(null);
     setClarification(null);
     setSelected("I'm not sure where to start");
+    setConversationContext(nextContext);
   }
 
   function askLing() {
@@ -98,6 +105,7 @@ export function LingPanel() {
     setAskedQuestion("");
     setHealthAnswer(null);
     setClarification(null);
+    setConversationContext([]);
   }
 
   return (
@@ -116,7 +124,7 @@ export function LingPanel() {
         {lingOptions.map((option) => (
           <button
             key={option}
-            onClick={() => { setSelected(option); setHealthAnswer(null); setClarification(null); setAskedQuestion(""); }}
+            onClick={() => { setSelected(option); setHealthAnswer(null); setClarification(null); setAskedQuestion(""); setConversationContext([]); }}
             className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition duration-300 ${selected === option ? "border-gold bg-ivory text-navy shadow-soft" : "border-stone-200 bg-white text-stone-700 hover:border-gold-light hover:bg-ivory"}`}
           >
             {option}
@@ -124,9 +132,16 @@ export function LingPanel() {
         ))}
       </div>
 
+      {conversationContext.length > 0 ? (
+        <div className="mt-5 rounded-2xl border border-stone-200 bg-[#faf9f6] px-4 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[.14em] text-warm-gray">Ling is keeping this conversation in context</p>
+          <div className="mt-2 flex flex-wrap gap-2">{conversationContext.map((item,index)=><span key={`${item}-${index}`} className="rounded-full bg-white px-3 py-1.5 text-xs text-navy shadow-sm">{item}</span>)}</div>
+        </div>
+      ) : null}
+
       <div className="mt-5 flex gap-2 rounded-2xl border border-stone-200 bg-white p-2 shadow-soft">
-        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder="Or ask in your own words — e.g. ‘Why am I always tired?’" className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
-        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">Ask Ling</button>
+        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder={clarification ? "Add the next detail — Ling will keep your earlier answer in context…" : "Or ask in your own words — e.g. ‘Why am I always tired?’"} className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
+        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">{clarification ? "Add detail" : "Ask Ling"}</button>
       </div>
 
       {clarification ? (
@@ -146,7 +161,7 @@ export function LingPanel() {
               <div className="mt-3 flex flex-wrap gap-2">{clarification.suggestedPrompts.map((prompt)=><button key={prompt} onClick={()=>useSuggestedPrompt(prompt)} className="rounded-full border border-deep-green/15 bg-white px-3 py-2 text-xs font-semibold text-deep-green transition hover:border-deep-green">{prompt}</button>)}</div>
             </div>
 
-            <div className="mt-4 rounded-xl bg-[#edf2ef] px-4 py-3 text-xs leading-5 text-warm-gray">Ling is asking follow-up questions because a vague symptom should not be forced into a diagnosis or treatment pathway.</div>
+            <div className="mt-4 rounded-xl bg-[#edf2ef] px-4 py-3 text-xs leading-5 text-warm-gray">Ling will combine what you tell her across the next few messages. The goal is to find a useful concern pathway, not to turn the conversation into a diagnosis.</div>
             <div className="mt-4 flex flex-wrap gap-2"><Link href="/health-discovery" className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">Start health discovery</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
           </div>
         </div>
