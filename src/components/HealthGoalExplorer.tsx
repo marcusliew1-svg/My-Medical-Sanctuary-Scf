@@ -102,7 +102,7 @@ const goals: Goal[] = [
     treatmentLinks: [
       { label: "MCED", href: "/treatments/mced" },
       { label: "Health screening", href: "/treatments/health-screening-ultrasound" },
-      { label: "CAR-T education", href: "/treatments/car-t" },
+      { label: "Blood-cancer specialist education", href: "/health-concerns/blood-cancer-car-t-specialist-care" },
     ],
     accent: "from-[#e8e1d8] via-white to-[#e2e9e6]",
   },
