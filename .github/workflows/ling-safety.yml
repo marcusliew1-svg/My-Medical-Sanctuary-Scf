@@ -7,10 +7,13 @@ on:
       - "src/data/lingHealthTaxonomy*.ts"
       - "src/data/lingSafetyTestCases.ts"
       - "src/data/lingSafetyAdversarialCases.ts"
+      - "src/data/treatmentEducation*.ts"
       - "src/lib/lingClarification.ts"
       - "src/lib/lingHealthRouter.ts"
+      - "src/lib/lingTreatmentRouter.ts"
       - "src/lib/lingUrgency.ts"
       - "scripts/run-ling-safety-tests.ts"
+      - "scripts/run-ling-treatment-tests.ts"
       - ".github/workflows/ling-safety.yml"
   push:
     branches:
@@ -20,10 +23,13 @@ on:
       - "src/data/lingHealthTaxonomy*.ts"
       - "src/data/lingSafetyTestCases.ts"
       - "src/data/lingSafetyAdversarialCases.ts"
+      - "src/data/treatmentEducation*.ts"
       - "src/lib/lingClarification.ts"
       - "src/lib/lingHealthRouter.ts"
+      - "src/lib/lingTreatmentRouter.ts"
       - "src/lib/lingUrgency.ts"
       - "scripts/run-ling-safety-tests.ts"
+      - "scripts/run-ling-treatment-tests.ts"
       - ".github/workflows/ling-safety.yml"
 
 jobs:
@@ -38,7 +44,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -49,3 +55,6 @@ jobs:
 
       - name: Run Ling safety regression
         run: npx --yes tsx@4.20.6 scripts/run-ling-safety-tests.ts
+
+      - name: Run Ling treatment-routing regression
+        run: npx --yes tsx@4.20.6 scripts/run-ling-treatment-tests.ts
