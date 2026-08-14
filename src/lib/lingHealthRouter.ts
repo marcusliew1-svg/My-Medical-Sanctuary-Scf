@@ -1,6 +1,8 @@
 import { healthConcerns, type HealthConcern } from "@/data/healthConcerns";
 import { extraHealthConcerns } from "@/data/healthConcernsExtra";
-import { getLingTaxonomy, lingHealthTaxonomy } from "@/data/lingHealthTaxonomy";
+import { expandedHealthConcerns } from "@/data/healthConcernsExpanded";
+import { lingHealthTaxonomy } from "@/data/lingHealthTaxonomy";
+import { expandedLingHealthTaxonomy } from "@/data/lingHealthTaxonomyExpanded";
 
 export type LingHealthMatch = {
   concern: HealthConcern;
@@ -16,7 +18,12 @@ export type LingHealthRouteResult = {
   routeLabel: string;
 };
 
-export const lingHealthKnowledge = [...healthConcerns, ...extraHealthConcerns];
+export const lingHealthKnowledge = [...healthConcerns, ...extraHealthConcerns, ...expandedHealthConcerns];
+const allTaxonomy = [...lingHealthTaxonomy, ...expandedLingHealthTaxonomy];
+
+function getTaxonomy(slug: string) {
+  return allTaxonomy.find((item) => item.slug === slug);
+}
 
 function normalise(value: string) {
   return value
@@ -29,7 +36,7 @@ function normalise(value: string) {
 
 function scoreConcern(question: string, concern: HealthConcern): LingHealthMatch | null {
   const q = normalise(question);
-  const taxonomy = getLingTaxonomy(concern.slug);
+  const taxonomy = getTaxonomy(concern.slug);
   const aliases = taxonomy?.aliases ?? [];
   const candidates = [...aliases, ...concern.seoTerms];
   const matchedTerms = [...new Set(candidates.filter((term) => q.includes(normalise(term))))];
@@ -60,7 +67,7 @@ export function matchHealthConcerns(question: string): LingHealthRouteResult | n
   if (!matches.length) return null;
 
   const primary = matches[0];
-  const taxonomy = getLingTaxonomy(primary.concern.slug);
+  const taxonomy = getTaxonomy(primary.concern.slug);
   const explicitRelated = new Set(taxonomy?.relatedSlugs ?? []);
 
   const overlaps = matches
@@ -68,8 +75,6 @@ export function matchHealthConcerns(question: string): LingHealthRouteResult | n
     .filter((match) => match.score >= Math.max(2, primary.score - 3) || explicitRelated.has(match.concern.slug))
     .slice(0, 3);
 
-  // If the patient's wording only strongly matches one concern, still surface one or two
-  // clinically adjacent concern guides from the reviewed taxonomy as "may overlap" areas.
   if (overlaps.length < 2 && taxonomy) {
     for (const slug of taxonomy.relatedSlugs) {
       if (overlaps.some((item) => item.concern.slug === slug)) continue;
@@ -88,7 +93,6 @@ export function matchHealthConcerns(question: string): LingHealthRouteResult | n
   };
 }
 
-// Backward-compatible helper for existing components.
 export function matchHealthConcern(question: string): LingHealthMatch | null {
   return matchHealthConcerns(question)?.primary ?? null;
 }
@@ -97,7 +101,7 @@ export function buildLingHealthExplanation(result: LingHealthRouteResult | LingH
   const isRouteResult = "primary" in result;
   const match = isRouteResult ? result.primary : result;
   const concern = match.concern;
-  const taxonomy = getLingTaxonomy(concern.slug);
+  const taxonomy = getTaxonomy(concern.slug);
   const firstChecks = concern.firstChecks.slice(0, 3);
   const related = concern.relatedTopics.slice(0, 2);
   const redFlags = concern.redFlags.slice(0, 2);
@@ -128,4 +132,4 @@ export function buildLingHealthExplanation(result: LingHealthRouteResult | LingH
   };
 }
 
-export const lingHealthFamilies = [...new Set(lingHealthTaxonomy.map((item) => item.family))];
+export const lingHealthFamilies = [...new Set(allTaxonomy.map((item) => item.family))];
