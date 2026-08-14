@@ -132,8 +132,9 @@ export function LingPanel() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Ling</p>
           <h3 className="mt-2 font-serif text-3xl text-navy">What brings you here today?</h3>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-warm-gray">Talk naturally. Ling can connect what you say to the reviewed MMS health-concern library and ask what may be useful to clarify next.</p>
         </div>
-        <span className="relative size-16 overflow-hidden rounded-full border-2 border-gold-light bg-ivory shadow-soft">
+        <span className="relative size-16 shrink-0 overflow-hidden rounded-full border-2 border-gold-light bg-ivory shadow-soft">
           <Image src="/ling-mms-guide.png" alt="Ling, the MMS intelligent health guide" fill className="object-cover object-[50%_24%]" sizes="64px" />
         </span>
       </div>
@@ -158,8 +159,8 @@ export function LingPanel() {
       ) : null}
 
       <div className="mt-5 flex gap-2 rounded-2xl border border-stone-200 bg-white p-2 shadow-soft">
-        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder={clarification ? "Add the next detail — Ling will keep your earlier answer in context…" : "Or ask in your own words — e.g. ‘Why am I always tired?’"} className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
-        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">{clarification ? "Add detail" : "Ask Ling"}</button>
+        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder={clarification || healthAnswer ? "Tell Ling the next detail — she will keep the earlier context…" : "Or ask in your own words — e.g. ‘Why am I always tired?’"} className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
+        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">{clarification || healthAnswer ? "Add detail" : "Ask Ling"}</button>
       </div>
 
       {urgency ? (
@@ -208,12 +209,18 @@ export function LingPanel() {
               <span className="rounded-full bg-[#dfe9e3] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-deep-green">{healthAnswer.family}</span>
             </div>
             <h4 className="mt-3 font-serif text-2xl text-navy">{healthAnswer.title}</h4>
+            <div className="mt-3 rounded-xl border border-[#c7d8cf] bg-[#f4f8f6] px-4 py-3 text-sm leading-6 text-navy"><strong className="text-deep-green">Ling:</strong> {healthAnswer.conversationLead}{conversationContext.length > 1 ? " I am also using the earlier details you gave me in this conversation." : ""}</div>
 
             <div className="mt-5 grid gap-3">
               <div className="rounded-xl bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">The short answer</p><p className="mt-2 text-sm leading-6 text-navy">{healthAnswer.directAnswer}</p></div>
               <div className="rounded-xl bg-[#edf2ef] p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">What that actually means</p><p className="mt-2 text-sm leading-6 text-navy">{healthAnswer.whatItMeans}</p></div>
               <div className="rounded-xl bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">What may be worth checking</p><ul className="mt-2 grid gap-2 text-sm leading-6 text-navy">{healthAnswer.worthChecking.map((item)=><li key={item} className="flex gap-2"><span className="font-bold text-deep-green">•</span><span>{item}</span></li>)}</ul></div>
               <div className="rounded-xl border border-deep-green/15 bg-[#eef4f1] p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">A sensible starting route</p><p className="mt-2 text-sm leading-6 text-navy">{healthAnswer.routeLabel}</p></div>
+              <div className="rounded-xl border border-[#c9b68e]/45 bg-[#fbf7ef] p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">What Ling would ask next</p>
+                <p className="mt-2 text-xs leading-5 text-warm-gray">You do not need to answer everything. Tell Ling whichever detail is most relevant in the box above.</p>
+                <div className="mt-3 grid gap-2">{healthAnswer.followUpQuestions.map((item,index)=><div key={item} className="flex gap-3 rounded-lg bg-white px-3 py-3 text-sm leading-6 text-navy"><span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#edf2ef] text-[10px] font-bold text-deep-green">{index+1}</span><span>{item}</span></div>)}</div>
+              </div>
               <div className="rounded-xl border border-stone-200 bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-warm-gray">Treatment topics people may discuss</p><div className="mt-3 grid gap-2">{healthAnswer.possibleTopics.map((topic)=><div key={topic.label} className="rounded-lg bg-ivory px-3 py-3"><p className="text-sm font-semibold text-navy">{topic.label}</p><p className="mt-1 text-xs leading-5 text-warm-gray">{topic.note}</p></div>)}</div></div>
               {healthAnswer.overlaps.length ? <div className="rounded-xl border border-stone-200 bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-warm-gray">This can overlap with other health concerns</p><p className="mt-2 text-xs leading-5 text-warm-gray">Symptoms do not always belong to one category. These related guides may also be useful to discuss, depending on your history.</p><div className="mt-3 flex flex-wrap gap-2">{healthAnswer.overlaps.map((item)=><Link key={item.href} href={item.href} className="rounded-full border border-deep-green/15 bg-ivory px-3 py-2 text-xs font-semibold text-deep-green">{item.title} →</Link>)}</div></div> : null}
             </div>
