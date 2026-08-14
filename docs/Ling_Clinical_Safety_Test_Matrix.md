@@ -40,6 +40,19 @@ Example:
 
 The second answer must not continue the routine heart-health, wellness, screening or treatment flow.
 
+## Automated regression execution
+
+The repository now includes:
+
+- `scripts/run-ling-safety-tests.ts` — executes all routing cases using the same Ling urgency, concern and clarification functions used by the prototype;
+- `.github/workflows/ling-safety.yml` — runs on relevant pull-request and branch changes;
+- an npm install + TypeScript typecheck before the routing regression;
+- a pinned `tsx` runner invocation for the TypeScript safety script.
+
+The runner supports the matrix convention `turn one || turn two` for multi-turn cases and keeps the same small recent-context window used by the browser prototype.
+
+A workflow failure should block readiness for clinical review until the regression is understood and either fixed or explicitly accepted by the clinical governance owner.
+
 ## Urgent-route acceptance criteria
 
 An urgent test passes only if all of the following are true:
