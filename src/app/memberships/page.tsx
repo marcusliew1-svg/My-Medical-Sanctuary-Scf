@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { Hero } from "@/components/Hero";
-import { SectionHeader } from "@/components/SectionHeader";
-import { memberships } from "@/data/memberships";
 import Image from "next/image";
+import Link from "next/link";
+import { CTAButton } from "@/components/CTAButton";
+import { DisclaimerBox } from "@/components/DisclaimerBox";
+import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
   title: "Memberships",
@@ -11,72 +11,81 @@ export const metadata: Metadata = {
     "Explore MMS memberships including Ascend, Evolve, Eterna and Pinnacle for structured wellness coordination.",
 };
 
+const levels = [
+  { name: "Ascend", icon: "△", promise: "Discover", signal: "Baseline", forWhom: "Starting preventive care", tone: "from-deep-green to-navy" },
+  { name: "Evolve", icon: "◇", promise: "Optimise", signal: "Momentum", forWhom: "Improving energy or metabolism", tone: "from-sage to-deep-green" },
+  { name: "Eterna", icon: "♧", promise: "Protect", signal: "Continuity", forWhom: "Long-term health oversight", tone: "from-charcoal to-navy" },
+  { name: "Pinnacle", icon: "♛", promise: "Coordinate", signal: "Concierge", forWhom: "Executives and families", tone: "from-terracotta to-navy" },
+];
+
 export default function MembershipsPage() {
-  const levels = [
-    { name: "Ascend", rate: "5%", icon: "△", promise: "Discover", cadence: "Milestone follow-up", access: "Guided", signal: "Baseline", forWhom: "Starting preventive care" },
-    { name: "Evolve", rate: "10%", icon: "◇", promise: "Optimise", cadence: "Quarterly", access: "Structured", signal: "Momentum", forWhom: "Improving energy or metabolism" },
-    { name: "Eterna", rate: "15%", icon: "♧", promise: "Protect", cadence: "Ongoing roadmap", access: "Priority", signal: "Continuity", forWhom: "Long-term health oversight" },
-    { name: "Pinnacle", rate: "20%", icon: "♛", promise: "Coordinate", cadence: "Bespoke", access: "Dedicated", signal: "Concierge", forWhom: "Executives and families" },
-  ];
   return (
     <main>
-      <Hero
-        eyebrow="Memberships"
-        title="Structured wellness journeys, not random purchases."
-        subtitle="Each MMS membership is designed around discovery, HRM coordination, professional review and suitability assessment."
-        image="/mms-about-hero.webp"
-      />
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 grid overflow-hidden rounded-[2rem] bg-deep-green text-ivory shadow-premium md:grid-cols-[1.05fr_.95fr]"><div className="relative min-h-[360px]"><Image src="/mms-membership-journey.webp" alt="Four MMS membership journeys for changing life and health priorities" fill className="object-cover" sizes="50vw" /></div><div className="flex flex-col justify-center p-8 md:p-12"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">Find your fit</p><h2 className="mt-4 font-serif text-4xl leading-tight">Four journeys. Different depths of support.</h2><p className="mt-4 text-ivory/70">Choose by your goals and desired level of coordination—not by a public price list.</p></div></div>
-          <div className="mb-12 overflow-hidden rounded-[2rem] border border-gold/50 bg-[#06382f] text-ivory shadow-premium">
-            <div className="border-b border-gold/35 px-6 py-5 text-center">
-              <p className="text-xs font-bold uppercase tracking-[.22em] text-gold-light">Member privilege ladder</p>
-              <h2 className="mt-2 font-serif text-3xl">More continuity. More privilege.</h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4">
-              {levels.map((level, index) => <div key={level.name} className="relative border-gold/30 p-6 text-center sm:border-l first:border-l-0">
-                <span className="mx-auto grid size-14 place-items-center rounded-full border border-gold/60 text-2xl text-gold-light">{level.icon}</span>
-                <p className="mt-4 font-serif text-2xl">{level.name}</p>
-                <p className="mt-1 text-xs uppercase tracking-[.16em] text-ivory/60">{level.promise}</p>
-                <p className="mt-5 font-serif text-5xl text-gold-light">{level.rate}</p>
-                <p className="text-xs text-ivory/60">selected SCF privilege rate</p>
-                {index < levels.length - 1 ? <span className="absolute -right-3 top-1/2 z-10 hidden size-6 place-items-center rounded-full bg-gold text-navy lg:grid">→</span> : null}
-              </div>)}
-            </div>
-            <p className="border-t border-gold/30 px-6 py-4 text-center text-xs leading-5 text-ivory/60">Applies to selected eligible SCF services. Final eligibility, exclusions and clinical suitability must be confirmed.</p>
+      <section className="relative isolate overflow-hidden bg-navy px-4 pb-16 pt-32 text-ivory md:pb-24 md:pt-40">
+        <Image src="/mms-membership-journey.webp" alt="" fill priority className="-z-20 object-cover opacity-55" sizes="100vw" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,25,38,.98),rgba(9,25,38,.82)_52%,rgba(9,25,38,.5))]" />
+        <div className="mx-auto grid min-h-[60vh] max-w-7xl items-center gap-10 lg:grid-cols-[1fr_.8fr]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">MMS Memberships</p>
+            <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-[1.04] md:text-7xl">Choose the depth of support that fits your life.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-ivory/72">Four levels of continuity — from a preventive baseline to private, high-touch coordination.</p>
+            <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/ling">Ask Ling</CTAButton><CTAButton href="/contact" variant="outline">Speak with MMS</CTAButton></div>
           </div>
-
-          <div className="mb-12 rounded-[2rem] bg-white p-6 shadow-soft md:p-8">
-            <div className="grid gap-6 lg:grid-cols-[.7fr_1.3fr] lg:items-center">
-              <div><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">See the difference</p><h2 className="mt-3 font-serif text-4xl text-navy">Four levels at a glance.</h2><p className="mt-3 text-warm-gray">Each level adds continuity—not simply more items.</p></div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {levels.map((level,index)=><div key={level.name} className="rounded-2xl border border-stone-200 bg-ivory p-4"><div className="flex items-center gap-3"><span className="grid size-11 shrink-0 place-items-center rounded-full bg-deep-green font-bold text-white">0{index+1}</span><div><p className="font-serif text-xl text-navy">{level.name}</p><p className="text-xs font-bold uppercase tracking-[.12em] text-gold">{level.signal}</p></div></div><p className="mt-3 text-sm font-semibold text-navy">{level.forWhom}</p><p className="mt-1 text-sm text-warm-gray">{level.access} · {level.cadence}</p></div>)}
+          <div className="grid grid-cols-2 gap-3">
+            {levels.map((level, index) => (
+              <div key={level.name} className={`relative min-h-[170px] overflow-hidden rounded-[1.5rem] bg-gradient-to-br ${level.tone} p-5 shadow-xl`}>
+                <div className="absolute -right-8 -top-8 size-28 rounded-full border border-white/10" />
+                <div className="flex items-center justify-between"><span className="grid size-10 place-items-center rounded-full border border-white/15 text-gold-light">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-ivory/50">0{index + 1}</span></div>
+                <p className="mt-8 font-serif text-2xl">{level.name}</p><p className="text-xs uppercase tracking-[.14em] text-gold-light">{level.promise}</p>
               </div>
-            </div>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2">
-            {memberships.map((membership, index) => (
-              <article key={membership.name} className="rounded-[1.5rem] border border-gold-light/40 bg-white p-7 shadow-soft">
-                <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">{membership.accessNote}</p><h2 className="mt-2 font-serif text-4xl text-navy">{membership.name}</h2></div><span className="grid size-12 place-items-center rounded-full bg-deep-green text-lg font-bold text-white">0{index + 1}</span></div>
-                <p className="mt-3 text-lg font-semibold text-deep-green">{membership.tagline}</p>
-                <div className="mt-6 grid gap-5 sm:grid-cols-2"><div><h3 className="text-xs font-bold uppercase tracking-[.14em] text-gold">Best suited for</h3><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p></div><div><h3 className="text-xs font-bold uppercase tracking-[.14em] text-gold">Coordination</h3><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.coordination}</p></div></div>
-                <h3 className="mt-6 text-xs font-bold uppercase tracking-[.14em] text-gold">Your opening journey</h3><ul className="mt-3 grid gap-2 sm:grid-cols-2">{membership.firstThirtyDays.map(item => <li key={item} className="rounded-lg bg-ivory px-3 py-2 text-sm text-navy">✓ {item}</li>)}</ul>
-              </article>
             ))}
-          </div>
-          <div className="mt-10 overflow-x-auto rounded-2xl border border-stone-200 bg-white"><table className="w-full min-w-[760px] text-left text-sm"><thead className="bg-deep-green text-white"><tr><th className="p-4">What changes</th>{memberships.map(m => <th key={m.name} className="p-4">{m.name}</th>)}</tr></thead><tbody>{[["SCF member privilege","5%","10%","15%","20%"],["Preventive baseline","Core","Expanded","Advanced","Bespoke"],["Ling continuity","Included","Continuous","Priority","Dedicated"],["Human coordination","Guided","Quarterly","Ongoing","Private"],["Appointment support","Standard","Structured","Priority","Dedicated"],["Regional access","On request","Included","Priority","Bespoke"],["Family / executive planning","—","—","Optional","Included"]].map((row,i)=><tr key={row[0]} className={i%2 ? "bg-ivory" : ""}>{row.map((cell,j)=><td key={cell+j} className={`border-t border-stone-100 p-4 ${j===0 ? "font-semibold text-navy" : ""}`}>{cell}</td>)}</tr>)}</tbody></table></div>
-          <p className="mt-4 text-center text-sm text-warm-gray">Pricing is discussed privately after discovery and suitability review.</p>
-          <div className="mt-8">
-            <DisclaimerBox>
-              <p>
-                Membership does not promise specific outcomes. Any wellness pathway is subject to discovery discussion, professional review and suitability assessment.
-              </p>
-            </DisclaimerBox>
           </div>
         </div>
       </section>
+
+      <section className="bg-warm-white px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">At a glance</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-6xl">More continuity as you move up.</h2></div>
+          <div className="relative grid gap-4 lg:grid-cols-4">
+            {levels.map((level, index) => (
+              <article key={level.name} className="relative rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-soft">
+                {index < levels.length - 1 ? <span className="absolute -right-3 top-10 z-10 hidden size-7 place-items-center rounded-full bg-deep-green text-sm text-white lg:grid">→</span> : null}
+                <div className="flex items-center justify-between"><span className="grid size-12 place-items-center rounded-full bg-ivory font-serif text-2xl text-deep-green">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">{level.signal}</span></div>
+                <h3 className="mt-5 font-serif text-3xl text-navy">{level.name}</h3>
+                <p className="mt-2 text-sm font-semibold text-deep-green">{level.promise}</p>
+                <p className="mt-5 text-sm leading-6 text-warm-gray">{level.forWhom}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 grid gap-5 md:grid-cols-[.7fr_1.3fr] md:items-end"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">See the journeys</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-5xl">Four memberships. Four different rhythms.</h2></div><p className="max-w-2xl text-base leading-7 text-warm-gray">The difference is not simply “more items”. It is the amount of continuity, access and coordination around you.</p></div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {memberships.map((membership, index) => (
+              <article key={membership.name} className="group overflow-hidden rounded-[2rem] bg-white shadow-soft">
+                <div className={`relative h-48 bg-gradient-to-br ${levels[index].tone} p-7 text-ivory`}>
+                  <div className="absolute -right-10 -top-10 size-40 rounded-full border border-white/10" />
+                  <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-gold-light">{membership.accessNote}</p><h3 className="mt-3 font-serif text-4xl">{membership.name}</h3><p className="mt-2 text-sm font-semibold text-ivory/75">{membership.tagline}</p></div><span className="font-serif text-5xl text-white/15">0{index + 1}</span></div>
+                </div>
+                <div className="p-7">
+                  <div className="grid gap-5 sm:grid-cols-2"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Best for</p><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p></div><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Coordination</p><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.coordination}</p></div></div>
+                  <div className="mt-6 border-t border-black/5 pt-5"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">Opening journey</p><div className="mt-3 flex flex-wrap gap-2">{membership.firstThirtyDays.slice(0,4).map(item => <span key={item} className="rounded-full bg-ivory px-3 py-2 text-xs text-navy">{item}</span>)}</div></div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-deep-green px-4 py-20 text-ivory md:py-24">
+        <div className="mx-auto max-w-6xl text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Not sure where you fit?</p><h2 className="mt-3 font-serif text-4xl md:text-6xl">Start with your goals, not a package.</h2><p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-ivory/68">Ling can help you understand the differences before you speak with the MMS team.</p><div className="mt-8 flex justify-center"><CTAButton href="/ling">Ask Ling</CTAButton></div></div>
+      </section>
+
+      <section className="bg-warm-white px-4 py-12"><div className="mx-auto max-w-5xl"><DisclaimerBox><p>Membership does not promise specific outcomes. Any wellness pathway is subject to discovery discussion, professional review and suitability assessment.</p></DisclaimerBox></div></section>
     </main>
   );
 }
