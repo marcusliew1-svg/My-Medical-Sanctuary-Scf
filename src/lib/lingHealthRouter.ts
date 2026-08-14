@@ -34,12 +34,26 @@ function normalise(value: string) {
     .trim();
 }
 
+const localNegation = /(?:\bno|\bwithout|\bdenies|\bdeny|\bnever had|\bhave not had|\bhaven't had|\bdo not have|\bdon't have|\bdoes not have|\bdoesn't have|\bdid not have|\bdidn't have|\bnot currently having|\bnot having)(?:\s+\w+){0,4}\s*$/;
+
+function hasPositiveOccurrence(text: string, term: string) {
+  let from = 0;
+  while (from < text.length) {
+    const index = text.indexOf(term, from);
+    if (index === -1) return false;
+    const before = text.slice(Math.max(0, index - 65), index);
+    if (!localNegation.test(before)) return true;
+    from = index + term.length;
+  }
+  return false;
+}
+
 function scoreConcern(question: string, concern: HealthConcern): LingHealthMatch | null {
   const q = normalise(question);
   const taxonomy = getTaxonomy(concern.slug);
   const aliases = taxonomy?.aliases ?? [];
   const candidates = [...aliases, ...concern.seoTerms];
-  const matchedTerms = [...new Set(candidates.filter((term) => q.includes(normalise(term))))];
+  const matchedTerms = [...new Set(candidates.filter((term) => hasPositiveOccurrence(q, normalise(term))))];
   if (!matchedTerms.length) return null;
 
   const score = matchedTerms.reduce((total, term) => {
