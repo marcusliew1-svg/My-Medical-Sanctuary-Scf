@@ -9,6 +9,7 @@ on:
       - "src/data/lingSafetyAdversarialCases.ts"
       - "src/data/treatmentEducation*.ts"
       - "src/lib/lingAssessmentPlan.ts"
+      - "src/lib/lingDoctorBrief.ts"
       - "src/lib/lingClarification.ts"
       - "src/lib/lingHealthRouter.ts"
       - "src/lib/lingTreatmentRouter.ts"
@@ -16,6 +17,7 @@ on:
       - "scripts/run-ling-safety-tests.ts"
       - "scripts/run-ling-treatment-tests.ts"
       - "scripts/run-ling-assessment-tests.ts"
+      - "scripts/run-ling-doctor-brief-tests.ts"
       - ".github/workflows/ling-safety.yml"
   push:
     branches:
@@ -27,6 +29,7 @@ on:
       - "src/data/lingSafetyAdversarialCases.ts"
       - "src/data/treatmentEducation*.ts"
       - "src/lib/lingAssessmentPlan.ts"
+      - "src/lib/lingDoctorBrief.ts"
       - "src/lib/lingClarification.ts"
       - "src/lib/lingHealthRouter.ts"
       - "src/lib/lingTreatmentRouter.ts"
@@ -34,6 +37,7 @@ on:
       - "scripts/run-ling-safety-tests.ts"
       - "scripts/run-ling-treatment-tests.ts"
       - "scripts/run-ling-assessment-tests.ts"
+      - "scripts/run-ling-doctor-brief-tests.ts"
       - ".github/workflows/ling-safety.yml"
 
 jobs:
@@ -65,3 +69,6 @@ jobs:
 
       - name: Run Ling assessment-plan regression
         run: npx --yes tsx@4.20.6 scripts/run-ling-assessment-tests.ts
+
+      - name: Run Ling doctor-brief regression
+        run: npx --yes tsx@4.20.6 scripts/run-ling-doctor-brief-tests.ts
