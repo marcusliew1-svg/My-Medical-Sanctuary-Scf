@@ -8,8 +8,9 @@ import { lingDisclaimer } from "@/lib/content";
 
 const modes = [
   { number: "01", title: "Ask", text: "Explore general health and MMS questions without registration." },
-  { number: "02", title: "Organise", text: "With permission, structure preferences, records and next actions." },
-  { number: "03", title: "Coordinate", text: "Prepare the journey for MMS teams and qualified doctors." },
+  { number: "02", title: "Understand", text: "Ling organises what you tell her and helps identify a useful next pathway." },
+  { number: "03", title: "Prepare", text: "Turn your own words into a concise note you can review before a doctor discussion." },
+  { number: "04", title: "Human care", text: "Qualified professionals remain responsible for diagnosis, prescribing and treatment decisions." },
 ];
 
 const examples = ["What should I ask at my health screening?", "How are Ascend and Evolve different?", "Can MMS coordinate care in Thailand?", "Help me prepare for a doctor discussion."];
@@ -26,7 +27,7 @@ export default function LingPage() {
             <p className="mt-6 max-w-xl text-lg leading-8 text-ivory/72">Ask first. Organise what matters. Move to human care when it is time.</p>
             <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="#try-ling">Ask Ling now</CTAButton><CTAButton href="/how-it-works" variant="outline">See the MMS journey</CTAButton></div>
             <p className="mt-3 text-xs leading-5 text-ivory/58">No registration is needed to start asking general questions.</p>
-            <div className="mt-10 grid max-w-xl grid-cols-3 gap-2">{modes.map(mode => <div key={mode.number} className="rounded-2xl border border-white/10 bg-white/5 p-4"><span className="text-xs text-gold-light">{mode.number}</span><p className="mt-2 font-serif text-xl">{mode.title}</p></div>)}</div>
+            <div className="mt-10 grid max-w-2xl grid-cols-2 gap-2 md:grid-cols-4">{modes.map(mode => <div key={mode.number} className="rounded-2xl border border-white/10 bg-white/5 p-4"><span className="text-xs text-gold-light">{mode.number}</span><p className="mt-2 font-serif text-lg">{mode.title}</p></div>)}</div>
           </div>
           <div className="relative min-h-[560px]">
             <div className="absolute inset-x-4 bottom-0 top-0 overflow-hidden rounded-[2.4rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-sm">
@@ -41,13 +42,30 @@ export default function LingPage() {
 
       <section id="try-ling" className="scroll-mt-24 bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl">
         <div className="grid gap-6 lg:grid-cols-[.72fr_1.28fr] lg:items-start">
-          <div className="lg:sticky lg:top-28"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Try Ling</p><h2 className="mt-3 font-serif text-4xl leading-tight text-navy md:text-5xl">Start with a question, not a form.</h2><p className="mt-4 leading-7 text-warm-gray">{lingDisclaimer}</p><div className="mt-6 grid gap-2">{examples.map(example => <div key={example} className="rounded-xl bg-white px-4 py-3 text-sm text-navy shadow-soft">“{example}”</div>)}</div></div>
-          <LingPanel />
+          <div className="lg:sticky lg:top-28">
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Try Ling</p>
+            <h2 className="mt-3 font-serif text-4xl leading-tight text-navy md:text-5xl">Start with a question, not a form.</h2>
+            <p className="mt-4 leading-7 text-warm-gray">{lingDisclaimer}</p>
+            <div className="mt-6 rounded-2xl border border-deep-green/15 bg-white p-5 shadow-soft">
+              <p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Before you type</p>
+              <p className="mt-2 text-sm leading-6 text-navy">You can start without registration. This prototype uses only recent details to continue the current conversation and does not present them as a medical record.</p>
+              <p className="mt-2 text-xs leading-5 text-warm-gray">Saving a journey into My Sanctuary will require an authenticated account, consent and the appropriate record controls.</p>
+            </div>
+            <div className="mt-6 grid gap-2">{examples.map(example => <div key={example} className="rounded-xl bg-white px-4 py-3 text-sm text-navy shadow-soft">“{example}”</div>)}</div>
+          </div>
+          <div>
+            <div className="mb-4 grid gap-2 sm:grid-cols-3">
+              <div className="rounded-xl bg-white p-3 shadow-soft"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">Anonymous start</p><p className="mt-1 text-xs leading-5 text-warm-gray">No account needed for general questions.</p></div>
+              <div className="rounded-xl bg-white p-3 shadow-soft"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">Recent context only</p><p className="mt-1 text-xs leading-5 text-warm-gray">Ling uses recent details to keep the conversation coherent.</p></div>
+              <div className="rounded-xl bg-white p-3 shadow-soft"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">Doctor decides</p><p className="mt-1 text-xs leading-5 text-warm-gray">Diagnosis, prescribing and treatment remain clinician-led.</p></div>
+            </div>
+            <LingPanel />
+          </div>
         </div>
       </div></section>
 
       <section className="bg-warm-white px-4 py-20"><div className="mx-auto max-w-6xl">
-        <div className="mb-12 grid overflow-hidden rounded-[2rem] bg-deep-green text-ivory shadow-premium md:grid-cols-3">{modes.map((mode,index)=><article key={mode.number} className="relative border-white/10 p-7 md:border-l first:border-l-0"><span className="text-xs font-bold text-gold-light">{mode.number}</span><h2 className="mt-3 font-serif text-3xl">{mode.title}</h2><p className="mt-3 text-sm leading-6 text-ivory/68">{mode.text}</p>{index<2?<span className="absolute -right-3 top-1/2 z-10 hidden size-6 place-items-center rounded-full bg-gold text-navy md:grid">→</span>:null}</article>)}</div>
+        <div className="mb-12 grid overflow-hidden rounded-[2rem] bg-deep-green text-ivory shadow-premium md:grid-cols-4">{modes.map((mode,index)=><article key={mode.number} className="relative border-white/10 p-7 md:border-l first:border-l-0"><span className="text-xs font-bold text-gold-light">{mode.number}</span><h2 className="mt-3 font-serif text-3xl">{mode.title}</h2><p className="mt-3 text-sm leading-6 text-ivory/68">{mode.text}</p>{index<modes.length-1?<span className="absolute -right-3 top-1/2 z-10 hidden size-6 place-items-center rounded-full bg-gold text-navy md:grid">→</span>:null}</article>)}</div>
         <div className="grid gap-5 md:grid-cols-2">
           <article className="rounded-[2rem] bg-[#dfe9e3] p-8"><p className="text-xs font-bold uppercase tracking-[.16em] text-deep-green">What Ling does</p><div className="mt-5 grid gap-3">{["Educates and clarifies","Organises non-clinical context","Supports onboarding and coordination","Escalates to the right human team"].map(item=><div key={item} className="flex items-center gap-3 rounded-xl bg-white/70 p-4"><span className="grid size-8 place-items-center rounded-full bg-deep-green text-white">✓</span><p className="font-semibold text-navy">{item}</p></div>)}</div></article>
           <article className="rounded-[2rem] bg-navy p-8 text-ivory"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">What Ling never replaces</p><div className="mt-5 grid gap-3">{lingBoundaries.slice(0,4).map(item=><div key={item} className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-ivory/75">{item}</div>)}</div></article>
