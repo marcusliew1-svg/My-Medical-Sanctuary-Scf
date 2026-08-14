@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
 import { buildLingHealthExplanation, matchHealthConcerns } from "@/lib/lingHealthRouter";
+import { buildLingTreatmentExplanation, matchLingTreatment } from "@/lib/lingTreatmentRouter";
 import { getLingClarification, type LingClarification } from "@/lib/lingClarification";
 import { matchLingUrgency, type LingUrgencyMatch } from "@/lib/lingUrgency";
 
@@ -56,6 +57,7 @@ export function LingPanel() {
   const [question, setQuestion] = useState("");
   const [askedQuestion, setAskedQuestion] = useState("");
   const [healthAnswer, setHealthAnswer] = useState<ReturnType<typeof buildLingHealthExplanation> | null>(null);
+  const [treatmentAnswer, setTreatmentAnswer] = useState<ReturnType<typeof buildLingTreatmentExplanation> | null>(null);
   const [clarification, setClarification] = useState<LingClarification | null>(null);
   const [urgency, setUrgency] = useState<LingUrgencyMatch | null>(null);
   const [conversationContext, setConversationContext] = useState<string[]>([]);
@@ -71,16 +73,35 @@ export function LingPanel() {
     if (urgent) {
       setUrgency(urgent);
       setHealthAnswer(null);
+      setTreatmentAnswer(null);
       setClarification(null);
       setSelected(null);
       setConversationContext(nextContext);
       return;
     }
 
+    // If symptoms or a recognised health concern are present, assessment context wins
+    // over treatment shopping. This keeps Ling from recommending a procedure just because
+    // the patient mentioned one alongside a symptom.
     const result = matchHealthConcerns(combined);
     if (result) {
       setUrgency(null);
       setHealthAnswer(buildLingHealthExplanation(result));
+      setTreatmentAnswer(null);
+      setClarification(null);
+      setSelected(null);
+      setConversationContext(nextContext);
+      return;
+    }
+
+    // Treatment-only questions are routed into the reviewed treatment education library.
+    // Ling explains what the option is, the evidence level and what a clinician would need
+    // to decide, but never returns a suitability decision.
+    const treatment = matchLingTreatment(combined) ?? matchLingTreatment(clean);
+    if (treatment) {
+      setUrgency(null);
+      setHealthAnswer(null);
+      setTreatmentAnswer(buildLingTreatmentExplanation(treatment));
       setClarification(null);
       setSelected(null);
       setConversationContext(nextContext);
@@ -92,6 +113,7 @@ export function LingPanel() {
       setUrgency(null);
       setClarification(followUp);
       setHealthAnswer(null);
+      setTreatmentAnswer(null);
       setSelected(null);
       setConversationContext(nextContext);
       return;
@@ -99,6 +121,7 @@ export function LingPanel() {
 
     setUrgency(null);
     setHealthAnswer(null);
+    setTreatmentAnswer(null);
     setClarification(null);
     setSelected("I'm not sure where to start");
     setConversationContext(nextContext);
@@ -121,6 +144,7 @@ export function LingPanel() {
     setSelected(null);
     setAskedQuestion("");
     setHealthAnswer(null);
+    setTreatmentAnswer(null);
     setClarification(null);
     setUrgency(null);
     setConversationContext([]);
@@ -132,7 +156,7 @@ export function LingPanel() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Ling</p>
           <h3 className="mt-2 font-serif text-3xl text-navy">What brings you here today?</h3>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-warm-gray">Talk naturally. Ling can connect what you say to the reviewed MMS health-concern library and ask what may be useful to clarify next.</p>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-warm-gray">Talk naturally. Ling can connect what you say to the reviewed MMS health-concern and treatment-education libraries, then ask what may be useful to clarify next.</p>
         </div>
         <span className="relative size-16 shrink-0 overflow-hidden rounded-full border-2 border-gold-light bg-ivory shadow-soft">
           <Image src="/ling-mms-guide.png" alt="Ling, the MMS intelligent health guide" fill className="object-cover object-[50%_24%]" sizes="64px" />
@@ -143,7 +167,7 @@ export function LingPanel() {
         {lingOptions.map((option) => (
           <button
             key={option}
-            onClick={() => { setSelected(option); setHealthAnswer(null); setClarification(null); setUrgency(null); setAskedQuestion(""); setConversationContext([]); }}
+            onClick={() => { setSelected(option); setHealthAnswer(null); setTreatmentAnswer(null); setClarification(null); setUrgency(null); setAskedQuestion(""); setConversationContext([]); }}
             className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition duration-300 ${selected === option ? "border-gold bg-ivory text-navy shadow-soft" : "border-stone-200 bg-white text-stone-700 hover:border-gold-light hover:bg-ivory"}`}
           >
             {option}
@@ -159,8 +183,8 @@ export function LingPanel() {
       ) : null}
 
       <div className="mt-5 flex gap-2 rounded-2xl border border-stone-200 bg-white p-2 shadow-soft">
-        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder={clarification || healthAnswer ? "Tell Ling the next detail — she will keep the earlier context…" : "Or ask in your own words — e.g. ‘Why am I always tired?’"} className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
-        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">{clarification || healthAnswer ? "Add detail" : "Ask Ling"}</button>
+        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder={clarification || healthAnswer || treatmentAnswer ? "Tell Ling the next detail — she will keep the earlier context…" : "Or ask in your own words — e.g. ‘Why am I always tired?’"} className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
+        <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">{clarification || healthAnswer || treatmentAnswer ? "Add detail" : "Ask Ling"}</button>
       </div>
 
       {urgency ? (
@@ -229,6 +253,24 @@ export function LingPanel() {
             <div className="mt-4 rounded-xl bg-deep-green px-4 py-4 text-sm leading-6 text-white"><strong>Where Ling stops:</strong> I can help you understand the possibilities, show where concerns may overlap and prepare better questions. A qualified healthcare professional needs to review your personal history, examination, tests and treatment suitability.</div>
 
             <div className="mt-4 flex flex-wrap gap-2"><Link href={healthAnswer.concernHref} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">Read the full concern guide</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
+          </div>
+        </div>
+      ) : null}
+
+      {treatmentAnswer ? (
+        <div className="mt-5 overflow-hidden rounded-2xl border border-[#c9b68e]/55 bg-[#fbf7ef]">
+          {askedQuestion ? <p className="border-b border-[#c9b68e]/30 bg-white px-5 py-4 text-sm italic text-warm-gray">“{askedQuestion}”</p> : null}
+          <div className="p-5 md:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2"><div className="text-xs font-bold uppercase tracking-[.14em] text-deep-green">Ling treatment education</div><span className="rounded-full bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-deep-green">{treatmentAnswer.evidence}</span></div>
+            <h4 className="mt-3 font-serif text-3xl text-navy">{treatmentAnswer.name}</h4>
+            <p className="mt-2 text-xs font-bold uppercase tracking-[.14em] text-warm-gray">{treatmentAnswer.eyebrow}</p>
+            <div className="mt-4 rounded-xl bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">In plain English</p><p className="mt-2 text-sm leading-6 text-navy">{treatmentAnswer.plainEnglish}</p></div>
+            <div className="mt-3 rounded-xl bg-[#edf2ef] p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">What the evidence label means here</p><p className="mt-2 text-sm leading-6 text-navy">{treatmentAnswer.evidenceNote}</p></div>
+            <div className="mt-3 grid gap-3 md:grid-cols-2"><div className="rounded-xl bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">Why people ask about it</p><ul className="mt-3 grid gap-2 text-sm leading-6 text-navy">{treatmentAnswer.whyPeopleAsk.map(item=><li key={item} className="flex gap-2"><span className="text-deep-green">•</span><span>{item}</span></li>)}</ul></div><div className="rounded-xl bg-[#f5ece8] p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#8a5140]">What to be cautious about</p><ul className="mt-3 grid gap-2 text-sm leading-6 text-navy">{treatmentAnswer.caution.map(item=><li key={item} className="flex gap-2"><span className="text-[#8a5140]">!</span><span>{item}</span></li>)}</ul></div></div>
+            {treatmentAnswer.relatedConcerns.length ? <div className="mt-3 rounded-xl border border-stone-200 bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-warm-gray">If there is a symptom or health concern behind the question</p><p className="mt-2 text-xs leading-5 text-warm-gray">Start with the concern rather than assuming the treatment is the answer.</p><div className="mt-3 flex flex-wrap gap-2">{treatmentAnswer.relatedConcerns.map(item=><Link key={item.href} href={item.href} className="rounded-full border border-deep-green/15 bg-ivory px-3 py-2 text-xs font-semibold text-deep-green">{item.label} →</Link>)}</div></div> : null}
+            <div className="mt-3 rounded-xl border border-[#c9b68e]/45 bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">Questions worth taking to a clinician</p><div className="mt-3 grid gap-2">{treatmentAnswer.doctorQuestions.map((item,index)=><div key={item} className="flex gap-3 text-sm leading-6 text-navy"><span className="font-serif text-lg text-deep-green">0{index+1}</span><span>{item}</span></div>)}</div></div>
+            <div className="mt-4 rounded-xl bg-deep-green px-4 py-4 text-sm leading-6 text-white"><strong>Ling is not deciding suitability:</strong> understanding a treatment is different from deciding whether it is appropriate for you. That decision requires a qualified professional to review the reason for treatment, your history, medicines, tests, alternatives and the exact product, device or procedure.</div>
+            <div className="mt-4 flex flex-wrap gap-2"><Link href={treatmentAnswer.href} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">Read the full treatment guide</Link><Link href="/treatments/research" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Treatment research library</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
           </div>
         </div>
       ) : null}
