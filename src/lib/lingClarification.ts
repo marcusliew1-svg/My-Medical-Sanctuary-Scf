@@ -7,7 +7,7 @@ export type LingClarification = {
 
 const vaguePatterns: Array<{ terms: string[]; clarification: LingClarification }> = [
   {
-    terms: ["don't feel right", "dont feel right", "not feeling right", "feel off", "something feels off", "not myself", "feel unwell"],
+    terms: ["don't feel right", "dont feel right", "do not feel right", "not feeling right", "feel off", "something feels off", "not myself", "feel unwell"],
     clarification: {
       trigger: "general-unspecified",
       intro: "That can mean many different things, so I would not want to guess. A few details can help narrow the safest starting point.",
@@ -93,8 +93,19 @@ function normalise(value: string) {
 export function getLingClarification(question: string): LingClarification | null {
   const q = normalise(question);
   if (!q) return null;
+
+  let best: { clarification: LingClarification; specificity: number } | null = null;
+
   for (const item of vaguePatterns) {
-    if (item.terms.some((term) => q.includes(normalise(term)))) return item.clarification;
+    for (const term of item.terms) {
+      const normalisedTerm = normalise(term);
+      if (!q.includes(normalisedTerm)) continue;
+      const specificity = normalisedTerm.length;
+      if (!best || specificity > best.specificity) {
+        best = { clarification: item.clarification, specificity };
+      }
+    }
   }
-  return null;
+
+  return best?.clarification ?? null;
 }
