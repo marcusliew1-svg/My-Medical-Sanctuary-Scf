@@ -27,7 +27,7 @@ export default function HowItWorksPage() {
         subtitle="Ling organises. MMS coordinates. Doctors decide."
         image="/mms-membership-journey.webp"
         primaryLabel="Start with Ling"
-        primaryHref="/register"
+        primaryHref="/ling"
         secondaryLabel="Explore memberships"
         secondaryHref="/memberships"
       />
@@ -83,7 +83,7 @@ export default function HowItWorksPage() {
               <p className="text-xs font-bold uppercase tracking-[.2em] text-gold">The MMS ecosystem</p>
               <h2 className="mt-3 font-serif text-4xl leading-tight text-navy md:text-5xl">Four roles. One connected relationship.</h2>
               <p className="mt-4 max-w-xl text-lg leading-8 text-warm-gray">You should always know who is guiding, coordinating and making the medical decision.</p>
-              <Link href="/about" className="mt-7 inline-flex items-center gap-2 font-semibold text-deep-green">See the MMS model <span>→</span></Link>
+              <Link href="/about-mms" className="mt-7 inline-flex items-center gap-2 font-semibold text-deep-green">See the MMS model <span>→</span></Link>
             </div>
             <EcosystemVisual />
           </div>
