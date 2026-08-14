@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CTAButton } from "@/components/CTAButton";
 import { HealthConcernExplainer } from "@/components/HealthConcernExplainer";
 import { healthConcerns } from "@/data/healthConcerns";
@@ -9,9 +9,16 @@ import { expandedHealthConcerns } from "@/data/healthConcernsExpanded";
 
 const indexHealthEducation = (process.env.MMS_HEALTH_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
 const allConcerns = [...healthConcerns, ...extraHealthConcerns, ...expandedHealthConcerns];
+const concernAliases: Record<string, string> = {
+  "menopause-perimenopause-symptoms": "menopause-hot-flushes-hormone-changes",
+};
+
+function resolveConcernSlug(slug: string) {
+  return concernAliases[slug] ?? slug;
+}
 
 function getConcern(slug: string) {
-  return allConcerns.find((item) => item.slug === slug);
+  return allConcerns.find((item) => item.slug === resolveConcernSlug(slug));
 }
 
 export function generateStaticParams() {
@@ -66,6 +73,9 @@ function topicHref(label: string, href?: string) {
 }
 
 export default function HealthConcernDetailPage({ params }: { params: { slug: string } }) {
+  const resolvedSlug = resolveConcernSlug(params.slug);
+  if (resolvedSlug !== params.slug) redirect(`/health-concerns/${resolvedSlug}`);
+
   const concern = getConcern(params.slug);
   if (!concern) notFound();
 
