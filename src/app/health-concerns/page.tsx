@@ -3,9 +3,10 @@ import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { healthConcerns } from "@/data/healthConcerns";
 import { extraHealthConcerns } from "@/data/healthConcernsExtra";
+import { expandedHealthConcerns } from "@/data/healthConcernsExpanded";
 
 const indexHealthEducation = (process.env.MMS_HEALTH_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
-const allConcerns = [...healthConcerns, ...extraHealthConcerns];
+const allConcerns = [...healthConcerns, ...extraHealthConcerns, ...expandedHealthConcerns];
 
 export const metadata: Metadata = {
   title: "Health Concerns & Treatment Research",
