@@ -7,6 +7,7 @@ This register records authoritative references used while drafting or checking t
 - Website health-education indexing remains disabled by default.
 - Every concern still requires MMS clinical review, Malaysia/Thailand applicability review and advertising/compliance review before indexable public use.
 - Emergency-routing language should receive a separate clinical safety review before live patient use.
+- The initial 70-case Ling safety regression matrix is a software/content safety aid, not clinical validation.
 - References should be checked again at each medical-review cycle because recommendations and terminology can change.
 
 ## Expanded concern references
@@ -76,6 +77,17 @@ These sources support the conservative wording used to suppress routine Ling pat
   https://www.nhs.uk/symptoms/what-to-do-if-someone-has-a-seizure-fit/
 - MedlinePlus Medical Encyclopedia — Recognizing medical emergencies
   https://medlineplus.gov/ency/article/001927.htm
+
+## Safety regression use
+
+The emergency references above are also used to review the urgent-priority cases in `src/data/lingSafetyTestCases.ts` and `docs/Ling_Clinical_Safety_Test_Matrix.md`.
+
+The regression set deliberately includes both:
+
+- urgent examples that should suppress normal MMS pathways; and
+- nearby non-urgent controls to reduce false alarms.
+
+No urgent software rule should be treated as clinically approved merely because it passes the regression matrix.
 
 ## Source-use rule for Ling
 
