@@ -6,11 +6,10 @@ import { MobileNav } from "@/components/MobileNav";
 const navItems = [
   { label: "Memberships", href: "/memberships" },
   { label: "Treatments", href: "/treatments" },
+  { label: "Health Concerns", href: "/health-concerns" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Medicine Price Compare", href: "/medicine-intelligence" },
   { label: "Care Travel", href: "/medical-tourism" },
   { label: "SCF", href: "/scf-lab-roadmap" },
-  { label: "Insights", href: "/insights" },
 ];
 
 export function Navbar() {
