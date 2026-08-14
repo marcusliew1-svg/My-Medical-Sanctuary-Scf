@@ -1,0 +1,118 @@
+import type { HealthConcern } from "@/data/healthConcerns";
+
+// Additional concern guides for Ling's assessment-first navigation.
+// These remain educational pathways, not diagnoses or treatment recommendations.
+export const expandedHealthConcerns: HealthConcern[] = [
+  {
+    slug: "headache-dizziness-lightheadedness",
+    title: "Headaches, dizziness & lightheadedness",
+    searchTitle: "Headache, dizziness and lightheadedness: what to check and when to seek urgent care",
+    intro: "Headache and dizziness are common symptoms with many possible causes. The useful first step is to understand the pattern, timing, triggers and accompanying symptoms rather than assuming one diagnosis.",
+    layman: "A headache or dizzy spell is a symptom, not a diagnosis. Dehydration, medicines, migraine, blood-pressure changes, inner-ear problems, infection and many other conditions can feel similar, so the details around when and how it happens matter.",
+    firstChecks: ["When symptoms started, how long they last and whether the pattern is changing", "Blood pressure, hydration, medicines and recent illness where relevant", "Whether dizziness means spinning, faintness, imbalance or another sensation", "Migraine or headache history and common triggers", "Neurological, ear, heart or metabolic assessment when the history points that way"],
+    redFlags: ["A sudden severe or rapidly peaking headache", "New weakness, facial droop, speech difficulty, confusion, seizure or loss of consciousness", "Headache after significant head injury", "Dizziness with chest pain, fainting, severe breathlessness or new neurological symptoms"],
+    relatedTopics: [
+      { label: "General medical assessment", href: "/health-discovery", evidence: "Assessment first", note: "The symptom pattern usually determines whether blood pressure, neurological, ear, cardiovascular or other evaluation is needed." },
+      { label: "Cardiovascular review", href: "/treatments/ecg-cardiovascular-risk", evidence: "Assessment first", note: "Useful when dizziness is associated with faintness, palpitations, exertion or cardiovascular risk; an ECG is only one part of the assessment." },
+    ],
+    seoTerms: ["headache dizziness", "lightheadedness causes", "dizzy spells", "headache checkup", "dizziness assessment"],
+  },
+  {
+    slug: "palpitations-chest-discomfort-heart-rhythm",
+    title: "Palpitations, chest discomfort & heart-rhythm concerns",
+    searchTitle: "Heart palpitations and chest discomfort: when to get checked and what an ECG can show",
+    intro: "A racing, pounding or irregular heartbeat can be harmless in some situations and important in others. The pattern, duration, triggers and associated symptoms help determine how urgently it should be assessed.",
+    layman: "Palpitations simply mean you can feel your heartbeat unusually strongly, quickly or irregularly. They can happen with stress or stimulants, but they can also occur with heart-rhythm problems, thyroid issues, anaemia, electrolyte problems or other medical causes.",
+    firstChecks: ["How long episodes last, how often they occur and what triggers them", "Whether there is chest discomfort, breathlessness, fainting or marked dizziness", "Medication, caffeine, alcohol, stimulant and supplement review", "Pulse, blood pressure and ECG where clinically appropriate", "Blood tests or longer rhythm monitoring when the clinician thinks they are needed"],
+    redFlags: ["Chest pain or pressure, especially with sweating, nausea or breathlessness", "Fainting or near-fainting with palpitations", "Severe breathlessness or collapse", "A sustained very fast or irregular heartbeat with significant symptoms"],
+    relatedTopics: [
+      { label: "ECG & cardiovascular risk review", href: "/treatments/ecg-cardiovascular-risk", evidence: "Established clinical pathway", note: "An ECG can help identify some rhythm abnormalities, but intermittent symptoms may need additional monitoring or investigation." },
+      { label: "Thyroid / metabolic review", href: "/health-discovery", evidence: "Assessment first", note: "Thyroid problems, anaemia and electrolyte disturbances can contribute to palpitations in some patients." },
+    ],
+    seoTerms: ["heart palpitations", "racing heartbeat", "irregular heartbeat", "palpitations ECG", "chest discomfort heart check"],
+  },
+  {
+    slug: "urinary-prostate-symptoms",
+    title: "Urinary symptoms & prostate concerns",
+    searchTitle: "Frequent urination, weak urine stream and prostate symptoms: what to discuss with a doctor",
+    intro: "Frequent urination, urgency, getting up at night or a weak stream can come from prostate enlargement, bladder problems, infection, medicines, diabetes and other causes. The symptom pattern needs proper assessment.",
+    layman: "In men, an enlarged prostate can squeeze the urine channel and make it harder for the bladder to empty. But urinary symptoms do not automatically mean the prostate is the cause, and prostate size does not always match symptom severity.",
+    firstChecks: ["Frequency, urgency, night-time urination and strength of urinary stream", "Whether there is pain, blood, fever or difficulty emptying the bladder", "Medication, fluid, caffeine and alcohol review", "Diabetes and other medical causes where relevant", "Prostate, bladder or urinary testing when a clinician considers it appropriate"],
+    redFlags: ["Unable to pass urine at all", "Painful frequent urination with fever or chills", "Visible blood in the urine", "Severe lower-abdominal or urinary-tract pain"],
+    relatedTopics: [
+      { label: "Doctor-led urinary assessment", href: "/online-doctor", evidence: "Assessment first", note: "Urinary symptoms may arise from prostate, bladder, infection, diabetes, medicines or other causes and should be assessed before treatment is chosen." },
+      { label: "Metabolic health review", href: "/health-concerns/prediabetes-insulin-resistance", evidence: "Assessment first", note: "Frequent urination can sometimes occur with high glucose, particularly when accompanied by thirst or other metabolic symptoms." },
+    ],
+    seoTerms: ["frequent urination men", "weak urine stream", "prostate symptoms", "BPH symptoms", "night urination"],
+  },
+  {
+    slug: "thyroid-symptoms-metabolism",
+    title: "Possible thyroid symptoms & metabolism changes",
+    searchTitle: "Thyroid symptoms, tiredness and metabolism changes: when testing may help",
+    intro: "Thyroid problems can affect energy, temperature tolerance, heart rate, bowel habits, mood, weight and other systems, but these symptoms are not specific enough to diagnose a thyroid condition on their own.",
+    layman: "The thyroid is a small gland in the neck that helps regulate how the body uses energy. If it is underactive or overactive, many parts of the body can feel different. Because the symptoms overlap with many other conditions, blood testing is usually needed to confirm a thyroid problem.",
+    firstChecks: ["Pattern of tiredness, heat or cold intolerance, bowel and weight changes", "Heart-rate or palpitation symptoms", "Medication and supplement review", "Thyroid blood tests when clinically indicated", "Further assessment if there is a neck swelling, abnormal result or another suspected cause"],
+    redFlags: ["Severe chest pain, fainting or marked breathing difficulty", "Severe confusion, agitation or extreme drowsiness with acute illness", "A rapidly enlarging neck swelling or trouble swallowing/breathing", "Pregnancy with significant uncontrolled thyroid symptoms"],
+    relatedTopics: [
+      { label: "Health screening", href: "/treatments/health-screening-ultrasound", evidence: "Assessment first", note: "Targeted thyroid blood tests may be appropriate when symptoms, history or examination raise suspicion; routine testing should still be clinically interpreted." },
+      { label: "Hormone review", href: "/treatments/hormone-therapy", evidence: "Established clinical pathway", note: "Thyroid treatment is condition-specific and should not be folded into generic hormone optimisation." },
+    ],
+    seoTerms: ["thyroid symptoms", "underactive thyroid", "hypothyroidism symptoms", "thyroid test", "thyroid metabolism"],
+  },
+  {
+    slug: "hair-loss-thinning-hair",
+    title: "Hair loss & thinning hair",
+    searchTitle: "Hair loss and thinning hair: common causes and what to check before treatment",
+    intro: "Hair loss has many causes, including hereditary patterns, illness, stress, medicines, tight hairstyles, autoimmune disease, thyroid problems and nutritional deficiencies. Finding the cause matters because treatments are not interchangeable.",
+    layman: "Not all hair loss is the same. Some people shed more hair after illness or stress, while others have gradual pattern hair loss or inflammation affecting the scalp. The best treatment depends on which process is actually happening.",
+    firstChecks: ["Whether loss is sudden, gradual, patchy or diffuse", "Scalp symptoms, hair-care practices and tight hairstyles", "Recent illness, major stress, childbirth, rapid weight change or new medicines", "Family history and pattern of hair thinning", "Blood tests or dermatology assessment when history or examination suggests an underlying medical cause"],
+    redFlags: ["Rapid patchy hair loss with scalp inflammation, pain or scarring", "Hair loss with significant systemic illness or unexplained weight loss", "New rash, blistering or signs of serious infection", "Sudden hair loss after starting a medicine or exposure that may require urgent medical review"],
+    relatedTopics: [
+      { label: "Medical / dermatology assessment", href: "/online-doctor", evidence: "Assessment first", note: "The cause should be identified before choosing supplements, hormonal treatment or procedures because no single treatment fits every form of hair loss." },
+      { label: "Thyroid and nutrition review", href: "/health-discovery", evidence: "Assessment first", note: "Thyroid disease and deficiencies such as iron or protein deficiency can contribute in selected patients and should be tested only when clinically appropriate." },
+    ],
+    seoTerms: ["hair loss causes", "thinning hair", "hair fall", "alopecia assessment", "hair loss thyroid iron"],
+  },
+  {
+    slug: "memory-brain-health-concerns",
+    title: "Memory changes & brain-health concerns",
+    searchTitle: "Memory changes and brain health: normal forgetfulness versus symptoms worth checking",
+    intro: "Occasional forgetfulness can happen with normal ageing, stress or poor sleep. Memory or thinking changes that interfere with everyday activities deserve medical assessment because many different conditions can affect cognition.",
+    layman: "Forgetting a name and remembering it later is different from repeatedly getting lost, missing important steps in familiar tasks or becoming unable to manage everyday responsibilities. The key question is whether thinking changes are new, progressive or affecting daily life.",
+    firstChecks: ["What has changed and whether family or friends have noticed the same pattern", "Ability to manage daily tasks, medicines, money, driving and navigation", "Sleep, mood, alcohol and medication review", "Hearing, vision and general medical assessment", "Targeted blood tests, cognitive assessment or specialist referral when indicated"],
+    redFlags: ["Sudden confusion or a sudden major change in thinking", "New weakness, speech difficulty, facial droop or other stroke-like symptoms", "Seizure, loss of consciousness or severe new headache", "Unsafe behaviour, getting lost or inability to care for basic needs"],
+    relatedTopics: [
+      { label: "General medical assessment", href: "/health-discovery", evidence: "Assessment first", note: "Sleep problems, medicines, depression, thyroid disease, vitamin deficiencies and other treatable factors can contribute to memory complaints." },
+      { label: "Cardiovascular risk review", href: "/health-concerns/high-blood-pressure-cardiovascular-risk", evidence: "Established clinical pathway", note: "Blood pressure and vascular health are relevant to long-term brain health, but they do not by themselves explain a specific memory complaint." },
+    ],
+    seoTerms: ["memory loss", "forgetfulness", "brain health", "memory check", "cognitive health"],
+  },
+  {
+    slug: "muscle-loss-weakness-sarcopenia",
+    title: "Muscle loss, weakness & healthy ageing",
+    searchTitle: "Age-related muscle loss and weakness: strength, sarcopenia and what to assess",
+    intro: "Muscle mass and strength tend to decline with age, but excessive weakness or loss of function should not simply be dismissed as getting older. Activity, nutrition, chronic illness and other medical factors can all contribute.",
+    layman: "The important issue is not just how much muscle is visible. Strength and function matter: getting out of a chair, walking, carrying groceries and keeping balance. Significant age-related loss of muscle strength and function is often called sarcopenia.",
+    firstChecks: ["Change in strength, walking speed, balance and ability to perform daily tasks", "Weight change, appetite and protein/nutrition intake", "Physical-activity and resistance-training history", "Medication and chronic-disease review", "Functional or body-composition assessment where clinically useful"],
+    redFlags: ["Sudden one-sided weakness or new neurological symptoms", "Rapid unexplained muscle loss or major unintentional weight loss", "Repeated falls, fainting or inability to walk safely", "Severe weakness with breathing or swallowing difficulty"],
+    relatedTopics: [
+      { label: "Strength & functional assessment", href: "/health-discovery", evidence: "Assessment first", note: "Function, strength, nutrition and medical contributors should be reviewed before assuming a supplement, hormone or wellness treatment is the answer." },
+      { label: "Medical weight & metabolic management", href: "/treatments/medical-weight-management", evidence: "Established clinical pathway", note: "Weight-management plans should protect muscle and nutrition, particularly in older adults or when prescription weight-loss treatment is used." },
+    ],
+    seoTerms: ["muscle loss ageing", "sarcopenia", "weakness older adults", "loss of strength", "healthy ageing muscle"],
+  },
+  {
+    slug: "bone-health-osteoporosis-risk",
+    title: "Bone health & osteoporosis risk",
+    searchTitle: "Osteoporosis and bone health: who may need bone-density assessment and why",
+    intro: "Osteoporosis can weaken bones without obvious symptoms until a fracture occurs. Age, menopause, previous fractures, low body weight, some medicines and medical conditions can increase risk.",
+    layman: "Bone can become thinner and weaker quietly over time. A bone-density scan does not simply tell you whether your bones are good or bad; clinicians interpret the result together with age, fracture history and other risk factors.",
+    firstChecks: ["Previous low-trauma fractures and family history", "Menopause, age, weight and relevant hormone history", "Medicines and conditions that can weaken bone", "Calcium, vitamin D, nutrition, smoking, alcohol and physical activity", "Bone-density testing when age and risk factors make it appropriate"],
+    redFlags: ["A suspected hip, spine or other fracture after a fall or minor injury", "Sudden severe back pain with loss of height or new neurological symptoms", "Inability to bear weight after injury", "New weakness, numbness or bladder/bowel problems with severe back pain"],
+    relatedTopics: [
+      { label: "Bone-density / fracture-risk assessment", href: "/health-discovery", evidence: "Established clinical pathway", note: "DXA bone-density testing is a standard tool for diagnosing osteoporosis and estimating fracture risk when screening or clinical risk warrants it." },
+      { label: "Strength & exercise planning", href: "/health-discovery", evidence: "Established clinical pathway", note: "Weight-bearing and resistance exercise can support bone and muscle health, but exercise should be adapted when osteoporosis, fracture or mobility limitations are present." },
+    ],
+    seoTerms: ["osteoporosis screening", "bone density test", "DXA scan", "bone health", "osteopenia risk"],
+  },
+];
