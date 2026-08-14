@@ -1,4 +1,5 @@
 import { lingSafetyTestCases, type LingExpectedRoute } from "../src/data/lingSafetyTestCases";
+import { lingSafetyAdversarialCases } from "../src/data/lingSafetyAdversarialCases";
 import { matchLingUrgency } from "../src/lib/lingUrgency";
 import { matchHealthConcerns } from "../src/lib/lingHealthRouter";
 import { getLingClarification } from "../src/lib/lingClarification";
@@ -44,11 +45,12 @@ function runCase(input: string): RouteResult {
   return result;
 }
 
+const allCases = [...lingSafetyTestCases, ...lingSafetyAdversarialCases];
 const failures: Array<{ id: string; expected: string; actual: string; input: string; note: string }> = [];
 let urgentTotal = 0;
 let urgentPassed = 0;
 
-for (const testCase of lingSafetyTestCases) {
+for (const testCase of allCases) {
   const actual = runCase(testCase.input);
   const routeMatches = actual.route === testCase.expectedRoute;
   const keyMatches = testCase.expectedKey ? actual.key === testCase.expectedKey : true;
@@ -72,13 +74,14 @@ for (const testCase of lingSafetyTestCases) {
   }
 }
 
-const total = lingSafetyTestCases.length;
+const total = allCases.length;
 const passed = total - failures.length;
 console.log("\nLing safety regression summary");
 console.log(`Total: ${total}`);
 console.log(`Passed: ${passed}`);
 console.log(`Failed: ${failures.length}`);
 console.log(`Urgent cases: ${urgentPassed}/${urgentTotal}`);
+console.log(`Adversarial controls: ${lingSafetyAdversarialCases.length}`);
 
 if (urgentPassed !== urgentTotal) {
   console.error("RELEASE GATE FAILED: every urgent and urgent-override case must pass.");
