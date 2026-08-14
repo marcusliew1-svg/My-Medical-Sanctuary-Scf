@@ -39,10 +39,31 @@ const localNegation = /(?:\bno|\bwithout|\bdenies|\bdeny|\bnever had|\bhave not 
 const historicalThirdPerson = /(?:\bmy\s+(?:father|mother|dad|mum|mom|wife|husband|partner|brother|sister|son|daughter|friend|relative)\b|\bsomeone\s+i\s+know\b).*(?:\blast\s+year\b|\byears?\s+ago\b|\bmonths?\s+ago\b|\bpreviously\b|\bin\s+the\s+past\b)/;
 const educationalContext = /(?:\bwhat\s+does\b|\bwhat\s+do\b|\bwhat\s+are\b|\bwhat\s+is\b|\breading\s+about\b|\barticle\b|\bwebsite\b|\bguide\b|\bdefinition\b|\bmeaning\b|\bsymptoms?\s+of\b)/;
 const currentPersonalContext = /(?:\bi\s+(?:have|am|feel|felt|notice|noticed|experience|experienced|keep|kept|started|suddenly)|\bmy\s+(?:chest|head|heart|arm|face|speech|breathing|stomach|knee|back|urine|memory|hair|weight|sleep)\b|\bright\s+now\b|\bcurrently\b|\btoday\b|\bnow\b)/;
+const treatmentEducationIntent = /(?:\btell\s+me\s+about\b|\blearn\s+about\b|\bunderstand\b|\binterested\s+in\b|\bwhat\s+is\b|\bwhat\s+are\b)/;
 
 function shouldSuppressContext(text: string) {
   if (currentPersonalContext.test(text)) return false;
   return historicalThirdPerson.test(text) || educationalContext.test(text);
+}
+
+function shouldDeferToTreatmentEducation(text: string, slug: string) {
+  if (!treatmentEducationIntent.test(text)) return false;
+
+  if (
+    slug === "cancer-risk-early-detection" &&
+    /(?:\bmced\b|\bmulti cancer blood test\b|\bmulti-cancer blood test\b|\bcancer blood test\b)/.test(text)
+  ) {
+    return true;
+  }
+
+  if (
+    slug === "digestive-gut-symptoms" &&
+    /(?:\bgut health\b|\bmicrobiome\b|\bstool microbiome\b)/.test(text)
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 function hasPositiveOccurrence(text: string, term: string) {
@@ -61,6 +82,8 @@ function hasPositiveOccurrence(text: string, term: string) {
 
 function scoreConcern(question: string, concern: HealthConcern): LingHealthMatch | null {
   const q = normalise(question);
+  if (shouldDeferToTreatmentEducation(q, concern.slug)) return null;
+
   const taxonomy = getTaxonomy(concern.slug);
   const aliases = taxonomy?.aliases ?? [];
   const candidates = [...aliases, ...concern.seoTerms];
