@@ -40,7 +40,7 @@ export const lingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "knee-osteoarthritis-joint-pain",
     family: "Joints & recovery",
-    aliases: ["knee pain", "joint pain", "arthritis", "osteoarthritis", "stiff knee", "swollen knee", "prp for knee", "prgf"],
+    aliases: ["knee pain", "knee hurts", "my knee hurts", "joint pain", "arthritis", "osteoarthritis", "stiff knee", "swollen knee", "prp for knee", "prgf"],
     relatedSlugs: [],
     assessmentRoute: "musculoskeletal",
     routeLabel: "Confirm the cause and severity of the joint problem first, then compare standard care and procedure options for that exact diagnosis.",
