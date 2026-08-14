@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
+import { buildLingHealthExplanation, matchHealthConcern } from "@/lib/lingHealthRouter";
 
 const guidance: Record<string, { text: string; href: string; label: string }> = {
   "I want a health screening": {
@@ -13,13 +14,13 @@ const guidance: Record<string, { text: string; href: string; label: string }> = 
   },
   "I want to improve my energy": {
     text: "Energy concerns can involve sleep, nutrition, stress, metabolic health and lifestyle patterns. MMS starts with discovery and screening before personalised recommendations.",
-    href: "/health-journey",
-    label: "View Health Journey",
+    href: "/health-concerns/unexplained-fatigue-low-energy",
+    label: "Understand Low Energy",
   },
   "I want to manage my weight": {
-    text: "Weight management works best as a structured journey that considers body composition, habits, metabolic signals and professional suitability review.",
-    href: "/weight-management",
-    label: "View Weight Management",
+    text: "Weight management works best as a structured journey that considers body composition, blood pressure, glucose, liver health, sleep, habits and professional suitability review.",
+    href: "/health-concerns/weight-gain-metabolic-health",
+    label: "Understand Metabolic Health",
   },
   "I want to learn about longevity": {
     text: "Longevity at MMS is positioned around prevention, measurable baselines, doctor-led review and long-term planning rather than random purchases.",
@@ -37,13 +38,13 @@ const guidance: Record<string, { text: string; href: string; label: string }> = 
     label: "View Lab Roadmap",
   },
   "I'm looking for regenerative medicine": {
-    text: "Regenerative medicine topics require clear education and doctor-led suitability review. Ling can help you prepare questions before speaking with MMS.",
-    href: "/education",
-    label: "View Education",
+    text: "Regenerative medicine is not one treatment. The exact problem, product, procedure, evidence and regulatory status matter, so Ling can help you understand the options before a qualified professional assesses suitability.",
+    href: "/treatments/research",
+    label: "Research Treatment Options",
   },
   "I'm not sure where to start": {
-    text: "Start with discovery. MMS can help you understand your goals, choose the right screening path and decide whether membership makes sense after review.",
-    href: "/contact",
+    text: "Start with discovery. MMS can help you organise your health goals, identify which concerns deserve assessment and decide the next step with a qualified professional.",
+    href: "/health-discovery",
     label: "Start Discovery",
   },
 };
@@ -52,14 +53,28 @@ export function LingPanel() {
   const [selected, setSelected] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
   const [askedQuestion, setAskedQuestion] = useState("");
+  const [healthAnswer, setHealthAnswer] = useState<ReturnType<typeof buildLingHealthExplanation> | null>(null);
   const selectedGuidance = selected ? guidance[selected] : null;
 
   function askLing() {
     const clean = question.trim();
     if (!clean) return;
     setAskedQuestion(clean);
-    setSelected("I'm not sure where to start");
+    const match = matchHealthConcern(clean);
+    if (match) {
+      setHealthAnswer(buildLingHealthExplanation(match));
+      setSelected(null);
+    } else {
+      setHealthAnswer(null);
+      setSelected("I'm not sure where to start");
+    }
     setQuestion("");
+  }
+
+  function reset() {
+    setSelected(null);
+    setAskedQuestion("");
+    setHealthAnswer(null);
   }
 
   return (
@@ -77,7 +92,7 @@ export function LingPanel() {
         {lingOptions.map((option) => (
           <button
             key={option}
-            onClick={() => setSelected(option)}
+            onClick={() => { setSelected(option); setHealthAnswer(null); setAskedQuestion(""); }}
             className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition duration-300 ${
               selected === option
                 ? "border-gold bg-ivory text-navy shadow-soft"
@@ -89,20 +104,41 @@ export function LingPanel() {
         ))}
       </div>
       <div className="mt-5 flex gap-2 rounded-2xl border border-stone-200 bg-white p-2 shadow-soft">
-        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder="Or type your question for Ling…" className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
+        <input value={question} onChange={(event)=>setQuestion(event.target.value)} onKeyDown={(event)=>{if(event.key==="Enter") askLing();}} aria-label="Ask Ling a health journey question" placeholder="Or ask in your own words — e.g. ‘Why am I always tired?’" className="min-w-0 flex-1 bg-transparent px-3 text-sm text-navy outline-none" />
         <button onClick={askLing} className="shrink-0 rounded-xl bg-deep-green px-4 py-3 text-sm font-semibold text-white">Ask Ling</button>
       </div>
+
+      {healthAnswer ? (
+        <div className="mt-5 overflow-hidden rounded-2xl border border-deep-green/20 bg-ivory">
+          {askedQuestion ? <p className="border-b border-deep-green/10 bg-white px-5 py-4 text-sm italic text-warm-gray">“{askedQuestion}”</p> : null}
+          <div className="p-5">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-deep-green"><span className="size-2 animate-pulse rounded-full bg-deep-green" />Ling found a relevant health-concern pathway</div>
+            <h4 className="mt-3 font-serif text-2xl text-navy">{healthAnswer.title}</h4>
+
+            <div className="mt-5 grid gap-3">
+              <div className="rounded-xl bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">The short answer</p><p className="mt-2 text-sm leading-6 text-navy">{healthAnswer.directAnswer}</p></div>
+              <div className="rounded-xl bg-[#edf2ef] p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">What that actually means</p><p className="mt-2 text-sm leading-6 text-navy">{healthAnswer.whatItMeans}</p></div>
+              <div className="rounded-xl bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">What may be worth checking</p><ul className="mt-2 grid gap-2 text-sm leading-6 text-navy">{healthAnswer.worthChecking.map((item)=><li key={item} className="flex gap-2"><span className="font-bold text-deep-green">•</span><span>{item}</span></li>)}</ul></div>
+              <div className="rounded-xl border border-stone-200 bg-white p-4"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-warm-gray">Treatment topics people may discuss</p><div className="mt-3 grid gap-2">{healthAnswer.possibleTopics.map((topic)=><div key={topic.label} className="rounded-lg bg-ivory px-3 py-3"><p className="text-sm font-semibold text-navy">{topic.label}</p><p className="mt-1 text-xs leading-5 text-warm-gray">{topic.note}</p></div>)}</div></div>
+            </div>
+
+            <div className="mt-4 rounded-xl bg-[#f5ece8] px-4 py-3 text-xs leading-5 text-navy"><strong className="text-[#8a5140]">Seek prompt medical care if relevant:</strong> {healthAnswer.redFlags.join(" · ")}</div>
+            <div className="mt-4 rounded-xl bg-deep-green px-4 py-4 text-sm leading-6 text-white"><strong>Where Ling stops:</strong> I can help you understand the possibilities and prepare the right questions. A qualified healthcare professional needs to review your personal history, examination, tests and treatment suitability.</div>
+
+            <div className="mt-4 flex flex-wrap gap-2"><Link href={healthAnswer.concernHref} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">Read the full concern guide</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
+          </div>
+        </div>
+      ) : null}
+
       {selectedGuidance ? (
         <div className="mt-5 rounded-lg border border-gold-light/50 bg-ivory p-5">
           <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-deep-green"><span className="size-2 animate-pulse rounded-full bg-deep-green" />Ling has prepared a next step</div>
           {askedQuestion ? <p className="mb-3 rounded-xl bg-white px-4 py-3 text-sm italic text-warm-gray">“{askedQuestion}”</p> : null}
           <p className="text-sm leading-6 text-stone-600">{selectedGuidance.text}</p>
-          <div className="mt-4 flex flex-wrap gap-2"><Link href={selectedGuidance.href} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">{selectedGuidance.label}</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={()=>{setSelected(null);setAskedQuestion("");}} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
+          <div className="mt-4 flex flex-wrap gap-2"><Link href={selectedGuidance.href} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">{selectedGuidance.label}</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
         </div>
       ) : null}
-      <p className="mt-5 text-xs leading-6 text-stone-500">
-        {lingDisclaimer}
-      </p>
+      <p className="mt-5 text-xs leading-6 text-stone-500">{lingDisclaimer}</p>
     </div>
   );
 }
