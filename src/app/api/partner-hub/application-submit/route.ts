@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { hasPartnerHubPermission, type PartnerHubRole } from "@/lib/partnerHubAccess";
+import { hasPartnerHubPermission } from "@/lib/partnerHubAccess";
+import { requirePartnerSession } from "@/lib/partnerHubAuth";
 
 const allowedPackages = new Set(["Ascend", "Evolve", "Eterna", "Pinnacle"]);
 
@@ -8,14 +9,16 @@ function clean(value: unknown) {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json().catch(() => null);
-  if (!body) return NextResponse.json({ ok: false, error: "Invalid JSON payload" }, { status: 400 });
-
-  const role = clean(body.role) as PartnerHubRole;
-  if (!role || !hasPartnerHubPermission(role, "application:create")) {
+  const auth = requirePartnerSession(request, ["partner"]);
+  if (!auth.ok) return NextResponse.json({ ok: false, error: auth.error }, { status: auth.status });
+  if (!hasPartnerHubPermission(auth.session.role, "application:create")) {
     return NextResponse.json({ ok: false, error: "Partner is not permitted to submit applications" }, { status: 403 });
   }
 
+  const body = await request.json().catch(() => null);
+  if (!body) return NextResponse.json({ ok: false, error: "Invalid JSON payload" }, { status: 400 });
+
+  // Demo-only simulation. Production must resolve these values from the authenticated Partner record.
   if (!body.partnerCertified || !body.partnerCodeActive) {
     return NextResponse.json({ ok: false, error: "Certified status and active Partner Code are required" }, { status: 403 });
   }
@@ -34,7 +37,9 @@ export async function POST(request: Request) {
     ok: true,
     mode: "preview",
     application: {
+      id: `APP-${Date.now()}`,
       leadId,
+      partnerId: auth.session.partnerId,
       packageName,
       status: "Submitted",
       commissionStatus: "Pending",
