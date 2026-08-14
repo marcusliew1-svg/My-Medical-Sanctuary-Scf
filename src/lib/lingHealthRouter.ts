@@ -97,11 +97,42 @@ export function matchHealthConcern(question: string): LingHealthMatch | null {
   return matchHealthConcerns(question)?.primary ?? null;
 }
 
+function buildFollowUpQuestions(concern: HealthConcern, family: string) {
+  const common = [
+    "How long has this been happening, and has it changed recently?",
+    "What other symptoms tend to happen at the same time?",
+  ];
+
+  const familyQuestion: Record<string, string> = {
+    "Energy & recovery": "How are your sleep, stress, exercise tolerance and day-to-day energy changing together?",
+    "Metabolic health": "Have your weight, waist size, blood pressure, glucose or liver results changed recently?",
+    "Heart & circulation": "Does this happen at rest or with activity, and is there dizziness, fainting, breathlessness or chest discomfort with it?",
+    "Sleep & recovery": "Do you snore, wake often, feel unrefreshed, or become sleepy during the day?",
+    "Gut & digestion": "Is the main problem pain, bloating, bowel changes, reflux, food-related symptoms or unintended weight loss?",
+    "Men's health": "Have urinary, sexual, energy, sleep or medication changes happened around the same time?",
+    "Women’s hormonal health": "Have your cycle pattern, hot flushes, sleep, mood, sexual health or bleeding pattern changed?",
+    "Women's hormonal health": "Have your cycle pattern, hot flushes, sleep, mood, sexual health or bleeding pattern changed?",
+    "Cancer screening": "What is your age, family history, smoking history and which standard screening tests have you already completed?",
+  };
+
+  const specific: Record<string, string> = {
+    "unexplained-fatigue-low-energy": "Have you also noticed poor sleep, snoring, weight change, low mood, breathlessness or reduced exercise tolerance?",
+    "weight-gain-metabolic-health": "Has the weight change been gradual or sudden, and have sleep, appetite, medicines or activity changed too?",
+    "palpitations-chest-discomfort-heart-rhythm": "When the racing or irregular heartbeat happens, how long does it last and what are you doing at the time?",
+    "headache-dizziness-lightheadedness": "Is the main problem headache, spinning, faintness or imbalance, and is it new or different from your usual pattern?",
+    "thyroid-related-symptoms": "Have you noticed changes in weight, temperature tolerance, bowel habits, heart rate, skin, hair or menstrual pattern?",
+    "memory-brain-health-concerns": "Is this occasional forgetfulness, or is it starting to affect work, finances, driving, medication use or daily routines?",
+  };
+
+  return [common[0], specific[concern.slug] ?? familyQuestion[family] ?? common[1], "What medicines, supplements, diagnoses or recent test results might be relevant?"].slice(0, 3);
+}
+
 export function buildLingHealthExplanation(result: LingHealthRouteResult | LingHealthMatch) {
   const isRouteResult = "primary" in result;
   const match = isRouteResult ? result.primary : result;
   const concern = match.concern;
   const taxonomy = getTaxonomy(concern.slug);
+  const family = taxonomy?.family ?? "Health concern";
   const firstChecks = concern.firstChecks.slice(0, 3);
   const related = concern.relatedTopics.slice(0, 2);
   const redFlags = concern.redFlags.slice(0, 2);
@@ -117,15 +148,21 @@ export function buildLingHealthExplanation(result: LingHealthRouteResult | LingH
         .filter((item): item is HealthConcern => Boolean(item))
         .map((item) => ({ title: item.title, href: `/health-concerns/${item.slug}` }));
 
+  const confidenceNote = match.confidence === "strong"
+    ? "What you described fits one of the health-concern pathways in the MMS library. That does not mean this is your diagnosis."
+    : "There is a possible match in the MMS health-concern library, but I would want a little more context before leaning too heavily on it.";
+
   return {
     title: concern.title,
-    family: taxonomy?.family ?? "Health concern",
+    family,
+    conversationLead: confidenceNote,
     directAnswer: concern.intro,
     whatItMeans: concern.layman,
     worthChecking: firstChecks,
     possibleTopics: related,
     redFlags,
     overlaps,
+    followUpQuestions: buildFollowUpQuestions(concern, family),
     assessmentRoute: isRouteResult ? result.assessmentRoute : taxonomy?.assessmentRoute ?? "general-assessment",
     routeLabel: isRouteResult ? result.routeLabel : taxonomy?.routeLabel ?? "Start with a qualified assessment before deciding whether any treatment is appropriate.",
     concernHref: `/health-concerns/${concern.slug}`,
