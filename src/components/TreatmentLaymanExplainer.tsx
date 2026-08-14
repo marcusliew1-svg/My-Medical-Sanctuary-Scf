@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { TreatmentEducation } from "@/data/treatmentEducation";
 
 export function TreatmentLaymanExplainer({ item }: { item: TreatmentEducation }) {
@@ -59,6 +60,14 @@ export function TreatmentLaymanExplainer({ item }: { item: TreatmentEducation })
                 </div>
               </article>
             ))}
+
+            <div className="mt-3 grid gap-4 rounded-[1.6rem] border border-deep-green/15 bg-white p-5 shadow-soft sm:grid-cols-[1fr_auto] sm:items-center sm:p-6">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.14em] text-deep-green">Still deciding what this means for you?</p>
+                <p className="mt-2 text-sm leading-6 text-navy">Ask Ling to help you organise the concern or goal behind your interest, then take the useful questions into a doctor discussion. No treatment is selected here.</p>
+              </div>
+              <Link href="/ling" className="inline-flex min-h-11 items-center justify-center rounded-full bg-deep-green px-5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg">Ask Ling</Link>
+            </div>
           </div>
         </div>
       </div>
