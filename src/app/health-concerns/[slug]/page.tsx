@@ -2,16 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CTAButton } from "@/components/CTAButton";
-import { getHealthConcern, healthConcerns } from "@/data/healthConcerns";
+import { healthConcerns } from "@/data/healthConcerns";
+import { extraHealthConcerns } from "@/data/healthConcernsExtra";
 
 const indexHealthEducation = (process.env.MMS_HEALTH_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
+const allConcerns = [...healthConcerns, ...extraHealthConcerns];
+
+function getConcern(slug: string) {
+  return allConcerns.find((item) => item.slug === slug);
+}
 
 export function generateStaticParams() {
-  return healthConcerns.map((item) => ({ slug: item.slug }));
+  return allConcerns.map((item) => ({ slug: item.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const concern = getHealthConcern(params.slug);
+  const concern = getConcern(params.slug);
   if (!concern) return {};
   return {
     title: concern.searchTitle,
@@ -29,7 +35,7 @@ const tone: Record<string, string> = {
 };
 
 export default function HealthConcernDetailPage({ params }: { params: { slug: string } }) {
-  const concern = getHealthConcern(params.slug);
+  const concern = getConcern(params.slug);
   if (!concern) notFound();
 
   return (
