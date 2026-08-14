@@ -54,7 +54,7 @@ const goals: Goal[] = [
     treatmentLinks: [
       { label: "Hormone review", href: "/treatments/hormone-therapy" },
       { label: "Metabolic management", href: "/treatments/medical-weight-management" },
-      { label: "Cardiovascular review", href: "/treatments/ecg-cardiovascular-risk" },
+      { label: "Cardiovascular review", href: "/treatments/ecg-cardiovascular-risk-review" },
     ],
     accent: "from-[#eadfe5] via-white to-[#e4ece7]",
   },
@@ -64,7 +64,7 @@ const goals: Goal[] = [
     signal: "Symptoms and red flags come before microbiome labels.",
     concernHref: "/health-concerns/digestive-gut-symptoms",
     treatmentLinks: [
-      { label: "Gut health review", href: "/treatments/gut-health-microbiome" },
+      { label: "Gut health review", href: "/treatments/gut-health-microbiome-support" },
       { label: "Health screening", href: "/treatments/health-screening-ultrasound" },
       { label: "Colon cleansing", href: "/treatments/colon-cleansing" },
     ],
