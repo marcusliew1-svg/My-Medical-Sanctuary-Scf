@@ -12,19 +12,26 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
    - Accept everyday language, symptoms, goals and concerns.
    - Do not require the patient to know medical terminology.
 
-2. **Match to one or more relevant health-concern pathways**
+2. **Match to one or more relevant health-concern pathways when the question is specific enough**
    - Examples now include fatigue, metabolic health, menopause, blood pressure, prediabetes, sleep apnoea, gut symptoms, joint pain, cancer-screening questions, headaches/dizziness, palpitations, urinary/prostate symptoms, thyroid questions, hair loss, memory changes, muscle loss and bone health.
    - Matching is a navigation aid, not a diagnosis.
    - Do not force every question into one condition. Symptoms often overlap.
 
-3. **Use the Ling concern taxonomy**
+3. **Ask targeted follow-up questions when the input is too vague**
+   - Examples include “I don't feel right,” “I feel inflamed,” “my hormones feel off,” “I am ageing too fast,” “I keep getting sick,” or “I want a full body check.”
+   - Ling should explain why more context is needed, then ask a small number of useful questions rather than returning a generic disclaimer.
+   - Follow-up questions should focus on what changed, how long it has been happening, major health risks, medicines/lifestyle changes and whether the situation sounds urgent.
+   - Ling may offer patient-friendly prompt choices to help the person describe the problem more clearly.
+   - This clarification step is not a medical interview and must not create a diagnosis from the answers.
+
+4. **Use the Ling concern taxonomy**
    - Each reviewed concern can carry everyday aliases, a body/health family, related concern slugs and a preferred assessment route.
    - Example: “always tired” can lead primarily to fatigue while also surfacing sleep apnoea, poor sleep/recovery, metabolic health or hormone-related pathways as possible overlaps.
    - Example: “my heart keeps racing” can lead to a palpitations pathway while also surfacing blood-pressure, thyroid and dizziness/faintness pathways where relevant.
    - Example: “I keep waking to pee” can lead to urinary/prostate education while also keeping diabetes and other urinary causes in view.
    - The taxonomy is designed for retrieval and navigation, not probability-of-disease scoring.
 
-4. **Explain in the MMS patient-language standard**
+5. **Explain in the MMS patient-language standard**
    - The short answer.
    - What that actually means in plain English.
    - What may be worth checking first.
@@ -32,15 +39,15 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
    - Where treatment or screening topics may fit.
    - Where Ling stops and a qualified professional takes over.
 
-5. **Show red flags early**
+6. **Show red flags early**
    - If the concern library contains urgent warning signs, Ling should surface them clearly.
    - Ling must not bury urgent-care advice below promotional content.
 
-6. **Connect to treatment education only after context**
+7. **Connect to treatment education only after context**
    - Treatments are topics for discussion, not automatically recommended solutions.
    - Evidence labels and regulatory boundaries from the treatment library should remain visible.
 
-7. **Escalate to human care**
+8. **Escalate to human care**
    - Personal diagnosis, prescribing, treatment selection, contraindication assessment and interpretation of patient-specific investigations belong to qualified professionals.
 
 ## Current taxonomy fields
@@ -55,6 +62,19 @@ The website prototype separates the reviewed concern content from a routing taxo
 - `routeLabel` — plain-English explanation of the safest starting route.
 
 This allows the concern content to remain medically reviewed while the language-understanding layer can expand with more patient phrasing over time.
+
+## Clarification layer
+
+The prototype also contains a separate clarification library for common vague inputs. This layer is a conversation aid, not a medical knowledge source.
+
+A clarification object can contain:
+
+- `trigger` — the broad vague-intent family;
+- `intro` — why Ling needs more context, in plain English;
+- `questions[]` — a small number of useful follow-up questions;
+- `suggestedPrompts[]` — patient-friendly descriptions that can route into reviewed concern pathways.
+
+This reduces two common failure modes: giving a shallow “see a doctor” response, or confidently forcing an unclear question into the wrong health concern.
 
 ## Current knowledge families
 
@@ -91,17 +111,18 @@ Ling should say that areas “may overlap” or “may also be worth discussing.
 
 ## Recommended production architecture
 
-The current website prototype uses deterministic concern matching for demonstration. A production Ling should use retrieval rather than rely on a large model's memory alone.
+The current website prototype uses deterministic concern matching and clarification logic for demonstration. A production Ling should use retrieval rather than rely on a large model's memory alone.
 
 Suggested retrieval order:
 
 1. MMS Health Concern Library
 2. Ling Health Concern Taxonomy / aliases / overlap graph
-3. MMS Treatment Education Library
-4. MMS approved screening and membership rules
-5. MMS clinical SOP / approved medical knowledge base
-6. Authoritative external evidence sources when enabled and reviewed
-7. Patient-specific records only after authentication, consent and role checks
+3. Ling clarification rules for vague inputs
+4. MMS Treatment Education Library
+5. MMS approved screening and membership rules
+6. MMS clinical SOP / approved medical knowledge base
+7. Authoritative external evidence sources when enabled and reviewed
+8. Patient-specific records only after authentication, consent and role checks
 
 The AI model should generate the explanation **from retrieved reviewed material**, not invent a treatment plan from general model knowledge.
 
@@ -110,6 +131,8 @@ The AI model should generate the explanation **from retrieved reviewed material*
 A production answer should ideally be structured before it is rendered to the patient:
 
 - `patient_question`
+- `needs_clarification`
+- `clarifying_questions[]`
 - `primary_concern`
 - `matched_concerns[]`
 - `matched_aliases[]`
@@ -144,6 +167,7 @@ Ling must not:
 
 - say a patient definitely has a condition based only on their question;
 - display a disease probability unless a validated clinical tool specifically supports it;
+- use follow-up questions to create the appearance of a diagnosis;
 - say a treatment is suitable without qualified professional review;
 - imply an advanced or regulated therapy is automatically available;
 - convert experimental evidence into an established-treatment claim;
@@ -171,8 +195,14 @@ Every taxonomy entry should additionally have:
 - approved assessment route;
 - a record of changes to routing logic.
 
+Every clarification pattern should be reviewed for:
+
+- whether it is too broad or can accidentally intercept a more specific medical question;
+- whether the follow-up questions are understandable and genuinely useful;
+- whether any answer combination should trigger urgent escalation rather than routine routing.
+
 Before live clinical use, the library should move from static website content into a governed content store with review status and auditability.
 
 ## Positioning
 
-Ling should feel like a knowledgeable health navigator that can explain complex health topics in normal language, recognise when concerns overlap and prepare patients for better decisions. She is not positioned as an autonomous doctor.
+Ling should feel like a knowledgeable health navigator that can explain complex health topics in normal language, recognise when concerns overlap, ask useful follow-up questions when a person is vague and prepare patients for better decisions. She is not positioned as an autonomous doctor.
