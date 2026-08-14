@@ -11,6 +11,10 @@ import { treatmentEducationExtra } from "@/data/treatmentEducationExtra";
 const indexMedicalEducation = (process.env.MMS_MEDICAL_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
 const allTreatmentEducation = [...treatmentEducation, ...treatmentEducationExtra];
 
+type TreatmentPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
 function getTreatment(slug: string) {
   return allTreatmentEducation.find((item) => item.slug === slug);
 }
@@ -26,8 +30,9 @@ export function generateStaticParams() {
   return allTreatmentEducation.map((item) => ({ slug: item.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const item = getTreatment(params.slug);
+export async function generateMetadata({ params }: TreatmentPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const item = getTreatment(slug);
   if (!item) return {};
   return {
     title: `${item.name} explained in plain English`,
@@ -37,8 +42,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function TreatmentEducationPage({ params }: { params: { slug: string } }) {
-  const item = getTreatment(params.slug);
+export default async function TreatmentEducationPage({ params }: TreatmentPageProps) {
+  const { slug } = await params;
+  const item = getTreatment(slug);
   if (!item) notFound();
 
   return (
