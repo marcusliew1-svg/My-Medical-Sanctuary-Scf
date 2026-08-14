@@ -2,8 +2,11 @@ import Link from "next/link";
 
 const navItems = [
   ["Dashboard", "/partner-hub"],
+  ["Onboarding", "/partner-hub/onboarding"],
   ["My Leads", "/partner-hub/leads"],
+  ["Applications", "/partner-hub/applications"],
   ["Academy", "/partner-hub/academy"],
+  ["Materials", "/partner-hub/materials"],
   ["Commissions", "/partner-hub/commissions"],
 ];
 
@@ -25,7 +28,7 @@ export function PartnerHubShell({ children }: { children: React.ReactNode }) {
           </nav>
           <div className="mt-6 rounded-2xl bg-white/8 p-4 text-xs leading-6 text-ivory/75">
             <strong className="block text-ivory">Partner controls</strong>
-            Certification, lead ownership and compliance status determine whether a sale can generate commission.
+            No certification, no active partner code. No verified sale, no commission. Cancelled membership, zero commission.
           </div>
         </aside>
         <section>{children}</section>
