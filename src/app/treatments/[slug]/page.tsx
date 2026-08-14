@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CTAButton } from "@/components/CTAButton";
-import { TreatmentSystemVisual } from "@/components/TreatmentSystemVisual";
+import { TreatmentLaymanExplainer } from "@/components/TreatmentLaymanExplainer";
 import { TreatmentSessionVisual } from "@/components/TreatmentSessionVisual";
+import { TreatmentSystemVisual } from "@/components/TreatmentSystemVisual";
 import { treatmentEducation } from "@/data/treatmentEducation";
 import { treatmentEducationExtra } from "@/data/treatmentEducationExtra";
 
@@ -60,12 +61,7 @@ export default function TreatmentEducationPage({ params }: { params: { slug: str
 
       <section className="bg-ivory px-4 py-14"><div className="mx-auto max-w-5xl"><TreatmentSystemVisual slug={item.slug} /></div></section>
 
-      <section className="bg-ivory px-4 pb-14">
-        <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-[1.1fr_.9fr]">
-          <article className="rounded-[1.8rem] bg-white p-7 shadow-soft md:p-9"><p className="text-xs font-bold uppercase tracking-[.15em] text-deep-green">In plain English</p><p className="mt-4 text-lg leading-8 text-navy">{item.plainEnglish}</p></article>
-          <article className="rounded-[1.8rem] bg-[#edf2ef] p-7 md:p-9"><p className="text-xs font-bold uppercase tracking-[.15em] text-deep-green">Evidence position</p><p className="mt-4 leading-7 text-warm-gray">{item.evidenceNote}</p><p className="mt-5 border-t border-deep-green/15 pt-5 text-xs leading-5 text-warm-gray">Educational content only. Availability, suitability, product status and legal pathway can differ by country, clinic and indication.</p></article>
-        </div>
-      </section>
+      <TreatmentLaymanExplainer item={item} />
 
       <section className="bg-warm-white px-4 py-16"><div className="mx-auto max-w-5xl"><TreatmentSessionVisual slug={item.slug} /></div></section>
 
