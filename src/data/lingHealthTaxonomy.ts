@@ -16,7 +16,7 @@ export const lingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "unexplained-fatigue-low-energy",
     family: "Energy & recovery",
-    aliases: ["always tired", "tired all the time", "fatigue", "low energy", "exhausted", "no energy", "weak and tired", "burnt out", "burned out"],
+    aliases: ["tired", "mostly tired", "always tired", "tired all the time", "fatigue", "low energy", "exhausted", "no energy", "weak and tired", "burnt out", "burned out"],
     relatedSlugs: ["poor-sleep-stress-recovery", "snoring-daytime-sleepiness-sleep-apnoea", "prediabetes-insulin-resistance", "low-libido-low-testosterone-symptoms"],
     assessmentRoute: "general-assessment",
     routeLabel: "Start with a broad health assessment so common medical, sleep, metabolic and medication-related causes are not missed.",
@@ -24,7 +24,7 @@ export const lingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "weight-gain-metabolic-health",
     family: "Metabolic health",
-    aliases: ["weight gain", "putting on weight", "lose weight", "can't lose weight", "overweight", "obesity", "metabolic health", "belly fat", "waist getting bigger"],
+    aliases: ["weight gain", "gained weight", "gaining weight", "putting on weight", "lose weight", "can't lose weight", "overweight", "obesity", "metabolic health", "belly fat", "waist getting bigger"],
     relatedSlugs: ["prediabetes-insulin-resistance", "fatty-liver-metabolic-liver-health", "high-blood-pressure-cardiovascular-risk", "snoring-daytime-sleepiness-sleep-apnoea"],
     assessmentRoute: "metabolic",
     routeLabel: "Start with weight history plus blood pressure, glucose, liver, lipid and sleep-risk review rather than treating weight as an isolated number.",
@@ -48,7 +48,7 @@ export const lingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "poor-sleep-stress-recovery",
     family: "Sleep & recovery",
-    aliases: ["poor sleep", "can't sleep", "cannot sleep", "insomnia", "stress", "stressed", "slow recovery", "not recovering", "sleep badly", "not sleeping"],
+    aliases: ["poor sleep", "sleep is poor", "sleeping badly", "can't sleep", "cannot sleep", "insomnia", "stress", "stressed", "slow recovery", "not recovering", "sleep badly", "not sleeping"],
     relatedSlugs: ["snoring-daytime-sleepiness-sleep-apnoea", "unexplained-fatigue-low-energy"],
     assessmentRoute: "sleep",
     routeLabel: "Start by separating sleep quantity, sleep quality, stress, medicines, pain and possible sleep-disordered breathing.",
