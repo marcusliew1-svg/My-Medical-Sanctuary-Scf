@@ -8,6 +8,7 @@ const navItems = [
   ["Academy", "/partner-hub/academy"],
   ["Materials", "/partner-hub/materials"],
   ["Commissions", "/partner-hub/commissions"],
+  ["Management", "/partner-hub/admin"],
 ];
 
 export function PartnerHubShell({ children }: { children: React.ReactNode }) {
