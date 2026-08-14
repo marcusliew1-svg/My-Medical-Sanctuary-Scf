@@ -36,8 +36,18 @@ function normalise(value: string) {
 }
 
 const localNegation = /(?:\bno|\bwithout|\bdenies|\bdeny|\bnever had|\bhave not had|\bhaven't had|\bdo not have|\bdon't have|\bdoes not have|\bdoesn't have|\bdid not have|\bdidn't have|\bnot currently having|\bnot having)(?:\s+\w+){0,4}\s*$/;
+const historicalThirdPerson = /(?:\bmy\s+(?:father|mother|dad|mum|mom|wife|husband|partner|brother|sister|son|daughter|friend|relative)\b|\bsomeone\s+i\s+know\b).*(?:\blast\s+year\b|\byears?\s+ago\b|\bmonths?\s+ago\b|\bpreviously\b|\bin\s+the\s+past\b)/;
+const educationalContext = /(?:\bwhat\s+does\b|\bwhat\s+do\b|\bwhat\s+are\b|\bwhat\s+is\b|\breading\s+about\b|\barticle\b|\bwebsite\b|\bguide\b|\bdefinition\b|\bmeaning\b|\bsymptoms?\s+of\b)/;
+const currentPersonalContext = /(?:\bi\s+(?:have|am|feel|felt|notice|noticed|experience|experienced|keep|kept|started|suddenly)|\bmy\s+(?:chest|head|heart|arm|face|speech|breathing|stomach|knee|back|urine|memory|hair|weight|sleep)\b|\bright\s+now\b|\bcurrently\b|\btoday\b|\bnow\b)/;
+
+function shouldSuppressContext(text: string) {
+  if (currentPersonalContext.test(text)) return false;
+  return historicalThirdPerson.test(text) || educationalContext.test(text);
+}
 
 function hasPositiveOccurrence(text: string, term: string) {
+  if (shouldSuppressContext(text)) return false;
+
   let from = 0;
   while (from < text.length) {
     const index = text.indexOf(term, from);
