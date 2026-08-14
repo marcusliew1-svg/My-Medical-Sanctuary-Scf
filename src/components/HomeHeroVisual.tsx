@@ -37,9 +37,22 @@ export function HomeHeroVisual() {
             Preventive health, personalised longevity and intelligent coordination — brought together in one private health journey.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/register" className="rounded-full bg-gold-light px-6 py-3 text-sm font-bold text-navy transition hover:-translate-y-0.5 hover:shadow-xl">Start with Ling</Link>
+            <Link href="/ling" className="rounded-full bg-gold-light px-6 py-3 text-sm font-bold text-navy transition hover:-translate-y-0.5 hover:shadow-xl">Start with Ling</Link>
             <Link href="/how-it-works" className="rounded-full border border-white/25 bg-white/8 px-6 py-3 text-sm font-bold text-ivory backdrop-blur-sm transition hover:bg-white/14">See the journey</Link>
           </div>
+
+          <Link href="/ling" className="mt-8 flex items-center gap-4 rounded-2xl border border-white/12 bg-navy/55 p-3 backdrop-blur-md lg:hidden">
+            <span className="relative size-16 shrink-0 overflow-hidden rounded-2xl border border-gold-light/25 bg-white/10">
+              <Image src="/ling-mms-guide.png" alt="Ling, MMS intelligent health guide" fill className="object-cover object-[50%_18%]" sizes="64px" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[10px] font-bold uppercase tracking-[.18em] text-gold-light">Meet Ling</span>
+              <span className="mt-1 block font-serif text-xl text-ivory">Ask first. No registration required.</span>
+              <span className="mt-1 block text-xs leading-5 text-ivory/60">Create an account only when you want a secure, remembered journey.</span>
+            </span>
+            <span className="text-gold-light">→</span>
+          </Link>
+
           <div className="mt-10 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
             {signals.map((item) => (
               <div key={item.label} className="rounded-2xl border border-white/12 bg-white/7 px-4 py-4 backdrop-blur-md">
