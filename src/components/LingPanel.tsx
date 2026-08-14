@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { LingDoctorBriefPreview } from "@/components/LingDoctorBriefPreview";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
 import { buildLingHealthExplanation, matchHealthConcerns } from "@/lib/lingHealthRouter";
 import { buildLingTreatmentExplanation, matchLingTreatment } from "@/lib/lingTreatmentRouter";
@@ -61,14 +62,14 @@ export function LingPanel() {
   const [clarification, setClarification] = useState<LingClarification | null>(null);
   const [urgency, setUrgency] = useState<LingUrgencyMatch | null>(null);
   const [conversationContext, setConversationContext] = useState<string[]>([]);
+  const [showDoctorBrief, setShowDoctorBrief] = useState(false);
   const selectedGuidance = selected ? guidance[selected] : null;
 
   function routeQuestion(clean: string, priorContext: string[] = conversationContext) {
     const nextContext = [...priorContext, clean].slice(-4);
     const combined = nextContext.join(" ");
+    setShowDoctorBrief(false);
 
-    // Urgency always wins. When a conservative emergency rule matches, suppress normal
-    // concern, treatment, screening and promotional routing until the patient starts over.
     const urgent = matchLingUrgency(combined) ?? matchLingUrgency(clean);
     if (urgent) {
       setUrgency(urgent);
@@ -80,9 +81,6 @@ export function LingPanel() {
       return;
     }
 
-    // If symptoms or a recognised health concern are present, assessment context wins
-    // over treatment shopping. This keeps Ling from recommending a procedure just because
-    // the patient mentioned one alongside a symptom.
     const result = matchHealthConcerns(combined);
     if (result) {
       setUrgency(null);
@@ -94,9 +92,6 @@ export function LingPanel() {
       return;
     }
 
-    // Treatment-only questions are routed into the reviewed treatment education library.
-    // Ling explains what the option is, the evidence level and what a clinician would need
-    // to decide, but never returns a suitability decision.
     const treatment = matchLingTreatment(combined) ?? matchLingTreatment(clean);
     if (treatment) {
       setUrgency(null);
@@ -148,6 +143,7 @@ export function LingPanel() {
     setClarification(null);
     setUrgency(null);
     setConversationContext([]);
+    setShowDoctorBrief(false);
   }
 
   return (
@@ -167,7 +163,7 @@ export function LingPanel() {
         {lingOptions.map((option) => (
           <button
             key={option}
-            onClick={() => { setSelected(option); setHealthAnswer(null); setTreatmentAnswer(null); setClarification(null); setUrgency(null); setAskedQuestion(""); setConversationContext([]); }}
+            onClick={() => { setSelected(option); setHealthAnswer(null); setTreatmentAnswer(null); setClarification(null); setUrgency(null); setAskedQuestion(""); setConversationContext([]); setShowDoctorBrief(false); }}
             className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition duration-300 ${selected === option ? "border-gold bg-ivory text-navy shadow-soft" : "border-stone-200 bg-white text-stone-700 hover:border-gold-light hover:bg-ivory"}`}
           >
             {option}
@@ -252,10 +248,12 @@ export function LingPanel() {
             <div className="mt-4 rounded-xl bg-[#f5ece8] px-4 py-3 text-xs leading-5 text-navy"><strong className="text-[#8a5140]">Seek prompt medical care if relevant:</strong> {healthAnswer.redFlags.join(" · ")}</div>
             <div className="mt-4 rounded-xl bg-deep-green px-4 py-4 text-sm leading-6 text-white"><strong>Where Ling stops:</strong> I can help you understand the possibilities, show where concerns may overlap and prepare better questions. A qualified healthcare professional needs to review your personal history, examination, tests and treatment suitability.</div>
 
-            <div className="mt-4 flex flex-wrap gap-2"><Link href={healthAnswer.concernHref} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">Read the full concern guide</Link><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
+            <div className="mt-4 flex flex-wrap gap-2"><Link href={healthAnswer.concernHref} className="inline-flex min-h-10 items-center justify-center rounded-full bg-deep-green px-4 text-sm font-semibold text-white">Read the full concern guide</Link><button onClick={()=>setShowDoctorBrief(true)} className="inline-flex min-h-10 items-center justify-center rounded-full border border-deep-green/25 bg-white px-4 text-sm font-semibold text-deep-green">Prepare my doctor brief</button><Link href="/online-doctor" className="inline-flex min-h-10 items-center justify-center rounded-full border border-gold px-4 text-sm font-semibold text-navy">Ask a doctor</Link><button onClick={reset} className="px-3 text-sm text-warm-gray underline">Start again</button></div>
           </div>
         </div>
       ) : null}
+
+      {healthAnswer && showDoctorBrief && !urgency ? <LingDoctorBriefPreview concernHref={healthAnswer.concernHref} family={healthAnswer.family} overlapTitles={healthAnswer.overlaps.map((item)=>item.title)} conversationContext={conversationContext} onClose={()=>setShowDoctorBrief(false)} /> : null}
 
       {treatmentAnswer ? (
         <div className="mt-5 overflow-hidden rounded-2xl border border-[#c9b68e]/55 bg-[#fbf7ef]">
