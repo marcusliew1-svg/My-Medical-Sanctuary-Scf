@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { HealthGoalExplorer } from "@/components/HealthGoalExplorer";
+import { LingResearchGuide } from "@/components/LingResearchGuide";
 import { treatmentEducation } from "@/data/treatmentEducation";
 import { treatmentEducationExtra } from "@/data/treatmentEducationExtra";
 
@@ -64,6 +65,7 @@ export default function TreatmentResearchPage() {
       </section>
 
       <HealthGoalExplorer />
+      <LingResearchGuide />
 
       <section className="bg-ivory px-4 py-16"><div className="mx-auto max-w-6xl">
         <div className="mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
