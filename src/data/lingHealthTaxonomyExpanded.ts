@@ -12,7 +12,7 @@ export const expandedLingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "palpitations-chest-discomfort-heart-rhythm",
     family: "Heart & circulation",
-    aliases: ["palpitations", "heart racing", "racing heart", "heart pounding", "irregular heartbeat", "heart flutter", "chest discomfort", "chest pressure", "heartbeat feels funny"],
+    aliases: ["palpitations", "heart racing", "heart races", "racing heart", "heart pounding", "irregular heartbeat", "heart flutter", "chest discomfort", "chest soreness", "chest pressure", "heartbeat feels funny"],
     relatedSlugs: ["high-blood-pressure-cardiovascular-risk", "thyroid-symptoms-metabolism", "headache-dizziness-lightheadedness"],
     assessmentRoute: "cardiovascular",
     routeLabel: "Start with the timing and associated symptoms, then use examination, ECG and other testing only as needed; chest pain, fainting or severe breathlessness changes the urgency.",
@@ -20,7 +20,7 @@ export const expandedLingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "urinary-prostate-symptoms",
     family: "Urinary & prostate health",
-    aliases: ["frequent urination", "pee often", "urinate often", "weak urine stream", "slow urine", "night urination", "wake to pee", "prostate", "bph", "can't pee", "cannot urinate"],
+    aliases: ["frequent urination", "pee often", "urinate often", "weak urine stream", "slow urine", "night urination", "wake to pee", "wake up to pee", "night to pee", "prostate", "bph", "can't pee", "cannot urinate"],
     relatedSlugs: ["prediabetes-insulin-resistance", "erectile-dysfunction-mens-health"],
     assessmentRoute: "general-assessment",
     routeLabel: "Start by separating prostate-type symptoms from bladder, infection, medicine and metabolic causes; inability to pass urine or fever with urinary symptoms needs prompt medical care.",
@@ -36,7 +36,7 @@ export const expandedLingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "hair-loss-thinning-hair",
     family: "Skin, hair & appearance",
-    aliases: ["hair loss", "hair fall", "hair falling", "thinning hair", "balding", "bald patch", "receding hairline", "alopecia", "hair shedding"],
+    aliases: ["hair loss", "hair fall", "hair falling", "hair is thinning", "thinning hair", "balding", "bald patch", "receding hairline", "alopecia", "hair shedding"],
     relatedSlugs: ["thyroid-symptoms-metabolism", "unexplained-fatigue-low-energy", "menopause-hot-flushes-hormone-changes"],
     assessmentRoute: "general-assessment",
     routeLabel: "Start by identifying the pattern and likely cause before choosing supplements, hormones or procedures; different forms of hair loss need different treatment.",
@@ -44,7 +44,7 @@ export const expandedLingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "memory-brain-health-concerns",
     family: "Brain & cognitive health",
-    aliases: ["memory loss", "forgetful", "forgetfulness", "brain fog", "can't remember", "cannot remember", "memory getting worse", "cognitive", "brain health", "getting confused"],
+    aliases: ["memory loss", "forgetful", "forgetfulness", "brain fog", "can't remember", "cannot remember", "memory getting worse", "cognitive", "brain health", "getting confused", "stumble over words"],
     relatedSlugs: ["poor-sleep-stress-recovery", "high-blood-pressure-cardiovascular-risk", "thyroid-symptoms-metabolism"],
     assessmentRoute: "general-assessment",
     routeLabel: "Start by asking what has changed and whether daily function is affected, then review sleep, mood, medicines and medical causes before assuming dementia or normal ageing.",
@@ -52,7 +52,7 @@ export const expandedLingHealthTaxonomy: LingConcernTaxonomy[] = [
   {
     slug: "muscle-loss-weakness-sarcopenia",
     family: "Strength & healthy ageing",
-    aliases: ["muscle loss", "losing muscle", "weak muscles", "getting weaker", "weakness", "sarcopenia", "hard to stand up", "loss of strength", "frailty"],
+    aliases: ["muscle loss", "losing muscle", "weak muscles", "getting weaker", "weakness", "sarcopenia", "hard to stand up", "loss of strength", "losing strength", "frailty"],
     relatedSlugs: ["bone-health-osteoporosis-risk", "unexplained-fatigue-low-energy", "weight-gain-metabolic-health"],
     assessmentRoute: "musculoskeletal",
     routeLabel: "Start with strength and function, nutrition, activity and medical contributors rather than muscle size alone; sudden or one-sided weakness needs urgent assessment.",
