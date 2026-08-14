@@ -10,7 +10,7 @@ const journey = [["01","Tell Ling","Goals, timing and preferred location"],["02"
 export default function MedicalTourismPage() {
   return (
     <main>
-      <PageHero eyebrow="Malaysia–Thailand Care" title="Cross-border care without losing continuity." lead="One coordinated journey from the first question to travel, treatment setting and follow-up." primaryHref="/register" primaryLabel="Plan with Ling" />
+      <PageHero eyebrow="Malaysia–Thailand Care" title="Cross-border care without losing continuity." lead="One coordinated journey from the first question to travel, treatment setting and follow-up." primaryHref="/ling" primaryLabel="Plan with Ling" />
 
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
