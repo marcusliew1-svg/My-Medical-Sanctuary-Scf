@@ -9,6 +9,27 @@ export type LingTreatmentMatch = {
 
 const allTreatments = [...treatmentEducation, ...treatmentEducationExtra];
 
+const everydayAliases: Record<string, string[]> = {
+  "nad-plus": ["nad", "nad+", "nad drip", "nad iv", "nad infusion"],
+  prp: ["prp", "platelet rich plasma"],
+  prgf: ["prgf", "plasma rich in growth factors"],
+  "hyperbaric-oxygen": ["hyperbaric", "hbot", "oxygen chamber"],
+  "red-light-photobiomodulation": ["red light", "red light therapy", "photobiomodulation"],
+  "hormone-therapy": ["hormone therapy", "hormone replacement", "testosterone therapy", "hrt"],
+  "medical-weight-management": ["weight loss injection", "glp-1", "glp1", "semaglutide", "tirzepatide"],
+  peptides: ["peptide", "peptides", "peptide therapy"],
+  "msc-stem-cell-pathways": ["stem cell", "stem cells", "msc", "mesenchymal stem cell"],
+  "exosome-related": ["exosome", "exosomes", "exosome therapy"],
+  "nk-cell-therapy": ["nk cell", "nk cells", "natural killer cell", "natural killer cells"],
+  mced: ["mced", "multi cancer blood test", "multi-cancer blood test", "cancer blood test"],
+  "car-t": ["car-t", "car t", "cart therapy"],
+  "health-screening-ultrasound": ["health screening", "full body check", "ultrasound screening"],
+  "ecg-cardiovascular-risk": ["ecg", "ekg", "heart tracing"],
+  "iv-wellness-antioxidant-support": ["iv vitamin", "vitamin drip", "antioxidant drip", "iv wellness"],
+  "gut-health-microbiome-support": ["microbiome", "gut health", "stool microbiome"],
+  "colon-cleansing": ["colon cleanse", "colon cleansing", "colonic"],
+};
+
 function normalise(value: string) {
   return value
     .toLowerCase()
@@ -19,7 +40,7 @@ function normalise(value: string) {
 }
 
 function candidateTerms(item: TreatmentEducation) {
-  return [item.name, ...item.seoTerms]
+  return [item.name, ...item.seoTerms, ...(everydayAliases[item.slug] ?? [])]
     .map(normalise)
     .filter((term) => term.length >= 3);
 }
