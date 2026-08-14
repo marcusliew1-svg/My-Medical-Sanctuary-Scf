@@ -38,10 +38,12 @@ const tone: Record<string, string> = {
 
 const treatmentSlugs: Record<string, string> = {
   "IV wellness / NAD+": "nad-plus",
+  "IV wellness & antioxidant support": "iv-wellness-antioxidant-support",
   "PRP": "prp",
   "PRGF": "prgf",
   "Red-light / photobiomodulation": "red-light-photobiomodulation",
   "MSC / stem-cell products": "msc-stem-cell-pathways",
+  "Exosome-related services": "exosome-services",
   "Hormone review": "hormone-therapy",
   "Structured metabolic programme": "medical-weight-management",
   "GLP-1 / incretin medicines": "medical-weight-management",
@@ -51,8 +53,10 @@ const treatmentSlugs: Record<string, string> = {
   "CAR-T": "car-t",
   "NK-cell therapy": "nk-cell-therapy",
   "Hyperbaric oxygen": "hyperbaric-oxygen",
-  "ECG & cardiovascular risk review": "ecg-cardiovascular-risk",
+  "ECG & cardiovascular risk review": "ecg-cardiovascular-risk-review",
   "Health screening": "health-screening-ultrasound",
+  "Gut health & microbiome support": "gut-health-microbiome-support",
+  "Colon cleansing / colonic irrigation": "colon-cleansing",
 };
 
 function topicHref(label: string, href?: string) {
