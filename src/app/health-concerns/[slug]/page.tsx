@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { CTAButton } from "@/components/CTAButton";
 import { getHealthConcern, healthConcerns } from "@/data/healthConcerns";
 
+const indexHealthEducation = (process.env.MMS_HEALTH_EDUCATION_INDEXABLE ?? "false").toLowerCase() === "true";
+
 export function generateStaticParams() {
   return healthConcerns.map((item) => ({ slug: item.slug }));
 }
@@ -15,6 +17,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: concern.searchTitle,
     description: concern.intro,
     keywords: concern.seoTerms,
+    robots: { index: indexHealthEducation, follow: indexHealthEducation },
   };
 }
 
