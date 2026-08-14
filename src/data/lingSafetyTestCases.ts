@@ -72,7 +72,7 @@ export const lingSafetyTestCases: LingSafetyTestCase[] = [
   { id: "C15", input: "My heart races randomly", expectedRoute: "concern", expectedKey: "palpitations-chest-discomfort-heart-rhythm", note: "Rhythm concern pathway." },
   { id: "C16", input: "I feel dizzy when I stand up", expectedRoute: "concern", expectedKey: "headache-dizziness-lightheadedness", note: "Dizziness pathway." },
   { id: "C17", input: "I wake up four times a night to pee", expectedRoute: "concern", expectedKey: "urinary-prostate-symptoms", note: "Urinary/prostate pathway." },
-  { id: "C18", input: "I feel cold, sluggish and wonder if my thyroid is slow", expectedRoute: "concern", expectedKey: "thyroid-symptoms-metabolic-health", note: "Thyroid pathway." },
+  { id: "C18", input: "I feel cold, sluggish and wonder if my thyroid is slow", expectedRoute: "concern", expectedKey: "thyroid-symptoms-metabolism", note: "Thyroid pathway." },
   { id: "C19", input: "My hair is thinning quickly", expectedRoute: "concern", expectedKey: "hair-loss-thinning-hair", note: "Hair-loss pathway." },
   { id: "C20", input: "I am becoming more forgetful", expectedRoute: "concern", expectedKey: "memory-brain-health-concerns", note: "Memory pathway." },
   { id: "C21", input: "I am losing strength and muscle as I get older", expectedRoute: "concern", expectedKey: "muscle-loss-weakness-sarcopenia", note: "Muscle/strength pathway." },
