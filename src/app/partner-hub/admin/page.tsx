@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const queues = [
   { title: "Lead ownership review", count: 3, note: "Duplicate or transfer cases requiring sales-admin decision" },
   { title: "Payment verification", count: 5, note: "Applications waiting for finance confirmation" },
@@ -20,6 +22,7 @@ export default function PartnerHubAdminPage() {
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Commercial Control</p>
         <h1 className="mt-3 font-serif text-4xl text-navy md:text-5xl">Management queue</h1>
         <p className="mt-4 max-w-3xl leading-7 text-warm-gray">Commercial approvals are separated by role. Partners cannot verify their own payments, alter ownership history, approve refunds or release commission.</p>
+        <Link href="/partner-hub/admin/finance" className="mt-6 inline-flex rounded-full bg-navy px-5 py-3 text-sm font-bold text-ivory">Open finance control</Link>
       </header>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
