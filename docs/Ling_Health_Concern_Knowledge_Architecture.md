@@ -13,14 +13,15 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
    - Do not require the patient to know medical terminology.
 
 2. **Match to one or more relevant health-concern pathways**
-   - Examples: persistent fatigue, metabolic health, menopause, high blood pressure, prediabetes, sleep apnoea, gut symptoms, joint pain or cancer-screening questions.
+   - Examples now include fatigue, metabolic health, menopause, blood pressure, prediabetes, sleep apnoea, gut symptoms, joint pain, cancer-screening questions, headaches/dizziness, palpitations, urinary/prostate symptoms, thyroid questions, hair loss, memory changes, muscle loss and bone health.
    - Matching is a navigation aid, not a diagnosis.
    - Do not force every question into one condition. Symptoms often overlap.
 
 3. **Use the Ling concern taxonomy**
    - Each reviewed concern can carry everyday aliases, a body/health family, related concern slugs and a preferred assessment route.
    - Example: “always tired” can lead primarily to fatigue while also surfacing sleep apnoea, poor sleep/recovery, metabolic health or hormone-related pathways as possible overlaps.
-   - Example: erectile dysfunction can lead to men's-health education while also surfacing cardiovascular, metabolic and hormone-related assessment areas.
+   - Example: “my heart keeps racing” can lead to a palpitations pathway while also surfacing blood-pressure, thyroid and dizziness/faintness pathways where relevant.
+   - Example: “I keep waking to pee” can lead to urinary/prostate education while also keeping diabetes and other urinary causes in view.
    - The taxonomy is designed for retrieval and navigation, not probability-of-disease scoring.
 
 4. **Explain in the MMS patient-language standard**
@@ -44,7 +45,7 @@ The Health Concern Library is not a diagnostic engine. It is a structured educat
 
 ## Current taxonomy fields
 
-The website prototype now separates the reviewed concern content from a routing taxonomy. The taxonomy contains:
+The website prototype separates the reviewed concern content from a routing taxonomy. The taxonomy contains:
 
 - `slug` — canonical concern identifier;
 - `family` — patient-friendly concern family such as Metabolic health, Heart & circulation or Sleep & recovery;
@@ -54,6 +55,29 @@ The website prototype now separates the reviewed concern content from a routing 
 - `routeLabel` — plain-English explanation of the safest starting route.
 
 This allows the concern content to remain medically reviewed while the language-understanding layer can expand with more patient phrasing over time.
+
+## Current knowledge families
+
+The prototype now covers patient entry points across:
+
+- energy and recovery;
+- metabolic and blood-sugar health;
+- heart, blood pressure and rhythm concerns;
+- sleep and sleep breathing;
+- gut and digestion;
+- men's hormonal, sexual and prostate/urinary health;
+- women's hormonal health;
+- liver health;
+- joints and recovery;
+- neurological/general symptoms such as headache and dizziness;
+- thyroid and metabolism;
+- skin/hair concerns;
+- memory and cognitive health;
+- muscle strength / sarcopenia;
+- bone health / osteoporosis risk;
+- cancer screening and specialist oncology.
+
+This is still not a complete medical symptom checker. The library should expand only where MMS can maintain credible clinical review and safe escalation language.
 
 ## Overlap handling
 
@@ -101,6 +125,18 @@ A production answer should ideally be structured before it is rendered to the pa
 - `medical_review_version`
 
 This structure allows the website, app, clinician view and audit log to use the same governed answer.
+
+## Source governance
+
+The repository includes `docs/Health_Concern_Source_Register.md` to record authoritative references used while drafting and reviewing concern content.
+
+Production rules:
+
+- every patient-facing concern has a named clinical reviewer;
+- external source updates do not automatically change the patient answer;
+- the MMS-reviewed concern record remains the first retrieval layer;
+- source and review-version identifiers should travel with the internal answer object;
+- outdated or unreviewed content should be withdrawable without changing model code.
 
 ## Guardrails
 
