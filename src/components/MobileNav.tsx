@@ -6,6 +6,7 @@ import { useState } from "react";
 const navigation = [
   { label: "How MMS Works", href: "/how-it-works" },
   { label: "Memberships", href: "/memberships" },
+  { label: "Treatments & Wellness Guide", href: "/treatments" },
   { label: "Medicine Price Compare", href: "/medicine-intelligence" },
   { label: "Malaysia–Thailand Care Travel", href: "/medical-tourism" },
   { label: "Book Online Doctor", href: "/online-doctor" },
@@ -21,7 +22,7 @@ export function MobileNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         aria-label={open ? "Close navigation" : "Open navigation"}
@@ -52,20 +53,8 @@ export function MobileNav() {
           </nav>
           <div className="mt-4 grid gap-2 border-t border-white/10 pt-4">
             <div className="grid grid-cols-3 gap-2 text-center text-xs"><Link href="/" className="rounded-md border border-white/20 p-2">EN</Link><Link href="/ms" className="rounded-md border border-white/20 p-2">BM</Link><Link href="/zh" className="rounded-md border border-white/20 p-2">中文</Link></div>
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="rounded-md bg-white px-3 py-3 text-sm font-semibold text-stone-950"
-            >
-              Patient login
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => setOpen(false)}
-              className="rounded-md bg-gold px-3 py-3 text-sm font-semibold text-navy"
-            >
-              Start with Ling
-            </Link>
+            <Link href="/login" onClick={() => setOpen(false)} className="rounded-md bg-white px-3 py-3 text-sm font-semibold text-stone-950">Patient login</Link>
+            <Link href="/register" onClick={() => setOpen(false)} className="rounded-md bg-gold px-3 py-3 text-sm font-semibold text-navy">Start with Ling</Link>
           </div>
         </div>
       ) : null}
