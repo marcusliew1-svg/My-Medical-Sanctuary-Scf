@@ -14,7 +14,7 @@ const signals = ["Sleep", "Energy", "Metabolic health", "Stress", "Recovery", "H
 export default function HealthDiscoveryPage() {
   return (
     <main>
-      <PageHero eyebrow="Health Discovery" title="A calmer place to begin." lead="Start with what you want to understand. Ling helps organise the rest." primaryHref="/register" primaryLabel="Begin with Ling" />
+      <PageHero eyebrow="Health Discovery" title="A calmer place to begin." lead="Start with what you want to understand. Ling helps organise the rest." primaryHref="/ling" primaryLabel="Begin with Ling" />
 
       <section className="bg-warm-white px-4 py-20">
         <div className="mx-auto max-w-6xl">
