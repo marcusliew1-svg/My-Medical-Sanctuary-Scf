@@ -21,13 +21,15 @@ const everydayAliases: Record<string, string[]> = {
   "msc-stem-cell-pathways": ["stem cell", "stem cells", "msc", "mesenchymal stem cell"],
   "exosome-services": ["exosome", "exosomes", "exosome therapy"],
   "nk-cell-therapy": ["nk cell", "nk cells", "natural killer cell", "natural killer cells"],
-  mced: ["mced", "multi cancer blood test", "multi-cancer blood test", "cancer blood test"],
+  // MCED is deliberately specific. Generic screening language must never map here.
+  mced: ["mced", "multi cancer blood test", "multi-cancer blood test", "multi cancer early detection", "multi-cancer early detection", "cancer blood test"],
   "car-t": ["car-t", "car t", "cart therapy"],
-  "health-screening-ultrasound": ["health screening", "full body check", "ultrasound screening"],
-  "ecg-cardiovascular-risk-review": ["ecg", "ekg", "heart tracing"],
-  "iv-wellness-antioxidant-support": ["iv vitamin", "vitamin drip", "antioxidant drip", "iv wellness"],
-  "gut-health-microbiome-support": ["microbiome", "gut health", "stool microbiome"],
-  "colon-cleansing": ["colon cleanse", "colon cleansing", "colonic"],
+  // Generic preventive/check-up language belongs to ordinary screening, not MCED.
+  "health-screening-ultrasound": ["health screening", "preventive screening", "preventive health screening", "medical checkup", "medical check up", "health checkup", "health check up", "full body check", "ultrasound screening", "screening ultrasound"],
+  "ecg-cardiovascular-risk-review": ["ecg", "ekg", "heart tracing", "cardiovascular risk review", "heart risk review"],
+  "iv-wellness-antioxidant-support": ["iv vitamin", "vitamin drip", "antioxidant drip", "iv wellness", "iv drip", "iv therapy", "hydration drip", "iv hydration"],
+  "gut-health-microbiome-support": ["microbiome", "gut health", "stool microbiome", "microbiome test", "gut microbiome"],
+  "colon-cleansing": ["colon cleanse", "colon cleansing", "colonic", "colonic irrigation", "colon hydrotherapy"],
 };
 
 function normalise(value: string) {
@@ -37,6 +39,13 @@ function normalise(value: string) {
     .replace(/[^a-z0-9+\-\s']/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function containsWholeTerm(question: string, term: string) {
+  // Token-aware matching avoids false positives such as "Canada" matching "NAD".
+  // Normalisation converts punctuation (except + and -) into spaces, so padded phrase
+  // matching works for both single-token abbreviations and ordinary multi-word aliases.
+  return ` ${question} `.includes(` ${term} `);
 }
 
 function candidateTerms(item: TreatmentEducation) {
@@ -51,7 +60,7 @@ export function matchLingTreatment(input: string): LingTreatmentMatch | null {
 
   const matches = allTreatments
     .map((item) => {
-      const matchedTerms = [...new Set(candidateTerms(item).filter((term) => q.includes(term)))];
+      const matchedTerms = [...new Set(candidateTerms(item).filter((term) => containsWholeTerm(q, term)))];
       if (!matchedTerms.length) return null;
       const score = matchedTerms.reduce((total, term) => {
         const words = term.split(" ").length;
