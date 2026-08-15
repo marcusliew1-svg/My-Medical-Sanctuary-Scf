@@ -22,12 +22,12 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.8fr_1.2fr]">
           <div>
             <SectionHeader
-              eyebrow="Zoho-ready later"
-              title="Discovery enquiry"
-              description="This v0.1 form logs submissions in the browser and can be connected to Zoho Forms or Zoho CRM later."
+              eyebrow="Discovery enquiry"
+              title="Start with the right next step."
+              description="Online enquiry submission is temporarily unavailable while MMS completes its secure CRM connection."
             />
             <p className="leading-8 text-warm-gray">
-              Recommended future mapping: contact details, interest, membership preference, enquiry type, consent, source page and timestamp.
+              Please do not send medical records, identity numbers or unnecessary sensitive health information through unverified channels. A verified direct contact route will be published here before online enquiry capture goes live.
             </p>
           </div>
           <ContactForm />
