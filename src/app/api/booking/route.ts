@@ -1,84 +1,185 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { zohoLeadFieldMapping } from "@/lib/content";
+
+const CONSENT_VERSION = "MMS-WEB-2026-08-v1";
+
+const limits = {
+  fullName: 120,
+  mobileNumber: 40,
+  email: 254,
+  country: 120,
+  interestedIn: 120,
+  preferredMembership: 80,
+  enquiringFor: 80,
+  preferredContactTime: 120,
+  message: 1500,
+  sourcePath: 300,
+  website: 200,
+} as const;
 
 type BookingForm = {
-  fullName?: string;
-  mobileNumber?: string;
-  email?: string;
-  country?: string;
-  preferredLanguage?: string;
-  interestedIn?: string;
-  preferredContactMethod?: string;
-  preferredAppointmentDate?: string;
-  message?: string;
-  consentToContact?: string;
-  consentVersion?: string;
-  sourcePath?: string;
+  fullName: string;
+  mobileNumber: string;
+  email: string;
+  country: string;
+  interestedIn: string;
+  preferredMembership: string;
+  enquiringFor: string;
+  preferredContactTime: string;
+  message: string;
+  website: string;
+  consentToContact: string;
+  consentVersion: string;
+  sourcePath: string;
 };
 
-async function readBookingForm(request: NextRequest): Promise<BookingForm> {
+type RawBookingForm = Record<string, unknown>;
+
+function cleanString(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function exceedsLimit(value: string, limit: number) {
+  return value.length > limit;
+}
+
+async function readBookingForm(request: NextRequest): Promise<RawBookingForm> {
   const contentType = request.headers.get("content-type") ?? "";
 
   if (contentType.includes("application/json")) {
-    return request.json() as Promise<BookingForm>;
+    const value = (await request.json()) as unknown;
+    if (typeof value !== "object" || value === null || Array.isArray(value)) {
+      throw new Error("Invalid payload");
+    }
+    return value as RawBookingForm;
   }
 
   const formData = await request.formData();
+  return Object.fromEntries(formData.entries());
+}
 
+function normalizeBookingForm(raw: RawBookingForm): BookingForm {
   return {
-    fullName: String(formData.get("fullName") ?? ""),
-    mobileNumber: String(formData.get("mobileNumber") ?? ""),
-    email: String(formData.get("email") ?? ""),
-    country: String(formData.get("country") ?? ""),
-    preferredLanguage: String(formData.get("preferredLanguage") ?? ""),
-    interestedIn: String(formData.get("interestedIn") ?? ""),
-    preferredContactMethod: String(formData.get("preferredContactMethod") ?? ""),
-    preferredAppointmentDate: String(formData.get("preferredAppointmentDate") ?? ""),
-    message: String(formData.get("message") ?? ""),
-    consentToContact: String(formData.get("consentToContact") ?? ""),
-    consentVersion: String(formData.get("consentVersion") ?? ""),
-    sourcePath: String(formData.get("sourcePath") ?? ""),
+    fullName: cleanString(raw.fullName),
+    mobileNumber: cleanString(raw.mobileNumber),
+    email: cleanString(raw.email),
+    country: cleanString(raw.country),
+    interestedIn: cleanString(raw.interestedIn),
+    preferredMembership: cleanString(raw.preferredMembership),
+    enquiringFor: cleanString(raw.enquiringFor),
+    preferredContactTime: cleanString(raw.preferredContactTime),
+    message: cleanString(raw.message),
+    website: cleanString(raw.website),
+    consentToContact: cleanString(raw.consentToContact),
+    consentVersion: cleanString(raw.consentVersion),
+    sourcePath: cleanString(raw.sourcePath),
   };
 }
 
-export async function POST(request: NextRequest) {
-  const form = await readBookingForm(request);
-  const consentGranted = form.consentToContact === "true";
-  const consentVersion = form.consentVersion === "MMS-WEB-2026-08-v1" ? form.consentVersion : null;
-  const zohoLeadPayload = {
-    "Full Name": form.fullName,
-    Mobile: form.mobileNumber,
-    Email: form.email,
-    Country: form.country,
-    "Preferred Language": form.preferredLanguage,
-    "Interested Service": form.interestedIn,
-    "Preferred Contact Method": form.preferredContactMethod,
-    "Next Follow-up / Appointment Preference": form.preferredAppointmentDate,
-    Source: "Website",
-    "Consent to Contact": consentGranted,
-    "Consent Version": consentVersion,
-    "Consent Timestamp": consentGranted ? new Date().toISOString() : null,
-    "Source Path": form.sourcePath,
-    Message: form.message,
-  };
+function validateBookingForm(form: BookingForm) {
+  if (form.website) {
+    return "Unable to accept this submission.";
+  }
 
-  if (!consentGranted || consentVersion == null) {
+  if (
+    !form.fullName ||
+    !form.mobileNumber ||
+    !form.email ||
+    !form.country ||
+    !form.interestedIn ||
+    !form.preferredMembership ||
+    !form.enquiringFor ||
+    !form.preferredContactTime ||
+    !form.sourcePath
+  ) {
+    return "Please complete all required fields.";
+  }
+
+  if (!isValidEmail(form.email)) {
+    return "Please enter a valid email address.";
+  }
+
+  if (
+    exceedsLimit(form.fullName, limits.fullName) ||
+    exceedsLimit(form.mobileNumber, limits.mobileNumber) ||
+    exceedsLimit(form.email, limits.email) ||
+    exceedsLimit(form.country, limits.country) ||
+    exceedsLimit(form.interestedIn, limits.interestedIn) ||
+    exceedsLimit(form.preferredMembership, limits.preferredMembership) ||
+    exceedsLimit(form.enquiringFor, limits.enquiringFor) ||
+    exceedsLimit(form.preferredContactTime, limits.preferredContactTime) ||
+    exceedsLimit(form.message, limits.message) ||
+    exceedsLimit(form.sourcePath, limits.sourcePath) ||
+    exceedsLimit(form.website, limits.website)
+  ) {
+    return "One or more fields are too long.";
+  }
+
+  if (form.consentToContact !== "true" || form.consentVersion !== CONSENT_VERSION) {
+    return "Consent is required before MMS can contact the visitor.";
+  }
+
+  return null;
+}
+
+export async function POST(request: NextRequest) {
+  let rawForm: RawBookingForm;
+
+  try {
+    rawForm = await readBookingForm(request);
+  } catch {
     return NextResponse.json(
       {
         status: "invalid",
-        message: "Consent is required before MMS can contact the visitor.",
+        message: "The enquiry payload could not be read.",
       },
       { status: 400 },
     );
   }
 
-  return NextResponse.json({
-    status: "placeholder",
-    message:
-      "Zoho CRM integration-ready route. Add lead creation after Zoho credentials and consent flow are configured.",
-    mapping: zohoLeadFieldMapping,
-    zohoModule: "Leads",
-    acceptedFields: Object.keys(zohoLeadPayload),
-  });
+  const form = normalizeBookingForm(rawForm);
+  const validationError = validateBookingForm(form);
+
+  if (validationError) {
+    return NextResponse.json(
+      {
+        status: "invalid",
+        message: validationError,
+      },
+      { status: 400 },
+    );
+  }
+
+  const consentTimestamp = new Date().toISOString();
+  const zohoLeadPayload = {
+    "Full Name": form.fullName,
+    Mobile: form.mobileNumber,
+    Email: form.email,
+    Country: form.country,
+    "Interested Service": form.interestedIn,
+    "Preferred Membership": form.preferredMembership,
+    "Enquiring For": form.enquiringFor,
+    "Preferred Contact Time": form.preferredContactTime,
+    Source: "Website",
+    "Consent to Contact": true,
+    "Consent Version": CONSENT_VERSION,
+    "Consent Timestamp": consentTimestamp,
+    "Source Path": form.sourcePath,
+    Message: form.message,
+  };
+
+  void zohoLeadPayload;
+
+  return NextResponse.json(
+    {
+      status: "not_persisted",
+      message:
+        "Online enquiry capture is not live yet because CRM persistence has not been enabled.",
+    },
+    { status: 503 },
+  );
 }
