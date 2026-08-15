@@ -6,7 +6,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 export const metadata: Metadata = {
   title: "Contact / Discovery Form",
   description:
-    "Contact My Medical Sanctuary to start a discovery discussion for membership, wellness coordination or corporate executive wellness.",
+    "My Medical Sanctuary is preparing its secure online discovery enquiry pathway for membership, wellness coordination and corporate executive wellness.",
 };
 
 export default function ContactPage() {
