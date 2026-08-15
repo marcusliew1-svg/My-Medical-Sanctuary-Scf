@@ -15,7 +15,7 @@ export default function ContactPage() {
       <Hero
         eyebrow="Contact / Discovery Form"
         title="Start with a discovery discussion."
-        subtitle="Share your context and the MMS team can guide the next appropriate step for your structured wellness journey."
+        subtitle="MMS is preparing its secure online enquiry pathway."
         image="/mms-about-hero.png"
       />
       <section className="bg-ivory px-4 py-20">
