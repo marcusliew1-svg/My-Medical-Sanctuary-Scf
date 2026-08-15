@@ -1,26 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { memberships } from "@/data/memberships";
 import { CTAButton } from "@/components/CTAButton";
-
-const interests = [
-  "Discovery discussion",
-  "Membership",
-  "Health screening",
-  "Personalised longevity",
-  "Corporate executive wellness",
-  "International medicine access intelligence",
-  "SCF lab roadmap",
-  "Education with Ling",
-];
-
-const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "Other"];
+import {
+  bookingEnquiringFor,
+  bookingInterests,
+  bookingMembershipOptions,
+} from "@/lib/bookingOptions";
 
 const fieldClass =
   "min-h-12 rounded-md border border-gold-light/50 bg-ivory/40 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none";
 
 const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
+const onlineEnquiryAvailable = false;
 
 type BookingResponse = {
   status?: string;
@@ -71,9 +63,7 @@ export function ContactForm() {
       }
 
       if (response.status === 503 && data?.status === "not_persisted") {
-        setError(
-          "Online enquiry submission is not live yet. Please try again later or contact MMS through a verified channel.",
-        );
+        setError("Online enquiry submission is temporarily unavailable. Please try again later.");
         return;
       }
 
@@ -93,6 +83,18 @@ export function ContactForm() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (!onlineEnquiryAvailable) {
+    return (
+      <div className="rounded-lg border border-gold-light bg-white/[0.94] p-8 shadow-premium">
+        <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-gold">Discovery Enquiry</p>
+        <h3 className="font-serif text-3xl text-navy">Online submission is temporarily unavailable.</h3>
+        <p className="mt-4 leading-7 text-warm-gray">
+          MMS is not yet saving website enquiries into its CRM. The online form will return once verified persistence is enabled.
+        </p>
+      </div>
+    );
   }
 
   if (submitted) {
@@ -127,13 +129,7 @@ export function ContactForm() {
 
       <label className={labelClass}>
         Full name
-        <input
-          name="fullName"
-          autoComplete="name"
-          maxLength={120}
-          required
-          className={fieldClass}
-        />
+        <input name="fullName" autoComplete="name" maxLength={120} required className={fieldClass} />
       </label>
 
       <label className={labelClass}>
@@ -151,31 +147,18 @@ export function ContactForm() {
 
       <label className={labelClass}>
         Email
-        <input
-          name="email"
-          type="email"
-          autoComplete="email"
-          maxLength={254}
-          required
-          className={fieldClass}
-        />
+        <input name="email" type="email" autoComplete="email" maxLength={254} required className={fieldClass} />
       </label>
 
       <label className={labelClass}>
         Country / City
-        <input
-          name="countryCity"
-          autoComplete="address-level2"
-          maxLength={120}
-          required
-          className={fieldClass}
-        />
+        <input name="countryCity" autoComplete="off" maxLength={120} required className={fieldClass} />
       </label>
 
       <label className={labelClass}>
         Main interest
         <select name="mainInterest" required className={fieldClass}>
-          {interests.map((interest) => (
+          {bookingInterests.map((interest) => (
             <option key={interest}>{interest}</option>
           ))}
         </select>
@@ -184,9 +167,8 @@ export function ContactForm() {
       <label className={labelClass}>
         Preferred membership
         <select name="preferredMembership" required className={fieldClass}>
-          <option>Not sure yet</option>
-          {memberships.map((membership) => (
-            <option key={membership.name}>{membership.name}</option>
+          {bookingMembershipOptions.map((membership) => (
+            <option key={membership}>{membership}</option>
           ))}
         </select>
       </label>
@@ -194,7 +176,7 @@ export function ContactForm() {
       <label className={labelClass}>
         Enquiring for
         <select name="enquiringFor" required className={fieldClass}>
-          {enquiringFor.map((item) => (
+          {bookingEnquiringFor.map((item) => (
             <option key={item}>{item}</option>
           ))}
         </select>
@@ -216,10 +198,7 @@ export function ContactForm() {
         <textarea name="message" rows={5} maxLength={1500} className={`${fieldClass} py-3`} />
       </label>
 
-      <label
-        aria-hidden="true"
-        className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden"
-      >
+      <label aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
         Website
         <input name="website" tabIndex={-1} autoComplete="off" />
       </label>

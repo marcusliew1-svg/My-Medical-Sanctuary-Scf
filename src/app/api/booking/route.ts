@@ -1,5 +1,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import {
+  bookingEnquiringFor,
+  bookingInterests,
+  bookingMembershipOptions,
+} from "@/lib/bookingOptions";
 
 const CONSENT_VERSION = "MMS-WEB-2026-08-v1";
 
@@ -16,6 +21,26 @@ const limits = {
   sourcePath: 300,
   website: 200,
 } as const;
+
+const allowedKeys = new Set([
+  "fullName",
+  "mobileNumber",
+  "email",
+  "country",
+  "interestedIn",
+  "preferredMembership",
+  "enquiringFor",
+  "preferredContactTime",
+  "message",
+  "website",
+  "consentToContact",
+  "consentVersion",
+  "sourcePath",
+]);
+
+const allowedInterests = new Set<string>(bookingInterests);
+const allowedMemberships = new Set<string>(bookingMembershipOptions);
+const allowedEnquiringFor = new Set<string>(bookingEnquiringFor);
 
 type BookingForm = {
   fullName: string;
@@ -45,6 +70,10 @@ function isValidEmail(value: string) {
 
 function exceedsLimit(value: string, limit: number) {
   return value.length > limit;
+}
+
+function hasUnknownFields(raw: RawBookingForm) {
+  return Object.keys(raw).some((key) => !allowedKeys.has(key));
 }
 
 async function readBookingForm(request: NextRequest): Promise<RawBookingForm> {
@@ -80,7 +109,11 @@ function normalizeBookingForm(raw: RawBookingForm): BookingForm {
   };
 }
 
-function validateBookingForm(form: BookingForm) {
+function validateBookingForm(raw: RawBookingForm, form: BookingForm) {
+  if (hasUnknownFields(raw)) {
+    return "The enquiry contains unsupported fields.";
+  }
+
   if (form.website) {
     return "Unable to accept this submission.";
   }
@@ -119,6 +152,22 @@ function validateBookingForm(form: BookingForm) {
     return "One or more fields are too long.";
   }
 
+  if (!allowedInterests.has(form.interestedIn)) {
+    return "Please choose a valid main interest.";
+  }
+
+  if (!allowedMemberships.has(form.preferredMembership)) {
+    return "Please choose a valid membership preference.";
+  }
+
+  if (!allowedEnquiringFor.has(form.enquiringFor)) {
+    return "Please choose who the enquiry is for.";
+  }
+
+  if (!form.sourcePath.startsWith("/")) {
+    return "The enquiry source is invalid.";
+  }
+
   if (form.consentToContact !== "true" || form.consentVersion !== CONSENT_VERSION) {
     return "Consent is required before MMS can contact the visitor.";
   }
@@ -142,7 +191,7 @@ export async function POST(request: NextRequest) {
   }
 
   const form = normalizeBookingForm(rawForm);
-  const validationError = validateBookingForm(form);
+  const validationError = validateBookingForm(rawForm, form);
 
   if (validationError) {
     return NextResponse.json(
@@ -177,8 +226,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(
     {
       status: "not_persisted",
-      message:
-        "Online enquiry capture is not live yet because CRM persistence has not been enabled.",
+      message: "Online enquiry capture is not live yet because CRM persistence has not been enabled.",
     },
     { status: 503 },
   );
