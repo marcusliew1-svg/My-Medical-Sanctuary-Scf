@@ -1,22 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { platformLinks } from "@/lib/content";
-
-const links = [
-  ["About MMS", "/about-mms"],
-  ["Memberships", "/memberships"],
-  ["How It Works", "/how-it-works"],
-  ["Health Discovery", "/health-discovery"],
-  ["Malaysia–Thailand Care", "/malaysia-thailand-care"],
-  ["Medical Tourism Concierge", "/medical-tourism"],
-  ["Book Online Doctor", "/online-doctor"],
-  ["Our Clinics", "/clinics"],
-  ["MMS Insights", "/insights"],
-  ["Video & Media Room", "/media-room"],
-  ["Education", "/education"],
-  ["Contact", "/contact"],
-  ["Privacy / Disclaimer", "/privacy-disclaimer"],
-];
+import { footerNavigation, legalNavigation, platformNavigation } from "@/lib/siteRoutes";
 
 export function FooterV01() {
   return (
@@ -27,15 +11,22 @@ export function FooterV01() {
             <Image src="/mms-logo-lockup.png" alt="My Medical Sanctuary" width={1180} height={575} className="h-auto w-full" />
           </div>
           <p className="max-w-md leading-7 text-ivory/70">
-            Preventive Care • Personalised Longevity. A structured wellness journey supported by discovery, HRM coordination and professional review.
+            Preventive Care • Personalised Longevity. A structured wellness journey supported by discovery, care coordination and professional review.
           </p>
         </div>
         <div>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Explore</h2>
           <div className="grid gap-2 text-sm text-ivory/72">
-            {links.map(([label, href]) => (
-              <Link key={href} href={href} className="transition hover:text-gold-light">
-                {label}
+            {footerNavigation.map((item) => (
+              <Link key={item.href} href={item.href} className="transition hover:text-gold-light">
+                {item.label}
+              </Link>
+            ))}
+          </div>
+          <div className="mt-5 grid gap-2 border-t border-white/10 pt-4 text-sm text-ivory/72">
+            {legalNavigation.map((item) => (
+              <Link key={item.href} href={item.href} className="transition hover:text-gold-light">
+                {item.label}
               </Link>
             ))}
           </div>
@@ -49,7 +40,7 @@ export function FooterV01() {
         <div>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Platform</h2>
           <div className="grid gap-2 text-sm text-ivory/72">
-            {platformLinks.map((item) => (
+            {platformNavigation.map((item) => (
               <Link key={item.href} href={item.href} className="transition hover:text-gold-light">
                 {item.label}
               </Link>

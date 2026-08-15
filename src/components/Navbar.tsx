@@ -2,22 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { MobileNav } from "@/components/MobileNav";
-
-const navItems = [
-  { label: "Memberships", href: "/memberships" },
-  { label: "Treatments", href: "/treatments" },
-  { label: "Health Concerns", href: "/health-concerns" },
-  { label: "How It Works", href: "/how-it-works" },
-  { label: "Care Travel", href: "/medical-tourism" },
-  { label: "SCF", href: "/scf-lab-roadmap" },
-];
-
-const languages = [
-  { label: "EN", href: "/", aria: "English" },
-  { label: "BM", href: "/ms", aria: "Bahasa Malaysia" },
-  { label: "中文", href: "/zh", aria: "Simplified Chinese" },
-  { label: "ไทย", href: "/th", aria: "Thai" },
-];
+import { languages, primaryNavigation } from "@/lib/siteRoutes";
 
 export function Navbar() {
   return (
@@ -31,7 +16,7 @@ export function Navbar() {
         </Link>
 
         <nav aria-label="Primary navigation" className="hidden items-center gap-4 text-sm font-medium xl:flex">
-          {navItems.map((item) => (
+          {primaryNavigation.map((item) => (
             <Link key={item.href} href={item.href} className="text-ivory/76 transition hover:text-gold-light">
               {item.label}
             </Link>
@@ -52,7 +37,6 @@ export function Navbar() {
               </Link>
             ))}
           </div>
-          <Link href="/login" className="hidden text-sm font-semibold text-ivory/80 transition hover:text-ivory 2xl:block">Patient login</Link>
           <CTAButton href="/ling" className="hidden min-h-10 px-4 text-xs 2xl:inline-flex">Start with Ling</CTAButton>
           <MobileNav />
         </div>
