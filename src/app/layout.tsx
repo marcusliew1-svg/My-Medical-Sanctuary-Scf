@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
+const socialImage = "/mms-about-hero.png";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,11 @@ export const metadata: Metadata = {
   },
   description:
     "My Medical Sanctuary is a premium preventive care and personalised longevity membership platform with discovery-first wellness coordination.",
+  icons: {
+    icon: "/mms-logo-mark.png",
+    shortcut: "/mms-logo-mark.png",
+    apple: "/mms-logo-mark.png",
+  },
   openGraph: {
     title: "My Medical Sanctuary",
     description: "Preventive Care • Personalised Longevity",
@@ -33,6 +39,18 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_MY",
     siteName: "My Medical Sanctuary",
+    images: [
+      {
+        url: socialImage,
+        alt: "My Medical Sanctuary preventive care and personalised longevity",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "My Medical Sanctuary",
+    description: "Preventive Care • Personalised Longevity",
+    images: [socialImage],
   },
 };
 
