@@ -17,6 +17,14 @@ Status: operational checklist for Preview validation and eventual live activatio
 
 Use the MMS CRM organisation only. Do not reuse iPivot or another company's CRM credentials.
 
+Confirmed current CRM constraints:
+
+- The connected Leads module accepts the standard fields used by the website, including `Lead_Source = Partner`, `Lead_Status = Not Contacted`, `Data_Source = API`, Description and Tag.
+- The current CRM edition/module has reached its supported custom-field limits. Attempts to add dedicated MMS application/stage/territory/referrer/Partner-ID fields were rejected by Zoho and no new custom fields were created.
+- Until a dedicated Sales Partner module or additional field capacity is available, structured MMS applicant metadata is stored in the standard Description field and the record is tagged `MMS Sales Partner Applicant`.
+- The correct reviewer view is the private filtered view `MMS Partner Intake` (view ID `7504999000001060002`). It filters Leads whose Description contains `MMS Sales Partner application:`.
+- An earlier unfiltered/public test view named `MMS Sales Partner Applicants` was deleted and must not be used.
+
 Required Vercel Preview environment values:
 
 ```text
@@ -39,7 +47,7 @@ Before the first Preview write:
 1. Confirm the OAuth client and refresh token belong to the MMS Zoho CRM organisation.
 2. Confirm `Leads` is the correct MMS Leads module API name.
 3. Confirm `Partner` is a valid `Lead_Source` value in that organisation.
-4. Confirm the private CRM view `MMS Sales Partner Applicants` is available to the intended reviewer.
+4. Confirm the private CRM view `MMS Partner Intake` is available to the intended reviewer.
 5. Confirm the applicant tag is exactly `MMS Sales Partner Applicant`.
 6. Confirm the public page remains `noindex` while the workflow is under controlled testing.
 
@@ -47,12 +55,12 @@ Controlled Preview test:
 
 1. Submit one clearly named test applicant from the Vercel Preview `/join-mms` page.
 2. Confirm the browser receives `status: accepted` and an `MMS-SPA-...` application reference.
-3. Confirm exactly one Lead appears in the MMS CRM.
+3. Confirm exactly one Lead appears in the MMS CRM and in `MMS Partner Intake`.
 4. Confirm name, email, mobile, city/country and company/occupation mapping.
 5. Confirm `Lead_Source = Partner`.
 6. Confirm `Lead_Status = Not Contacted`.
 7. Confirm tag `MMS Sales Partner Applicant`.
-8. Confirm Description contains application reference, Applicant stage, territory, expected activity, referral/introducer, declarations and source path.
+8. Confirm Description contains the structured `[MMS_PARTNER_APPLICATION]` block with application reference, Applicant stage, territory, expected activity, referral/introducer, declarations and source path.
 9. Confirm no health information is present.
 10. Confirm no permanent `MMSP-...` Partner ID has been issued.
 11. Delete or clearly mark the test record according to CRM test-data policy after verification.
