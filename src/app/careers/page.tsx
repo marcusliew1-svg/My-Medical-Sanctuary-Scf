@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CareersApplicationForm } from "@/components/CommerceRecruitmentForms";
+import { CAREER_ROLE_FAMILIES } from "@/lib/careersPolicy";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -8,19 +9,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const roleFamilies = [
-  ["Medical & Clinical", "Doctors, medical advisory and clinical-support roles"],
-  ["Clinic Operations", "Clinic coordination, operations and service delivery"],
-  ["Member Concierge", "Care coordination, member support and follow-up"],
-  ["Sales Management", "Employed sales leadership and commercial operations"],
-  ["Marketing & Content", "Brand, education, campaigns and communications"],
-  ["Finance & Administration", "Finance, HR, administration and corporate support"],
-  ["Technology & CRM", "Platform, CRM, data workflow and digital operations"],
-] as const;
-
 export default function CareersPage() {
   const applicationsEnabled = process.env.MMS_CAREERS_APPLICATIONS_ENABLED === "true";
-  const roleNames = roleFamilies.map(([name]) => name);
+  const roleNames = CAREER_ROLE_FAMILIES.map(({ name }) => name);
 
   return (
     <main>
@@ -43,7 +34,7 @@ export default function CareersPage() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {roleFamilies.map(([name, description]) => (
+            {CAREER_ROLE_FAMILIES.map(({ name, description }) => (
               <article key={name} className="rounded-[1.5rem] border border-black/5 bg-white p-6 shadow-soft">
                 <p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">MMS team</p>
                 <h3 className="mt-2 font-serif text-2xl text-navy">{name}</h3>
