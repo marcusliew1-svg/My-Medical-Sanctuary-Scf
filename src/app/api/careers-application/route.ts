@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { isCareerRoleFamily } from "@/lib/careersPolicy";
 import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
 
 export async function POST(request: NextRequest) {
@@ -40,11 +41,11 @@ export async function POST(request: NextRequest) {
     !isEmail(payload.email) ||
     payload.mobile.length < 6 ||
     !payload.location ||
-    !payload.role ||
+    !isCareerRoleFamily(payload.role) ||
     !payload.privacyConsent
   ) {
     return NextResponse.json(
-      { status: "invalid", message: "Please complete the required applicant and consent fields." },
+      { status: "invalid", message: "Please complete the required applicant, role and consent fields." },
       { status: 400 },
     );
   }
