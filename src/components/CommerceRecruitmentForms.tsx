@@ -73,9 +73,15 @@ export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4 rounded-[2rem] bg-white p-6 shadow-soft md:p-8">
+    <form onSubmit={onSubmit} className="grid gap-5 rounded-[2rem] bg-white p-6 shadow-soft md:p-8">
       <input name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       <input type="hidden" name="sourcePath" value="/join-mms" />
+
+      <div>
+        <p className="font-serif text-xl text-navy">Tell us about your market and experience</p>
+        <p className="mt-1 text-sm leading-6 text-warm-gray">Applications are reviewed before agreement, training and activation. A permanent MMS Partner ID is issued only after approval.</p>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <Field name="fullName" label="Full name" required disabled={!enabled} autoComplete="name" />
         <Field name="email" label="Email" type="email" required disabled={!enabled} autoComplete="email" />
@@ -84,19 +90,46 @@ export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
         <Field name="city" label="City" disabled={!enabled} />
         <Field name="nationality" label="Nationality" disabled={!enabled} />
         <Field name="occupation" label="Current occupation / company" disabled={!enabled} />
-        <Field name="preferredTerritory" label="Preferred market / territory" disabled={!enabled} />
-        <Field name="expectedMonthlyActivity" label="Expected monthly activity" disabled={!enabled} placeholder="e.g. 5–10 memberships" />
-        <Field name="introducer" label="Introducer / referral (optional)" disabled={!enabled} />
+        <label className="block">
+          <span className={labelClass}>Preferred market / territory</span>
+          <select name="preferredTerritory" required disabled={!enabled} className={fieldClass} defaultValue="">
+            <option value="" disabled>Select a territory</option>
+            <option value="Malaysia">Malaysia</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Malaysia + Thailand">Malaysia + Thailand</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <label className="block">
+          <span className={labelClass}>Expected monthly activity</span>
+          <select name="expectedMonthlyActivity" required disabled={!enabled} className={fieldClass} defaultValue="">
+            <option value="" disabled>Select expected activity</option>
+            <option value="0-5">0–5 memberships / month</option>
+            <option value="6-15">6–15 memberships / month</option>
+            <option value="16+">16+ memberships / month</option>
+            <option value="Building team / leadership">Building team / leadership</option>
+          </select>
+        </label>
+        <Field name="referrerCode" label="Existing MMS Partner ID" disabled={!enabled} placeholder="Optional, e.g. MMSP-1001" />
+        <Field name="introducer" label="Introducer / referral name" disabled={!enabled} />
       </div>
-      <TextArea name="salesBackground" label="Sales background" required disabled={!enabled} />
+
+      <TextArea name="salesBackground" label="Sales background" required disabled={!enabled} placeholder="Tell us what you have sold, your customer profile and how you usually generate relationships or leads." />
       <TextArea name="relevantExperience" label="Relevant healthcare / financial / premium-consumer experience" disabled={!enabled} />
-      <Check name="complianceDeclaration" disabled={!enabled}>I agree to follow MMS compliance rules and use only approved representations and materials.</Check>
-      <Check name="privacyConsent" disabled={!enabled}>I consent to MMS processing this information for Sales Partner recruitment and follow-up.</Check>
+
+      <div className="grid gap-3 rounded-2xl bg-ivory p-4 md:p-5">
+        <p className="text-sm font-semibold text-navy">Application declarations</p>
+        <Check name="complianceDeclaration" disabled={!enabled}>I agree to follow MMS compliance rules and use only approved materials, processes and claims.</Check>
+        <Check name="approvedRepresentationsDeclaration" disabled={!enabled}>I understand that I must not diagnose, prescribe, guarantee medical outcomes or make unapproved treatment, income or investment claims when representing MMS.</Check>
+        <Check name="agreementAcknowledgement" disabled={!enabled}>I understand that approval is not activation. If approved, I must complete the Sales Partner Agreement and required training before representing MMS as an active partner.</Check>
+        <Check name="privacyConsent" disabled={!enabled}>I consent to MMS processing this information for Sales Partner recruitment, screening and follow-up.</Check>
+      </div>
+
       <button type="submit" disabled={!enabled || state.kind === "busy"} className="rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-45">
         {!enabled ? "Online applications opening soon" : state.kind === "busy" ? "Submitting…" : "Submit Sales Partner application"}
       </button>
       {state.message ? <p role="alert" className="text-sm text-terracotta">{state.message}</p> : null}
-      <p className="text-xs leading-5 text-warm-gray">Bank, tax and payout details are not requested at this stage. They are collected only after approval through the authorised onboarding process.</p>
+      <p className="text-xs leading-5 text-warm-gray">Bank, tax and payout details are not requested at application stage. They are collected only after approval through the authorised onboarding process.</p>
     </form>
   );
 }
