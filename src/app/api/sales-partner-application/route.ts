@@ -7,6 +7,24 @@ import { createZohoRecord, zohoCrmConfigured } from "@/lib/zohoCrm";
 
 const allowedTerritories = new Set(["Malaysia", "Thailand", "Malaysia + Thailand", "Other"]);
 const allowedActivityBands = new Set(["0-5", "6-15", "16+", "Building team / leadership"]);
+const allowedLeadSources = new Set([
+  "Advertisement",
+  "Cold Call",
+  "Employee Referral",
+  "External Referral",
+  "OnlineStore",
+  "Partner",
+  "Public Relations",
+  "Sales Mail Alias",
+  "Seminar Partner",
+  "Seminar-Internal",
+  "Trade Show",
+  "Web Download",
+  "Web Research",
+  "Chat",
+  "Twitter",
+  "Facebook",
+]);
 
 function splitName(fullName: string) {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);
@@ -106,6 +124,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const configuredLeadSource = (process.env.MMS_SALES_PARTNER_LEAD_SOURCE || "Partner").trim();
+  if (!allowedLeadSources.has(configuredLeadSource)) {
+    console.error("MMS Sales Partner Zoho intake blocked: invalid configured Lead_Source");
+    return NextResponse.json(
+      { status: "configuration_error", message: "Sales Partner CRM intake is not configured correctly yet." },
+      { status: 503 },
+    );
+  }
+
+  const applicantTag = clean(process.env.MMS_SALES_PARTNER_APPLICANT_TAG || "MMS Sales Partner Applicant", 80);
   const reference = applicationReference();
   const { firstName, lastName } = splitName(payload.fullName);
   const description = [
@@ -138,11 +166,11 @@ export async function POST(request: NextRequest) {
       Country: payload.country,
       Company: payload.occupation.slice(0, 200) || "Individual Sales Partner Applicant",
       Designation: payload.occupation.slice(0, 100) || undefined,
-      Lead_Source: "Partner",
+      Lead_Source: configuredLeadSource,
       Lead_Status: "Not Contacted",
       Data_Source: "API",
       Description: description.slice(0, 32_000),
-      Tag: [{ name: "MMS Sales Partner Applicant" }],
+      Tag: applicantTag ? [{ name: applicantTag }] : undefined,
     });
   } catch (error) {
     console.error("MMS Sales Partner Zoho intake failed", {
