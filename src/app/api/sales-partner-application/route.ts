@@ -136,23 +136,30 @@ export async function POST(request: NextRequest) {
   const applicantTag = clean(process.env.MMS_SALES_PARTNER_APPLICANT_TAG || "MMS Sales Partner Applicant", 80);
   const reference = applicationReference();
   const { firstName, lastName } = splitName(payload.fullName);
+
+  // Current Zoho edition has no remaining supported custom-field capacity for Leads.
+  // Keep the interim applicant metadata deliberately structured in Description so the
+  // private MMS intake view and a later migration to a dedicated module remain reliable.
   const description = [
     `MMS Sales Partner application: ${reference}`,
-    `Stage: Applicant`,
-    `Preferred territory: ${payload.preferredTerritory}`,
-    `Expected monthly activity: ${payload.expectedMonthlyActivity}`,
+    "[MMS_PARTNER_APPLICATION]",
+    `Application Reference: ${reference}`,
+    "Partner Stage: Applicant",
+    `Preferred Territory: ${payload.preferredTerritory}`,
+    `Expected Monthly Activity: ${payload.expectedMonthlyActivity}`,
     `Nationality: ${payload.nationality || "Not supplied"}`,
-    `Occupation/company: ${payload.occupation || "Not supplied"}`,
+    `Occupation/Company: ${payload.occupation || "Not supplied"}`,
     `Referrer Partner ID: ${payload.referrerCode || "None"}`,
     `Introducer: ${payload.introducer || "None"}`,
-    `Sales background: ${payload.salesBackground}`,
-    `Relevant experience: ${payload.relevantExperience || "Not supplied"}`,
-    `Compliance declaration: accepted`,
-    `Approved representations declaration: accepted`,
-    `Sales Partner Agreement acknowledgement: accepted`,
-    `Privacy consent: accepted`,
+    `Sales Background: ${payload.salesBackground}`,
+    `Relevant Experience: ${payload.relevantExperience || "Not supplied"}`,
+    "Compliance Declaration: accepted",
+    "Approved Representations Declaration: accepted",
+    "Sales Partner Agreement Acknowledgement: accepted",
+    "Privacy Consent: accepted",
     `Source: ${payload.sourcePath || "/join-mms"}`,
     "Permanent Partner ID: not assigned - approval, agreement, training and activation required.",
+    "[/MMS_PARTNER_APPLICATION]",
   ].join("\n");
 
   try {
