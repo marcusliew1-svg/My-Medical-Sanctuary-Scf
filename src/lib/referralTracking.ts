@@ -1,6 +1,7 @@
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 export const REFERRAL_QUERY_KEY = "ref";
+export const MMS_PARTNER_REFERRAL_COOKIE = "mms_partner_ref";
 
 export type ReferralAttribution = {
   partnerId: string;
