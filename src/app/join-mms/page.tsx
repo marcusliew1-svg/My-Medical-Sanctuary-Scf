@@ -15,7 +15,7 @@ const tiers = [
 ];
 
 export default function JoinMMSPage() {
-  const applicationsEnabled = process.env.MMS_SALES_APPLICATIONS_ENABLED === "true";
+  const applicationsEnabled = process.env.MMS_SALES_PARTNER_APPLICATIONS_ENABLED === "true";
 
   return (
     <main>
@@ -45,7 +45,7 @@ export default function JoinMMSPage() {
             <div className="rounded-[2rem] bg-white p-8 shadow-soft">
               <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Commission framework</p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {[['10%', 'Base commission'], ['15%', 'Upgraded base tier'], ['18%', 'Personal-target tier'], ['23%', 'Group-target tier']].map(([rate,label]) => (
+                {[["10%", "Base commission"], ["15%", "Upgraded base tier"], ["18%", "Personal-target tier"], ["23%", "Group-target tier"]].map(([rate,label]) => (
                   <div key={rate} className="rounded-2xl bg-ivory p-5">
                     <p className="font-serif text-4xl text-navy">{rate}</p>
                     <p className="mt-1 text-sm font-semibold text-deep-green">{label}</p>
