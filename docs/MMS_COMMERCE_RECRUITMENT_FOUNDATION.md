@@ -72,9 +72,11 @@ Application fields (pre-approval):
 - Healthcare / financial / premium-consumer sales experience
 - Preferred market / territory
 - Expected monthly activity
-- Referral / introducer (optional)
+- Referral / introducer or existing Partner ID (optional)
 - Compliance declaration
+- Approved-representations declaration
 - Privacy consent
+- Sales Partner Agreement acknowledgement (acknowledgement only; formal acceptance occurs after approval)
 
 Post-approval only:
 - Bank payout details
@@ -83,9 +85,79 @@ Post-approval only:
 - partner ID / referral code
 
 Recommended workflow:
-Apply -> screening -> interview/approval -> agreement -> partner ID -> CRM activation -> training -> referral link/QR -> active selling -> commission reporting.
+Apply -> Under Review -> Approved -> Agreement Pending -> Training -> Active -> Suspended/Inactive as required.
 
-## 3. Internal HR recruitment
+Partner ID standard:
+- Assign only after approval.
+- Recommended format: MMSP-1001, MMSP-1002, etc.
+- Referral URL format can later use `?ref=MMSP-1001`.
+- QR codes should resolve to the same tracked referral URL.
+- A referral code identifies attribution; it must not expose customer health information.
+
+Partner level operating framework:
+- Associate: 0-5 memberships/month.
+- Senior: 6-15 memberships/month.
+- Elite: 16+ memberships/month.
+- Chairman: leadership tier governed by separate qualification rules.
+- Level calculation should be performed from verified completed sales, not manually entered claims.
+
+Training and activation:
+- Approval alone does not permit uncontrolled selling.
+- Before Active status, require Sales Partner Agreement completion, core training completion and compliance acknowledgement.
+- Training should cover MMS positioning, membership structure, Ling boundaries, approved treatment explanations, prohibited medical claims, referral handling, privacy and escalation to qualified professionals.
+
+Commission ledger design (phase 2):
+- One ledger row per qualifying transaction/renewal rather than a single editable total.
+- Suggested fields: Partner ID, customer/member reference, membership, transaction reference, cleared amount, applicable commission rate, gross commission, adjustments/chargebacks, approved commission, payout status, payout cycle/date and notes.
+- Keep commission calculation separate from clinical records.
+- Never allow a partner to edit cleared sales, commission rate or payout status from the portal.
+
+## 3. Zoho CRM routing for Sales Partners
+
+Preferred long-term architecture: a dedicated `Sales Partners` CRM module with partner lifecycle, level, referral, training, agreement and compliance fields.
+
+Current account constraint discovered during implementation:
+- The connected Zoho One account is currently on a Trial edition that does not permit creation of custom CRM modules.
+- A direct attempt to create a `Sales Partners` module returned `CUSTOM_MODULE_FEATURE_NOT_SUPPORTED_IN_ZOHOONE_TRIAL_EDITION`.
+- The current Leads module is also at its custom-field limits for the field types tested, so the Sales Partner-specific picklists/text fields could not be added there at this time.
+
+Interim routing while the trial limitation exists:
+- Use Leads only as a temporary intake queue, not as the final Partner master database.
+- Apply a dedicated tag such as `MMS Sales Partner Applicant` and set a clearly defined source value.
+- Do not mix patient/member health information into these records.
+- Use the existing Lead Status only for broad screening until a dedicated module is available.
+- Do not generate the permanent Partner ID inside the temporary Lead record unless the applicant has been approved.
+
+Recommended temporary Lead mapping:
+- First_Name / Last_Name <- applicant name
+- Email <- applicant email
+- Phone <- mobile / WhatsApp
+- Company <- applicant company when supplied; otherwise a controlled placeholder such as `Individual Sales Partner Applicant`
+- Lead_Source <- controlled MMS recruitment source
+- Lead_Status <- `Not Contacted` on new intake; later broad screening status only
+- Tag <- `MMS Sales Partner Applicant`
+- Description / Notes or approved auxiliary storage <- territory, background, expected activity, introducer/referrer and declarations, only if the final implementation has an approved field/storage mechanism
+
+Do not overload ordinary Lead fields with misleading semantics just to force-fit the partner data model. When the Zoho account permits custom modules, migrate approved partner records into a dedicated Sales Partners module.
+
+Target dedicated Sales Partners fields after plan/edition support is available:
+- Partner ID
+- Partner Stage: Applicant, Under Review, Approved, Agreement Pending, Training, Active, Suspended, Inactive, Rejected
+- Partner Level: Associate, Senior, Elite, Chairman
+- Territory
+- Referrer / Sponsor Partner ID
+- Compliance Status
+- Training Status
+- Agreement Status
+- Activation Date
+- Status / suspension reason
+
+Production website integration requirement:
+- ChatGPT's authenticated Zoho connector is not the website's production credential.
+- `/api/sales-partner-application` must use an approved server-to-server Zoho OAuth/API integration, Zoho Flow endpoint or equivalent controlled service before the feature gate is enabled.
+- Until that persistence path is verified, the API must continue returning a truthful unavailable/not-persisted state.
+
+## 4. Internal HR recruitment
 
 Public route: /careers
 
@@ -119,7 +191,7 @@ Vacancy -> application -> HR screening -> interview -> professional/credential v
 
 Preferred system of record: Zoho Recruit if enabled for MMS. If not yet enabled, do not build a permanent applicant database into the website as a substitute.
 
-## 4. Partner portal - phase 2
+## 5. Partner portal - phase 2
 
 After the application and CRM rules are stable, approved partners should be able to see:
 - Partner ID
@@ -135,7 +207,7 @@ After the application and CRM rules are stable, approved partners should be able
 
 Do not expose client health information in the partner portal.
 
-## 5. Security and compliance gates
+## 6. Security and compliance gates
 
 Before enabling live payment/application submission:
 - Stripe production keys configured only in server environment.
@@ -149,7 +221,7 @@ Before enabling live payment/application submission:
 - HR applicant retention/access rules approved.
 - No medical information collected in the payment or sales-partner application forms.
 
-## 6. Suggested implementation order
+## 7. Suggested implementation order
 
 1. Configure Stripe products + Price IDs in Stripe account.
 2. Implement /api/checkout and /api/stripe/webhook.
@@ -160,6 +232,6 @@ Before enabling live payment/application submission:
 7. Connect careers to Zoho Recruit or an approved HR system.
 8. Build partner referral tracking and portal only after the above is stable.
 
-## 7. Go-live rule
+## 8. Go-live rule
 
 A page may be visually public before its submission/payment action is enabled, but the UI must state truthfully when an application or payment function is not yet active. Never display a success state unless the server-side transaction or application has actually been accepted by the intended system of record.
