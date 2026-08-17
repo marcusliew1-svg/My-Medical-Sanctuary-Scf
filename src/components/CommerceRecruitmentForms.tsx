@@ -1,8 +1,15 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
 
-type ApiState = { kind: "idle" | "busy" | "error"; message?: string };
+type ApiState = { kind: "idle" | "busy" | "success" | "error"; message?: string };
+
+type ApiPayload = {
+  status?: string;
+  message?: string;
+  checkoutUrl?: string;
+  reference?: string;
+};
 
 const fieldClass =
   "mt-1 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-navy outline-none transition focus:border-gold";
@@ -10,7 +17,7 @@ const labelClass = "text-xs font-bold uppercase tracking-[.12em] text-deep-green
 
 async function submitForm(endpoint: string, form: HTMLFormElement) {
   const response = await fetch(endpoint, { method: "POST", body: new FormData(form) });
-  const payload = (await response.json().catch(() => ({}))) as { status?: string; message?: string; checkoutUrl?: string };
+  const payload = (await response.json().catch(() => ({}))) as ApiPayload;
   return { response, payload };
 }
 
@@ -19,10 +26,11 @@ export function MembershipCheckoutForm({ membership, enabled }: { membership: st
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     if (!enabled || state.kind === "busy") return;
     setState({ kind: "busy" });
     try {
-      const { response, payload } = await submitForm("/api/checkout", event.currentTarget);
+      const { response, payload } = await submitForm("/api/checkout", form);
       if (response.ok && payload.checkoutUrl) {
         window.location.assign(payload.checkoutUrl);
         return;
@@ -48,7 +56,7 @@ export function MembershipCheckoutForm({ membership, enabled }: { membership: st
       <button type="submit" disabled={!enabled || state.kind === "busy"} className="w-full rounded-full bg-gold px-5 py-3 text-sm font-semibold text-navy disabled:cursor-not-allowed disabled:opacity-45">
         {!enabled ? "Online payment opening soon" : state.kind === "busy" ? "Preparing secure checkout…" : `Pay for ${membership}`}
       </button>
-      {state.message ? <p role="alert" className="text-xs leading-5 text-terracotta">{state.message}</p> : null}
+      {state.message ? <p role="alert" className="text-xs leading-5 text-[#B56F5B]">{state.message}</p> : null}
     </form>
   );
 }
@@ -58,15 +66,20 @@ export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     if (!enabled || state.kind === "busy") return;
     setState({ kind: "busy" });
     try {
-      const { response, payload } = await submitForm("/api/sales-partner-application", event.currentTarget);
-      if (!response.ok) {
+      const { response, payload } = await submitForm("/api/sales-partner-application", form);
+      if (!response.ok || payload.status !== "accepted") {
         setState({ kind: "error", message: payload.message || "The application could not be submitted." });
         return;
       }
-      setState({ kind: "idle" });
+      form.reset();
+      setState({
+        kind: "success",
+        message: payload.message || (payload.reference ? `Application received. Your reference is ${payload.reference}.` : "Application received."),
+      });
     } catch {
       setState({ kind: "error", message: "The application could not be submitted. Please try again later." });
     }
@@ -128,7 +141,9 @@ export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
       <button type="submit" disabled={!enabled || state.kind === "busy"} className="rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-45">
         {!enabled ? "Online applications opening soon" : state.kind === "busy" ? "Submitting…" : "Submit Sales Partner application"}
       </button>
-      {state.message ? <p role="alert" className="text-sm text-terracotta">{state.message}</p> : null}
+      {state.message ? (
+        <p role="status" className={`text-sm ${state.kind === "success" ? "text-deep-green" : "text-[#B56F5B]"}`}>{state.message}</p>
+      ) : null}
       <p className="text-xs leading-5 text-warm-gray">Bank, tax and payout details are not requested at application stage. They are collected only after approval through the authorised onboarding process.</p>
     </form>
   );
@@ -139,15 +154,17 @@ export function CareersApplicationForm({ enabled, roles }: { enabled: boolean; r
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     if (!enabled || state.kind === "busy") return;
     setState({ kind: "busy" });
     try {
-      const { response, payload } = await submitForm("/api/careers-application", event.currentTarget);
-      if (!response.ok) {
+      const { response, payload } = await submitForm("/api/careers-application", form);
+      if (!response.ok || payload.status !== "accepted") {
         setState({ kind: "error", message: payload.message || "The application could not be submitted." });
         return;
       }
-      setState({ kind: "idle" });
+      form.reset();
+      setState({ kind: "success", message: payload.message || "Application received." });
     } catch {
       setState({ kind: "error", message: "The application could not be submitted. Please try again later." });
     }
@@ -181,7 +198,9 @@ export function CareersApplicationForm({ enabled, roles }: { enabled: boolean; r
       <button type="submit" disabled={!enabled || state.kind === "busy"} className="rounded-full bg-deep-green px-6 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-45">
         {!enabled ? "Online applications opening soon" : state.kind === "busy" ? "Submitting…" : "Submit career application"}
       </button>
-      {state.message ? <p role="alert" className="text-sm text-terracotta">{state.message}</p> : null}
+      {state.message ? (
+        <p role="status" className={`text-sm ${state.kind === "success" ? "text-deep-green" : "text-[#B56F5B]"}`}>{state.message}</p>
+      ) : null}
       <p className="text-xs leading-5 text-warm-gray">CV upload and permanent applicant storage will be enabled only when the approved HR system is connected.</p>
     </form>
   );
