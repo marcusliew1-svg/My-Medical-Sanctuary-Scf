@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MembershipCheckoutForm } from "@/components/CommerceRecruitmentForms";
 import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
@@ -16,7 +17,9 @@ const membershipPositioning: Record<string, string> = {
 };
 
 export default function MembershipCheckoutPage() {
-  const checkoutEnabled = process.env.MMS_STRIPE_CHECKOUT_ENABLED === "true";
+  const checkoutEnabled =
+    process.env.MMS_STRIPE_CHECKOUT_ENABLED === "true" &&
+    process.env.MMS_STRIPE_FULFILMENT_ENABLED === "true";
 
   return (
     <main>
@@ -38,11 +41,7 @@ export default function MembershipCheckoutPage() {
                 <p className="mt-2 text-sm font-semibold text-deep-green">{membership.tagline}</p>
                 <p className="mt-5 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p>
                 <div className="mt-7 border-t border-black/5 pt-5">
-                  {checkoutEnabled ? (
-                    <span className="inline-flex rounded-full bg-gold px-5 py-3 text-sm font-semibold text-navy">Secure checkout enabled</span>
-                  ) : (
-                    <span className="inline-flex rounded-full border border-gold-light bg-ivory px-5 py-3 text-sm font-semibold text-navy">Online payment opening soon</span>
-                  )}
+                  <MembershipCheckoutForm membership={membership.name} enabled={checkoutEnabled} />
                 </div>
               </article>
             ))}
@@ -62,7 +61,7 @@ export default function MembershipCheckoutPage() {
             </div>
           </div>
 
-          <p className="mt-8 text-xs leading-5 text-warm-gray">No card details are collected on this page. When enabled, payment will be processed through the approved secure payment flow. Membership does not guarantee medical outcomes, and clinical decisions remain subject to professional review and individual suitability.</p>
+          <p className="mt-8 text-xs leading-5 text-warm-gray">No card details are collected by MMS on this page. When enabled, payment continues through Stripe Checkout. Membership does not guarantee medical outcomes, and clinical decisions remain subject to professional review and individual suitability.</p>
         </div>
       </section>
     </main>

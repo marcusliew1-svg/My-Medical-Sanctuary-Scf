@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CareersApplicationForm } from "@/components/CommerceRecruitmentForms";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -15,10 +16,11 @@ const roleFamilies = [
   ["Marketing & Content", "Brand, education, campaigns and communications"],
   ["Finance & Administration", "Finance, HR, administration and corporate support"],
   ["Technology & CRM", "Platform, CRM, data workflow and digital operations"],
-];
+] as const;
 
 export default function CareersPage() {
   const applicationsEnabled = process.env.MMS_CAREERS_APPLICATIONS_ENABLED === "true";
+  const roleNames = roleFamilies.map(([name]) => name);
 
   return (
     <main>
@@ -64,6 +66,15 @@ export default function CareersPage() {
               )}
             </div>
           </div>
+
+          <section className="mt-10" aria-labelledby="careers-application-heading">
+            <div className="mb-5 max-w-3xl">
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Future applications</p>
+              <h2 id="careers-application-heading" className="mt-2 font-serif text-4xl text-navy">Employment application</h2>
+              <p className="mt-3 text-sm leading-6 text-warm-gray">The application form is prepared now, but submission remains disabled until the approved HR system and CV-handling workflow are connected.</p>
+            </div>
+            <CareersApplicationForm enabled={applicationsEnabled} roles={roleNames} />
+          </section>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/about-mms" className="rounded-full bg-deep-green px-5 py-3 text-sm font-semibold text-white">Learn about MMS</Link>

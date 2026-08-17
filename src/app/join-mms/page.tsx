@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SalesPartnerApplicationForm } from "@/components/CommerceRecruitmentForms";
 
 export const metadata: Metadata = {
   title: "Join MMS",
@@ -72,7 +73,7 @@ export default function JoinMMSPage() {
               <div>
                 <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Application process</p>
                 <h2 className="mt-2 font-serif text-3xl text-navy">Apply → screening → approval → agreement → training → activation.</h2>
-                <p className="mt-3 max-w-3xl text-sm leading-6 text-warm-gray">Applications will collect professional profile and compliance information first. Bank payout and tax details are requested only after approval.</p>
+                <p className="mt-3 max-w-3xl text-sm leading-6 text-warm-gray">Applications collect professional profile and compliance information first. Bank payout and tax details are requested only after approval.</p>
               </div>
               {applicationsEnabled ? (
                 <span className="rounded-full bg-gold px-5 py-3 text-sm font-semibold text-navy">Applications enabled</span>
@@ -81,6 +82,15 @@ export default function JoinMMSPage() {
               )}
             </div>
           </div>
+
+          <section className="mt-10" aria-labelledby="sales-partner-application-heading">
+            <div className="mb-5 max-w-3xl">
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Apply to join</p>
+              <h2 id="sales-partner-application-heading" className="mt-2 font-serif text-4xl text-navy">Sales Partner application</h2>
+              <p className="mt-3 text-sm leading-6 text-warm-gray">The form is prepared now and becomes submit-enabled only after the approved CRM workflow and privacy process are active.</p>
+            </div>
+            <SalesPartnerApplicationForm enabled={applicationsEnabled} />
+          </section>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/memberships" className="rounded-full bg-navy px-5 py-3 text-sm font-semibold text-white">Understand MMS memberships</Link>
