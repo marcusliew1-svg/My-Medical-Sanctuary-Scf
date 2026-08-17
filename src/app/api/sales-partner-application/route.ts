@@ -2,6 +2,9 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
 
+const allowedTerritories = new Set(["Malaysia", "Thailand", "Malaysia + Thailand", "Other"]);
+const allowedActivityBands = new Set(["0-5", "6-15", "16+", "Building team / leadership"]);
+
 export async function POST(request: NextRequest) {
   if (bodyTooLarge(request)) {
     return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
@@ -18,6 +21,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "accepted" }, { status: 202 });
   }
 
+  const preferredTerritory = clean(form.preferredTerritory, 120);
+  const expectedMonthlyActivity = clean(form.expectedMonthlyActivity, 80);
+
   const payload = {
     fullName: clean(form.fullName, 120),
     email: clean(form.email, 254).toLowerCase(),
@@ -28,10 +34,13 @@ export async function POST(request: NextRequest) {
     occupation: clean(form.occupation, 120),
     salesBackground: clean(form.salesBackground, 1_500),
     relevantExperience: clean(form.relevantExperience, 1_500),
-    preferredTerritory: clean(form.preferredTerritory, 120),
-    expectedMonthlyActivity: clean(form.expectedMonthlyActivity, 80),
+    preferredTerritory,
+    expectedMonthlyActivity,
+    referrerCode: clean(form.referrerCode, 40).toUpperCase(),
     introducer: clean(form.introducer, 120),
     complianceDeclaration: clean(form.complianceDeclaration, 10) === "true",
+    approvedRepresentationsDeclaration: clean(form.approvedRepresentationsDeclaration, 10) === "true",
+    agreementAcknowledgement: clean(form.agreementAcknowledgement, 10) === "true",
     privacyConsent: clean(form.privacyConsent, 10) === "true",
     sourcePath: clean(form.sourcePath, 160),
   };
@@ -42,11 +51,15 @@ export async function POST(request: NextRequest) {
     payload.mobile.length < 6 ||
     !payload.country ||
     !payload.salesBackground ||
+    !allowedTerritories.has(payload.preferredTerritory) ||
+    !allowedActivityBands.has(payload.expectedMonthlyActivity) ||
     !payload.complianceDeclaration ||
+    !payload.approvedRepresentationsDeclaration ||
+    !payload.agreementAcknowledgement ||
     !payload.privacyConsent
   ) {
     return NextResponse.json(
-      { status: "invalid", message: "Please complete the required professional and consent fields." },
+      { status: "invalid", message: "Please complete the required professional, territory and consent fields." },
       { status: 400 },
     );
   }
@@ -59,6 +72,7 @@ export async function POST(request: NextRequest) {
   }
 
   // The route intentionally does not claim success until the approved Zoho module/workflow is connected.
+  // A permanent Partner ID is assigned only after approval, agreement and activation checks.
   return NextResponse.json(
     {
       status: "not_persisted",
