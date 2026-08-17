@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
+import { MMS_PARTNER_REFERRAL_COOKIE } from "@/lib/referralTracking";
+import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 const priceEnvByMembership = {
   ASCEND: "STRIPE_PRICE_ASCEND",
@@ -59,6 +61,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "misconfigured", message: "Checkout is temporarily unavailable." }, { status: 503 });
   }
 
+  const partnerId = normalisePartnerId(request.cookies.get(MMS_PARTNER_REFERRAL_COOKIE)?.value);
   const referenceId = `mms_${randomUUID()}`;
   const payload = new URLSearchParams();
   payload.set("mode", "payment");
@@ -68,6 +71,7 @@ export async function POST(request: NextRequest) {
   payload.set("client_reference_id", referenceId);
   payload.set("metadata[mms_membership]", membership);
   payload.set("metadata[mms_reference_id]", referenceId);
+  if (partnerId) payload.set("metadata[mms_partner_id]", partnerId);
   payload.set("success_url", `${siteUrl}/membership-checkout?payment=success&session_id={CHECKOUT_SESSION_ID}`);
   payload.set("cancel_url", `${siteUrl}/membership-checkout?payment=cancelled`);
 
