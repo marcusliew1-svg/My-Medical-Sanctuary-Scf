@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { MMS_PARTNER_REFERRAL_COOKIE } from "@/lib/referralTracking";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
-
-export const MMS_PARTNER_REFERRAL_COOKIE = "mms_partner_ref";
 
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
