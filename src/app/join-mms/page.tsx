@@ -15,6 +15,20 @@ const tiers = [
   ["Chairman", "Leadership tier"],
 ];
 
+const activationSteps = [
+  ["1", "Approval", "MMS reviews suitability, market, experience and compliance declarations."],
+  ["2", "Agreement", "Approved applicants complete the current Sales Partner Agreement and payout documentation."],
+  ["3", "Training", "Core MMS, memberships, Ling boundaries, claims, privacy, referral and commission training must be completed."],
+  ["4", "Activation", "Only then is the partner activated and issued a permanent MMS Partner ID."],
+];
+
+const referralSteps = [
+  ["Partner ID", "A permanent ID such as MMSP-1001 is allocated after approval and activation."],
+  ["Referral link", "The same ID can power a controlled link such as ?ref=MMSP-1001 and its matching QR code."],
+  ["Verified sale", "Attribution is tied to the verified completed transaction, not a partner's manual sales claim."],
+  ["Commission ledger", "Each eligible sale has its own transaction record, rate, adjustment, approval and payout status."],
+];
+
 export default function JoinMMSPage() {
   const applicationsEnabled = process.env.MMS_SALES_PARTNER_APPLICATIONS_ENABLED === "true";
 
@@ -54,7 +68,11 @@ export default function JoinMMSPage() {
                 ))}
               </div>
               <p className="mt-5 text-sm leading-6 text-warm-gray">An additional 2% residual may apply to eligible following-year renewals after the applicable utilisation, renewal and policy conditions are satisfied.</p>
-              <p className="mt-3 text-xs leading-5 text-warm-gray">Exact qualification rules and payout timing are governed by the approved MMS Sales Partner Agreement and commission policy. Approved commission is processed after customer payment has cleared and cancellation/refund and compliance checks are satisfied.</p>
+              <div className="mt-5 rounded-2xl border border-gold-light/60 bg-ivory p-5">
+                <p className="text-xs font-bold uppercase tracking-[.16em] text-deep-green">Proposed payout cycle</p>
+                <p className="mt-2 text-sm leading-6 text-navy">Approved commissions are batched weekly and are ordinarily targeted for payment within 14 calendar days after cleared customer funds, subject to attribution, refund/chargeback, compliance and payout-detail checks.</p>
+                <p className="mt-2 text-xs leading-5 text-warm-gray">The signed Sales Partner Agreement and final Finance policy prevail if the approved policy changes.</p>
+              </div>
             </div>
           </div>
 
@@ -67,6 +85,36 @@ export default function JoinMMSPage() {
               </div>
             ))}
           </div>
+
+          <section className="mt-10 rounded-[2rem] bg-white p-8 shadow-soft" aria-labelledby="activation-heading">
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">From approval to activation</p>
+            <h2 id="activation-heading" className="mt-2 font-serif text-4xl text-navy">Approval alone does not make someone an active MMS representative.</h2>
+            <div className="mt-7 grid gap-4 md:grid-cols-4">
+              {activationSteps.map(([number, title, text]) => (
+                <div key={number} className="rounded-2xl bg-ivory p-5">
+                  <p className="font-serif text-3xl text-gold">{number}</p>
+                  <h3 className="mt-2 text-base font-semibold text-navy">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-warm-gray">{text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]" aria-labelledby="referral-heading">
+            <div className="rounded-[2rem] bg-navy p-8 text-ivory">
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">Referral & attribution</p>
+              <h2 id="referral-heading" className="mt-2 font-serif text-4xl">One Partner ID. One traceable referral trail.</h2>
+              <p className="mt-4 text-sm leading-6 text-ivory/72">The referral system is designed to recognise genuine verified sales while keeping customer clinical information completely outside the partner view.</p>
+            </div>
+            <div className="grid gap-3">
+              {referralSteps.map(([title, text]) => (
+                <div key={title} className="rounded-2xl border border-black/5 bg-white p-5 shadow-soft">
+                  <p className="text-sm font-semibold text-deep-green">{title}</p>
+                  <p className="mt-1 text-sm leading-6 text-warm-gray">{text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <div className="mt-10 rounded-[2rem] border border-gold-light/50 bg-ivory p-8">
             <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
