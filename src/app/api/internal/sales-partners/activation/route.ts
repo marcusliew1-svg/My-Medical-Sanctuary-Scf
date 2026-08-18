@@ -8,10 +8,17 @@ import {
   type PartnerStage,
   normalisePartnerId,
 } from "@/lib/salesPartnerPolicy";
+import {
+  SALES_PARTNER_CORE_MODULES,
+  type SalesPartnerTrainingEvidence,
+  type SalesPartnerTrainingModuleEvidence,
+  type SalesPartnerTrainingModuleId,
+} from "@/lib/partnerTraining";
 import { getZohoRecord, updateZohoRecord, zohoCrmConfigured } from "@/lib/zohoCrm";
 
 const MAX_BODY_BYTES = 24_000;
 const partnerStages = new Set<string>(PARTNER_STAGES);
+const trainingModuleIds = new Set<string>(SALES_PARTNER_CORE_MODULES.map((module) => module.id));
 const checklistKeys: Array<keyof ActivationChecklist> = [
   "approved",
   "kycDueDiligenceCompleted",
@@ -57,6 +64,45 @@ function parseChecklist(value: unknown): ActivationChecklist | null {
   return result;
 }
 
+function parseTrainingModules(value: unknown): SalesPartnerTrainingEvidence | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  const source = value as Record<string, unknown>;
+  const bundleVersion = cleanString(source.bundleVersion, 120);
+  if (!bundleVersion || !Array.isArray(source.modules) || source.modules.length > SALES_PARTNER_CORE_MODULES.length) {
+    return undefined;
+  }
+
+  const modules: SalesPartnerTrainingModuleEvidence[] = [];
+  for (const raw of source.modules) {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return undefined;
+    const module = raw as Record<string, unknown>;
+    const moduleId = cleanString(module.moduleId, 40);
+    const version = cleanString(module.version, 120);
+    const completedAt = cleanString(module.completedAt, 80);
+    const acknowledgedAt = cleanString(module.acknowledgedAt, 80);
+    if (
+      !trainingModuleIds.has(moduleId) ||
+      !version ||
+      !completedAt ||
+      !acknowledgedAt ||
+      typeof module.refreshRequired !== "boolean" ||
+      (module.passed !== undefined && typeof module.passed !== "boolean")
+    ) {
+      return undefined;
+    }
+    modules.push({
+      moduleId: moduleId as SalesPartnerTrainingModuleId,
+      version,
+      completedAt,
+      acknowledgedAt,
+      passed: typeof module.passed === "boolean" ? module.passed : undefined,
+      refreshRequired: module.refreshRequired,
+    });
+  }
+
+  return { bundleVersion, modules };
+}
+
 function parseEvidence(value: unknown): PartnerActivationEvidence {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
   const source = value as Record<string, unknown>;
@@ -89,6 +135,8 @@ function parseEvidence(value: unknown): PartnerActivationEvidence {
     const cleaned = cleanString(source[key], 120);
     if (cleaned) (evidence as Record<string, unknown>)[key] = cleaned;
   }
+  const trainingModules = parseTrainingModules(source.trainingModules);
+  if (trainingModules) evidence.trainingModules = trainingModules;
   if (typeof source.quizScore === "number") evidence.quizScore = source.quizScore;
   if (typeof source.noMedicalClaimsScore === "number") evidence.noMedicalClaimsScore = source.noMedicalClaimsScore;
   return evidence;
