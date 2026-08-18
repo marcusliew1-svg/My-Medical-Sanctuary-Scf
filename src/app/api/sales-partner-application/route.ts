@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
-import { createZohoRecord, zohoCrmConfigured } from "@/lib/zohoCrm";
+import { createZohoRecord, findZohoLeadDuplicateMatches, zohoCrmConfigured } from "@/lib/zohoCrm";
 
 const allowedTerritories = new Set(["Malaysia", "Thailand", "Malaysia + Thailand", "Other"]);
 const allowedActivityBands = new Set(["0-5", "6-15", "16+", "Building team / leadership"]);
@@ -133,6 +133,37 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const leadsModule = process.env.ZOHO_LEADS_MODULE_API_NAME || "Leads";
+
+  try {
+    const duplicate = await findZohoLeadDuplicateMatches(leadsModule, payload.email, payload.mobile);
+    if (duplicate.recordIds.length > 0 || duplicate.matchedByEmail || duplicate.matchedByPhone) {
+      console.info("MMS Sales Partner application held for duplicate review", {
+        recordCount: duplicate.recordIds.length,
+        matchedByEmail: duplicate.matchedByEmail,
+        matchedByPhone: duplicate.matchedByPhone,
+      });
+      return NextResponse.json(
+        {
+          status: "duplicate_review",
+          message: "This application matches an existing CRM record and has not been duplicated. Please contact MMS if you need the existing record reviewed or updated.",
+        },
+        { status: 409 },
+      );
+    }
+  } catch (error) {
+    console.error("MMS Sales Partner duplicate check failed", {
+      error: error instanceof Error ? error.message : "Unknown Zoho CRM search error",
+    });
+    return NextResponse.json(
+      {
+        status: "error",
+        message: "Your application could not be checked safely against existing records. Please try again later.",
+      },
+      { status: 502 },
+    );
+  }
+
   const applicantTag = clean(process.env.MMS_SALES_PARTNER_APPLICANT_TAG || "MMS Sales Partner Applicant", 80);
   const reference = applicationReference();
   const { firstName, lastName } = splitName(payload.fullName);
@@ -155,7 +186,7 @@ export async function POST(request: NextRequest) {
   ].join("\n");
 
   try {
-    await createZohoRecord(process.env.ZOHO_LEADS_MODULE_API_NAME || "Leads", {
+    await createZohoRecord(leadsModule, {
       First_Name: firstName || undefined,
       Last_Name: lastName,
       Email: payload.email,
