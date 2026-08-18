@@ -34,7 +34,7 @@ export type PartnerActivationEvidence = {
 };
 
 export type PartnerActivationRecord = {
-  partnerId: string;
+  partnerId?: string;
   currentStage: PartnerStage;
   nextStage: PartnerStage;
   checklist: ActivationChecklist;
@@ -91,7 +91,15 @@ function validateActivationEvidence(record: PartnerActivationRecord): void {
 
 export function validatePartnerActivationRecord(record: PartnerActivationRecord): void {
   const partnerId = normalisePartnerId(record.partnerId);
-  if (!partnerId) throw new Error("A valid permanent MMS Partner ID is required.");
+  const partnerIdRequired = record.checklist.partnerCodeIssued || record.nextStage === "Active";
+
+  if (record.partnerId && !partnerId) throw new Error("Supplied MMS Partner ID is invalid.");
+  if (partnerIdRequired && !partnerId) {
+    throw new Error("A valid permanent MMS Partner ID is required once Partner Code is issued and before activation.");
+  }
+  if (record.checklist.partnerCodeIssued !== Boolean(partnerId)) {
+    throw new Error("Partner Code status must match the presence of the permanent MMS Partner ID.");
+  }
   if (!record.actor.trim()) throw new Error("Activation actor is required for auditability.");
   requireIsoTimestamp(record.changedAt, "changedAt");
   assertPartnerStageTransition(record.currentStage, record.nextStage, record.checklist);
@@ -110,15 +118,25 @@ function replaceStructuredBlock(description: string, block: string): string {
   return [description.trim(), block].filter(Boolean).join("\n\n");
 }
 
+function completedControls(checklist: ActivationChecklist): string {
+  return Object.entries(checklist)
+    .filter(([, value]) => value)
+    .map(([key]) => key)
+    .join(", ");
+}
+
 function activationSnapshot(record: PartnerActivationRecord): string {
   const partnerId = normalisePartnerId(record.partnerId);
   const isSellingEnabled = sellingEnabled(record.nextStage, record.checklist);
-  const referralUrl = isSellingEnabled ? referralUrlForPartner(record.siteUrl, partnerId) : "withheld until Active";
+  const referralUrl = isSellingEnabled && partnerId
+    ? referralUrlForPartner(record.siteUrl, partnerId)
+    : "withheld until Active";
 
   return [
     ACTIVATION_BLOCK_START,
-    `Partner ID: ${partnerId}`,
+    `Partner ID: ${partnerId || "pending"}`,
     `Partner Stage: ${record.nextStage}`,
+    `Completed Controls: ${completedControls(record.checklist) || "none"}`,
     `Selling Enabled: ${isSellingEnabled ? "yes" : "no"}`,
     `Referral URL: ${referralUrl}`,
     `Agreement Version: ${record.evidence.agreementVersion || "pending"}`,
@@ -140,16 +158,13 @@ function activationSnapshot(record: PartnerActivationRecord): string {
 }
 
 function activationAuditEvent(record: PartnerActivationRecord): string {
-  const completed = Object.entries(record.checklist)
-    .filter(([, value]) => value)
-    .map(([key]) => key)
-    .join(", ");
+  const partnerId = normalisePartnerId(record.partnerId);
 
   return [
     ACTIVATION_EVENT_START,
-    `Partner ID: ${normalisePartnerId(record.partnerId)}`,
+    `Partner ID: ${partnerId || "pending"}`,
     `Transition: ${record.currentStage} -> ${record.nextStage}`,
-    `Completed Controls: ${completed || "none"}`,
+    `Completed Controls: ${completedControls(record.checklist) || "none"}`,
     `Actor: ${record.actor.trim()}`,
     `Timestamp: ${record.changedAt}`,
     ACTIVATION_EVENT_END,
