@@ -86,6 +86,92 @@ export function checkPartnerActivation(checklist: ActivationChecklist): Activati
   return { canActivate: missing.length === 0, missing };
 }
 
+export const PARTNER_STAGE_TRANSITIONS: Readonly<Record<PartnerStage, readonly PartnerStage[]>> = {
+  Applicant: ["Under Review", "Rejected"],
+  "Under Review": ["Approved", "Rejected"],
+  Approved: ["Agreement Pending", "Rejected"],
+  "Agreement Pending": ["Training", "Rejected"],
+  Training: ["Active", "Rejected"],
+  Active: ["Suspended", "Inactive"],
+  Suspended: ["Active", "Inactive"],
+  Inactive: ["Under Review"],
+  Rejected: [],
+} as const;
+
+export type PartnerStageTransitionCheck = {
+  allowed: boolean;
+  reason?: string;
+  missingActivationRequirements?: Array<keyof ActivationChecklist>;
+};
+
+/**
+ * Enforces the commercial onboarding lifecycle. Entering Active is impossible unless the
+ * complete activation checklist is satisfied. The same gate is applied when restoring a
+ * suspended Partner to Active so CRM access or compliance cannot silently drift out of date.
+ */
+export function checkPartnerStageTransition(
+  currentStage: PartnerStage,
+  nextStage: PartnerStage,
+  activationChecklist?: ActivationChecklist,
+): PartnerStageTransitionCheck {
+  if (currentStage === nextStage) {
+    return { allowed: true };
+  }
+
+  if (!PARTNER_STAGE_TRANSITIONS[currentStage].includes(nextStage)) {
+    return {
+      allowed: false,
+      reason: `Transition from ${currentStage} to ${nextStage} is not permitted.`,
+    };
+  }
+
+  if (nextStage === "Active") {
+    if (!activationChecklist) {
+      return {
+        allowed: false,
+        reason: "Activation checklist is required before a Sales Partner can become Active.",
+      };
+    }
+
+    const activation = checkPartnerActivation(activationChecklist);
+    if (!activation.canActivate) {
+      return {
+        allowed: false,
+        reason: "Sales Partner activation requirements are incomplete.",
+        missingActivationRequirements: activation.missing,
+      };
+    }
+  }
+
+  return { allowed: true };
+}
+
+export function assertPartnerStageTransition(
+  currentStage: PartnerStage,
+  nextStage: PartnerStage,
+  activationChecklist?: ActivationChecklist,
+): void {
+  const result = checkPartnerStageTransition(currentStage, nextStage, activationChecklist);
+  if (!result.allowed) {
+    const missing = result.missingActivationRequirements?.length
+      ? ` Missing: ${result.missingActivationRequirements.join(", ")}.`
+      : "";
+    throw new Error(`${result.reason || "Sales Partner stage transition is not permitted."}${missing}`);
+  }
+}
+
+export function canIssuePermanentPartnerId(stage: PartnerStage, checklist: Pick<ActivationChecklist, "approved" | "kycDueDiligenceCompleted">): boolean {
+  return (
+    checklist.approved &&
+    checklist.kycDueDiligenceCompleted &&
+    (stage === "Approved" || stage === "Agreement Pending" || stage === "Training")
+  );
+}
+
+export function sellingEnabled(stage: PartnerStage, checklist: ActivationChecklist): boolean {
+  return stage === "Active" && checkPartnerActivation(checklist).canActivate;
+}
+
 export function partnerLevelForVerifiedMonthlyMemberships(count: number): PartnerLevel {
   const verifiedCount = Number.isFinite(count) ? Math.max(0, Math.floor(count)) : 0;
   if (verifiedCount >= 16) return "Elite";
