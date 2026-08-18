@@ -61,7 +61,7 @@ export function MembershipCheckoutForm({ membership, enabled }: { membership: st
   );
 }
 
-export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
+export function SalesPartnerApplicationForm({ enabled, initialReferrerCode = "" }: { enabled: boolean; initialReferrerCode?: string }) {
   const [state, setState] = useState<ApiState>({ kind: "idle" });
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -93,6 +93,7 @@ export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
       <div>
         <p className="font-serif text-xl text-navy">Tell us about your market and experience</p>
         <p className="mt-1 text-sm leading-6 text-warm-gray">Applications are reviewed before agreement, training and activation. A permanent MMS Partner ID is issued only after approval.</p>
+        {initialReferrerCode ? <p className="mt-2 text-xs font-semibold text-deep-green">Referral recorded: {initialReferrerCode}</p> : null}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -123,7 +124,7 @@ export function SalesPartnerApplicationForm({ enabled }: { enabled: boolean }) {
             <option value="Building team / leadership">Building team / leadership</option>
           </select>
         </label>
-        <Field name="referrerCode" label="Existing MMS Partner ID" disabled={!enabled} placeholder="Optional, e.g. MMSP-1001" />
+        <Field name="referrerCode" label="Existing MMS Partner ID" disabled={!enabled} placeholder="Optional, e.g. MMSP-1001" defaultValue={initialReferrerCode} />
         <Field name="introducer" label="Introducer / referral name" disabled={!enabled} />
       </div>
 
