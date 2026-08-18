@@ -125,24 +125,51 @@ export function validatePaymentVerificationEvidence(
   if (!evidence.sourceReference.trim()) throw new Error("Payment verification source reference is required.");
 }
 
-export function financeVerifyPayment(
-  payment: CommercialPayment,
-  evidence: PaymentVerificationEvidence,
-): { payment: CommercialPayment; event: CommercialWorkflowEvent } {
+export function financeVerifyPayment(params: {
+  application: CommercialApplication;
+  payment: CommercialPayment;
+  evidence: PaymentVerificationEvidence;
+}): { application: CommercialApplication; payment: CommercialPayment; events: CommercialWorkflowEvent[] } {
+  const { application, payment, evidence } = params;
+  if (payment.applicationId !== application.applicationId) {
+    throw new Error("Payment does not belong to the application being verified.");
+  }
+  if (application.stage !== "Payment Pending") {
+    throw new Error("Application must be Payment Pending before Finance can mark it Paid.");
+  }
   assertPaymentStageTransition(payment.stage, "Cleared");
+  assertApplicationStageTransition(application.stage, "Paid");
   validatePaymentVerificationEvidence(payment, evidence);
+
+  const nextPayment: CommercialPayment = { ...payment, stage: "Cleared", clearedAt: evidence.verifiedAt };
+  const nextApplication: CommercialApplication = { ...application, stage: "Paid" };
+  const suffix = `${evidence.paymentId}-${Date.parse(evidence.verifiedAt)}`;
+
   return {
-    payment: { ...payment, stage: "Cleared", clearedAt: evidence.verifiedAt },
-    event: {
-      eventId: `PAY-${evidence.paymentId}-${Date.parse(evidence.verifiedAt)}`,
-      entityType: "Payment",
-      entityId: payment.paymentId,
-      previousState: payment.stage,
-      nextState: "Cleared",
-      actor: evidence.verifiedBy.trim(),
-      occurredAt: evidence.verifiedAt,
-      reason: `${evidence.source}: ${evidence.sourceReference.trim()}`,
-    },
+    application: nextApplication,
+    payment: nextPayment,
+    events: [
+      {
+        eventId: `PAY-${suffix}`,
+        entityType: "Payment",
+        entityId: payment.paymentId,
+        previousState: payment.stage,
+        nextState: "Cleared",
+        actor: evidence.verifiedBy.trim(),
+        occurredAt: evidence.verifiedAt,
+        reason: `${evidence.source}: ${evidence.sourceReference.trim()}`,
+      },
+      {
+        eventId: `APP-${application.applicationId}-${Date.parse(evidence.verifiedAt)}`,
+        entityType: "Application",
+        entityId: application.applicationId,
+        previousState: application.stage,
+        nextState: "Paid",
+        actor: evidence.verifiedBy.trim(),
+        occurredAt: evidence.verifiedAt,
+        reason: "Application marked Paid only after Finance verified cleared funds.",
+      },
+    ],
   };
 }
 
