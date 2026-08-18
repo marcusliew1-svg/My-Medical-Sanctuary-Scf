@@ -10,24 +10,24 @@ export const metadata: Metadata = {
 };
 
 const tiers = [
-  ["Associate", "0–5 memberships / month"],
-  ["Senior", "6–15 memberships / month"],
-  ["Elite", "16+ memberships / month"],
-  ["Chairman", "Leadership tier"],
+  ["Associate", "Entry partner level"],
+  ["Senior", "Performance progression level"],
+  ["Elite", "Advanced performance level"],
+  ["Chairman", "Separate leadership qualification"],
 ];
 
 const activationSteps = [
   ["1", "Approval", "MMS reviews suitability, market, experience and compliance declarations."],
-  ["2", "Agreement", "Approved applicants complete the current Sales Partner Agreement and payout documentation."],
-  ["3", "Training", "Core MMS, memberships, Ling boundaries, claims, privacy, referral and commission training must be completed."],
-  ["4", "Activation", "Only then is the partner activated and issued a permanent MMS Partner ID."],
+  ["2", "Agreement", "Approved applicants complete the current Sales Partner Agreement and required onboarding documentation."],
+  ["3", "Training", "Core MMS, memberships, Ling boundaries, claims, privacy, referral and commission training must be completed and assessed."],
+  ["4", "Activation", "A permanent MMS Partner ID, certification, access and all activation controls must be complete before selling is enabled."],
 ];
 
 const referralSteps = [
-  ["Partner ID", "A permanent ID such as MMSP-1001 is allocated after approval and activation."],
-  ["Referral link", "The same ID can power a controlled link such as ?ref=MMSP-1001 and its matching QR code."],
+  ["Partner ID", "A permanent ID such as MMSP-1001 is issued through the controlled Partner registry after the required onboarding gates."],
+  ["Referral link", "Once Active, the same ID can power a controlled link such as ?ref=MMSP-1001 and its matching QR code."],
   ["Verified sale", "Attribution is tied to the verified completed transaction, not a partner's manual sales claim."],
-  ["Commission ledger", "Each eligible sale has its own transaction record, rate, adjustment, approval and payout status."],
+  ["Commission ledger", "Each eligible sale has its own transaction record, rule version, adjustment, approval and payout status."],
 ];
 
 type JoinMMSPageProps = {
@@ -66,19 +66,13 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
 
             <div className="rounded-[2rem] bg-white p-8 shadow-soft">
               <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Commission framework</p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {[["10%", "Base commission"], ["15%", "Upgraded base tier"], ["18%", "Personal-target tier"], ["23%", "Group-target tier"]].map(([rate,label]) => (
-                  <div key={rate} className="rounded-2xl bg-ivory p-5">
-                    <p className="font-serif text-4xl text-navy">{rate}</p>
-                    <p className="mt-1 text-sm font-semibold text-deep-green">{label}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 text-sm leading-6 text-warm-gray">An additional 2% residual may apply to eligible following-year renewals after the applicable utilisation, renewal and policy conditions are satisfied.</p>
+              <h2 className="mt-3 font-serif text-4xl text-navy">Performance-based and rule-controlled.</h2>
+              <p className="mt-5 text-sm leading-6 text-warm-gray">Commission eligibility and rates are determined under the current approved MMS commission rule. Each eligible sale retains the exact rule version used, so later policy changes do not silently rewrite historical transactions.</p>
+              <p className="mt-4 text-sm leading-6 text-warm-gray">Renewal commission may apply only where the approved rule permits it and the membership has satisfied the required utilisation, renewal, payment and compliance conditions.</p>
               <div className="mt-5 rounded-2xl border border-gold-light/60 bg-ivory p-5">
-                <p className="text-xs font-bold uppercase tracking-[.16em] text-deep-green">Proposed payout cycle</p>
-                <p className="mt-2 text-sm leading-6 text-navy">Approved commissions are batched weekly and are ordinarily targeted for payment within 14 calendar days after cleared customer funds, subject to attribution, refund/chargeback, compliance and payout-detail checks.</p>
-                <p className="mt-2 text-xs leading-5 text-warm-gray">The signed Sales Partner Agreement and final Finance policy prevail if the approved policy changes.</p>
+                <p className="text-xs font-bold uppercase tracking-[.16em] text-deep-green">Payout controls</p>
+                <p className="mt-2 text-sm leading-6 text-navy">Commission is considered only after customer funds are verified and the applicable attribution, cancellation, refund, chargeback and compliance checks are complete.</p>
+                <p className="mt-2 text-xs leading-5 text-warm-gray">The signed Sales Partner Agreement and current approved Finance policy govern qualification, rates and payout timing.</p>
               </div>
             </div>
           </div>
@@ -92,6 +86,7 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
               </div>
             ))}
           </div>
+          <p className="mt-3 text-xs leading-5 text-warm-gray">Level progression is calculated from verified completed commercial activity under the applicable approved level rule. Qualification thresholds are not self-declared.</p>
 
           <section className="mt-10 rounded-[2rem] bg-white p-8 shadow-soft" aria-labelledby="activation-heading">
             <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">From approval to activation</p>
@@ -127,7 +122,7 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
             <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Application process</p>
-                <h2 className="mt-2 font-serif text-3xl text-navy">Apply → screening → approval → agreement → training → activation.</h2>
+                <h2 className="mt-2 font-serif text-3xl text-navy">Apply → screening → approval → agreement → training → certification → activation.</h2>
                 <p className="mt-3 max-w-3xl text-sm leading-6 text-warm-gray">Applications collect professional profile and compliance information first. Bank payout and tax details are requested only after approval.</p>
               </div>
               {applicationsEnabled ? (
