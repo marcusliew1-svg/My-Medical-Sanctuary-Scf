@@ -61,6 +61,49 @@ export function validateCommissionRule(rule: CommissionRule): void {
   }
 }
 
+/**
+ * Partner promotion thresholds are also effective-dated commercial policy. They must not be
+ * hard-coded because the operating documents still treat the final promotion criteria as a
+ * commercial decision. Chairman is intentionally excluded from automatic assignment.
+ */
+export type PartnerLevelRule = {
+  version: string;
+  effectiveFrom: string;
+  effectiveTo?: string;
+  minimumVerifiedMonthlyMemberships: {
+    Associate: number;
+    Senior: number;
+    Elite: number;
+  };
+  notes?: string;
+};
+
+export function validatePartnerLevelRule(rule: PartnerLevelRule): void {
+  if (!rule.version.trim()) throw new Error("Partner level rule version is required.");
+  if (!rule.effectiveFrom.trim()) throw new Error("Partner level rule effective date is required.");
+
+  const { Associate, Senior, Elite } = rule.minimumVerifiedMonthlyMemberships;
+  for (const [level, threshold] of Object.entries({ Associate, Senior, Elite })) {
+    if (!Number.isInteger(threshold) || threshold < 0) {
+      throw new Error(`${level} threshold must be a non-negative integer.`);
+    }
+  }
+  if (!(Associate <= Senior && Senior <= Elite)) {
+    throw new Error("Partner level thresholds must be ordered Associate <= Senior <= Elite.");
+  }
+}
+
+export function partnerLevelForVerifiedMonthlyMemberships(
+  count: number,
+  rule: PartnerLevelRule,
+): Exclude<PartnerLevel, "Chairman"> {
+  validatePartnerLevelRule(rule);
+  const verifiedCount = Number.isFinite(count) ? Math.max(0, Math.floor(count)) : 0;
+  if (verifiedCount >= rule.minimumVerifiedMonthlyMemberships.Elite) return "Elite";
+  if (verifiedCount >= rule.minimumVerifiedMonthlyMemberships.Senior) return "Senior";
+  return "Associate";
+}
+
 export type ActivationChecklist = {
   approved: boolean;
   kycDueDiligenceCompleted: boolean;
@@ -172,13 +215,6 @@ export function sellingEnabled(stage: PartnerStage, checklist: ActivationCheckli
   return stage === "Active" && checkPartnerActivation(checklist).canActivate;
 }
 
-export function partnerLevelForVerifiedMonthlyMemberships(count: number): PartnerLevel {
-  const verifiedCount = Number.isFinite(count) ? Math.max(0, Math.floor(count)) : 0;
-  if (verifiedCount >= 16) return "Elite";
-  if (verifiedCount >= 6) return "Senior";
-  return "Associate";
-}
-
 export function formatPartnerId(sequence: number): string {
   if (!Number.isInteger(sequence) || sequence < 1001) {
     throw new Error("Partner sequence must be an integer of 1001 or greater.");
@@ -247,6 +283,6 @@ export function cancellationAdjustmentForCommission(row: CommissionLedgerRow): C
 
 // Important: this file defines calculation and lifecycle rules only. Partner IDs must be
 // allocated by a transactional system of record to avoid duplicates. Commercial commission
-// rates must come from an approved, effective-dated CommissionRule and the exact rule version
-// must be persisted on each ledger row. No automatic downline/equaliser/breakaway logic is
-// enabled here.
+// rates and promotion thresholds must come from approved, effective-dated rules and the exact
+// rule version must be retained by the system of record. No automatic downline/equaliser/
+// breakaway logic is enabled here.
