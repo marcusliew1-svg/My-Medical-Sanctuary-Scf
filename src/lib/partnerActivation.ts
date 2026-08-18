@@ -13,6 +13,10 @@ import {
   assertSalesPartnerTrainingComplete,
   type SalesPartnerTrainingEvidence,
 } from "@/lib/partnerTraining";
+import {
+  assertSalesPartnerAssessmentPassed,
+  type SalesPartnerAssessmentEvidence,
+} from "@/lib/partnerAssessment";
 
 const ACTIVATION_BLOCK_START = "[MMS_PARTNER_ACTIVATION]";
 const ACTIVATION_BLOCK_END = "[/MMS_PARTNER_ACTIVATION]";
@@ -34,6 +38,7 @@ export type PartnerActivationEvidence = {
   trainingCompletedAt?: string;
   trainingAcknowledgedIp?: string;
   trainingModules?: SalesPartnerTrainingEvidence;
+  assessment?: SalesPartnerAssessmentEvidence;
   quizScore?: number;
   noMedicalClaimsScore?: number;
   quizPassedAt?: string;
@@ -107,15 +112,20 @@ function validateActivationEvidence(record: PartnerActivationRecord): void {
     assertSalesPartnerTrainingComplete(evidence.trainingModules);
   }
   if (checklist.quizPassed) {
-    if (!Number.isFinite(evidence.quizScore) || Number(evidence.quizScore) < 80 || Number(evidence.quizScore) > 100) {
-      throw new Error("Quiz score must be between 80 and 100 for a passed Sales Partner assessment.");
+    assertSalesPartnerAssessmentPassed(evidence.assessment);
+    if (evidence.quizScore !== evidence.assessment?.overallScore) {
+      throw new Error("Quiz score must match the controlled assessment evidence.");
     }
-    if (Number(evidence.noMedicalClaimsScore) !== 100) {
-      throw new Error("No Medical Claims assessment score must be 100 before certification.");
+    if (evidence.noMedicalClaimsScore !== evidence.assessment?.noMedicalClaimsScore) {
+      throw new Error("No Medical Claims score must match the controlled assessment evidence.");
     }
     requireIsoTimestamp(evidence.quizPassedAt, "quizPassedAt");
+    if (!timestampsEqual(evidence.quizPassedAt, evidence.assessment!.completedAt)) {
+      throw new Error("Quiz passed timestamp must match the controlled assessment completion timestamp.");
+    }
   }
   if (checklist.certificationIssued) {
+    if (!checklist.quizPassed) throw new Error("Certification cannot be issued before the Sales Partner assessment is passed.");
     requireIsoTimestamp(evidence.certificationIssuedAt, "certificationIssuedAt");
     requireIsoTimestamp(evidence.certificationExpiresAt, "certificationExpiresAt");
     requireIsoTimestamp(evidence.certificationRenewalDueAt, "certificationRenewalDueAt");
@@ -219,6 +229,10 @@ function activationSnapshot(record: PartnerActivationRecord): string {
     `Training Version: ${record.evidence.trainingVersion || "pending"}`,
     `Training Modules Complete: ${completedTrainingModules(record.evidence.trainingModules)}`,
     `Training Completed At: ${record.evidence.trainingCompletedAt || "pending"}`,
+    `Assessment Attempt ID: ${record.evidence.assessment?.attemptId || "pending"}`,
+    `Assessment Version: ${record.evidence.assessment?.version || "pending"}`,
+    `Assessment Source: ${record.evidence.assessment?.source || "pending"}`,
+    `Assessment Result: ${record.evidence.assessment?.result || "pending"}`,
     `Quiz Score: ${record.evidence.quizScore ?? "pending"}`,
     `No Medical Claims Score: ${record.evidence.noMedicalClaimsScore ?? "pending"}`,
     `Quiz Passed At: ${record.evidence.quizPassedAt || "pending"}`,
@@ -254,6 +268,10 @@ function activationAuditEvent(record: PartnerActivationRecord): string {
     `Training Modules Complete: ${completedTrainingModules(record.evidence.trainingModules)}`,
     ...trainingAuditLines(record.evidence.trainingModules),
     `Training Completed At: ${record.evidence.trainingCompletedAt || "pending"}`,
+    `Assessment Attempt ID: ${record.evidence.assessment?.attemptId || "pending"}`,
+    `Assessment Version: ${record.evidence.assessment?.version || "pending"}`,
+    `Assessment Source: ${record.evidence.assessment?.source || "pending"}`,
+    `Assessment Result: ${record.evidence.assessment?.result || "pending"}`,
     `Quiz Score: ${record.evidence.quizScore ?? "pending"}`,
     `No Medical Claims Score: ${record.evidence.noMedicalClaimsScore ?? "pending"}`,
     `Quiz Passed At: ${record.evidence.quizPassedAt || "pending"}`,
