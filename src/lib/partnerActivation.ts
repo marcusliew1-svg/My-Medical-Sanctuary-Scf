@@ -8,6 +8,11 @@ import {
   referralUrlForPartner,
   sellingEnabled,
 } from "@/lib/salesPartnerPolicy";
+import {
+  SALES_PARTNER_CORE_MODULES,
+  assertSalesPartnerTrainingComplete,
+  type SalesPartnerTrainingEvidence,
+} from "@/lib/partnerTraining";
 
 const ACTIVATION_BLOCK_START = "[MMS_PARTNER_ACTIVATION]";
 const ACTIVATION_BLOCK_END = "[/MMS_PARTNER_ACTIVATION]";
@@ -24,6 +29,7 @@ export type PartnerActivationEvidence = {
   trainingVersion?: string;
   trainingCompletedAt?: string;
   trainingAcknowledgedIp?: string;
+  trainingModules?: SalesPartnerTrainingEvidence;
   quizScore?: number;
   noMedicalClaimsScore?: number;
   quizPassedAt?: string;
@@ -84,6 +90,7 @@ function validateActivationEvidence(record: PartnerActivationRecord): void {
       throw new Error("Training version does not match the currently controlled Sales Partner training version.");
     }
     requireIsoTimestamp(evidence.trainingCompletedAt, "trainingCompletedAt");
+    assertSalesPartnerTrainingComplete(evidence.trainingModules);
   }
   if (checklist.quizPassed) {
     if (!Number.isFinite(evidence.quizScore) || Number(evidence.quizScore) < 80 || Number(evidence.quizScore) > 100) {
@@ -148,6 +155,17 @@ function completedControls(checklist: ActivationChecklist): string {
     .join(", ");
 }
 
+function completedTrainingModules(evidence: SalesPartnerTrainingEvidence | undefined): string {
+  if (!evidence?.modules?.length) return "0";
+  const required = new Set(SALES_PARTNER_CORE_MODULES.map((module) => module.id));
+  const completed = new Set(
+    evidence.modules
+      .filter((module) => required.has(module.moduleId) && !module.refreshRequired && module.passed !== false)
+      .map((module) => module.moduleId),
+  );
+  return `${completed.size}/${SALES_PARTNER_CORE_MODULES.length}`;
+}
+
 function activationSnapshot(record: PartnerActivationRecord): string {
   const partnerId = normalisePartnerId(record.partnerId);
   const isSellingEnabled = sellingEnabled(record.nextStage, record.checklist);
@@ -165,6 +183,7 @@ function activationSnapshot(record: PartnerActivationRecord): string {
     `Agreement Version: ${record.evidence.agreementVersion || "pending"}`,
     `Agreement Accepted At: ${record.evidence.agreementAcceptedAt || "pending"}`,
     `Training Version: ${record.evidence.trainingVersion || "pending"}`,
+    `Training Modules Complete: ${completedTrainingModules(record.evidence.trainingModules)}`,
     `Training Completed At: ${record.evidence.trainingCompletedAt || "pending"}`,
     `Quiz Score: ${record.evidence.quizScore ?? "pending"}`,
     `No Medical Claims Score: ${record.evidence.noMedicalClaimsScore ?? "pending"}`,
@@ -189,6 +208,7 @@ function activationAuditEvent(record: PartnerActivationRecord): string {
     `Partner ID: ${partnerId || "pending"}`,
     `Transition: ${record.currentStage} -> ${record.nextStage}`,
     `Completed Controls: ${completedControls(record.checklist) || "none"}`,
+    `Training Modules Complete: ${completedTrainingModules(record.evidence.trainingModules)}`,
     `Actor: ${record.actor.trim()}`,
     `Timestamp: ${record.changedAt}`,
     ACTIVATION_EVENT_END,
