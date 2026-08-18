@@ -60,6 +60,17 @@ export async function GET(request: NextRequest) {
       occurredAt: event.occurredAt,
     }));
 
+  const lifecycleEvents = [...result.value.lifecycleEvents]
+    .sort((left, right) => Date.parse(left.occurredAt) - Date.parse(right.occurredAt))
+    .map((event) => ({
+      eventId: event.eventId,
+      previousStage: event.previousStage,
+      newStage: event.newStage,
+      actor: event.actor,
+      reason: event.reason || null,
+      occurredAt: event.occurredAt,
+    }));
+
   return NextResponse.json({
     status: "ok",
     lead: {
@@ -77,6 +88,7 @@ export async function GET(request: NextRequest) {
       progressBlocker,
       duplicateDecision: result.value.duplicateDecision || null,
       ownershipEvents,
+      lifecycleEvents,
     },
   });
 }
