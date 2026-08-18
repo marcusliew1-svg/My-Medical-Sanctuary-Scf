@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { internalApiConfigured, isValidInternalBearerToken } from "@/lib/internalApiAuth";
 import { parsePartnerCrmState } from "@/lib/partnerCrmState";
+import { partnerOnboardingReadiness } from "@/lib/partnerOnboardingReadiness";
 import { getZohoRecord, zohoCrmConfigured } from "@/lib/zohoCrm";
 
 function cleanString(value: unknown, max = 500): string {
@@ -38,10 +39,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ status: "manual_review", message: "The CRM record has no reliable Sales Partner stage." }, { status: 409 });
     }
 
+    const readiness = partnerOnboardingReadiness(state);
+
     return NextResponse.json({
       status: "ok",
       recordId,
       partner: state,
+      onboarding: readiness,
     });
   } catch (error) {
     console.error("MMS internal Sales Partner status read failed", {
