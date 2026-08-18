@@ -123,10 +123,12 @@ function regressesChecklist(previous: ActivationChecklist, next: ActivationCheck
   return checklistKeys.some((key) => previous[key] && !next[key]);
 }
 
-function stageRequirementsSatisfied(stage: PartnerStage, checklist: ActivationChecklist, partnerId: string): boolean {
+function stageRequirementsSatisfied(stage: PartnerStage, checklist: ActivationChecklist): boolean {
   if (stage === "Approved") return checklist.approved && checklist.kycDueDiligenceCompleted;
-  if (stage === "Agreement Pending") return checklist.approved && checklist.kycDueDiligenceCompleted && Boolean(partnerId);
-  if (stage === "Training") return checklist.approved && checklist.kycDueDiligenceCompleted && Boolean(partnerId) && checklist.agreementCompleted;
+  if (stage === "Agreement Pending") return checklist.approved && checklist.kycDueDiligenceCompleted;
+  if (stage === "Training") {
+    return checklist.approved && checklist.kycDueDiligenceCompleted && checklist.agreementCompleted;
+  }
   return true;
 }
 
@@ -215,7 +217,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!stageRequirementsSatisfied(nextStage, checklist, existingPartnerId)) {
+    if (!stageRequirementsSatisfied(nextStage, checklist)) {
       return NextResponse.json(
         { status: "incomplete_controls", message: `Required controls for ${nextStage} are incomplete.` },
         { status: 409 },
