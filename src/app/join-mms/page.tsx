@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SalesPartnerApplicationForm } from "@/components/CommerceRecruitmentForms";
+import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 export const metadata: Metadata = {
   title: "Join MMS",
@@ -29,8 +30,14 @@ const referralSteps = [
   ["Commission ledger", "Each eligible sale has its own transaction record, rate, adjustment, approval and payout status."],
 ];
 
-export default function JoinMMSPage() {
+type JoinMMSPageProps = {
+  searchParams?: { ref?: string | string[] };
+};
+
+export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
   const applicationsEnabled = process.env.MMS_SALES_PARTNER_APPLICATIONS_ENABLED === "true";
+  const rawReferrer = Array.isArray(searchParams?.ref) ? searchParams?.ref[0] : searchParams?.ref;
+  const initialReferrerCode = normalisePartnerId(rawReferrer);
 
   return (
     <main>
@@ -137,7 +144,7 @@ export default function JoinMMSPage() {
               <h2 id="sales-partner-application-heading" className="mt-2 font-serif text-4xl text-navy">Sales Partner application</h2>
               <p className="mt-3 text-sm leading-6 text-warm-gray">The form is prepared now and becomes submit-enabled only after the approved CRM workflow and privacy process are active.</p>
             </div>
-            <SalesPartnerApplicationForm enabled={applicationsEnabled} />
+            <SalesPartnerApplicationForm enabled={applicationsEnabled} initialReferrerCode={initialReferrerCode} />
           </section>
 
           <div className="mt-8 flex flex-wrap gap-3">
