@@ -19,6 +19,7 @@ import { getZohoRecord, updateZohoRecord, zohoCrmConfigured } from "@/lib/zohoCr
 const MAX_BODY_BYTES = 24_000;
 const partnerStages = new Set<string>(PARTNER_STAGES);
 const trainingModuleIds = new Set<string>(SALES_PARTNER_CORE_MODULES.map((module) => module.id));
+const agreementStatuses = new Set(["Accepted", "Superseded", "Revoked"]);
 const checklistKeys: Array<keyof ActivationChecklist> = [
   "approved",
   "kycDueDiligenceCompleted",
@@ -110,6 +111,7 @@ function parseEvidence(value: unknown): PartnerActivationEvidence {
   const timestampFields: Array<keyof PartnerActivationEvidence> = [
     "approvedAt",
     "kycDueDiligenceCompletedAt",
+    "agreementEffectiveDate",
     "agreementAcceptedAt",
     "trainingCompletedAt",
     "quizPassedAt",
@@ -121,6 +123,8 @@ function parseEvidence(value: unknown): PartnerActivationEvidence {
   ];
   const shortFields: Array<keyof PartnerActivationEvidence> = [
     "agreementVersion",
+    "agreementAcceptanceMethod",
+    "agreementDocumentReference",
     "agreementAcceptedIp",
     "trainingVersion",
     "trainingAcknowledgedIp",
@@ -132,8 +136,12 @@ function parseEvidence(value: unknown): PartnerActivationEvidence {
     if (cleaned) (evidence as Record<string, unknown>)[key] = cleaned;
   }
   for (const key of shortFields) {
-    const cleaned = cleanString(source[key], 120);
+    const cleaned = cleanString(source[key], 180);
     if (cleaned) (evidence as Record<string, unknown>)[key] = cleaned;
+  }
+  const agreementStatus = cleanString(source.agreementStatus, 40);
+  if (agreementStatuses.has(agreementStatus)) {
+    evidence.agreementStatus = agreementStatus as PartnerActivationEvidence["agreementStatus"];
   }
   const trainingModules = parseTrainingModules(source.trainingModules);
   if (trainingModules) evidence.trainingModules = trainingModules;
