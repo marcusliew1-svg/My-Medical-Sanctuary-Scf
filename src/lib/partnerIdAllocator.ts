@@ -26,6 +26,9 @@ export const PARTNER_ID_ALLOCATION_REQUIREMENTS = [
   "Every allocation must retain a durable reference to the applicant and the backing allocation record.",
 ] as const;
 
+export const PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON =
+  "Atomic permanent Partner ID allocation is not configured. Provision a backing registry with an auto-number/sequence plus a unique applicant key before issuing Partner IDs.";
+
 function validApplicantRecordId(value: string): string {
   const id = value.trim();
   if (!/^\d+$/.test(id)) throw new Error("Invalid applicant CRM record ID.");
@@ -36,6 +39,15 @@ export function validateIssuedPartnerId(value: unknown): string {
   const partnerId = normalisePartnerId(typeof value === "string" ? value : "");
   if (!partnerId) throw new Error("Partner ID allocator returned an invalid permanent MMS Partner ID.");
   return partnerId;
+}
+
+/**
+ * Deliberately false until a transactional backing registry is actually implemented.
+ * This prevents admin/UI code from presenting Partner ID issuance as operational merely
+ * because an environment variable was set.
+ */
+export function partnerIdAllocatorAvailable(): boolean {
+  return false;
 }
 
 /**
@@ -51,8 +63,7 @@ export function partnerIdAllocator(): PartnerIdAllocator {
       validApplicantRecordId(applicantRecordId);
       return {
         status: "unavailable",
-        reason:
-          "Atomic permanent Partner ID allocation is not configured. Provision a backing registry with an auto-number/sequence plus a unique applicant key before issuing Partner IDs.",
+        reason: PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON,
       };
     },
   };
