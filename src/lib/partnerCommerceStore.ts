@@ -27,10 +27,10 @@ export type PartnerCommerceStore = {
   createApplication(application: CommercialApplication): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord>>;
   getApplication(applicationId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord | null>>;
   savePaymentVerification(params: {
-    applicationId: string;
+    application: CommercialApplication;
     payment: CommercialPayment;
     evidence: PaymentVerificationEvidence;
-    event: CommercialWorkflowEvent;
+    events: CommercialWorkflowEvent[];
   }): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord>>;
   saveMembershipActivation(params: {
     application: CommercialApplication;
@@ -43,6 +43,7 @@ export type PartnerCommerceStore = {
 export const PARTNER_COMMERCE_STORE_REQUIREMENTS = Object.freeze([
   "Applications, payments and memberships must use centrally unique durable IDs.",
   "Payment clearance evidence may only be written by the Finance-authorized service path.",
+  "Application Paid and Payment Cleared must be persisted atomically from the same Finance verification.",
   "Every state change must append an immutable workflow event.",
   "Payment transaction references and Finance source references must be durable and auditable.",
   "Membership activation must retain the exact Finance verification timestamp used for clearance.",
