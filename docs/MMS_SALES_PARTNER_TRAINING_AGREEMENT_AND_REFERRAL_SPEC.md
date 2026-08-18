@@ -123,10 +123,12 @@ Minimum fields:
 - Cleared amount
 - Currency
 - Applicable commission rate
+- Commission rule version
+- Partner level at eligibility
 - Gross commission
 - Adjustment/chargeback
 - Approved commission
-- Status: Pending, Approved, Held, Paid, Reversed
+- Status: Pending Eligibility, Eligible, Held, Approved, Paid, Reversed
 - Approval timestamp/user
 - Payout batch/cycle
 - Paid timestamp/reference
@@ -134,27 +136,27 @@ Minimum fields:
 
 Partners must never be able to edit cleared amount, commission rate, approval or payout status.
 
-## 8. Draft payout operating rule
+## 8. Payout operating rule
 
-Recommended operating rule for Finance approval:
+The payout cadence and ordinary payment timing remain a commercial/Finance decision and must not be hard-coded or publicly promised until formally approved.
+
+The implemented control principles are:
 
 - Commission becomes reviewable only after customer funds have cleared.
-- Approved commissions are batched weekly.
-- Target payment is ordinarily within 14 calendar days after cleared funds.
+- Commission must retain the exact approved, effective-dated commission rule version used for the transaction.
 - Payment remains subject to valid attribution, refund/cancellation, chargeback, compliance, payout-account and tax/document checks.
-- A disputed or held item can be carried into a later batch.
-- Reversed/refunded sales may create a chargeback/adjustment against unpaid or future commission where the final Agreement permits.
+- A disputed or held item may not be paid until the hold is released through an auditable Finance process.
+- A cancelled membership produces zero commission; if commission was already paid, the system records a 100% clawback.
+- Partial-refund treatment remains manual until Finance approves a versioned formula.
+- No automatic downline, equaliser, breakaway or recruitment-chain compensation is enabled in v1.
 
 The signed Sales Partner Agreement and final Finance policy prevail.
 
 ## 9. Level progression
 
-Verified completed memberships in the applicable measurement month:
+Associate, Senior and Elite progression thresholds remain an approved commercial-policy decision and must be stored as an effective-dated rule version rather than hard-coded in the website or Partner Hub.
 
-- Associate: 0-5
-- Senior: 6-15
-- Elite: 16+
-- Chairman: separate leadership qualification and never automatically granted solely for 16+ memberships
+Chairman remains a separate leadership qualification and must never be automatically granted solely from a transaction-count threshold.
 
 Level calculations must use verified transaction data, not self-reported activity.
 
@@ -172,5 +174,7 @@ Approved active partners may eventually see:
 - Training status
 - Agreement/compliance status
 - Approved marketing materials
+
+Suspended or Inactive Partners may retain appropriate read-only commercial history but must not receive selling-enabled controls.
 
 No patient clinical information should be visible in the Sales Partner portal.
