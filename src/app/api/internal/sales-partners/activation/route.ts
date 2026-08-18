@@ -69,6 +69,7 @@ function parseEvidence(value: unknown): PartnerActivationEvidence {
     "quizPassedAt",
     "certificationIssuedAt",
     "certificationExpiresAt",
+    "certificationRenewalDueAt",
     "complianceAcknowledgedAt",
     "crmAccessEnabledAt",
   ];
