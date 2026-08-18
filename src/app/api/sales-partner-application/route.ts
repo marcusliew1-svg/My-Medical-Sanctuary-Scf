@@ -137,27 +137,19 @@ export async function POST(request: NextRequest) {
   const reference = applicationReference();
   const { firstName, lastName } = splitName(payload.fullName);
 
-  // Current Zoho edition has no remaining supported custom-field capacity for Leads.
-  // Keep the interim applicant metadata deliberately structured in Description so the
-  // private MMS intake view and a later migration to a dedicated module remain reliable.
+  // The current Zoho edition has no remaining custom-field capacity in Leads.
+  // Reuse the MMS intake fields that already exist and keep the remaining audit metadata
+  // structured in Description so no additional CRM fields are required for go-live.
   const description = [
     `MMS Sales Partner application: ${reference}`,
     "[MMS_PARTNER_APPLICATION]",
     `Application Reference: ${reference}`,
     "Partner Stage: Applicant",
-    `Preferred Territory: ${payload.preferredTerritory}`,
-    `Expected Monthly Activity: ${payload.expectedMonthlyActivity}`,
     `Nationality: ${payload.nationality || "Not supplied"}`,
     `Occupation/Company: ${payload.occupation || "Not supplied"}`,
     `Referrer Partner ID: ${payload.referrerCode || "None"}`,
-    `Introducer: ${payload.introducer || "None"}`,
-    `Sales Background: ${payload.salesBackground}`,
-    `Relevant Experience: ${payload.relevantExperience || "Not supplied"}`,
-    "Compliance Declaration: accepted",
     "Approved Representations Declaration: accepted",
     "Sales Partner Agreement Acknowledgement: accepted",
-    "Privacy Consent: accepted",
-    `Source: ${payload.sourcePath || "/join-mms"}`,
     "Permanent Partner ID: not assigned - approval, agreement, training and activation required.",
     "[/MMS_PARTNER_APPLICATION]",
   ].join("\n");
@@ -176,6 +168,15 @@ export async function POST(request: NextRequest) {
       Lead_Source: configuredLeadSource,
       Lead_Status: "Not Contacted",
       Data_Source: "API",
+      MMS_Inquiry_Type: "Sales Partner Applicant",
+      Preferred_Territory: payload.preferredTerritory,
+      Sales_Background: payload.salesBackground,
+      Relevant_Experience: payload.relevantExperience || undefined,
+      Expected_Monthly_Activity: payload.expectedMonthlyActivity,
+      Introducer: payload.referrerCode || payload.introducer || undefined,
+      Compliance_Declaration: payload.complianceDeclaration,
+      Privacy_Consent: payload.privacyConsent,
+      Source_Path: payload.sourcePath || "/join-mms",
       Description: description.slice(0, 32_000),
       Tag: applicantTag ? [{ name: applicantTag }] : undefined,
     });
