@@ -18,22 +18,58 @@ export type PartnerLevel = (typeof PARTNER_LEVELS)[number];
 export const SALES_PARTNER_AGREEMENT_VERSION = "MMS-SPA-2026-08-v1";
 export const SALES_PARTNER_CORE_TRAINING_VERSION = "MMS-SP-TRAINING-2026-08-v1";
 
+/**
+ * Commercial rates are intentionally not hard-coded here.
+ * Finance must publish an approved, effective-dated rule set and each sale must retain
+ * the exact rule version used to determine eligibility and commission.
+ */
 export const DRAFT_COMMISSION_POLICY = {
-  baseRate: 0.10,
-  upgradedBaseRate: 0.15,
-  personalTargetRate: 0.18,
-  groupTargetRate: 0.23,
-  eligibleRenewalResidualRate: 0.02,
+  ruleVersionRequired: true,
   payoutCadence: "weekly batch",
   ordinaryMaximumDaysAfterClearedPayment: 14,
+  cancellationTreatment: "zero commission; 100% clawback where commission has already been paid",
   payoutRule:
     "Eligible commission becomes payable only after customer funds have cleared and cancellation, refund, chargeback, compliance and attribution checks are satisfied. Approved commission is processed in the next MMS weekly payout batch, ordinarily within 14 calendar days after cleared payment.",
 } as const;
 
+export type CommissionRule = {
+  version: string;
+  effectiveFrom: string;
+  effectiveTo?: string;
+  ratesByLevel: Partial<Record<PartnerLevel, number>>;
+  eligibleRenewalResidualRate?: number;
+  notes?: string;
+};
+
+export function validateCommissionRule(rule: CommissionRule): void {
+  if (!rule.version.trim()) throw new Error("Commission rule version is required.");
+  if (!rule.effectiveFrom.trim()) throw new Error("Commission rule effective date is required.");
+
+  for (const [level, rate] of Object.entries(rule.ratesByLevel)) {
+    if (!Number.isFinite(rate) || Number(rate) < 0 || Number(rate) > 1) {
+      throw new Error(`Commission rate for ${level} must be between 0 and 1.`);
+    }
+  }
+
+  if (
+    rule.eligibleRenewalResidualRate !== undefined &&
+    (!Number.isFinite(rule.eligibleRenewalResidualRate) ||
+      rule.eligibleRenewalResidualRate < 0 ||
+      rule.eligibleRenewalResidualRate > 1)
+  ) {
+    throw new Error("Renewal residual rate must be between 0 and 1.");
+  }
+}
+
 export type ActivationChecklist = {
   approved: boolean;
+  kycDueDiligenceCompleted: boolean;
   agreementCompleted: boolean;
   coreTrainingCompleted: boolean;
+  quizPassed: boolean;
+  certificationIssued: boolean;
+  partnerCodeIssued: boolean;
+  crmAccessEnabled: boolean;
   complianceAcknowledged: boolean;
 };
 
@@ -93,11 +129,14 @@ export type CommissionLedgerRow = {
   membershipCode: "ASCEND" | "EVOLVE" | "ETERNA" | "PINNACLE";
   transactionReference: string;
   clearedAmountMinorUnits: number;
+  commissionRuleVersion: string;
   commissionRate: number;
   grossCommissionMinorUnits: number;
   adjustmentMinorUnits: number;
   approvedCommissionMinorUnits: number;
   payoutStatus: "Pending" | "Approved" | "Held" | "Paid" | "Reversed";
+  cancelledAt?: string;
+  clawbackMinorUnits?: number;
   eligibilityCheckedAt?: string;
   approvedAt?: string;
   payoutCycle?: string;
@@ -105,6 +144,23 @@ export type CommissionLedgerRow = {
   notes?: string;
 };
 
+export type CancellationAdjustment = {
+  approvedCommissionMinorUnits: 0;
+  payoutStatus: "Reversed";
+  clawbackMinorUnits: number;
+};
+
+export function cancellationAdjustmentForCommission(row: CommissionLedgerRow): CancellationAdjustment {
+  const alreadyPaid = row.payoutStatus === "Paid";
+  return {
+    approvedCommissionMinorUnits: 0,
+    payoutStatus: "Reversed",
+    clawbackMinorUnits: alreadyPaid ? Math.max(0, row.approvedCommissionMinorUnits) : 0,
+  };
+}
+
 // Important: this file defines calculation and lifecycle rules only. Partner IDs must be
-// allocated by a transactional system of record to avoid duplicates. The commercial terms
-// remain subject to the final signed Sales Partner Agreement and Finance-approved policy.
+// allocated by a transactional system of record to avoid duplicates. Commercial commission
+// rates must come from an approved, effective-dated CommissionRule and the exact rule version
+// must be persisted on each ledger row. No automatic downline/equaliser/breakaway logic is
+// enabled here.
