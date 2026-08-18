@@ -29,6 +29,10 @@ export type PartnerCrmState = {
   agreementStatus: string;
   trainingVersion: string;
   trainingModulesComplete: string;
+  assessmentAttemptId: string;
+  assessmentVersion: string;
+  assessmentSource: string;
+  assessmentResult: string;
   quizScore: number | null;
   noMedicalClaimsScore: number | null;
   certificationIssuedAt: string;
@@ -99,6 +103,10 @@ export function parsePartnerCrmState(description: string): PartnerCrmState {
     agreementStatus: latestLine(description, "Agreement Status"),
     trainingVersion: latestLine(description, "Training Version"),
     trainingModulesComplete: latestLine(description, "Training Modules Complete"),
+    assessmentAttemptId: latestLine(description, "Assessment Attempt ID"),
+    assessmentVersion: latestLine(description, "Assessment Version"),
+    assessmentSource: latestLine(description, "Assessment Source"),
+    assessmentResult: latestLine(description, "Assessment Result"),
     quizScore: nullableScore(latestLine(description, "Quiz Score")),
     noMedicalClaimsScore: nullableScore(latestLine(description, "No Medical Claims Score")),
     certificationIssuedAt: latestLine(description, "Certification Issued At"),
