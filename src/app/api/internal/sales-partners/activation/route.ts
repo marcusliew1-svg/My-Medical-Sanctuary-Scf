@@ -2,6 +2,14 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { activationZohoChanges, type PartnerActivationEvidence } from "@/lib/partnerActivation";
 import { internalApiConfigured, isValidInternalBearerToken } from "@/lib/internalApiAuth";
+import { type SalesPartnerAssessmentEvidence } from "@/lib/partnerAssessment";
+import {
+  ACTIVATION_CHECKLIST_KEYS,
+  checklistFromDescription,
+  checklistRegresses,
+  partnerIdFromDescription,
+  partnerStageFromDescription,
+} from "@/lib/partnerCrmState";
 import {
   PARTNER_STAGES,
   type ActivationChecklist,
@@ -20,17 +28,8 @@ const MAX_BODY_BYTES = 24_000;
 const partnerStages = new Set<string>(PARTNER_STAGES);
 const trainingModuleIds = new Set<string>(SALES_PARTNER_CORE_MODULES.map((module) => module.id));
 const agreementStatuses = new Set(["Accepted", "Superseded", "Revoked"]);
-const checklistKeys: Array<keyof ActivationChecklist> = [
-  "approved",
-  "kycDueDiligenceCompleted",
-  "agreementCompleted",
-  "coreTrainingCompleted",
-  "quizPassed",
-  "certificationIssued",
-  "partnerCodeIssued",
-  "crmAccessEnabled",
-  "complianceAcknowledged",
-];
+const assessmentSources = new Set(["LMS", "Staff Verified"]);
+const assessmentResults = new Set(["Passed", "Failed"]);
 
 function cleanString(value: unknown, max = 500): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -40,25 +39,11 @@ function isPartnerStage(value: unknown): value is PartnerStage {
   return typeof value === "string" && partnerStages.has(value);
 }
 
-function emptyChecklist(): ActivationChecklist {
-  return {
-    approved: false,
-    kycDueDiligenceCompleted: false,
-    agreementCompleted: false,
-    coreTrainingCompleted: false,
-    quizPassed: false,
-    certificationIssued: false,
-    partnerCodeIssued: false,
-    crmAccessEnabled: false,
-    complianceAcknowledged: false,
-  };
-}
-
 function parseChecklist(value: unknown): ActivationChecklist | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const source = value as Record<string, unknown>;
   const result = {} as ActivationChecklist;
-  for (const key of checklistKeys) {
+  for (const key of ACTIVATION_CHECKLIST_KEYS) {
     if (typeof source[key] !== "boolean") return null;
     result[key] = source[key] as boolean;
   }
@@ -104,6 +89,37 @@ function parseTrainingModules(value: unknown): SalesPartnerTrainingEvidence | un
   return { bundleVersion, modules };
 }
 
+function parseAssessment(value: unknown): SalesPartnerAssessmentEvidence | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  const source = value as Record<string, unknown>;
+  const attemptId = cleanString(source.attemptId, 120);
+  const version = cleanString(source.version, 120);
+  const completedAt = cleanString(source.completedAt, 80);
+  const assessmentSource = cleanString(source.source, 40);
+  const result = cleanString(source.result, 40);
+  if (
+    !attemptId ||
+    !version ||
+    !completedAt ||
+    !assessmentSources.has(assessmentSource) ||
+    !assessmentResults.has(result) ||
+    typeof source.overallScore !== "number" ||
+    typeof source.noMedicalClaimsScore !== "number"
+  ) {
+    return undefined;
+  }
+
+  return {
+    attemptId,
+    version,
+    completedAt,
+    source: assessmentSource as SalesPartnerAssessmentEvidence["source"],
+    overallScore: source.overallScore,
+    noMedicalClaimsScore: source.noMedicalClaimsScore,
+    result: result as SalesPartnerAssessmentEvidence["result"],
+  };
+}
+
 function parseEvidence(value: unknown): PartnerActivationEvidence {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
   const source = value as Record<string, unknown>;
@@ -145,39 +161,11 @@ function parseEvidence(value: unknown): PartnerActivationEvidence {
   }
   const trainingModules = parseTrainingModules(source.trainingModules);
   if (trainingModules) evidence.trainingModules = trainingModules;
+  const assessment = parseAssessment(source.assessment);
+  if (assessment) evidence.assessment = assessment;
   if (typeof source.quizScore === "number") evidence.quizScore = source.quizScore;
   if (typeof source.noMedicalClaimsScore === "number") evidence.noMedicalClaimsScore = source.noMedicalClaimsScore;
   return evidence;
-}
-
-function stageFromDescription(description: string): PartnerStage | "" {
-  const matches = [...description.matchAll(/^Partner Stage:\s*(.+)$/gim)];
-  for (let index = matches.length - 1; index >= 0; index -= 1) {
-    const candidate = matches[index]?.[1]?.trim();
-    if (candidate && partnerStages.has(candidate)) return candidate as PartnerStage;
-  }
-  return "";
-}
-
-function partnerIdFromDescription(description: string): string {
-  const matches = [...description.matchAll(/^Partner ID:\s*(MMSP-\d{4,})\s*$/gim)];
-  const candidate = matches.at(-1)?.[1] || "";
-  return normalisePartnerId(candidate);
-}
-
-function checklistFromDescription(description: string): ActivationChecklist {
-  const result = emptyChecklist();
-  const matches = [...description.matchAll(/^Completed Controls:\s*(.+)$/gim)];
-  const latest = matches.at(-1)?.[1]?.trim();
-  if (!latest || latest.toLowerCase() === "none") return result;
-
-  const completed = new Set(latest.split(",").map((value) => value.trim()));
-  for (const key of checklistKeys) result[key] = completed.has(key);
-  return result;
-}
-
-function regressesChecklist(previous: ActivationChecklist, next: ActivationChecklist): boolean {
-  return checklistKeys.some((key) => previous[key] && !next[key]);
 }
 
 function stageRequirementsSatisfied(stage: PartnerStage, checklist: ActivationChecklist): boolean {
@@ -238,7 +226,7 @@ export async function POST(request: NextRequest) {
     }
 
     const description = cleanString(crmRecord.Description, 32_000);
-    const crmStage = stageFromDescription(description);
+    const crmStage = partnerStageFromDescription(description);
     if (!crmStage) {
       return NextResponse.json({ status: "manual_review", message: "The CRM record has no reliable Sales Partner stage and was not changed." }, { status: 409 });
     }
@@ -267,7 +255,7 @@ export async function POST(request: NextRequest) {
     }
 
     const previousChecklist = checklistFromDescription(description);
-    if (regressesChecklist(previousChecklist, checklist)) {
+    if (checklistRegresses(previousChecklist, checklist)) {
       return NextResponse.json(
         { status: "control_regression", message: "Completed onboarding controls cannot be silently reverted through the activation action." },
         { status: 409 },
