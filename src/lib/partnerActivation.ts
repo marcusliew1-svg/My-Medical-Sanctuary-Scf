@@ -11,6 +11,8 @@ import {
 
 const ACTIVATION_BLOCK_START = "[MMS_PARTNER_ACTIVATION]";
 const ACTIVATION_BLOCK_END = "[/MMS_PARTNER_ACTIVATION]";
+const ACTIVATION_EVENT_START = "[MMS_PARTNER_ACTIVATION_EVENT]";
+const ACTIVATION_EVENT_END = "[/MMS_PARTNER_ACTIVATION_EVENT]";
 
 export type PartnerActivationEvidence = {
   approvedAt?: string;
@@ -22,6 +24,7 @@ export type PartnerActivationEvidence = {
   trainingCompletedAt?: string;
   trainingAcknowledgedIp?: string;
   quizScore?: number;
+  noMedicalClaimsScore?: number;
   quizPassedAt?: string;
   certificationIssuedAt?: string;
   certificationExpiresAt?: string;
@@ -68,11 +71,17 @@ function validateActivationEvidence(record: PartnerActivationRecord): void {
     if (!Number.isFinite(evidence.quizScore) || Number(evidence.quizScore) < 80 || Number(evidence.quizScore) > 100) {
       throw new Error("Quiz score must be between 80 and 100 for a passed Sales Partner assessment.");
     }
+    if (Number(evidence.noMedicalClaimsScore) !== 100) {
+      throw new Error("No Medical Claims assessment score must be 100 before certification.");
+    }
     requireIsoTimestamp(evidence.quizPassedAt, "quizPassedAt");
   }
   if (checklist.certificationIssued) {
     requireIsoTimestamp(evidence.certificationIssuedAt, "certificationIssuedAt");
     requireIsoTimestamp(evidence.certificationExpiresAt, "certificationExpiresAt");
+    if (Date.parse(evidence.certificationExpiresAt || "") <= Date.parse(evidence.certificationIssuedAt || "")) {
+      throw new Error("Certification expiry must be after the certification issue timestamp.");
+    }
   }
   if (checklist.complianceAcknowledged) {
     requireIsoTimestamp(evidence.complianceAcknowledgedAt, "complianceAcknowledgedAt");
@@ -101,16 +110,12 @@ function replaceStructuredBlock(description: string, block: string): string {
   return [description.trim(), block].filter(Boolean).join("\n\n");
 }
 
-export function buildPartnerActivationDescription(
-  existingDescription: string,
-  record: PartnerActivationRecord,
-): string {
-  validatePartnerActivationRecord(record);
+function activationSnapshot(record: PartnerActivationRecord): string {
   const partnerId = normalisePartnerId(record.partnerId);
   const isSellingEnabled = sellingEnabled(record.nextStage, record.checklist);
   const referralUrl = isSellingEnabled ? referralUrlForPartner(record.siteUrl, partnerId) : "withheld until Active";
 
-  const lines = [
+  return [
     ACTIVATION_BLOCK_START,
     `Partner ID: ${partnerId}`,
     `Partner Stage: ${record.nextStage}`,
@@ -121,18 +126,49 @@ export function buildPartnerActivationDescription(
     `Training Version: ${record.evidence.trainingVersion || "pending"}`,
     `Training Completed At: ${record.evidence.trainingCompletedAt || "pending"}`,
     `Quiz Score: ${record.evidence.quizScore ?? "pending"}`,
+    `No Medical Claims Score: ${record.evidence.noMedicalClaimsScore ?? "pending"}`,
     `Quiz Passed At: ${record.evidence.quizPassedAt || "pending"}`,
     `Certification Issued At: ${record.evidence.certificationIssuedAt || "pending"}`,
     `Certification Expires At: ${record.evidence.certificationExpiresAt || "pending"}`,
     `KYC/DD Completed At: ${record.evidence.kycDueDiligenceCompletedAt || "pending"}`,
     `Compliance Acknowledged At: ${record.evidence.complianceAcknowledgedAt || "pending"}`,
     `CRM Access Enabled At: ${record.evidence.crmAccessEnabledAt || "pending"}`,
-    `Audit Actor: ${record.actor.trim()}`,
-    `Audit Timestamp: ${record.changedAt}`,
+    `Last Audit Actor: ${record.actor.trim()}`,
+    `Last Audit Timestamp: ${record.changedAt}`,
     ACTIVATION_BLOCK_END,
-  ];
+  ].join("\n");
+}
 
-  return replaceStructuredBlock(existingDescription || "", lines.join("\n")).slice(0, 32_000);
+function activationAuditEvent(record: PartnerActivationRecord): string {
+  const completed = Object.entries(record.checklist)
+    .filter(([, value]) => value)
+    .map(([key]) => key)
+    .join(", ");
+
+  return [
+    ACTIVATION_EVENT_START,
+    `Partner ID: ${normalisePartnerId(record.partnerId)}`,
+    `Transition: ${record.currentStage} -> ${record.nextStage}`,
+    `Completed Controls: ${completed || "none"}`,
+    `Actor: ${record.actor.trim()}`,
+    `Timestamp: ${record.changedAt}`,
+    ACTIVATION_EVENT_END,
+  ].join("\n");
+}
+
+export function buildPartnerActivationDescription(
+  existingDescription: string,
+  record: PartnerActivationRecord,
+): string {
+  validatePartnerActivationRecord(record);
+  const withSnapshot = replaceStructuredBlock(existingDescription || "", activationSnapshot(record));
+  const withEvent = [withSnapshot.trim(), activationAuditEvent(record)].filter(Boolean).join("\n\n");
+
+  if (withEvent.length > 32_000) {
+    throw new Error("Partner activation audit history is too large for the current CRM Description storage. Move audit events to a dedicated immutable store before continuing.");
+  }
+
+  return withEvent;
 }
 
 export function activationZohoChanges(existingDescription: string, record: PartnerActivationRecord) {
