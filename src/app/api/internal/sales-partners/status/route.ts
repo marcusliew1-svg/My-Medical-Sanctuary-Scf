@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 import { internalApiConfigured, isValidInternalBearerToken } from "@/lib/internalApiAuth";
 import { parsePartnerCrmState } from "@/lib/partnerCrmState";
 import { partnerOnboardingReadiness } from "@/lib/partnerOnboardingReadiness";
+import {
+  PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON,
+  partnerIdAllocatorAvailable,
+} from "@/lib/partnerIdAllocator";
 import { getZohoRecord, zohoCrmConfigured } from "@/lib/zohoCrm";
 
 function cleanString(value: unknown, max = 500): string {
@@ -40,12 +44,17 @@ export async function GET(request: NextRequest) {
     }
 
     const readiness = partnerOnboardingReadiness(state);
+    const partnerIdAvailable = partnerIdAllocatorAvailable();
 
     return NextResponse.json({
       status: "ok",
       recordId,
       partner: state,
       onboarding: readiness,
+      partnerIdIssuance: {
+        available: partnerIdAvailable,
+        reason: partnerIdAvailable ? null : PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON,
+      },
     });
   } catch (error) {
     console.error("MMS internal Sales Partner status read failed", {
