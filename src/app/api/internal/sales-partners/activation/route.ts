@@ -12,6 +12,17 @@ import { getZohoRecord, updateZohoRecord, zohoCrmConfigured } from "@/lib/zohoCr
 
 const MAX_BODY_BYTES = 24_000;
 const partnerStages = new Set<string>(PARTNER_STAGES);
+const checklistKeys: Array<keyof ActivationChecklist> = [
+  "approved",
+  "kycDueDiligenceCompleted",
+  "agreementCompleted",
+  "coreTrainingCompleted",
+  "quizPassed",
+  "certificationIssued",
+  "partnerCodeIssued",
+  "crmAccessEnabled",
+  "complianceAcknowledged",
+];
 
 function cleanString(value: unknown, max = 500): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -21,23 +32,25 @@ function isPartnerStage(value: unknown): value is PartnerStage {
   return typeof value === "string" && partnerStages.has(value);
 }
 
+function emptyChecklist(): ActivationChecklist {
+  return {
+    approved: false,
+    kycDueDiligenceCompleted: false,
+    agreementCompleted: false,
+    coreTrainingCompleted: false,
+    quizPassed: false,
+    certificationIssued: false,
+    partnerCodeIssued: false,
+    crmAccessEnabled: false,
+    complianceAcknowledged: false,
+  };
+}
+
 function parseChecklist(value: unknown): ActivationChecklist | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const source = value as Record<string, unknown>;
-  const keys: Array<keyof ActivationChecklist> = [
-    "approved",
-    "kycDueDiligenceCompleted",
-    "agreementCompleted",
-    "coreTrainingCompleted",
-    "quizPassed",
-    "certificationIssued",
-    "partnerCodeIssued",
-    "crmAccessEnabled",
-    "complianceAcknowledged",
-  ];
-
   const result = {} as ActivationChecklist;
-  for (const key of keys) {
+  for (const key of checklistKeys) {
     if (typeof source[key] !== "boolean") return null;
     result[key] = source[key] as boolean;
   }
@@ -95,6 +108,28 @@ function partnerIdFromDescription(description: string): string {
   return normalisePartnerId(candidate);
 }
 
+function checklistFromDescription(description: string): ActivationChecklist {
+  const result = emptyChecklist();
+  const matches = [...description.matchAll(/^Completed Controls:\s*(.+)$/gim)];
+  const latest = matches.at(-1)?.[1]?.trim();
+  if (!latest || latest.toLowerCase() === "none") return result;
+
+  const completed = new Set(latest.split(",").map((value) => value.trim()));
+  for (const key of checklistKeys) result[key] = completed.has(key);
+  return result;
+}
+
+function regressesChecklist(previous: ActivationChecklist, next: ActivationChecklist): boolean {
+  return checklistKeys.some((key) => previous[key] && !next[key]);
+}
+
+function stageRequirementsSatisfied(stage: PartnerStage, checklist: ActivationChecklist, partnerId: string): boolean {
+  if (stage === "Approved") return checklist.approved && checklist.kycDueDiligenceCompleted;
+  if (stage === "Agreement Pending") return checklist.approved && checklist.kycDueDiligenceCompleted && Boolean(partnerId);
+  if (stage === "Training") return checklist.approved && checklist.kycDueDiligenceCompleted && Boolean(partnerId) && checklist.agreementCompleted;
+  return true;
+}
+
 export async function POST(request: NextRequest) {
   if (!internalApiConfigured()) {
     return NextResponse.json({ status: "unavailable", message: "Internal Sales Partner controls are not configured." }, { status: 503 });
@@ -121,12 +156,12 @@ export async function POST(request: NextRequest) {
   const recordId = cleanString(body.recordId, 40);
   const suppliedCurrentStage = body.currentStage;
   const nextStage = body.nextStage;
-  const partnerId = normalisePartnerId(cleanString(body.partnerId, 40));
+  const requestedPartnerId = normalisePartnerId(cleanString(body.partnerId, 40));
   const actor = cleanString(body.actor, 160);
   const checklist = parseChecklist(body.checklist);
   const evidence = parseEvidence(body.evidence);
 
-  if (!/^\d+$/.test(recordId) || !isPartnerStage(suppliedCurrentStage) || !isPartnerStage(nextStage) || !partnerId || !actor || !checklist) {
+  if (!/^\d+$/.test(recordId) || !isPartnerStage(suppliedCurrentStage) || !isPartnerStage(nextStage) || !actor || !checklist) {
     return NextResponse.json({ status: "invalid", message: "Required activation fields are missing or invalid." }, { status: 400 });
   }
 
@@ -156,13 +191,40 @@ export async function POST(request: NextRequest) {
     }
 
     const existingPartnerId = partnerIdFromDescription(description);
-    if (existingPartnerId && existingPartnerId !== partnerId) {
+    if (requestedPartnerId && !existingPartnerId) {
+      return NextResponse.json(
+        { status: "partner_id_not_issued", message: "A new permanent Partner ID cannot be assigned through the activation action." },
+        { status: 409 },
+      );
+    }
+    if (requestedPartnerId && existingPartnerId && existingPartnerId !== requestedPartnerId) {
       return NextResponse.json({ status: "partner_id_conflict", message: "The supplied Partner ID does not match the CRM audit record." }, { status: 409 });
+    }
+    if (checklist.partnerCodeIssued !== Boolean(existingPartnerId)) {
+      return NextResponse.json(
+        { status: "partner_id_state_mismatch", message: "Partner Code status does not match the permanent Partner ID recorded in CRM." },
+        { status: 409 },
+      );
+    }
+
+    const previousChecklist = checklistFromDescription(description);
+    if (regressesChecklist(previousChecklist, checklist)) {
+      return NextResponse.json(
+        { status: "control_regression", message: "Completed onboarding controls cannot be silently reverted through the activation action." },
+        { status: 409 },
+      );
+    }
+
+    if (!stageRequirementsSatisfied(nextStage, checklist, existingPartnerId)) {
+      return NextResponse.json(
+        { status: "incomplete_controls", message: `Required controls for ${nextStage} are incomplete.` },
+        { status: 409 },
+      );
     }
 
     const changedAt = new Date().toISOString();
     const changes = activationZohoChanges(description, {
-      partnerId,
+      partnerId: existingPartnerId || undefined,
       currentStage: crmStage,
       nextStage,
       checklist,
@@ -177,7 +239,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       status: "updated",
       recordId,
-      partnerId,
+      partnerId: existingPartnerId || null,
       previousStage: crmStage,
       stage: nextStage,
       changedAt,
