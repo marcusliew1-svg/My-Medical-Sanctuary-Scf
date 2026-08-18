@@ -3,10 +3,12 @@ import type {
   PartnerLeadDuplicateDecision,
   PartnerLeadRegistration,
 } from "@/lib/partnerLeadRegistry";
+import type { PartnerLeadLifecycleEvent } from "@/lib/partnerLeadLifecycle";
 
 export type PartnerLeadRegistryRecord = PartnerLeadRegistration & {
   duplicateDecision?: PartnerLeadDuplicateDecision;
   ownershipEvents: LeadOwnershipEvent[];
+  lifecycleEvents: PartnerLeadLifecycleEvent[];
 };
 
 export type PartnerLeadRegistryStoreResult<T> =
@@ -26,6 +28,10 @@ export type PartnerLeadRegistryStore = {
     lead: CommercialLead,
     event: LeadOwnershipEvent,
   ): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord>>;
+  appendLifecycleTransition(
+    lead: CommercialLead,
+    event: PartnerLeadLifecycleEvent,
+  ): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord>>;
 };
 
 export const PARTNER_LEAD_REGISTRY_STORE_REQUIREMENTS = Object.freeze([
@@ -33,6 +39,7 @@ export const PARTNER_LEAD_REGISTRY_STORE_REQUIREMENTS = Object.freeze([
   "Create must be idempotent for a stable client/request key.",
   "Duplicate search must use normalized email and phone values.",
   "Ownership transfers must append immutable events; prior events may never be rewritten or deleted.",
+  "Lead lifecycle transitions must append immutable events; current stage must be derived from the latest valid lifecycle event.",
   "Current owner must be derived from the latest valid ownership event or initial registration.",
   "Marketing/PDPA consent version and timestamp must be retained with the lead.",
   "Clinical data must never be stored in the Partner Lead Registry.",
@@ -68,6 +75,9 @@ export function partnerLeadRegistryStore(): PartnerLeadRegistryStore {
       return unavailable();
     },
     async appendOwnershipTransfer() {
+      return unavailable();
+    },
+    async appendLifecycleTransition() {
       return unavailable();
     },
   };
