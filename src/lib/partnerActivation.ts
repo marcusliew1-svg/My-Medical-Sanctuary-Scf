@@ -13,6 +13,7 @@ const ACTIVATION_BLOCK_START = "[MMS_PARTNER_ACTIVATION]";
 const ACTIVATION_BLOCK_END = "[/MMS_PARTNER_ACTIVATION]";
 const ACTIVATION_EVENT_START = "[MMS_PARTNER_ACTIVATION_EVENT]";
 const ACTIVATION_EVENT_END = "[/MMS_PARTNER_ACTIVATION_EVENT]";
+const CERTIFICATION_RENEWAL_NOTICE_DAYS = 90;
 
 export type PartnerActivationEvidence = {
   approvedAt?: string;
@@ -28,6 +29,7 @@ export type PartnerActivationEvidence = {
   quizPassedAt?: string;
   certificationIssuedAt?: string;
   certificationExpiresAt?: string;
+  certificationRenewalDueAt?: string;
   complianceAcknowledgedAt?: string;
   complianceAcknowledgedIp?: string;
   crmAccessEnabledAt?: string;
@@ -46,6 +48,22 @@ export type PartnerActivationRecord = {
 
 function requireIsoTimestamp(value: string | undefined, field: string): void {
   if (!value || Number.isNaN(Date.parse(value))) throw new Error(`${field} must contain a valid timestamp.`);
+}
+
+export function certificationScheduleForIssuedAt(issuedAt: string): {
+  expiresAt: string;
+  renewalDueAt: string;
+} {
+  requireIsoTimestamp(issuedAt, "certificationIssuedAt");
+  const issued = new Date(issuedAt);
+  const expires = new Date(issued.getTime());
+  expires.setUTCFullYear(expires.getUTCFullYear() + 1);
+  const renewalDue = new Date(expires.getTime() - CERTIFICATION_RENEWAL_NOTICE_DAYS * 24 * 60 * 60 * 1000);
+  return { expiresAt: expires.toISOString(), renewalDueAt: renewalDue.toISOString() };
+}
+
+function timestampsEqual(left: string | undefined, right: string): boolean {
+  return Boolean(left) && Date.parse(left || "") === Date.parse(right);
 }
 
 function validateActivationEvidence(record: PartnerActivationRecord): void {
@@ -79,8 +97,13 @@ function validateActivationEvidence(record: PartnerActivationRecord): void {
   if (checklist.certificationIssued) {
     requireIsoTimestamp(evidence.certificationIssuedAt, "certificationIssuedAt");
     requireIsoTimestamp(evidence.certificationExpiresAt, "certificationExpiresAt");
-    if (Date.parse(evidence.certificationExpiresAt || "") <= Date.parse(evidence.certificationIssuedAt || "")) {
-      throw new Error("Certification expiry must be after the certification issue timestamp.");
+    requireIsoTimestamp(evidence.certificationRenewalDueAt, "certificationRenewalDueAt");
+    const schedule = certificationScheduleForIssuedAt(evidence.certificationIssuedAt!);
+    if (!timestampsEqual(evidence.certificationExpiresAt, schedule.expiresAt)) {
+      throw new Error("Sales Partner certification must expire exactly 12 months after issue.");
+    }
+    if (!timestampsEqual(evidence.certificationRenewalDueAt, schedule.renewalDueAt)) {
+      throw new Error("Sales Partner certification renewal review must be scheduled 90 days before expiry.");
     }
   }
   if (checklist.complianceAcknowledged) {
@@ -148,6 +171,7 @@ function activationSnapshot(record: PartnerActivationRecord): string {
     `Quiz Passed At: ${record.evidence.quizPassedAt || "pending"}`,
     `Certification Issued At: ${record.evidence.certificationIssuedAt || "pending"}`,
     `Certification Expires At: ${record.evidence.certificationExpiresAt || "pending"}`,
+    `Certification Renewal Due At: ${record.evidence.certificationRenewalDueAt || "pending"}`,
     `KYC/DD Completed At: ${record.evidence.kycDueDiligenceCompletedAt || "pending"}`,
     `Compliance Acknowledged At: ${record.evidence.complianceAcknowledgedAt || "pending"}`,
     `CRM Access Enabled At: ${record.evidence.crmAccessEnabledAt || "pending"}`,
