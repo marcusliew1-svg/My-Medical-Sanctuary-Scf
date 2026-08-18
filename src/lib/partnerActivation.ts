@@ -24,7 +24,11 @@ export type PartnerActivationEvidence = {
   approvedAt?: string;
   kycDueDiligenceCompletedAt?: string;
   agreementVersion?: string;
+  agreementEffectiveDate?: string;
   agreementAcceptedAt?: string;
+  agreementAcceptanceMethod?: string;
+  agreementDocumentReference?: string;
+  agreementStatus?: "Accepted" | "Superseded" | "Revoked";
   agreementAcceptedIp?: string;
   trainingVersion?: string;
   trainingCompletedAt?: string;
@@ -56,6 +60,10 @@ function requireIsoTimestamp(value: string | undefined, field: string): void {
   if (!value || Number.isNaN(Date.parse(value))) throw new Error(`${field} must contain a valid timestamp.`);
 }
 
+function requireNonEmpty(value: string | undefined, field: string): void {
+  if (!value?.trim()) throw new Error(`${field} is required.`);
+}
+
 export function certificationScheduleForIssuedAt(issuedAt: string): {
   expiresAt: string;
   renewalDueAt: string;
@@ -83,7 +91,13 @@ function validateActivationEvidence(record: PartnerActivationRecord): void {
     if ((evidence.agreementVersion || "") !== SALES_PARTNER_AGREEMENT_VERSION) {
       throw new Error("Agreement version does not match the currently controlled Sales Partner Agreement version.");
     }
+    requireIsoTimestamp(evidence.agreementEffectiveDate, "agreementEffectiveDate");
     requireIsoTimestamp(evidence.agreementAcceptedAt, "agreementAcceptedAt");
+    requireNonEmpty(evidence.agreementAcceptanceMethod, "agreementAcceptanceMethod");
+    requireNonEmpty(evidence.agreementDocumentReference, "agreementDocumentReference");
+    if (evidence.agreementStatus !== "Accepted") {
+      throw new Error("The current Sales Partner Agreement must have Accepted status before onboarding can continue.");
+    }
   }
   if (checklist.coreTrainingCompleted) {
     if ((evidence.trainingVersion || "") !== SALES_PARTNER_CORE_TRAINING_VERSION) {
@@ -181,6 +195,10 @@ function activationSnapshot(record: PartnerActivationRecord): string {
     `Selling Enabled: ${isSellingEnabled ? "yes" : "no"}`,
     `Referral URL: ${referralUrl}`,
     `Agreement Version: ${record.evidence.agreementVersion || "pending"}`,
+    `Agreement Effective Date: ${record.evidence.agreementEffectiveDate || "pending"}`,
+    `Agreement Status: ${record.evidence.agreementStatus || "pending"}`,
+    `Agreement Acceptance Method: ${record.evidence.agreementAcceptanceMethod || "pending"}`,
+    `Agreement Document Reference: ${record.evidence.agreementDocumentReference || "pending"}`,
     `Agreement Accepted At: ${record.evidence.agreementAcceptedAt || "pending"}`,
     `Training Version: ${record.evidence.trainingVersion || "pending"}`,
     `Training Modules Complete: ${completedTrainingModules(record.evidence.trainingModules)}`,
