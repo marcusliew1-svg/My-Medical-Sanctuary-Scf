@@ -46,6 +46,12 @@ function validModuleApiName(moduleApiName: string): string {
   return moduleName;
 }
 
+function validRecordId(recordId: string): string {
+  const id = recordId.trim();
+  if (!/^\d+$/.test(id)) throw new Error("Invalid Zoho record ID.");
+  return id;
+}
+
 function normaliseEmail(value: unknown): string {
   return typeof value === "string" ? value.trim().toLowerCase() : "";
 }
@@ -154,6 +160,28 @@ export async function findZohoLeadDuplicateMatches(
   return { recordIds: [...recordIds], matchedByEmail, matchedByPhone };
 }
 
+export async function getZohoRecord(moduleApiName: string, recordId: string): Promise<ZohoRecord> {
+  const moduleName = validModuleApiName(moduleApiName);
+  const id = validRecordId(recordId);
+  const { accessToken, apiDomain } = await getZohoAccessToken();
+  const response = await fetch(`${apiDomain}/crm/v8/${moduleName}/${id}`, {
+    method: "GET",
+    headers: { Authorization: `Zoho-oauthtoken ${accessToken}` },
+    cache: "no-store",
+  });
+
+  const payload = (await response.json().catch(() => ({}))) as {
+    data?: ZohoRecord[];
+    code?: string;
+  };
+  const record = payload.data?.[0];
+  if (!response.ok || !record) {
+    const code = payload.code ? ` (${payload.code})` : "";
+    throw new Error(`Zoho CRM record read failed${code}.`);
+  }
+  return record;
+}
+
 export async function createZohoRecord(moduleApiName: string, record: ZohoRecord): Promise<string> {
   const moduleName = validModuleApiName(moduleApiName);
   const { accessToken, apiDomain } = await getZohoAccessToken();
@@ -183,6 +211,38 @@ export async function createZohoRecord(moduleApiName: string, record: ZohoRecord
   }
 
   return result.details.id;
+}
+
+export async function updateZohoRecord(
+  moduleApiName: string,
+  recordId: string,
+  changes: ZohoRecord,
+): Promise<void> {
+  const moduleName = validModuleApiName(moduleApiName);
+  const id = validRecordId(recordId);
+  const { accessToken, apiDomain } = await getZohoAccessToken();
+  const response = await fetch(`${apiDomain}/crm/v8/${moduleName}/${id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Zoho-oauthtoken ${accessToken}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ data: [changes] }),
+    cache: "no-store",
+  });
+
+  const payload = (await response.json().catch(() => ({}))) as {
+    data?: Array<{
+      status?: string;
+      code?: string;
+      message?: string;
+    }>;
+  };
+  const result = payload.data?.[0];
+  if (!response.ok || result?.status !== "success") {
+    const code = result?.code ? ` (${result.code})` : "";
+    throw new Error(`Zoho CRM record update failed${code}.`);
+  }
 }
 
 export function zohoCrmConfigured(): boolean {
