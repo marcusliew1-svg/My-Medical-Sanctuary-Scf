@@ -1,3 +1,4 @@
+import type { PartnerHubAccessState } from "@/lib/partnerHubAccess";
 import type { PartnerHubDashboard } from "@/lib/partnerHubDashboard";
 
 export type PartnerHubStoreResult<T> =
@@ -6,11 +7,13 @@ export type PartnerHubStoreResult<T> =
   | { status: "conflict"; reason: string };
 
 export type PartnerHubStore = {
+  getAccessState(partnerId: string): Promise<PartnerHubStoreResult<PartnerHubAccessState | null>>;
   getDashboard(partnerId: string): Promise<PartnerHubStoreResult<PartnerHubDashboard | null>>;
 };
 
 export const PARTNER_HUB_STORE_REQUIREMENTS = Object.freeze([
   "Every Partner Hub read must be scoped to the authenticated permanent MMS Partner ID.",
+  "Capability checks must use trusted server-side Partner stage, selling-enabled, certification and CRM-access state; never browser-supplied access flags.",
   "A Partner may only see leads currently owned by that Partner unless an explicitly approved supervisory role applies.",
   "Membership summaries must expose commercial status only and never treatment, diagnosis or clinical-utilisation detail.",
   "Commission summaries must come from the immutable commission ledger and must not be recalculated in the browser.",
@@ -31,13 +34,18 @@ export function partnerHubStoreAvailable(): boolean {
  * authentication mechanism.
  */
 export function partnerHubStore(): PartnerHubStore {
+  const unavailable = <T>(): PartnerHubStoreResult<T> => ({
+    status: "unavailable",
+    reason:
+      "Partner Hub persistence/authentication is not configured. Provision MMS commercial stores and Partner-scoped authentication before enabling Partner Hub access.",
+  });
+
   return {
+    async getAccessState() {
+      return unavailable();
+    },
     async getDashboard() {
-      return {
-        status: "unavailable",
-        reason:
-          "Partner Hub persistence/authentication is not configured. Provision MMS commercial stores and Partner-scoped authentication before enabling dashboard reads.",
-      };
+      return unavailable();
     },
   };
 }
