@@ -22,6 +22,16 @@ export type PartnerLeadStageTransition = {
   reason?: string;
 };
 
+export type PartnerLeadLifecycleEvent = {
+  eventId: string;
+  leadId: string;
+  previousStage: LeadStage;
+  newStage: LeadStage;
+  actor: string;
+  reason?: string;
+  occurredAt: string;
+};
+
 export function checkPartnerLeadStageTransition(
   lead: CommercialLead,
   nextStage: LeadStage,
@@ -60,4 +70,30 @@ export function transitionPartnerLead(
     throw new Error("Lead transition timestamp must be valid.");
   }
   return { ...lead, stage: nextStage, lastActivityAt: occurredAt };
+}
+
+export function createPartnerLeadLifecycleEvent(params: {
+  eventId: string;
+  lead: CommercialLead;
+  newStage: LeadStage;
+  actor: string;
+  reason?: string;
+  occurredAt: string;
+}): { lead: CommercialLead; event: PartnerLeadLifecycleEvent } {
+  const actor = params.actor.trim();
+  if (!actor) throw new Error("Lead lifecycle actor is required.");
+  if (!params.eventId.trim()) throw new Error("Lead lifecycle event ID is required.");
+  const lead = transitionPartnerLead(params.lead, params.newStage, params.occurredAt);
+  return {
+    lead,
+    event: {
+      eventId: params.eventId.trim(),
+      leadId: params.lead.leadId,
+      previousStage: params.lead.stage,
+      newStage: params.newStage,
+      actor,
+      reason: params.reason?.trim() || undefined,
+      occurredAt: params.occurredAt,
+    },
+  };
 }
