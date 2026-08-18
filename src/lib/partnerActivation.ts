@@ -180,6 +180,22 @@ function completedTrainingModules(evidence: SalesPartnerTrainingEvidence | undef
   return `${completed.size}/${SALES_PARTNER_CORE_MODULES.length}`;
 }
 
+function trainingAuditLines(evidence: SalesPartnerTrainingEvidence | undefined): string[] {
+  if (!evidence?.modules?.length) return [];
+  const required = new Set(SALES_PARTNER_CORE_MODULES.map((module) => module.id));
+  return evidence.modules
+    .filter((module) => required.has(module.moduleId))
+    .sort((left, right) => left.moduleId.localeCompare(right.moduleId))
+    .map((module) => [
+      `Training Module ${module.moduleId}`,
+      `version=${module.version}`,
+      `completed=${module.completedAt}`,
+      `acknowledged=${module.acknowledgedAt}`,
+      `passed=${module.passed === false ? "no" : "yes"}`,
+      `refresh=${module.refreshRequired ? "yes" : "no"}`,
+    ].join(" | "));
+}
+
 function activationSnapshot(record: PartnerActivationRecord): string {
   const partnerId = normalisePartnerId(record.partnerId);
   const isSellingEnabled = sellingEnabled(record.nextStage, record.checklist);
@@ -226,7 +242,26 @@ function activationAuditEvent(record: PartnerActivationRecord): string {
     `Partner ID: ${partnerId || "pending"}`,
     `Transition: ${record.currentStage} -> ${record.nextStage}`,
     `Completed Controls: ${completedControls(record.checklist) || "none"}`,
+    `Approved At: ${record.evidence.approvedAt || "pending"}`,
+    `KYC/DD Completed At: ${record.evidence.kycDueDiligenceCompletedAt || "pending"}`,
+    `Agreement Version: ${record.evidence.agreementVersion || "pending"}`,
+    `Agreement Effective Date: ${record.evidence.agreementEffectiveDate || "pending"}`,
+    `Agreement Status: ${record.evidence.agreementStatus || "pending"}`,
+    `Agreement Acceptance Method: ${record.evidence.agreementAcceptanceMethod || "pending"}`,
+    `Agreement Document Reference: ${record.evidence.agreementDocumentReference || "pending"}`,
+    `Agreement Accepted At: ${record.evidence.agreementAcceptedAt || "pending"}`,
+    `Training Version: ${record.evidence.trainingVersion || "pending"}`,
     `Training Modules Complete: ${completedTrainingModules(record.evidence.trainingModules)}`,
+    ...trainingAuditLines(record.evidence.trainingModules),
+    `Training Completed At: ${record.evidence.trainingCompletedAt || "pending"}`,
+    `Quiz Score: ${record.evidence.quizScore ?? "pending"}`,
+    `No Medical Claims Score: ${record.evidence.noMedicalClaimsScore ?? "pending"}`,
+    `Quiz Passed At: ${record.evidence.quizPassedAt || "pending"}`,
+    `Certification Issued At: ${record.evidence.certificationIssuedAt || "pending"}`,
+    `Certification Expires At: ${record.evidence.certificationExpiresAt || "pending"}`,
+    `Certification Renewal Due At: ${record.evidence.certificationRenewalDueAt || "pending"}`,
+    `Compliance Acknowledged At: ${record.evidence.complianceAcknowledgedAt || "pending"}`,
+    `CRM Access Enabled At: ${record.evidence.crmAccessEnabledAt || "pending"}`,
     `Actor: ${record.actor.trim()}`,
     `Timestamp: ${record.changedAt}`,
     ACTIVATION_EVENT_END,
@@ -249,12 +284,7 @@ export function buildPartnerActivationDescription(
 }
 
 export function activationZohoChanges(existingDescription: string, record: PartnerActivationRecord) {
-  const description = buildPartnerActivationDescription(existingDescription, record);
-  const active = sellingEnabled(record.nextStage, record.checklist);
-
   return {
-    Description: description,
-    Lead_Status: active ? "Contacted" : "Not Contacted",
-    Tag: active ? [{ name: "MMS Sales Partner Active" }] : [{ name: "MMS Sales Partner Applicant" }],
+    Description: buildPartnerActivationDescription(existingDescription, record),
   };
 }
