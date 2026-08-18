@@ -17,6 +17,7 @@ export type PartnerLevel = (typeof PARTNER_LEVELS)[number];
 
 export const SALES_PARTNER_AGREEMENT_VERSION = "MMS-SPA-2026-08-v1";
 export const SALES_PARTNER_CORE_TRAINING_VERSION = "MMS-SP-TRAINING-2026-08-v1";
+export const SALES_PARTNER_ASSESSMENT_VERSION = "MMS-SP-ASSESSMENT-2026-08-v1";
 
 /**
  * Commercial rates are intentionally not hard-coded here.
