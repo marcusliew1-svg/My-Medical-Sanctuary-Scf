@@ -5,7 +5,7 @@ import type {
   PartnerHubSessionProvider,
   PartnerHubSessionResult,
 } from "@/lib/partnerHubSession";
-import { validatePartnerHubSessionClaims } from "@/lib/partnerHubSession";
+import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 function sha256(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
@@ -22,6 +22,34 @@ function unavailable(): PartnerHubSessionResult {
   return {
     status: "unavailable",
     reason: "Partner Hub session database operation is unavailable.",
+  };
+}
+
+function claimsFromRow(row: {
+  session_id: string;
+  partner_code: string;
+  subject: string;
+  authentication_method: PartnerHubSessionClaims["authenticationMethod"];
+  assurance_level: PartnerHubSessionClaims["assuranceLevel"];
+  issued_at: unknown;
+  expires_at: unknown;
+}): PartnerHubSessionClaims {
+  const partnerId = normalisePartnerId(row.partner_code);
+  if (!partnerId) throw new Error("Database returned an invalid permanent Partner ID.");
+  const issuedAt = iso(row.issued_at);
+  const expiresAt = iso(row.expires_at);
+  if (Date.parse(expiresAt) <= Date.parse(issuedAt) || Date.parse(expiresAt) <= Date.now()) {
+    throw new Error("Database returned an expired or invalid Partner session.");
+  }
+  if (!row.subject.trim()) throw new Error("Database returned a Partner session without a subject.");
+  return {
+    sessionId: row.session_id,
+    partnerId,
+    subject: row.subject,
+    issuedAt,
+    expiresAt,
+    authenticationMethod: row.authentication_method,
+    assuranceLevel: row.assurance_level,
   };
 }
 
@@ -45,7 +73,6 @@ export function postgresPartnerHubSessionProvider(
           issued_at: unknown;
           expires_at: unknown;
           partner_stage: string;
-          selling_enabled: boolean;
         }>(
           `select s.id::text as session_id,
                   p.partner_code,
@@ -54,8 +81,7 @@ export function postgresPartnerHubSessionProvider(
                   s.assurance_level,
                   s.issued_at,
                   s.expires_at,
-                  p.stage as partner_stage,
-                  p.selling_enabled
+                  p.stage as partner_stage
              from mms_commercial.partner_sessions s
              join mms_commercial.partners p on p.id = s.partner_id
             where s.session_id_hash = $1
@@ -71,16 +97,7 @@ export function postgresPartnerHubSessionProvider(
           return { status: "unauthenticated", reason: "Partner account is not permitted to use an active session." };
         }
 
-        const claims = validatePartnerHubSessionClaims({
-          sessionId: row.session_id,
-          partnerId: row.partner_code,
-          subject: row.subject,
-          issuedAt: iso(row.issued_at),
-          expiresAt: iso(row.expires_at),
-          authenticationMethod: row.authentication_method,
-          assuranceLevel: row.assurance_level,
-        });
-        return { status: "authenticated", claims };
+        return { status: "authenticated", claims: claimsFromRow(row) };
       } catch {
         return unavailable();
       }
