@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PartnerHubSignOutButton } from "@/components/PartnerHubSignOutButton";
 
 const links = [
   ["Dashboard", "/partner-hub"],
@@ -23,6 +24,7 @@ export default function PartnerHubLayout({ children }: Readonly<{ children: Reac
               {label}
             </Link>
           ))}
+          <PartnerHubSignOutButton />
         </nav>
       </div>
       {children}
