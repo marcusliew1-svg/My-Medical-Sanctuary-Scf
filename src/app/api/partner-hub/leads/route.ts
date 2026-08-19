@@ -5,7 +5,7 @@ import { protectPartnerHubMutation } from "@/lib/partnerHubMutationSecurity";
 import {
   PARTNER_LEAD_CONSENT_VERSION,
   assertCommercialLeadPayloadOnly,
-  registerPartnerLead,
+  validatePartnerLeadDraft,
 } from "@/lib/partnerLeadRegistry";
 import { partnerLeadRegistryStore, partnerLeadRegistryStoreAvailable } from "@/lib/partnerLeadRegistryStore";
 
@@ -133,18 +133,30 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "invalid", message: "A valid Idempotency-Key header is required." }, { status: 400 });
   }
 
-  const fullName = cleanString(body.fullName, 160);
-  const email = cleanString(body.email, 254);
-  const phone = cleanString(body.phone, 50);
-  const source = cleanString(body.source, 120);
-  const campaign = cleanString(body.campaign, 120);
-  const consentAccepted = body.consentAccepted === true;
-  const consentVersion = cleanString(body.consentVersion, 120);
-  const consentCapturedAt = cleanString(body.consentCapturedAt, 80);
-
-  if (!fullName || (!email && !phone)) {
-    return NextResponse.json({ status: "invalid", message: "Lead name and email or phone are required." }, { status: 400 });
+  const registeredAt = new Date().toISOString();
+  let draft;
+  try {
+    draft = validatePartnerLeadDraft({
+      partnerId: auth.partnerId,
+      contact: {
+        fullName: cleanString(body.fullName, 160),
+        email: cleanString(body.email, 254) || undefined,
+        phone: cleanString(body.phone, 50) || undefined,
+      },
+      source: cleanString(body.source, 120) || undefined,
+      campaign: cleanString(body.campaign, 120) || undefined,
+      consentAccepted: body.consentAccepted === true,
+      consentVersion: cleanString(body.consentVersion, 120),
+      consentCapturedAt: cleanString(body.consentCapturedAt, 80),
+      registeredAt,
+    });
+  } catch {
+    return NextResponse.json(
+      { status: "invalid", message: "Lead registration details or controlled consent evidence are invalid.", requiredConsentVersion: PARTNER_LEAD_CONSENT_VERSION },
+      { status: 400 },
+    );
   }
+
   if (!partnerLeadRegistryStoreAvailable()) {
     return NextResponse.json(
       { status: "registry_unavailable", message: "Partner Lead Registry is not configured.", requiredConsentVersion: PARTNER_LEAD_CONSENT_VERSION },
@@ -152,48 +164,32 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const store = partnerLeadRegistryStore();
-  const allocated = await store.allocateLeadId(idempotencyKey);
-  if (allocated.status === "unavailable") {
-    return NextResponse.json({ status: "registry_unavailable", message: allocated.reason }, { status: 503 });
-  }
-  if (allocated.status === "conflict") {
-    return NextResponse.json({ status: "registration_conflict", message: allocated.reason }, { status: 409 });
-  }
-
   try {
-    const registration = registerPartnerLead({
-      leadId: allocated.value,
-      partnerId: auth.partnerId,
-      contact: { fullName, email: email || undefined, phone: phone || undefined },
-      source: source || undefined,
-      campaign: campaign || undefined,
-      consentAccepted,
-      consentVersion,
-      consentCapturedAt,
-      registeredAt: new Date().toISOString(),
+    const created = await partnerLeadRegistryStore().createIdempotent({
+      idempotencyKey,
+      partnerId: draft.partnerId,
+      contact: draft.contact,
+      source: draft.source,
+      campaign: draft.campaign,
+      consentVersion: draft.consentVersion,
+      consentCapturedAt: draft.consentCapturedAt,
+      registeredAt: draft.registeredAt,
     });
 
-    const duplicates = await store.findPotentialDuplicates(registration.contact);
-    if (duplicates.status === "unavailable") {
-      return NextResponse.json({ status: "registry_unavailable", message: duplicates.reason }, { status: 503 });
-    }
-    if (duplicates.status === "conflict") {
-      return NextResponse.json({ status: "duplicate_check_conflict", message: duplicates.reason }, { status: 409 });
-    }
-    if (duplicates.value.length > 0) {
-      return NextResponse.json(
-        { status: "possible_duplicate", message: "A possible matching lead requires MMS duplicate review before registration can proceed." },
-        { status: 409 },
-      );
-    }
-
-    const created = await store.create(registration);
     if (created.status === "unavailable") {
       return NextResponse.json({ status: "registry_unavailable", message: created.reason }, { status: 503 });
     }
     if (created.status === "conflict") {
-      return NextResponse.json({ status: "registration_conflict", message: created.reason }, { status: 409 });
+      const possibleDuplicate = created.reason.toLowerCase().includes("duplicate");
+      return NextResponse.json(
+        {
+          status: possibleDuplicate ? "possible_duplicate" : "registration_conflict",
+          message: possibleDuplicate
+            ? "A possible matching lead requires MMS duplicate review before registration can proceed."
+            : created.reason,
+        },
+        { status: 409 },
+      );
     }
 
     return NextResponse.json(
@@ -213,6 +209,6 @@ export async function POST(request: NextRequest) {
       partnerId: auth.partnerId,
       error: error instanceof Error ? error.message : "Unknown Partner Hub lead registration error",
     });
-    return NextResponse.json({ status: "invalid", message: "Unable to register lead with the supplied commercial details." }, { status: 400 });
+    return NextResponse.json({ status: "error", message: "Unable to register lead." }, { status: 502 });
   }
 }
