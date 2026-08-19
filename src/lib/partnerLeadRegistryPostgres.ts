@@ -1,11 +1,11 @@
 import { createHash } from "node:crypto";
-import type { MmsCommercialDatabaseClient } from "@/lib/mmsCommercialDatabaseClient";
+import type {
+  MmsCommercialDatabaseClient,
+  MmsCommercialTransaction,
+} from "@/lib/mmsCommercialDatabaseClient";
 import type { CommercialLead, LeadOwnershipEvent } from "@/lib/partnerCommercialModel";
 import type { PartnerLeadLifecycleEvent } from "@/lib/partnerLeadLifecycle";
-import type {
-  PartnerLeadDuplicateDecision,
-  PartnerLeadRegistration,
-} from "@/lib/partnerLeadRegistry";
+import type { PartnerLeadDuplicateDecision, PartnerLeadRegistration } from "@/lib/partnerLeadRegistry";
 import type {
   PartnerLeadRegistryRecord,
   PartnerLeadRegistryStore,
@@ -31,6 +31,9 @@ function asResultError<T>(error: unknown): PartnerLeadRegistryStoreResult<T> {
   const message = error instanceof Error ? error.message : "Partner Lead Registry database operation failed.";
   if (message.includes("possible_duplicate")) return { status: "conflict", reason: "Potential matching lead records require duplicate review." };
   if (message.includes("partner_not_active")) return { status: "conflict", reason: "Only an Active selling-enabled MMS Sales Partner may register a lead." };
+  if (message.includes("ownership_conflict") || message.includes("lifecycle_conflict")) {
+    return { status: "conflict", reason: "Lead state changed before this operation completed. Reload and retry." };
+  }
   if (message.includes("idempotency")) return { status: "conflict", reason: "Lead registration idempotency conflict." };
   return { status: "unavailable", reason: "Partner Lead Registry database operation is unavailable." };
 }
@@ -53,7 +56,7 @@ type LeadRow = {
   next_action_at: unknown | null;
 };
 
-function leadFromRow(row: LeadRow): PartnerLeadRegistration {
+function registrationFromRow(row: LeadRow): PartnerLeadRegistration {
   return {
     lead: {
       leadId: row.public_lead_id,
@@ -77,8 +80,8 @@ function leadFromRow(row: LeadRow): PartnerLeadRegistration {
   };
 }
 
-async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: string): Promise<PartnerLeadRegistryRecord | null> {
-  const leadResult = await client.query<LeadRow>(
+async function loadRecord(db: MmsCommercialTransaction, publicLeadId: string): Promise<PartnerLeadRegistryRecord | null> {
+  const leadResult = await db.query<LeadRow>(
     `select l.public_lead_id,
             rp.partner_code as registered_by_partner_code,
             cp.partner_code as current_partner_code,
@@ -94,13 +97,13 @@ async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: str
   const row = leadResult.rows[0];
   if (!row) return null;
 
-  const duplicateResult = await client.query<{
+  const duplicateResult = await db.query<{
     status: PartnerLeadDuplicateDecision["status"];
     matched_public_lead_ids: string[];
     checked_at: unknown;
     checked_by: string;
   }>(
-    `select status, matched_public_lead_ids, checked_at, checked_by
+    `select d.status, d.matched_public_lead_ids, d.checked_at, d.checked_by
        from mms_commercial.lead_duplicate_decisions d
        join mms_commercial.leads l on l.id = d.lead_id
       where l.public_lead_id = $1
@@ -109,7 +112,7 @@ async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: str
     [publicLeadId],
   );
 
-  const ownershipResult = await client.query<{
+  const ownershipResult = await db.query<{
     event_id: string;
     previous_partner_code: string | null;
     new_partner_code: string;
@@ -117,10 +120,8 @@ async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: str
     approved_by: string;
     occurred_at: unknown;
   }>(
-    `select e.id::text as event_id,
-            pp.partner_code as previous_partner_code,
-            np.partner_code as new_partner_code,
-            e.reason, e.approved_by, e.occurred_at
+    `select e.id::text as event_id, pp.partner_code as previous_partner_code,
+            np.partner_code as new_partner_code, e.reason, e.approved_by, e.occurred_at
        from mms_commercial.lead_ownership_events e
        join mms_commercial.leads l on l.id = e.lead_id
        left join mms_commercial.partners pp on pp.id = e.previous_partner_id
@@ -130,7 +131,7 @@ async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: str
     [publicLeadId],
   );
 
-  const lifecycleResult = await client.query<{
+  const lifecycleResult = await db.query<{
     event_id: string;
     previous_stage: CommercialLead["stage"];
     next_stage: CommercialLead["stage"];
@@ -148,7 +149,7 @@ async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: str
 
   const latestDuplicate = duplicateResult.rows[0];
   return {
-    ...leadFromRow(row),
+    ...registrationFromRow(row),
     duplicateDecision: latestDuplicate
       ? {
           status: latestDuplicate.status,
@@ -170,7 +171,7 @@ async function loadRecord(client: MmsCommercialDatabaseClient, publicLeadId: str
       eventId: event.event_id,
       leadId: publicLeadId,
       previousStage: event.previous_stage,
-      nextStage: event.next_stage,
+      newStage: event.next_stage,
       actor: event.actor,
       reason: event.reason || undefined,
       occurredAt: iso(event.occurred_at),
@@ -186,9 +187,9 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
 
     async create(registration) {
       try {
-        const result = await client.transaction(async (tx) => {
+        const record = await client.transaction(async (tx) => {
           const partner = await tx.query<{ id: string }>(
-            "select id::text from mms_commercial.partners where upper(partner_code) = upper($1) and stage = 'Active' and selling_enabled = true for share",
+            "select id::text from mms_commercial.partners where upper(partner_code)=upper($1) and stage='Active' and selling_enabled=true for share",
             [registration.lead.currentPartnerId],
           );
           const partnerId = partner.rows[0]?.id;
@@ -216,9 +217,9 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
               registration.lead.nextActionAt || null,
             ],
           );
-          return loadRecord({ ...client, query: tx.query.bind(tx), transaction: client.transaction.bind(client) }, registration.lead.leadId);
+          return loadRecord(tx, registration.lead.leadId);
         });
-        return result ? { status: "ok", value: result } : { status: "conflict", reason: "Created lead could not be reloaded." };
+        return record ? { status: "ok", value: record } : { status: "conflict", reason: "Created lead could not be reloaded." };
       } catch (error) {
         return asResultError(error);
       }
@@ -226,12 +227,10 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
 
     async createIdempotent(params) {
       try {
-        const keyHash = hashIdempotencyKey(params.idempotencyKey);
         const result = await client.query<{ public_lead_id: string; replayed: boolean }>(
-          `select public_lead_id, replayed
-             from mms_commercial.register_partner_lead($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+          "select public_lead_id, replayed from mms_commercial.register_partner_lead($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",
           [
-            keyHash,
+            hashIdempotencyKey(params.idempotencyKey),
             params.partnerId,
             params.contact.fullName,
             params.contact.email || null,
@@ -243,9 +242,9 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
             params.registeredAt,
           ],
         );
-        const publicLeadId = result.rows[0]?.public_lead_id;
-        if (!publicLeadId) return { status: "conflict", reason: "Lead registration did not return an allocated Lead ID." };
-        const record = await loadRecord(client, publicLeadId);
+        const leadId = result.rows[0]?.public_lead_id;
+        if (!leadId) return { status: "conflict", reason: "Lead registration did not return an allocated Lead ID." };
+        const record = await loadRecord(client, leadId);
         return record ? { status: "ok", value: record } : { status: "conflict", reason: "Registered lead could not be reloaded." };
       } catch (error) {
         return asResultError(error);
@@ -263,11 +262,9 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
     async listOwnedByPartner(partnerId) {
       try {
         const result = await client.query<{ public_lead_id: string }>(
-          `select l.public_lead_id
-             from mms_commercial.leads l
-             join mms_commercial.partners p on p.id = l.current_partner_id
-            where upper(p.partner_code) = upper($1)
-            order by l.registered_at desc`,
+          `select l.public_lead_id from mms_commercial.leads l
+            join mms_commercial.partners p on p.id=l.current_partner_id
+           where upper(p.partner_code)=upper($1) order by l.registered_at desc`,
           [partnerId],
         );
         const records = await Promise.all(result.rows.map((row) => loadRecord(client, row.public_lead_id)));
@@ -281,8 +278,8 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
       try {
         const result = await client.query<{ public_lead_id: string }>(
           `select public_lead_id from mms_commercial.leads
-            where ($1::text is not null and email_normalized = lower($1))
-               or ($2::text is not null and phone_normalized = $2)
+            where ($1::text is not null and email_normalized=lower($1))
+               or ($2::text is not null and phone_normalized=$2)
             order by registered_at desc limit 25`,
           [contact.email || null, contact.phone || null],
         );
@@ -295,7 +292,7 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
     async recordDuplicateDecision(leadId, decision) {
       try {
         await client.transaction(async (tx) => {
-          const lead = await tx.query<{ id: string }>("select id::text from mms_commercial.leads where public_lead_id = $1 for update", [leadId]);
+          const lead = await tx.query<{ id: string }>("select id::text from mms_commercial.leads where public_lead_id=$1 for update", [leadId]);
           const id = lead.rows[0]?.id;
           if (!id) throw new Error("lead_not_found");
           await tx.query(
@@ -318,7 +315,7 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
       try {
         await client.transaction(async (tx) => {
           const current = await tx.query<{ lead_uuid: string; current_partner_code: string }>(
-            `select l.id::text as lead_uuid, p.partner_code as current_partner_code
+            `select l.id::text as lead_uuid,p.partner_code as current_partner_code
                from mms_commercial.leads l join mms_commercial.partners p on p.id=l.current_partner_id
               where l.public_lead_id=$1 for update of l`,
             [lead.leadId],
@@ -330,10 +327,10 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
             [event.newPartnerId],
           );
           const nextId = next.rows[0]?.id;
-          if (!nextId) throw new Error("new_partner_not_active");
+          if (!nextId) throw new Error("partner_not_active");
           await tx.query(
             `insert into mms_commercial.lead_ownership_events(lead_id,previous_partner_id,new_partner_id,reason,approved_by,occurred_at)
-             select $1, current_partner_id, $2, $3, $4, $5 from mms_commercial.leads where id=$1`,
+             select $1,current_partner_id,$2,$3,$4,$5 from mms_commercial.leads where id=$1`,
             [row.lead_uuid, nextId, event.reason, event.approvedBy, event.occurredAt],
           );
           await tx.query("update mms_commercial.leads set current_partner_id=$2 where id=$1", [row.lead_uuid, nextId]);
@@ -349,16 +346,16 @@ export function postgresPartnerLeadRegistryStore(client: MmsCommercialDatabaseCl
       try {
         await client.transaction(async (tx) => {
           const current = await tx.query<{ id: string; stage: CommercialLead["stage"] }>(
-            "select id::text, stage from mms_commercial.leads where public_lead_id=$1 for update",
+            "select id::text,stage from mms_commercial.leads where public_lead_id=$1 for update",
             [lead.leadId],
           );
           const row = current.rows[0];
           if (!row || row.stage !== event.previousStage) throw new Error("lifecycle_conflict");
           await tx.query(
             "insert into mms_commercial.lead_lifecycle_events(lead_id,previous_stage,next_stage,actor,reason,occurred_at) values ($1,$2,$3,$4,$5,$6)",
-            [row.id, event.previousStage, event.nextStage, event.actor, event.reason || null, event.occurredAt],
+            [row.id, event.previousStage, event.newStage, event.actor, event.reason || null, event.occurredAt],
           );
-          await tx.query("update mms_commercial.leads set stage=$2,last_activity_at=$3 where id=$1", [row.id, event.nextStage, event.occurredAt]);
+          await tx.query("update mms_commercial.leads set stage=$2,last_activity_at=$3 where id=$1", [row.id, event.newStage, event.occurredAt]);
         });
         const record = await loadRecord(client, lead.leadId);
         return record ? { status: "ok", value: record } : { status: "conflict", reason: "Lead could not be reloaded." };
