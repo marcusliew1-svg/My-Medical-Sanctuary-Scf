@@ -1,10 +1,11 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable, type MmsCommercialDatabaseClient } from "@/lib/mmsCommercialDatabaseClient";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 export type PartnerIdAllocation = {
   status: "issued";
   partnerId: string;
   allocationReference: string;
-  backend: "zoho-autonumber";
+  backend: "zoho-autonumber" | "postgres-sequence";
 };
 
 export type PartnerIdAllocationUnavailable = {
@@ -15,7 +16,7 @@ export type PartnerIdAllocationUnavailable = {
 export type PartnerIdAllocationResult = PartnerIdAllocation | PartnerIdAllocationUnavailable;
 
 export type PartnerIdAllocator = {
-  issue(applicantRecordId: string): Promise<PartnerIdAllocationResult>;
+  issue(applicantRecordId: string, stage?: "Approved" | "Agreement Pending" | "Training"): Promise<PartnerIdAllocationResult>;
 };
 
 export const PARTNER_ID_ALLOCATION_REQUIREMENTS = [
@@ -27,7 +28,7 @@ export const PARTNER_ID_ALLOCATION_REQUIREMENTS = [
 ] as const;
 
 export const PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON =
-  "Atomic permanent Partner ID allocation is not configured. Provision a backing registry with an auto-number/sequence plus a unique applicant key before issuing Partner IDs.";
+  "Atomic permanent Partner ID allocation is not configured. Provision the dedicated MMS commercial PostgreSQL registry/sequence before issuing Partner IDs.";
 
 function validApplicantRecordId(value: string): string {
   const id = value.trim();
@@ -41,30 +42,43 @@ export function validateIssuedPartnerId(value: unknown): string {
   return partnerId;
 }
 
-/**
- * Deliberately false until a transactional backing registry is actually implemented.
- * This prevents admin/UI code from presenting Partner ID issuance as operational merely
- * because an environment variable was set.
- */
-export function partnerIdAllocatorAvailable(): boolean {
-  return false;
-}
-
-/**
- * Current Zoho CRM edition does not support creating the custom Partner Registry
- * module needed for a server-side auto-number sequence. Deliberately fail closed
- * until an atomic backing store is configured. Do not replace this with a
- * "highest existing MMSP number + 1" implementation: concurrent approvals can
- * issue duplicate Partner IDs.
- */
-export function partnerIdAllocator(): PartnerIdAllocator {
+export function postgresPartnerIdAllocator(client: MmsCommercialDatabaseClient): PartnerIdAllocator {
   return {
-    async issue(applicantRecordId: string): Promise<PartnerIdAllocationResult> {
-      validApplicantRecordId(applicantRecordId);
+    async issue(applicantRecordId: string, stage = "Approved"): Promise<PartnerIdAllocationResult> {
+      const crmRecordId = validApplicantRecordId(applicantRecordId);
+      const result = await client.query<{ partner_uuid: string; partner_code: string }>(
+        "select partner_uuid::text, partner_code from mms_commercial.issue_partner_code_for_crm_record($1, $2)",
+        [crmRecordId, stage],
+      );
+      const row = result.rows[0];
+      if (!row) return { status: "unavailable", reason: PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON };
+      const partnerId = validateIssuedPartnerId(row.partner_code);
       return {
-        status: "unavailable",
-        reason: PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON,
+        status: "issued",
+        partnerId,
+        allocationReference: `postgres:${row.partner_uuid}`,
+        backend: "postgres-sequence",
       };
     },
   };
+}
+
+/**
+ * Only report available when the real dedicated MMS PostgreSQL client is wired.
+ * A database URL or migration file alone is not enough.
+ */
+export function partnerIdAllocatorAvailable(): boolean {
+  return mmsCommercialDatabaseClientAvailable();
+}
+
+export function partnerIdAllocator(): PartnerIdAllocator {
+  if (!mmsCommercialDatabaseClientAvailable()) {
+    return {
+      async issue(applicantRecordId: string) {
+        validApplicantRecordId(applicantRecordId);
+        return { status: "unavailable", reason: PARTNER_ID_ALLOCATOR_UNAVAILABLE_REASON };
+      },
+    };
+  }
+  return postgresPartnerIdAllocator(mmsCommercialDatabaseClient());
 }
