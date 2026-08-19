@@ -26,7 +26,7 @@ import { getZohoRecord, updateZohoRecord, zohoCrmConfigured } from "@/lib/zohoCr
 
 const MAX_BODY_BYTES = 24_000;
 const partnerStages = new Set<string>(PARTNER_STAGES);
-const trainingModuleIds = new Set<string>(SALES_PARTNER_CORE_MODULES.map((module) => module.id));
+const trainingModuleIds = new Set<string>(SALES_PARTNER_CORE_MODULES.map((trainingModule) => trainingModule.id));
 const agreementStatuses = new Set(["Accepted", "Superseded", "Revoked"]);
 const assessmentSources = new Set(["LMS", "Staff Verified"]);
 const assessmentResults = new Set(["Passed", "Failed"]);
@@ -61,18 +61,18 @@ function parseTrainingModules(value: unknown): SalesPartnerTrainingEvidence | un
   const modules: SalesPartnerTrainingModuleEvidence[] = [];
   for (const raw of source.modules) {
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return undefined;
-    const module = raw as Record<string, unknown>;
-    const moduleId = cleanString(module.moduleId, 40);
-    const version = cleanString(module.version, 120);
-    const completedAt = cleanString(module.completedAt, 80);
-    const acknowledgedAt = cleanString(module.acknowledgedAt, 80);
+    const trainingModuleRecord = raw as Record<string, unknown>;
+    const moduleId = cleanString(trainingModuleRecord.moduleId, 40);
+    const version = cleanString(trainingModuleRecord.version, 120);
+    const completedAt = cleanString(trainingModuleRecord.completedAt, 80);
+    const acknowledgedAt = cleanString(trainingModuleRecord.acknowledgedAt, 80);
     if (
       !trainingModuleIds.has(moduleId) ||
       !version ||
       !completedAt ||
       !acknowledgedAt ||
-      typeof module.refreshRequired !== "boolean" ||
-      (module.passed !== undefined && typeof module.passed !== "boolean")
+      typeof trainingModuleRecord.refreshRequired !== "boolean" ||
+      (trainingModuleRecord.passed !== undefined && typeof trainingModuleRecord.passed !== "boolean")
     ) {
       return undefined;
     }
@@ -81,8 +81,8 @@ function parseTrainingModules(value: unknown): SalesPartnerTrainingEvidence | un
       version,
       completedAt,
       acknowledgedAt,
-      passed: typeof module.passed === "boolean" ? module.passed : undefined,
-      refreshRequired: module.refreshRequired,
+      passed: typeof trainingModuleRecord.passed === "boolean" ? trainingModuleRecord.passed : undefined,
+      refreshRequired: trainingModuleRecord.refreshRequired,
     });
   }
 
