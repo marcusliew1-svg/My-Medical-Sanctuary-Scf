@@ -71,7 +71,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const allocation = await partnerIdAllocator().issue(recordId);
+    const allocationStage = state.stage as "Approved" | "Agreement Pending" | "Training";
+    const allocation = await partnerIdAllocator().issue(recordId, allocationStage);
     if (allocation.status !== "issued") {
       return NextResponse.json(
         { status: "allocator_unavailable", message: allocation.reason },
