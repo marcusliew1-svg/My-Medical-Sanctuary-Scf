@@ -1,4 +1,6 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
 import type { CommissionLedgerEvent, CommissionTransaction } from "@/lib/partnerCommissionLedger";
+import { postgresPartnerCommissionStore } from "@/lib/partnerCommissionPostgres";
 
 export type PartnerCommissionStoreResult<T> =
   | { status: "ok"; value: T }
@@ -31,19 +33,18 @@ export const PARTNER_COMMISSION_STORE_REQUIREMENTS = Object.freeze([
 ]);
 
 export function partnerCommissionStoreAvailable(): boolean {
-  return false;
+  return mmsCommercialDatabaseClientAvailable();
 }
 
-/**
- * Deliberately fail closed until MMS provisions a dedicated transactional
- * commercial datastore. Finance records and commission events must not use
- * browser storage, Zoho Description text, patient/clinical storage or iPivot.
- */
 export function partnerCommissionStore(): PartnerCommissionStore {
+  if (mmsCommercialDatabaseClientAvailable()) {
+    return postgresPartnerCommissionStore(mmsCommercialDatabaseClient());
+  }
+
   const unavailable = <T>(): PartnerCommissionStoreResult<T> => ({
     status: "unavailable",
     reason:
-      "MMS commission-ledger persistence is not configured. Provision a dedicated transactional commercial store before commission approval or payout.",
+      "MMS commission-ledger persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before commission approval or payout.",
   });
 
   return {
