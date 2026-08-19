@@ -257,10 +257,21 @@ export function postgresPartnerHubStore(client: MmsCommercialDatabaseClient): Pa
         const certIssuedAt = certification ? iso(certification.issued_at) : undefined;
         const certExpiresAt = certification ? iso(certification.expires_at) : undefined;
         const certRenewalDueAt = certification ? iso(certification.renewal_due_at) : undefined;
+        const certificationCurrent = Boolean(
+          certification &&
+            !certification.revoked_at &&
+            certExpiresAt &&
+            Date.parse(certExpiresAt) > Date.parse(generatedAt),
+        );
         const siteUrl = process.env.MMS_SITE_URL?.trim() || "";
-        const referralUrl = partner.stage === "Active" && partner.selling_enabled && siteUrl
-          ? referralUrlForPartner(siteUrl, partner.partner_code)
-          : undefined;
+        const referralUrl =
+          partner.stage === "Active" &&
+          partner.selling_enabled &&
+          partner.crm_access_enabled &&
+          certificationCurrent &&
+          siteUrl
+            ? referralUrlForPartner(siteUrl, partner.partner_code)
+            : undefined;
 
         return {
           status: "ok",
