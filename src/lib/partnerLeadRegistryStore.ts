@@ -1,9 +1,12 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
 import type { CommercialLead, LeadOwnershipEvent } from "@/lib/partnerCommercialModel";
 import type {
+  PartnerLeadContact,
   PartnerLeadDuplicateDecision,
   PartnerLeadRegistration,
 } from "@/lib/partnerLeadRegistry";
 import type { PartnerLeadLifecycleEvent } from "@/lib/partnerLeadLifecycle";
+import { postgresPartnerLeadRegistryStore } from "@/lib/partnerLeadRegistryPostgres";
 
 export type PartnerLeadRegistryRecord = PartnerLeadRegistration & {
   duplicateDecision?: PartnerLeadDuplicateDecision;
@@ -16,9 +19,22 @@ export type PartnerLeadRegistryStoreResult<T> =
   | { status: "unavailable"; reason: string }
   | { status: "conflict"; reason: string };
 
+export type IdempotentPartnerLeadCreateInput = {
+  idempotencyKey: string;
+  partnerId: string;
+  contact: PartnerLeadContact;
+  source?: string;
+  campaign?: string;
+  consentVersion: string;
+  consentCapturedAt: string;
+  registeredAt: string;
+};
+
 export type PartnerLeadRegistryStore = {
+  /** Legacy/internal pre-allocation hook. Partner-facing registration must use createIdempotent. */
   allocateLeadId(idempotencyKey: string): Promise<PartnerLeadRegistryStoreResult<string>>;
   create(registration: PartnerLeadRegistration): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord>>;
+  createIdempotent(params: IdempotentPartnerLeadCreateInput): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord>>;
   get(leadId: string): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord | null>>;
   listOwnedByPartner(partnerId: string): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord[]>>;
   findPotentialDuplicates(contact: { email?: string; phone?: string }): Promise<PartnerLeadRegistryStoreResult<string[]>>;
@@ -38,8 +54,8 @@ export type PartnerLeadRegistryStore = {
 
 export const PARTNER_LEAD_REGISTRY_STORE_REQUIREMENTS = Object.freeze([
   "Lead IDs must be unique and allocated centrally.",
-  "Lead ID allocation and create must be idempotent for a stable client/request key.",
-  "Partner-facing lead lists must be scoped by the authenticated current owner Partner ID in the datastore query itself.",
+  "Partner-facing create must be atomic and idempotent for a stable client/request key.",
+  "Duplicate search and create must not have a race window that can bypass duplicate review.",
   "Duplicate search must use normalized email and phone values.",
   "Ownership transfers must append immutable events; prior events may never be rewritten or deleted.",
   "Lead lifecycle transitions must append immutable events; current stage must be derived from the latest valid lifecycle event.",
@@ -49,19 +65,18 @@ export const PARTNER_LEAD_REGISTRY_STORE_REQUIREMENTS = Object.freeze([
 ]);
 
 export function partnerLeadRegistryStoreAvailable(): boolean {
-  return false;
+  return mmsCommercialDatabaseClientAvailable();
 }
 
-/**
- * Deliberately fail closed until MMS has a dedicated commercial datastore or a
- * CRM module whose schema is explicitly approved for the Partner Lead Registry.
- * Do not silently reuse patient/clinical records or iPivot infrastructure.
- */
 export function partnerLeadRegistryStore(): PartnerLeadRegistryStore {
+  if (mmsCommercialDatabaseClientAvailable()) {
+    return postgresPartnerLeadRegistryStore(mmsCommercialDatabaseClient());
+  }
+
   const unavailable = <T>(): PartnerLeadRegistryStoreResult<T> => ({
     status: "unavailable",
     reason:
-      "Partner Lead Registry persistence is not configured. Provision a dedicated MMS commercial store before accepting partner lead registrations.",
+      "Partner Lead Registry persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before accepting partner lead registrations.",
   });
 
   return {
@@ -69,6 +84,9 @@ export function partnerLeadRegistryStore(): PartnerLeadRegistryStore {
       return unavailable();
     },
     async create() {
+      return unavailable();
+    },
+    async createIdempotent() {
       return unavailable();
     },
     async get() {
