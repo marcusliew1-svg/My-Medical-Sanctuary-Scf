@@ -9,6 +9,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0002_mms_commercial_atomic_operations.sql",
   "0003_mms_commerce_and_commission_atomic_ops.sql",
   "0004_mms_commercial_migration_manifest.sql",
+  "0005_mms_financial_workflow_hardening.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([

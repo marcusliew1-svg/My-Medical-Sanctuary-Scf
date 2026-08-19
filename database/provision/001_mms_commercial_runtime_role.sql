@@ -1,6 +1,6 @@
 -- MMS commercial runtime role hardening.
 -- Run only against the dedicated MMS commercial PostgreSQL database AFTER
--- database/migrations/0001..0004 have been applied.
+-- database/migrations/0001..0005 have been applied.
 --
 -- This script intentionally does not set or commit a password. Provision the
 -- LOGIN credential out-of-band in the database provider and place only the
@@ -21,11 +21,8 @@ $$;
 revoke all on schema mms_commercial from public;
 grant usage on schema mms_commercial to mms_commercial_app;
 
--- Runtime reads. The Partner Hub and internal operational APIs read commercial
--- state directly but never need access to any other schema.
 grant select on all tables in schema mms_commercial to mms_commercial_app;
 
--- Controlled writes used by existing adapters. DELETE is deliberately omitted.
 grant insert, update on table
   mms_commercial.partners,
   mms_commercial.partner_training_evidence,
@@ -45,8 +42,6 @@ grant insert, update on table
   mms_commercial.presentation_assets
   to mms_commercial_app;
 
--- Immutable event tables permit append-only INSERT. Their mutation-reject
--- triggers remain a second line of defence even for privileged operators.
 grant insert on table
   mms_commercial.partner_audit_events,
   mms_commercial.lead_ownership_events,
@@ -55,16 +50,53 @@ grant insert on table
   mms_commercial.commission_events
   to mms_commercial_app;
 
--- Permanent Partner IDs use a database sequence; the runtime may advance it but
--- does not receive schema ownership or DDL privileges.
 grant usage, select on sequence mms_commercial.partner_code_seq to mms_commercial_app;
 
--- Atomic operations remain the preferred mutation boundary.
 grant execute on function mms_commercial.allocate_partner_code() to mms_commercial_app;
 grant execute on all functions in schema mms_commercial to mms_commercial_app;
 
--- Keep future objects fail-closed. New migrations must explicitly grant any
--- new runtime privilege after review instead of inheriting broad defaults.
+-- The foundation enables RLS on every commercial table. The runtime role is a
+-- trusted backend service role, so explicit policies are required or direct
+-- Partner Hub reads/writes would be blocked despite GRANTs. The table list is
+-- intentionally explicit so future tables remain fail-closed until reviewed.
+do $$
+declare
+  v_table text;
+begin
+  foreach v_table in array array[
+    'partners',
+    'partner_audit_events',
+    'partner_training_evidence',
+    'partner_assessment_attempts',
+    'partner_certifications',
+    'idempotency_keys',
+    'leads',
+    'lead_duplicate_decisions',
+    'lead_ownership_events',
+    'lead_lifecycle_events',
+    'applications',
+    'payments',
+    'payment_verifications',
+    'memberships',
+    'commercial_workflow_events',
+    'commission_rules',
+    'commission_transactions',
+    'commission_events',
+    'partner_sessions',
+    'partner_csrf_tokens',
+    'presentation_assets',
+    'schema_migrations'
+  ]
+  loop
+    execute format('drop policy if exists mms_commercial_app_runtime on mms_commercial.%I', v_table);
+    execute format(
+      'create policy mms_commercial_app_runtime on mms_commercial.%I for all to mms_commercial_app using (true) with check (true)',
+      v_table
+    );
+  end loop;
+end
+$$;
+
 alter default privileges in schema mms_commercial revoke all on tables from public;
 alter default privileges in schema mms_commercial revoke all on sequences from public;
 alter default privileges in schema mms_commercial revoke all on functions from public;

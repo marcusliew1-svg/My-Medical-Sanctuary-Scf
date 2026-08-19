@@ -46,3 +46,31 @@ where n.nspname = 'mms_commercial'
     'transition_commission'
   )
 order by p.proname;
+
+-- Every currently approved commercial table must have the explicit runtime RLS
+-- policy. Expected: 22 of 22. Future tables are intentionally not auto-added.
+select
+  count(*) filter (where c.relrowsecurity) as rls_enabled_count,
+  count(*) filter (
+    where exists (
+      select 1
+      from pg_policies p
+      where p.schemaname = 'mms_commercial'
+        and p.tablename = c.relname
+        and p.policyname = 'mms_commercial_app_runtime'
+        and 'mms_commercial_app' = any(p.roles)
+    )
+  ) as runtime_policy_count,
+  count(*) as expected_table_count
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where n.nspname = 'mms_commercial'
+  and c.relkind = 'r'
+  and c.relname in (
+    'partners','partner_audit_events','partner_training_evidence','partner_assessment_attempts',
+    'partner_certifications','idempotency_keys','leads','lead_duplicate_decisions',
+    'lead_ownership_events','lead_lifecycle_events','applications','payments',
+    'payment_verifications','memberships','commercial_workflow_events','commission_rules',
+    'commission_transactions','commission_events','partner_sessions','partner_csrf_tokens',
+    'presentation_assets','schema_migrations'
+  );
