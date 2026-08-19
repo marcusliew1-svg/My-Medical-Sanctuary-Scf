@@ -29,7 +29,11 @@ select
 
 select
   p.proname,
-  has_function_privilege('mms_commercial_app', p.oid, 'EXECUTE') as runtime_can_execute
+  has_function_privilege(
+    'mms_commercial_app',
+    p.oid,
+    'EXECUTE'
+  ) as runtime_can_execute
 from pg_proc p
 join pg_namespace n on n.oid = p.pronamespace
 where n.nspname = 'mms_commercial'
@@ -46,10 +50,13 @@ order by p.proname;
 
 select
   count(*) filter (where c.relrowsecurity) as rls_enabled_tables,
-  count(*) filter (where pol.polname = 'mms_commercial_app_backend') as runtime_policy_tables,
-  count(*) as commercial_tables
+  count(*) as approved_runtime_tables
 from pg_class c
 join pg_namespace n on n.oid = c.relnamespace
-left join pg_policy pol on pol.polrelid = c.oid and pol.polname = 'mms_commercial_app_backend'
 where n.nspname = 'mms_commercial'
   and c.relkind = 'r';
+
+select count(*) as runtime_policy_count
+from pg_policies
+where schemaname = 'mms_commercial'
+  and roles @> array['mms_commercial_app']::name[];

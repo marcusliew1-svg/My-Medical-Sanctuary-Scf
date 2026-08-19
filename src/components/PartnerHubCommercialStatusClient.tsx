@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { PartnerHubApplicationSubmissionClient } from "@/components/PartnerHubApplicationSubmissionClient";
 
 type CommercialStatusResponse = {
   status: string;
@@ -80,10 +81,12 @@ export function PartnerHubCommercialStatusClient() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Partner Hub</p>
             <h1 className="mt-2 font-[var(--font-playfair)] text-4xl text-stone-900">Applications & memberships</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">Track your attributed customer applications from submission through payment verification and commercial membership activation.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">Submit eligible qualified leads and track attributed customer applications from submission through payment verification and commercial membership activation.</p>
           </div>
           <button onClick={() => void load()} className="w-fit rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-semibold text-stone-700">Refresh</button>
         </div>
+
+        <PartnerHubApplicationSubmissionClient onSubmitted={() => void load()} />
 
         {loading ? <p className="mt-8 rounded-2xl border border-stone-200 bg-white p-6 text-stone-500">Loading commercial status…</p> : null}
 
@@ -155,7 +158,7 @@ export function PartnerHubCommercialStatusClient() {
           ))}
         </div>
 
-        <p className="mt-8 text-center text-xs text-stone-400">Commercial status only. No diagnosis, treatment, test result or other clinical information is displayed here.</p>
+        <p className="mt-8 text-center text-xs text-stone-400">Commercial status only. No diagnosis, treatment, test result or other clinical information is displayed or accepted here.</p>
       </div>
     </main>
   );
