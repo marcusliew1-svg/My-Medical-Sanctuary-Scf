@@ -1,6 +1,8 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
 import type { PartnerHubAccessState } from "@/lib/partnerHubAccess";
 import type { PartnerHubDashboard } from "@/lib/partnerHubDashboard";
 import type { PartnerHubAcademySummary } from "@/lib/partnerHubAcademy";
+import { postgresPartnerHubStore } from "@/lib/partnerHubPostgres";
 
 export type PartnerPresentationAsset = {
   assetId: string;
@@ -41,20 +43,18 @@ export const PARTNER_HUB_STORE_REQUIREMENTS = Object.freeze([
 ]);
 
 export function partnerHubStoreAvailable(): boolean {
-  return false;
+  return process.env.MMS_PARTNER_HUB_ENABLED === "true" && mmsCommercialDatabaseClientAvailable();
 }
 
-/**
- * The Partner Hub remains fail-closed until MMS provisions the transactional
- * commercial stores plus a real Partner authentication/session layer. Do not
- * expose this data using a shared internal bearer token as the Partner-facing
- * authentication mechanism.
- */
 export function partnerHubStore(): PartnerHubStore {
+  if (partnerHubStoreAvailable()) {
+    return postgresPartnerHubStore(mmsCommercialDatabaseClient());
+  }
+
   const unavailable = <T>(): PartnerHubStoreResult<T> => ({
     status: "unavailable",
     reason:
-      "Partner Hub persistence/authentication is not configured. Provision MMS commercial stores and Partner-scoped authentication before enabling Partner Hub access.",
+      "Partner Hub persistence/authentication is not configured. Provision MMS commercial PostgreSQL persistence and Partner-scoped authentication before enabling Partner Hub access.",
   });
 
   return {
