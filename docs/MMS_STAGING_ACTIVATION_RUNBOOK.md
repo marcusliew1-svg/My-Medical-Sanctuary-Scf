@@ -11,7 +11,7 @@ Vercel deployments are intentionally conserved. Batch related repository changes
 1. Provision a dedicated PostgreSQL database for MMS commercial data.
 2. Apply migrations `0001` through `0005` in order.
 3. Apply `database/provision/001_mms_commercial_runtime_role.sql` as an operator. This creates the least-privilege `mms_commercial_app` role required by later migration GRANT statements.
-4. Apply migrations `0006` through `0008` in order.
+4. Apply migrations `0006` through `0009` in order.
 5. Re-run `database/provision/001_mms_commercial_runtime_role.sql` so the runtime role receives privileges on every function now present.
 6. Assign LOGIN credentials to `mms_commercial_app` outside source control.
 7. Run `database/provision/002_mms_commercial_runtime_role_verify.sql` and confirm the denied privileges remain false, RLS is enabled, and all required runtime functions are executable.
@@ -28,6 +28,8 @@ Migration `0005` makes Finance payment verification and membership activation re
 
 Migration `0008` fills the gap between Finance clearance and activation. A pending commercial membership may be prepared only after the application is Paid, the payment is Cleared and durable Finance verification evidence exists. Preparation is idempotent by application/member reference and accepts no clinical information.
 
+Migration `0009` creates the initial-sale CommissionTransaction only after the application is Activated, payment remains fully Cleared with durable verification evidence, membership is Active and uncancelled, Partner attribution is intact, the Partner is Active/selling/CRM-enabled with compliance acknowledgement and current certification, and exactly one approved effective-dated commission rule applies. Partner level, commission rate, rule version and eligibility booleans are derived from persisted database state; they are never accepted from the caller. Partial refunds remain blocked pending an approved Finance formula. No downline, equaliser or breakaway transaction is created.
+
 The runtime role has no DELETE privilege. Audit/event tables remain append-only. RLS policies are explicit and future tables remain fail-closed until deliberately provisioned.
 
 ## Non-production Partner Hub test order
@@ -42,11 +44,14 @@ The runtime role has no DELETE privilege. Audit/event tables remain append-only.
 8. Verify payment through Finance, then repeat the exact HTTP request and confirm `already_verified` with no duplicate workflow events.
 9. Prepare the pending membership through `POST /api/internal/commerce/memberships/prepare`, repeat the same preparation and confirm the same membership is returned.
 10. Activate the membership, repeat the exact HTTP request and confirm `already_activated` with no duplicate workflow events.
-11. Exercise commission transitions Eligible → Approved → Paid; confirm Eligible → Paid is rejected and Paid reversal requires full approved-amount clawback.
+11. Publish a clearly non-production approved effective-dated commission rule for the QA timestamp. Do not copy draft/public marketing percentages into this rule.
+12. Call `POST /api/internal/commerce/commissions/eligibility` with only the activated application ID and audit actor. Confirm Partner level, rule version and rate are derived by the server/database and the second call returns `already_eligible`.
+13. Confirm eligibility is rejected for an inactive/cancelled membership, non-Cleared/refunded payment, expired/revoked Partner certification, disabled selling/CRM access, missing compliance acknowledgement, absent rule or overlapping rules.
+14. Exercise commission transitions Eligible → Approved → Paid; confirm Eligible → Paid is rejected and Paid reversal requires full approved-amount clawback.
 
 ## Acceptance criteria
 
-The environment is ready for Partner Hub integration testing only when all eight required migrations are present, the structural/smoke probes pass, runtime least privilege and RLS checks pass, Partner/application/payment/membership retries are safe, Partner identity is session-derived, Partner mutations remain CSRF protected, and no Partner-facing API or fixture contains clinical/patient information.
+The environment is ready for Partner Hub integration testing only when all nine required migrations are present, the structural/smoke probes pass, runtime least privilege and RLS checks pass, Partner/application/payment/membership retries are safe, commission eligibility is database-derived and retry-safe, Partner identity is session-derived, Partner mutations remain CSRF protected, and no Partner-facing API or fixture contains clinical/patient information.
 
 ## Production gate
 

@@ -12,8 +12,20 @@ export type PartnerCommissionRecord = {
   events: CommissionLedgerEvent[];
 };
 
+export type CommissionEligibilityInput = {
+  applicationId: string;
+  checkedBy: string;
+  checkedAt: string;
+};
+
+export type CommissionEligibilityResult = {
+  record: PartnerCommissionRecord;
+  replayed: boolean;
+};
+
 export type PartnerCommissionStore = {
   create(record: PartnerCommissionRecord): Promise<PartnerCommissionStoreResult<PartnerCommissionRecord>>;
+  evaluateEligibility(params: CommissionEligibilityInput): Promise<PartnerCommissionStoreResult<CommissionEligibilityResult>>;
   get(transactionId: string): Promise<PartnerCommissionStoreResult<PartnerCommissionRecord | null>>;
   saveTransition(params: {
     transaction: CommissionTransaction;
@@ -23,6 +35,8 @@ export type PartnerCommissionStore = {
 
 export const PARTNER_COMMISSION_STORE_REQUIREMENTS = Object.freeze([
   "Each qualifying sale or eligible renewal must create a distinct immutable commission transaction.",
+  "Initial-sale eligibility must be derived from persisted attribution, Finance-cleared payment, Active uncancelled membership, current Partner certification and one approved effective-dated commission rule.",
+  "The browser or caller must never supply its own commission rate, Partner level, eligibility booleans or rule version.",
   "The exact approved commission-rule version and partner level used at eligibility must be retained permanently.",
   "Commission approval and payout status must not be editable by Sales Partners.",
   "Every eligibility, hold, approval, payment and reversal change must append an immutable event.",
@@ -44,18 +58,13 @@ export function partnerCommissionStore(): PartnerCommissionStore {
   const unavailable = <T>(): PartnerCommissionStoreResult<T> => ({
     status: "unavailable",
     reason:
-      "MMS commission-ledger persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before commission approval or payout.",
+      "MMS commission-ledger persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before commission eligibility, approval or payout.",
   });
 
   return {
-    async create() {
-      return unavailable();
-    },
-    async get() {
-      return unavailable();
-    },
-    async saveTransition() {
-      return unavailable();
-    },
+    async create() { return unavailable(); },
+    async evaluateEligibility() { return unavailable(); },
+    async get() { return unavailable(); },
+    async saveTransition() { return unavailable(); },
   };
 }

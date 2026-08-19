@@ -13,6 +13,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0006_mms_partner_application_submission.sql",
   "0007_mms_application_review_and_payment_intake.sql",
   "0008_mms_pending_membership_preparation.sql",
+  "0009_mms_commission_eligibility_creation.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
@@ -20,7 +21,7 @@ export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
-  "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","transition_commission",
+  "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","create_eligible_commission","transition_commission",
 ]);
 
 export type MmsCommercialDatabaseProbe = {

@@ -25,7 +25,7 @@ from pg_proc p join pg_namespace n on n.oid=p.pronamespace
 where n.nspname='mms_commercial' and p.proname in (
   'allocate_partner_code','issue_partner_code_for_crm_record','register_partner_lead',
   'submit_partner_application','transition_application','record_payment_submission',
-  'finance_verify_payment','prepare_membership','activate_membership','transition_commission'
+  'finance_verify_payment','prepare_membership','activate_membership','create_eligible_commission','transition_commission'
 ) order by p.proname;
 
 select count(*) filter(where c.relrowsecurity) as rls_enabled_tables,count(*) as approved_runtime_tables

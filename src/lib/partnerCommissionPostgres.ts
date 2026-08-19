@@ -3,7 +3,13 @@ import type { CommissionLedgerEvent, CommissionTransaction } from "@/lib/partner
 import type { PartnerCommissionRecord, PartnerCommissionStore, PartnerCommissionStoreResult } from "@/lib/partnerCommissionStore";
 
 function iso(value: unknown): string { const d=value instanceof Date?value:new Date(String(value)); if(Number.isNaN(d.getTime())) throw new Error("Invalid database timestamp."); return d.toISOString(); }
-function fail<T>(error: unknown): PartnerCommissionStoreResult<T> { const m=error instanceof Error?error.message:"commission_database_error"; if(m.includes("commission_status_conflict")||m.includes("duplicate key")) return {status:"conflict",reason:"Commission transaction state changed or already exists."}; return {status:"unavailable",reason:"MMS commission database operation is unavailable."}; }
+function fail<T>(error: unknown): PartnerCommissionStoreResult<T> {
+  const m=error instanceof Error?error.message:"commission_database_error";
+  if (/(conflict|not_|missing|invalid|overlap|precedes|eligible|refund|duplicate key)/.test(m)) {
+    return {status:"conflict",reason:"Commission eligibility or transaction state changed or does not satisfy the required controls."};
+  }
+  return {status:"unavailable",reason:"MMS commission database operation is unavailable."};
+}
 
 async function load(client:MmsCommercialDatabaseClient, transactionId:string):Promise<PartnerCommissionRecord|null>{
   const r=await client.query<any>(`select c.*,p.partner_code,a.public_application_id,pay.public_payment_id,m.public_membership_id
@@ -38,6 +44,18 @@ export function postgresPartnerCommissionStore(client:MmsCommercialDatabaseClien
       });
       const out=await load(client,t.transactionId); return out?{status:"ok",value:out}:{status:"conflict",reason:"Commission transaction could not be reloaded."};
     }catch(error){return fail(error)}},
+
+    async evaluateEligibility(params){try{
+      const result=await client.query<{public_transaction_id:string;replayed:boolean}>(
+        "select public_transaction_id,replayed from mms_commercial.create_eligible_commission($1,$2,$3)",
+        [params.applicationId,params.checkedBy,params.checkedAt],
+      );
+      const row=result.rows[0];
+      if(!row) return {status:"conflict",reason:"Commission eligibility did not return a durable transaction ID."};
+      const out=await load(client,row.public_transaction_id);
+      return out?{status:"ok",value:{record:out,replayed:Boolean(row.replayed)}}:{status:"conflict",reason:"Eligible commission transaction could not be reloaded."};
+    }catch(error){return fail(error)}},
+
     async get(transactionId){try{return {status:"ok",value:await load(client,transactionId)}}catch(error){return fail(error)}},
     async saveTransition({transaction,event}){try{
       await client.query("select mms_commercial.transition_commission($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",[
