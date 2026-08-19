@@ -11,6 +11,16 @@ import { partnerLeadRegistryStore, partnerLeadRegistryStoreAvailable } from "@/l
 
 export const dynamic = "force-dynamic";
 const MAX_BODY_BYTES = 10_000;
+const PARTNER_LEAD_ALLOWED_FIELDS = new Set([
+  "fullName",
+  "email",
+  "phone",
+  "source",
+  "campaign",
+  "consentAccepted",
+  "consentVersion",
+  "consentCapturedAt",
+]);
 
 function cleanString(value: unknown, max = 500): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -104,17 +114,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "invalid", message: "A JSON request body is required." }, { status: 400 });
   }
 
+  const unexpectedFields = Object.keys(body).filter((key) => !PARTNER_LEAD_ALLOWED_FIELDS.has(key));
+  if (unexpectedFields.length > 0) {
+    return NextResponse.json(
+      { status: "invalid", message: "Partner lead registration contains unsupported fields." },
+      { status: 400 },
+    );
+  }
+
   try {
     assertCommercialLeadPayloadOnly(body);
   } catch {
     return NextResponse.json({ status: "invalid", message: "Clinical information is not permitted in the Partner Lead Registry." }, { status: 400 });
-  }
-
-  if ("partnerId" in body || "leadId" in body || "currentPartnerId" in body || "registeredByPartnerId" in body) {
-    return NextResponse.json(
-      { status: "invalid", message: "Partner and Lead identifiers are assigned server-side and must not be supplied by the browser." },
-      { status: 400 },
-    );
   }
 
   const idempotencyKey = cleanString(request.headers.get("idempotency-key"), 120);
