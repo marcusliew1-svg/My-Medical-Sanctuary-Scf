@@ -9,8 +9,7 @@ export type PartnerLeadContact = {
   phone?: string;
 };
 
-export type PartnerLeadRegistrationInput = {
-  leadId: string;
+export type PartnerLeadDraftInput = {
   partnerId: string;
   contact: PartnerLeadContact;
   source?: string;
@@ -19,6 +18,20 @@ export type PartnerLeadRegistrationInput = {
   consentVersion: string;
   consentCapturedAt: string;
   registeredAt: string;
+};
+
+export type ValidatedPartnerLeadDraft = {
+  partnerId: string;
+  contact: PartnerLeadContact;
+  source?: string;
+  campaign?: string;
+  consentVersion: string;
+  consentCapturedAt: string;
+  registeredAt: string;
+};
+
+export type PartnerLeadRegistrationInput = PartnerLeadDraftInput & {
+  leadId: string;
 };
 
 export type PartnerLeadRegistration = {
@@ -52,10 +65,9 @@ function validateContact(contact: PartnerLeadContact): PartnerLeadContact {
   return { fullName, email: email || undefined, phone: phone || undefined };
 }
 
-export function registerPartnerLead(input: PartnerLeadRegistrationInput): PartnerLeadRegistration {
+export function validatePartnerLeadDraft(input: PartnerLeadDraftInput): ValidatedPartnerLeadDraft {
   const partnerId = normalisePartnerId(input.partnerId);
   if (!partnerId) throw new Error("An active-format MMS Partner ID is required to register a lead.");
-  if (!/^[A-Za-z0-9_-]{6,80}$/.test(input.leadId.trim())) throw new Error("Lead ID is invalid.");
   if (!input.consentAccepted) throw new Error("Marketing / PDPA consent is mandatory before lead registration.");
   if (input.consentVersion !== PARTNER_LEAD_CONSENT_VERSION) {
     throw new Error("Lead consent version does not match the current controlled consent version.");
@@ -67,19 +79,34 @@ export function registerPartnerLead(input: PartnerLeadRegistrationInput): Partne
   }
 
   return {
+    partnerId,
+    contact: validateContact(input.contact),
+    source: cleanText(input.source, 120) || undefined,
+    campaign: cleanText(input.campaign, 120) || undefined,
+    consentVersion: input.consentVersion,
+    consentCapturedAt: input.consentCapturedAt,
+    registeredAt: input.registeredAt,
+  };
+}
+
+export function registerPartnerLead(input: PartnerLeadRegistrationInput): PartnerLeadRegistration {
+  if (!/^[A-Za-z0-9_-]{6,80}$/.test(input.leadId.trim())) throw new Error("Lead ID is invalid.");
+  const draft = validatePartnerLeadDraft(input);
+
+  return {
     lead: {
       leadId: input.leadId.trim(),
-      currentPartnerId: partnerId,
-      registeredByPartnerId: partnerId,
-      registeredAt: input.registeredAt,
+      currentPartnerId: draft.partnerId,
+      registeredByPartnerId: draft.partnerId,
+      registeredAt: draft.registeredAt,
       stage: "Registered",
-      source: cleanText(input.source, 120) || undefined,
-      campaign: cleanText(input.campaign, 120) || undefined,
+      source: draft.source,
+      campaign: draft.campaign,
       duplicateStatus: "Unchecked",
-      consentCapturedAt: input.consentCapturedAt,
+      consentCapturedAt: draft.consentCapturedAt,
     },
-    contact: validateContact(input.contact),
-    consentVersion: input.consentVersion,
+    contact: draft.contact,
+    consentVersion: draft.consentVersion,
   };
 }
 
@@ -89,7 +116,11 @@ export function applyDuplicateDecision(
 ): CommercialLead {
   requireTimestamp(decision.checkedAt, "checkedAt");
   if (!decision.checkedBy.trim()) throw new Error("Duplicate-check actor is required.");
-  if (decision.status !== "Clear" && decision.matchedLeadIds.length === 0) {
+  const matchedLeadIds = [...new Set(decision.matchedLeadIds.map((id) => id.trim()).filter(Boolean))];
+  if (decision.status === "Clear" && matchedLeadIds.length > 0) {
+    throw new Error("A Clear duplicate decision must not retain matched Lead IDs.");
+  }
+  if (decision.status !== "Clear" && matchedLeadIds.length === 0) {
     throw new Error("A duplicate decision requires at least one matched Lead ID.");
   }
 
@@ -122,6 +153,9 @@ export function validateLeadOwnershipEvent(event: LeadOwnershipEvent): void {
   if (event.previousPartnerId && !normalisePartnerId(event.previousPartnerId)) {
     throw new Error("Previous ownership Partner ID is invalid.");
   }
+  if (event.previousPartnerId && normalisePartnerId(event.previousPartnerId) === normalisePartnerId(event.newPartnerId)) {
+    throw new Error("Ownership transfer must change the Partner owner.");
+  }
   if (!event.reason.trim()) throw new Error("Ownership-transfer reason is required.");
   if (!event.approvedBy.trim()) throw new Error("Ownership-transfer approver is required.");
   requireTimestamp(event.occurredAt, "occurredAt");
@@ -141,8 +175,23 @@ export const PROHIBITED_PARTNER_LEAD_FIELDS = [
   "doctor notes",
 ] as const;
 
+function normalizedPayloadKey(key: string): string {
+  return key.trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
+}
+
 export function assertCommercialLeadPayloadOnly(payload: Record<string, unknown>): void {
-  const keys = Object.keys(payload).map((key) => key.trim().toLowerCase().replace(/_/g, " "));
-  const prohibited = PROHIBITED_PARTNER_LEAD_FIELDS.find((field) => keys.includes(field));
-  if (prohibited) throw new Error(`Clinical field '${prohibited}' is prohibited in the Partner Lead Registry.`);
+  const walk = (value: unknown): void => {
+    if (!value || typeof value !== "object") return;
+    if (Array.isArray(value)) {
+      value.forEach(walk);
+      return;
+    }
+    for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
+      const normalized = normalizedPayloadKey(key);
+      const prohibited = PROHIBITED_PARTNER_LEAD_FIELDS.find((field) => normalized === field);
+      if (prohibited) throw new Error(`Clinical field '${prohibited}' is prohibited in the Partner Lead Registry.`);
+      walk(nested);
+    }
+  };
+  walk(payload);
 }
