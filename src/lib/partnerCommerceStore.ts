@@ -1,3 +1,5 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
+import { postgresPartnerCommerceStore } from "@/lib/partnerCommercePostgres";
 import type {
   CommercialApplication,
   CommercialMembership,
@@ -52,20 +54,18 @@ export const PARTNER_COMMERCE_STORE_REQUIREMENTS = Object.freeze([
 ]);
 
 export function partnerCommerceStoreAvailable(): boolean {
-  return false;
+  return mmsCommercialDatabaseClientAvailable();
 }
 
-/**
- * Deliberately unavailable until MMS provisions a dedicated transactional
- * commercial store. Do not use patient/clinical storage, a browser-side data
- * structure, iPivot infrastructure or Zoho Description fields as the financial
- * system of record.
- */
 export function partnerCommerceStore(): PartnerCommerceStore {
+  if (mmsCommercialDatabaseClientAvailable()) {
+    return postgresPartnerCommerceStore(mmsCommercialDatabaseClient());
+  }
+
   const unavailable = <T>(): PartnerCommerceStoreResult<T> => ({
     status: "unavailable",
     reason:
-      "MMS commercial workflow persistence is not configured. Provision a dedicated transactional commercial store before accepting payment-verification or membership-activation writes.",
+      "MMS commercial workflow persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before accepting payment-verification or membership-activation writes.",
   });
 
   return {
