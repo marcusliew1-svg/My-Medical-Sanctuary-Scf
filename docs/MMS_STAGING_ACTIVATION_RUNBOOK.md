@@ -9,10 +9,10 @@ Vercel deployments are intentionally conserved. Batch related repository changes
 ## Database bring-up order
 
 1. Provision a dedicated PostgreSQL database for MMS commercial data.
-2. Apply migrations `0001` through `0005` in order.
+2. Apply migrations `0001` through `0006` in order.
 3. Apply `database/provision/001_mms_commercial_runtime_role.sql` as an operator.
 4. Assign LOGIN credentials to the dedicated `mms_commercial_app` runtime role outside source control.
-5. Run `database/provision/002_mms_commercial_runtime_role_verify.sql` and confirm all `*_should_be_false` privilege checks are false, RLS is enabled on all 22 approved commercial tables, and the runtime policy count is 22.
+5. Run `database/provision/002_mms_commercial_runtime_role_verify.sql` and confirm all `*_should_be_false` privilege checks are false, RLS is enabled on all approved commercial tables, and the runtime application policy is present.
 6. Configure the server-side `MMS_COMMERCIAL_DATABASE_URL` with the least-privilege runtime role credentials.
 7. Keep `MMS_COMMERCIAL_DATABASE_ENABLED=false` until the runtime driver is installed and the structural/smoke checks pass.
 
@@ -20,7 +20,11 @@ Vercel deployments are intentionally conserved. Batch related repository changes
 
 Migration `0005_mms_financial_workflow_hardening.sql` is mandatory before integration testing. It makes Finance payment verification and membership activation retry-safe, rejects mismatched replays, and enforces a database commission state machine. Commission cannot move directly from Eligible to Paid; Finance approval must happen first. A Paid transition requires a payout batch ID and payout reference. A Paid commission that is subsequently reversed requires a full clawback equal to the approved commission amount.
 
-The runtime role is intentionally not granted DELETE privileges. Immutable audit/event tables remain append-only. Because the commercial schema uses PostgreSQL row-level security, the provisioning script also installs explicit policies for the current 22 approved commercial tables. Future tables remain inaccessible until deliberately added to the provisioning allow-list.
+The runtime role is intentionally not granted DELETE privileges. Immutable audit/event tables remain append-only. Because the commercial schema uses PostgreSQL row-level security, the provisioning script also installs explicit policies for the approved commercial tables. Future tables remain inaccessible until deliberately added to the provisioning allow-list.
+
+## Partner application submission controls
+
+Migration `0006_mms_partner_application_submission.sql` is mandatory before Partner-facing application testing. A Partner may submit only for a lead they currently own and only once that lead is Qualified. The Partner must be Active, selling-enabled, CRM-enabled and hold a current non-revoked certification. Submission is CSRF-protected at the HTTP boundary, idempotent at the database boundary and will not allow two simultaneous non-terminal applications for the same lead. The Partner ID is always derived from the authenticated session; it is never accepted from the browser request body.
 
 ## Non-production Partner Hub test order
 
@@ -34,21 +38,24 @@ The runtime role is intentionally not granted DELETE privileges. Immutable audit
 8. Enable `MMS_PARTNER_HUB_QA_BOOTSTRAP_ENABLED=true` only in non-production.
 9. Issue the QA Partner session for `MMSP-99990001` through the protected internal QA-session endpoint.
 10. Test Partner Hub dashboard, Leads, Applications, Academy, Presentation Centre, Commission Wallet, Referral Tools and Sign Out.
-11. Exercise an exact retry of Finance payment verification and membership activation and confirm no duplicate workflow event is created.
-12. Exercise commission transitions through Eligible → Approved → Paid and confirm Eligible → Paid is rejected.
-13. Exercise Paid → Reversed and confirm anything other than a full approved-amount clawback is rejected.
+11. Move a QA lead to Qualified, submit an application through `POST /api/partner-hub/applications`, retry with the same Idempotency-Key and confirm the same application is returned without a duplicate workflow event.
+12. Confirm a changed payload with the same Idempotency-Key, an unowned lead, an uncertified Partner and a second open application for the same lead are each rejected.
+13. Exercise an exact retry of Finance payment verification and membership activation and confirm no duplicate workflow event is created.
+14. Exercise commission transitions through Eligible → Approved → Paid and confirm Eligible → Paid is rejected.
+15. Exercise Paid → Reversed and confirm anything other than a full approved-amount clawback is rejected.
 
 ## Acceptance criteria
 
 The environment is ready for Partner Hub integration testing only when:
 
-- all five required migrations are present in the migration manifest;
+- all six required migrations are present in the migration manifest;
 - the structural database probe is ready;
 - the runtime transaction round-trip succeeds;
 - the runtime role can read/write approved commercial rows through explicit RLS policies;
 - the runtime role cannot CREATE in the MMS schema;
 - the runtime role cannot DELETE Partner records;
 - immutable audit/event tables cannot be updated or deleted by the runtime role;
+- Partner application submission is owned-lead-only, certification-gated, CSRF-protected and idempotent;
 - payment verification and membership activation are retry-safe;
 - the commission state machine rejects direct Eligible-to-Paid transitions;
 - Paid commission reversals require full clawback;

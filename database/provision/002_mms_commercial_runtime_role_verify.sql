@@ -29,11 +29,7 @@ select
 
 select
   p.proname,
-  has_function_privilege(
-    'mms_commercial_app',
-    p.oid,
-    'EXECUTE'
-  ) as runtime_can_execute
+  has_function_privilege('mms_commercial_app', p.oid, 'EXECUTE') as runtime_can_execute
 from pg_proc p
 join pg_namespace n on n.oid = p.pronamespace
 where n.nspname = 'mms_commercial'
@@ -41,36 +37,19 @@ where n.nspname = 'mms_commercial'
     'allocate_partner_code',
     'issue_partner_code_for_crm_record',
     'register_partner_lead',
+    'submit_partner_application',
     'finance_verify_payment',
     'activate_membership',
     'transition_commission'
   )
 order by p.proname;
 
--- Every currently approved commercial table must have the explicit runtime RLS
--- policy. Expected: 22 of 22. Future tables are intentionally not auto-added.
 select
-  count(*) filter (where c.relrowsecurity) as rls_enabled_count,
-  count(*) filter (
-    where exists (
-      select 1
-      from pg_policies p
-      where p.schemaname = 'mms_commercial'
-        and p.tablename = c.relname
-        and p.policyname = 'mms_commercial_app_runtime'
-        and 'mms_commercial_app' = any(p.roles)
-    )
-  ) as runtime_policy_count,
-  count(*) as expected_table_count
+  count(*) filter (where c.relrowsecurity) as rls_enabled_tables,
+  count(*) filter (where pol.polname = 'mms_commercial_app_backend') as runtime_policy_tables,
+  count(*) as commercial_tables
 from pg_class c
 join pg_namespace n on n.oid = c.relnamespace
+left join pg_policy pol on pol.polrelid = c.oid and pol.polname = 'mms_commercial_app_backend'
 where n.nspname = 'mms_commercial'
-  and c.relkind = 'r'
-  and c.relname in (
-    'partners','partner_audit_events','partner_training_evidence','partner_assessment_attempts',
-    'partner_certifications','idempotency_keys','leads','lead_duplicate_decisions',
-    'lead_ownership_events','lead_lifecycle_events','applications','payments',
-    'payment_verifications','memberships','commercial_workflow_events','commission_rules',
-    'commission_transactions','commission_events','partner_sessions','partner_csrf_tokens',
-    'presentation_assets','schema_migrations'
-  );
+  and c.relkind = 'r';

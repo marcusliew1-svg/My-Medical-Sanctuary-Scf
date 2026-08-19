@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import type { MmsCommercialDatabaseClient } from "@/lib/mmsCommercialDatabaseClient";
 import type { PartnerCommerceRecord, PartnerCommerceStore, PartnerCommerceStoreResult } from "@/lib/partnerCommerceStore";
 import type { CommercialApplication, CommercialMembership, CommercialPayment } from "@/lib/partnerCommercialModel";
@@ -15,7 +16,9 @@ function optionalIso(value: unknown): string | undefined {
 }
 function failure<T>(error: unknown): PartnerCommerceStoreResult<T> {
   const message = error instanceof Error ? error.message : "commerce_database_error";
-  if (/(conflict|not_|mismatch|precedes)/.test(message)) return { status: "conflict", reason: "Commercial workflow state changed or does not satisfy the requested transition." };
+  if (/(conflict|not_|mismatch|precedes|already|eligible|owned|ready|idempotency)/.test(message)) {
+    return { status: "conflict", reason: "Commercial workflow state changed or does not satisfy the requested transition." };
+  }
   return { status: "unavailable", reason: "MMS commercial workflow database operation is unavailable." };
 }
 
@@ -70,6 +73,26 @@ export function postgresPartnerCommerceStore(client: MmsCommercialDatabaseClient
           [application.applicationId,application.leadId,application.partnerId,application.membershipCode,application.stage,application.submittedAt||null,application.approvedAt||null,application.activatedAt||null]);
         const record=await loadRecord(client,application.applicationId); return record?{status:"ok",value:record}:{status:"conflict",reason:"Application could not be reloaded."};
       } catch(error){ return failure(error); }
+    },
+    async submitPartnerApplication(params) {
+      try {
+        const partnerId = normalisePartnerId(params.partnerId);
+        if (!partnerId) return { status: "conflict", reason: "A valid permanent MMS Partner ID is required." };
+        const keyHash = createHash("sha256").update(params.idempotencyKey, "utf8").digest("hex");
+        const result = await client.query<{ public_application_id: string; replayed: boolean }>(
+          "select public_application_id,replayed from mms_commercial.submit_partner_application($1,$2,$3,$4,$5)",
+          [keyHash, partnerId, params.leadId, params.membershipCode, params.submittedAt],
+        );
+        const row = result.rows[0];
+        if (!row) return { status: "conflict", reason: "Application submission did not return a durable application ID." };
+        const record = await loadRecord(client, row.public_application_id);
+        if (!record || normalisePartnerId(record.application.partnerId) !== partnerId) {
+          return { status: "conflict", reason: "Submitted application could not be reloaded within Partner scope." };
+        }
+        return { status: "ok", value: { record, replayed: Boolean(row.replayed) } };
+      } catch (error) {
+        return failure(error);
+      }
     },
     async getApplication(applicationId){ try{return {status:"ok",value:await loadRecord(client,applicationId)}}catch(error){return failure(error)} },
     async listApplicationsByPartner(partnerIdValue) {

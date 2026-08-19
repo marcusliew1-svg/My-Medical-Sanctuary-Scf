@@ -10,6 +10,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0003_mms_commerce_and_commission_atomic_ops.sql",
   "0004_mms_commercial_migration_manifest.sql",
   "0005_mms_financial_workflow_hardening.sql",
+  "0006_mms_partner_application_submission.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
@@ -40,6 +41,7 @@ export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
   "allocate_partner_code",
   "issue_partner_code_for_crm_record",
   "register_partner_lead",
+  "submit_partner_application",
   "finance_verify_payment",
   "activate_membership",
   "transition_commission",

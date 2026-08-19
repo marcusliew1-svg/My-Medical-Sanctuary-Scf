@@ -4,6 +4,7 @@ import type {
   CommercialApplication,
   CommercialMembership,
   CommercialPayment,
+  MembershipCode,
 } from "@/lib/partnerCommercialModel";
 import type {
   CommercialWorkflowEvent,
@@ -20,6 +21,19 @@ export type PartnerCommerceRecord = {
   events: CommercialWorkflowEvent[];
 };
 
+export type PartnerApplicationSubmission = {
+  partnerId: string;
+  leadId: string;
+  membershipCode: MembershipCode;
+  idempotencyKey: string;
+  submittedAt: string;
+};
+
+export type PartnerApplicationSubmissionResult = {
+  record: PartnerCommerceRecord;
+  replayed: boolean;
+};
+
 export type PartnerCommerceStoreResult<T> =
   | { status: "ok"; value: T }
   | { status: "unavailable"; reason: string }
@@ -27,6 +41,7 @@ export type PartnerCommerceStoreResult<T> =
 
 export type PartnerCommerceStore = {
   createApplication(application: CommercialApplication): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord>>;
+  submitPartnerApplication(params: PartnerApplicationSubmission): Promise<PartnerCommerceStoreResult<PartnerApplicationSubmissionResult>>;
   getApplication(applicationId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord | null>>;
   listApplicationsByPartner(partnerId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord[]>>;
   savePaymentVerification(params: {
@@ -45,6 +60,9 @@ export type PartnerCommerceStore = {
 
 export const PARTNER_COMMERCE_STORE_REQUIREMENTS = Object.freeze([
   "Applications, payments and memberships must use centrally unique durable IDs.",
+  "Partner-facing application submission must be atomic, idempotent and scoped to an owned Qualified lead.",
+  "Only an Active, selling-enabled, CRM-enabled Partner with current certification may submit a new application.",
+  "A lead may not have two simultaneous non-terminal commercial applications.",
   "Partner-facing commerce reads must be scoped by the authenticated permanent MMS Partner ID and must never expose another Partner's applications.",
   "Payment clearance evidence may only be written by the Finance-authorized service path.",
   "Application Paid and Payment Cleared must be persisted atomically from the same Finance verification.",
@@ -67,11 +85,14 @@ export function partnerCommerceStore(): PartnerCommerceStore {
   const unavailable = <T>(): PartnerCommerceStoreResult<T> => ({
     status: "unavailable",
     reason:
-      "MMS commercial workflow persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before accepting payment-verification or membership-activation writes.",
+      "MMS commercial workflow persistence is not configured. Provision the dedicated MMS commercial PostgreSQL client before accepting Partner application or Finance workflow writes.",
   });
 
   return {
     async createApplication() {
+      return unavailable();
+    },
+    async submitPartnerApplication() {
       return unavailable();
     },
     async getApplication() {
