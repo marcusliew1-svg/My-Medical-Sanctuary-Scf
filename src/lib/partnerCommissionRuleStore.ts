@@ -1,3 +1,5 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
+import { postgresPartnerCommissionRuleStore } from "@/lib/partnerCommissionRulePostgres";
 import type { CommissionRule } from "@/lib/salesPartnerPolicy";
 
 export type ApprovedCommissionRule = CommissionRule & {
@@ -26,14 +28,14 @@ export const PARTNER_COMMISSION_RULE_STORE_REQUIREMENTS = Object.freeze([
 ]);
 
 export function partnerCommissionRuleStoreAvailable(): boolean {
-  return false;
+  return mmsCommercialDatabaseClientAvailable();
 }
 
-/**
- * Deliberately unavailable until Finance publishes an approved, versioned rule
- * registry. This prevents callers from inventing a rate in an API request.
- */
 export function partnerCommissionRuleStore(): PartnerCommissionRuleStore {
+  if (mmsCommercialDatabaseClientAvailable()) {
+    return postgresPartnerCommissionRuleStore(mmsCommercialDatabaseClient());
+  }
+
   const unavailable = <T>(): PartnerCommissionRuleStoreResult<T> => ({
     status: "unavailable",
     reason:
