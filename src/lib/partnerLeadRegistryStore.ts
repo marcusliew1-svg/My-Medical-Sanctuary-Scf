@@ -17,8 +17,10 @@ export type PartnerLeadRegistryStoreResult<T> =
   | { status: "conflict"; reason: string };
 
 export type PartnerLeadRegistryStore = {
+  allocateLeadId(idempotencyKey: string): Promise<PartnerLeadRegistryStoreResult<string>>;
   create(registration: PartnerLeadRegistration): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord>>;
   get(leadId: string): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord | null>>;
+  listOwnedByPartner(partnerId: string): Promise<PartnerLeadRegistryStoreResult<PartnerLeadRegistryRecord[]>>;
   findPotentialDuplicates(contact: { email?: string; phone?: string }): Promise<PartnerLeadRegistryStoreResult<string[]>>;
   recordDuplicateDecision(
     leadId: string,
@@ -36,7 +38,8 @@ export type PartnerLeadRegistryStore = {
 
 export const PARTNER_LEAD_REGISTRY_STORE_REQUIREMENTS = Object.freeze([
   "Lead IDs must be unique and allocated centrally.",
-  "Create must be idempotent for a stable client/request key.",
+  "Lead ID allocation and create must be idempotent for a stable client/request key.",
+  "Partner-facing lead lists must be scoped by the authenticated current owner Partner ID in the datastore query itself.",
   "Duplicate search must use normalized email and phone values.",
   "Ownership transfers must append immutable events; prior events may never be rewritten or deleted.",
   "Lead lifecycle transitions must append immutable events; current stage must be derived from the latest valid lifecycle event.",
@@ -62,10 +65,16 @@ export function partnerLeadRegistryStore(): PartnerLeadRegistryStore {
   });
 
   return {
+    async allocateLeadId() {
+      return unavailable();
+    },
     async create() {
       return unavailable();
     },
     async get() {
+      return unavailable();
+    },
+    async listOwnedByPartner() {
       return unavailable();
     },
     async findPotentialDuplicates() {
