@@ -29,11 +29,7 @@ select
 
 select
   p.proname,
-  has_function_privilege(
-    'mms_commercial_app',
-    p.oid,
-    'EXECUTE'
-  ) as runtime_can_execute
+  has_function_privilege('mms_commercial_app', p.oid, 'EXECUTE') as runtime_can_execute
 from pg_proc p
 join pg_namespace n on n.oid = p.pronamespace
 where n.nspname = 'mms_commercial'
@@ -42,6 +38,8 @@ where n.nspname = 'mms_commercial'
     'issue_partner_code_for_crm_record',
     'register_partner_lead',
     'submit_partner_application',
+    'transition_application',
+    'record_payment_submission',
     'finance_verify_payment',
     'activate_membership',
     'transition_commission'

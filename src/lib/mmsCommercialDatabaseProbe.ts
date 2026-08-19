@@ -11,6 +11,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0004_mms_commercial_migration_manifest.sql",
   "0005_mms_financial_workflow_hardening.sql",
   "0006_mms_partner_application_submission.sql",
+  "0007_mms_application_review_and_payment_intake.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
@@ -42,6 +43,8 @@ export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
   "issue_partner_code_for_crm_record",
   "register_partner_lead",
   "submit_partner_application",
+  "transition_application",
+  "record_payment_submission",
   "finance_verify_payment",
   "activate_membership",
   "transition_commission",
@@ -50,21 +53,9 @@ export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
 export type MmsCommercialDatabaseProbe = {
   status: "ready" | "incomplete" | "unavailable";
   schemaPresent: boolean;
-  migrations: {
-    expected: number;
-    applied: number;
-    missing: string[];
-  };
-  tables: {
-    expected: number;
-    present: number;
-    missing: string[];
-  };
-  functions: {
-    expected: number;
-    present: number;
-    missing: string[];
-  };
+  migrations: { expected: number; applied: number; missing: string[] };
+  tables: { expected: number; present: number; missing: string[] };
+  functions: { expected: number; present: number; missing: string[] };
   databaseVersion?: string;
   message?: string;
 };
@@ -84,30 +75,20 @@ function unavailableOrEmpty(status: "incomplete" | "unavailable", message: strin
   };
 }
 
-export async function probeMmsCommercialDatabaseWithClient(
-  client: MmsCommercialDatabaseClient,
-): Promise<MmsCommercialDatabaseProbe> {
+export async function probeMmsCommercialDatabaseWithClient(client: MmsCommercialDatabaseClient): Promise<MmsCommercialDatabaseProbe> {
   try {
     const schema = await client.query<{ present: boolean }>(
       `select exists(select 1 from information_schema.schemata where schema_name = 'mms_commercial') as present`,
     );
     const schemaPresent = Boolean(schema.rows[0]?.present);
-    if (!schemaPresent) {
-      return unavailableOrEmpty("incomplete", "The mms_commercial schema has not been applied.");
-    }
+    if (!schemaPresent) return unavailableOrEmpty("incomplete", "The mms_commercial schema has not been applied.");
 
     const [tablesResult, functionsResult, versionResult] = await Promise.all([
       client.query<{ name: string }>(
-        `select table_name as name
-           from information_schema.tables
-          where table_schema = 'mms_commercial'
-            and table_type = 'BASE TABLE'`,
+        `select table_name as name from information_schema.tables where table_schema='mms_commercial' and table_type='BASE TABLE'`,
       ),
       client.query<{ name: string }>(
-        `select distinct p.proname as name
-           from pg_catalog.pg_proc p
-           join pg_catalog.pg_namespace n on n.oid = p.pronamespace
-          where n.nspname = 'mms_commercial'`,
+        `select distinct p.proname as name from pg_catalog.pg_proc p join pg_catalog.pg_namespace n on n.oid=p.pronamespace where n.nspname='mms_commercial'`,
       ),
       client.query<{ version: string }>(`select current_setting('server_version') as version`),
     ]);
@@ -119,9 +100,7 @@ export async function probeMmsCommercialDatabaseWithClient(
 
     let appliedMigrations = new Set<string>();
     if (tableNames.has("schema_migrations")) {
-      const migrationResult = await client.query<{ name: string }>(
-        `select migration_key as name from mms_commercial.schema_migrations`,
-      );
+      const migrationResult = await client.query<{ name: string }>(`select migration_key as name from mms_commercial.schema_migrations`);
       appliedMigrations = names(migrationResult.rows);
     }
     const missingMigrations = MMS_COMMERCIAL_REQUIRED_MIGRATIONS.filter((name) => !appliedMigrations.has(name));
@@ -130,21 +109,9 @@ export async function probeMmsCommercialDatabaseWithClient(
     return {
       status: ready ? "ready" : "incomplete",
       schemaPresent: true,
-      migrations: {
-        expected: MMS_COMMERCIAL_REQUIRED_MIGRATIONS.length,
-        applied: MMS_COMMERCIAL_REQUIRED_MIGRATIONS.length - missingMigrations.length,
-        missing: missingMigrations,
-      },
-      tables: {
-        expected: MMS_COMMERCIAL_REQUIRED_TABLES.length,
-        present: MMS_COMMERCIAL_REQUIRED_TABLES.length - missingTables.length,
-        missing: missingTables,
-      },
-      functions: {
-        expected: MMS_COMMERCIAL_REQUIRED_FUNCTIONS.length,
-        present: MMS_COMMERCIAL_REQUIRED_FUNCTIONS.length - missingFunctions.length,
-        missing: missingFunctions,
-      },
+      migrations: { expected: MMS_COMMERCIAL_REQUIRED_MIGRATIONS.length, applied: MMS_COMMERCIAL_REQUIRED_MIGRATIONS.length - missingMigrations.length, missing: missingMigrations },
+      tables: { expected: MMS_COMMERCIAL_REQUIRED_TABLES.length, present: MMS_COMMERCIAL_REQUIRED_TABLES.length - missingTables.length, missing: missingTables },
+      functions: { expected: MMS_COMMERCIAL_REQUIRED_FUNCTIONS.length, present: MMS_COMMERCIAL_REQUIRED_FUNCTIONS.length - missingFunctions.length, missing: missingFunctions },
       databaseVersion: versionResult.rows[0]?.version,
       message: ready ? undefined : "One or more required MMS commercial migrations or database objects are missing.",
     };

@@ -1,6 +1,7 @@
 import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
 import { postgresPartnerCommerceStore } from "@/lib/partnerCommercePostgres";
 import type {
+  ApplicationStage,
   CommercialApplication,
   CommercialMembership,
   CommercialPayment,
@@ -34,6 +35,35 @@ export type PartnerApplicationSubmissionResult = {
   replayed: boolean;
 };
 
+export type ApplicationTransitionInput = {
+  applicationId: string;
+  expectedStage: ApplicationStage;
+  nextStage: ApplicationStage;
+  actor: string;
+  occurredAt: string;
+  reason: string;
+};
+
+export type ApplicationTransitionResult = {
+  record: PartnerCommerceRecord;
+  replayed: boolean;
+};
+
+export type PaymentSubmissionInput = {
+  applicationId: string;
+  transactionReference: string;
+  amountMinorUnits: number;
+  currency: string;
+  submittedAt: string;
+  recordedBy: string;
+  idempotencyKey: string;
+};
+
+export type PaymentSubmissionResult = {
+  record: PartnerCommerceRecord;
+  replayed: boolean;
+};
+
 export type PartnerCommerceStoreResult<T> =
   | { status: "ok"; value: T }
   | { status: "unavailable"; reason: string }
@@ -42,6 +72,8 @@ export type PartnerCommerceStoreResult<T> =
 export type PartnerCommerceStore = {
   createApplication(application: CommercialApplication): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord>>;
   submitPartnerApplication(params: PartnerApplicationSubmission): Promise<PartnerCommerceStoreResult<PartnerApplicationSubmissionResult>>;
+  transitionApplication(params: ApplicationTransitionInput): Promise<PartnerCommerceStoreResult<ApplicationTransitionResult>>;
+  recordPaymentSubmission(params: PaymentSubmissionInput): Promise<PartnerCommerceStoreResult<PaymentSubmissionResult>>;
   getApplication(applicationId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord | null>>;
   listApplicationsByPartner(partnerId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord[]>>;
   savePaymentVerification(params: {
@@ -62,7 +94,9 @@ export const PARTNER_COMMERCE_STORE_REQUIREMENTS = Object.freeze([
   "Applications, payments and memberships must use centrally unique durable IDs.",
   "Partner-facing application submission must be atomic, idempotent and scoped to an owned Qualified lead.",
   "Only an Active, selling-enabled, CRM-enabled Partner with current certification may submit a new application.",
+  "Application review transitions must use an explicit expected state and append an immutable workflow event.",
   "A lead may not have two simultaneous non-terminal commercial applications.",
+  "Payment submission must be server-side, idempotent, tied to a Payment Pending application and append an immutable workflow event.",
   "Partner-facing commerce reads must be scoped by the authenticated permanent MMS Partner ID and must never expose another Partner's applications.",
   "Payment clearance evidence may only be written by the Finance-authorized service path.",
   "Application Paid and Payment Cleared must be persisted atomically from the same Finance verification.",
@@ -89,23 +123,13 @@ export function partnerCommerceStore(): PartnerCommerceStore {
   });
 
   return {
-    async createApplication() {
-      return unavailable();
-    },
-    async submitPartnerApplication() {
-      return unavailable();
-    },
-    async getApplication() {
-      return unavailable();
-    },
-    async listApplicationsByPartner() {
-      return unavailable();
-    },
-    async savePaymentVerification() {
-      return unavailable();
-    },
-    async saveMembershipActivation() {
-      return unavailable();
-    },
+    async createApplication() { return unavailable(); },
+    async submitPartnerApplication() { return unavailable(); },
+    async transitionApplication() { return unavailable(); },
+    async recordPaymentSubmission() { return unavailable(); },
+    async getApplication() { return unavailable(); },
+    async listApplicationsByPartner() { return unavailable(); },
+    async savePaymentVerification() { return unavailable(); },
+    async saveMembershipActivation() { return unavailable(); },
   };
 }
