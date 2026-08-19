@@ -1,4 +1,6 @@
 import type { NextRequest } from "next/server";
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
+import { postgresPartnerHubCsrfProvider } from "@/lib/partnerHubCsrfPostgres";
 import type { PartnerHubSessionClaims } from "@/lib/partnerHubSession";
 
 export const MMS_PARTNER_CSRF_HEADER = "x-mms-csrf-token";
@@ -42,15 +44,14 @@ function configuredSiteOrigin(): string {
 }
 
 export function partnerHubCsrfProviderAvailable(): boolean {
-  return false;
+  return process.env.MMS_PARTNER_HUB_ENABLED === "true" && mmsCommercialDatabaseClientAvailable();
 }
 
-/**
- * Deliberately unavailable until the Partner identity/session backend can issue
- * and validate session-bound anti-CSRF tokens. Do not substitute a static
- * application secret or a browser-generated unsigned token.
- */
 export function partnerHubCsrfProvider(): PartnerHubCsrfProvider {
+  if (partnerHubCsrfProviderAvailable()) {
+    return postgresPartnerHubCsrfProvider(mmsCommercialDatabaseClient());
+  }
+
   return {
     async issue() {
       return {
