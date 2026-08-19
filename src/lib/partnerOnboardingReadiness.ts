@@ -64,7 +64,10 @@ function completionPercent(checklist: ActivationChecklist): number {
 }
 
 function blockersFor(state: PartnerCrmState): PartnerOnboardingBlocker[] {
-  const blockers = missingControls(state.checklist).map((key) => ({ code: key, label: checklistLabels[key] }));
+  const blockers: PartnerOnboardingBlocker[] = missingControls(state.checklist).map((key) => ({
+    code: key,
+    label: checklistLabels[key],
+  }));
 
   if (state.checklist.agreementCompleted && state.agreementStatus !== "Accepted") {
     blockers.push({ code: "agreement_status", label: "Agreement evidence is not in Accepted status." });
