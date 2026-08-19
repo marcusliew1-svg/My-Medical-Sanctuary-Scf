@@ -4,6 +4,12 @@ import type { PartnerHubSessionClaims } from "@/lib/partnerHubSession";
 export const MMS_PARTNER_CSRF_HEADER = "x-mms-csrf-token";
 
 export type PartnerHubCsrfProvider = {
+  issue(params: {
+    sessionId: string;
+  }): Promise<
+    | { status: "issued"; csrfToken: string; expiresAt: string }
+    | { status: "unavailable"; reason: string }
+  >;
   verify(params: {
     sessionId: string;
     csrfToken: string;
@@ -19,7 +25,8 @@ export const PARTNER_HUB_MUTATION_SECURITY_REQUIREMENTS = Object.freeze([
   "Cookie-authenticated Partner mutations must enforce same-origin checks and CSRF validation server-side.",
   "The Origin header must match the configured first-party MMS site origin.",
   "Sec-Fetch-Site must be same-origin or same-site when supplied; cross-site mutation requests must be rejected.",
-  "CSRF tokens must be opaque, session-bound and validated server-side; they must not be accepted from query parameters.",
+  "CSRF tokens must be opaque, session-bound, short-lived and validated server-side; they must not be accepted from query parameters.",
+  "CSRF tokens must be issued only after successful Partner session authentication and must not expose the underlying session token.",
   "CSRF validation supplements Partner authentication and capability authorization; it never replaces either control.",
   "Sensitive future mutations may additionally require recent step-up authentication.",
 ]);
@@ -45,6 +52,12 @@ export function partnerHubCsrfProviderAvailable(): boolean {
  */
 export function partnerHubCsrfProvider(): PartnerHubCsrfProvider {
   return {
+    async issue() {
+      return {
+        status: "unavailable",
+        reason: "Partner Hub CSRF token provider is not configured.",
+      };
+    },
     async verify() {
       return {
         status: "unavailable",
