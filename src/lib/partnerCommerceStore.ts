@@ -28,6 +28,7 @@ export type PartnerCommerceStoreResult<T> =
 export type PartnerCommerceStore = {
   createApplication(application: CommercialApplication): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord>>;
   getApplication(applicationId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord | null>>;
+  listApplicationsByPartner(partnerId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord[]>>;
   savePaymentVerification(params: {
     application: CommercialApplication;
     payment: CommercialPayment;
@@ -44,6 +45,7 @@ export type PartnerCommerceStore = {
 
 export const PARTNER_COMMERCE_STORE_REQUIREMENTS = Object.freeze([
   "Applications, payments and memberships must use centrally unique durable IDs.",
+  "Partner-facing commerce reads must be scoped by the authenticated permanent MMS Partner ID and must never expose another Partner's applications.",
   "Payment clearance evidence may only be written by the Finance-authorized service path.",
   "Application Paid and Payment Cleared must be persisted atomically from the same Finance verification.",
   "Every state change must append an immutable workflow event.",
@@ -73,6 +75,9 @@ export function partnerCommerceStore(): PartnerCommerceStore {
       return unavailable();
     },
     async getApplication() {
+      return unavailable();
+    },
+    async listApplicationsByPartner() {
       return unavailable();
     },
     async savePaymentVerification() {
