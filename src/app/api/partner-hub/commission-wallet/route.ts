@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { authorizePartnerHubCapability } from "@/lib/partnerHubAuthorization";
-import { partnerHubStore } from "@/lib/partnerHubStore";
+import { loadPartnerCommissionWallet } from "@/lib/partnerHubCommissionWalletPostgres";
 
 export const dynamic = "force-dynamic";
 
@@ -23,21 +23,21 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ status: "hub_unavailable", message: authorization.reason }, { status: 503 });
   }
 
-  const result = await partnerHubStore().getDashboard(authorization.partnerId);
+  const result = await loadPartnerCommissionWallet(authorization.partnerId);
   if (result.status === "unavailable") {
     return NextResponse.json({ status: "hub_unavailable", message: result.reason }, { status: 503 });
   }
   if (result.status === "conflict") {
     return NextResponse.json({ status: "conflict", message: result.reason }, { status: 409 });
   }
-  if (!result.value || result.value.partner.partnerId !== authorization.partnerId) {
+  if (!result.value || result.value.partnerId !== authorization.partnerId) {
     return NextResponse.json({ status: "not_found", message: "Partner commission wallet was not found." }, { status: 404 });
   }
 
   return NextResponse.json(
     {
       status: "ok",
-      partnerId: authorization.partnerId,
+      partnerId: result.value.partnerId,
       commissions: result.value.commissions,
       generatedAt: result.value.generatedAt,
       note: "Commercial commission status only. Approved and Paid values are Finance-controlled and read-only.",
