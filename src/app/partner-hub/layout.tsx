@@ -4,6 +4,7 @@ import { PartnerHubSignOutButton } from "@/components/PartnerHubSignOutButton";
 const links = [
   ["Dashboard", "/partner-hub"],
   ["Leads", "/partner-hub/leads"],
+  ["Applications", "/partner-hub/commercial-status"],
   ["Academy", "/partner-hub/academy"],
   ["Presentation Centre", "/partner-hub/presentation-centre"],
   ["Commission Wallet", "/partner-hub/commission-wallet"],
