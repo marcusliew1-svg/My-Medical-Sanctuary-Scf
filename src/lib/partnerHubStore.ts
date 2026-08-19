@@ -37,8 +37,8 @@ export const PARTNER_HUB_STORE_REQUIREMENTS = Object.freeze([
   "Approved/Paid commission amounts must remain Finance-controlled and read-only to Sales Partners.",
   "Academy status must come from retained agreement/training/assessment/certification evidence and must never be browser-editable.",
   "Presentation Centre assets must be approved, versioned and effective-dated; Partners cannot upload or alter controlled MMS materials through the Hub.",
-  "Referral URLs may only be exposed while the Partner is Active and selling-enabled.",
-  "Suspended or Inactive Partners must not receive selling-enabled controls.",
+  "Referral URLs may only be exposed while the Partner has SHARE_REFERRAL_LINK capability: Active, selling-enabled, CRM-enabled and currently certified.",
+  "Suspended or Inactive Partners must not receive selling-enabled controls, and stage reconciliation must revoke their outstanding Partner sessions.",
   "No clinical data may be stored in or returned by the Partner Hub data layer.",
 ]);
 

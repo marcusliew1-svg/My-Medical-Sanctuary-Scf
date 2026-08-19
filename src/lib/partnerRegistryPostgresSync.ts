@@ -8,6 +8,7 @@ import { SALES_PARTNER_CORE_MODULES } from "@/lib/partnerTraining";
 
 const CERTIFICATION_VERSION = "MMS-SP-CERT-2026-08-v1";
 const moduleIds = new Set<string>(SALES_PARTNER_CORE_MODULES.map((trainingModule) => trainingModule.id));
+const SESSION_BLOCKED_STAGES = new Set(["Suspended", "Inactive", "Rejected"]);
 
 export type PartnerRegistrySyncResult =
   | {
@@ -18,6 +19,7 @@ export type PartnerRegistrySyncResult =
       trainingEvidenceRows: number;
       assessmentRows: number;
       certificationRows: number;
+      revokedSessionRows: number;
       auditRows: number;
     }
   | { status: "unavailable"; reason: string }
@@ -150,13 +152,26 @@ async function syncWithClient(
         ],
       );
 
+      let revokedSessionRows = 0;
+      if (SESSION_BLOCKED_STAGES.has(state.stage)) {
+        const revoked = await tx.query(
+          `update mms_commercial.partner_sessions
+              set revoked_at = coalesce(revoked_at, $2::timestamptz),
+                  revoke_reason = coalesce(revoke_reason, $3)
+            where partner_id = $1::uuid
+              and revoked_at is null`,
+          [partner.id, changedAt, `Partner stage reconciled to ${state.stage}`],
+        );
+        revokedSessionRows = revoked.rowCount;
+      }
+
       const audit = await tx.query<{ id: string }>(
         `insert into mms_commercial.partner_audit_events(
            partner_id, event_type, previous_state, next_state, actor, reason, occurred_at
          )
          select $1::uuid, 'crm_registry_reconciled', jsonb_build_object('stage', $2::text),
                 jsonb_build_object('stage', $3::text, 'sellingEnabled', $4::boolean,
-                                   'crmAccessEnabled', $5::boolean),
+                                   'crmAccessEnabled', $5::boolean, 'revokedSessionRows', $8::integer),
                 $6, 'Reconciled from controlled Zoho Sales Partner audit state.', $7::timestamptz
           where not exists (
             select 1 from mms_commercial.partner_audit_events
@@ -165,7 +180,7 @@ async function syncWithClient(
                and occurred_at = $7::timestamptz
           )
          returning id::text`,
-        [partner.id, partner.stage, state.stage, state.sellingEnabled, state.checklist.crmAccessEnabled, actor, changedAt],
+        [partner.id, partner.stage, state.stage, state.sellingEnabled, state.checklist.crmAccessEnabled, actor, changedAt, revokedSessionRows],
       );
 
       let trainingEvidenceRows = 0;
@@ -257,6 +272,7 @@ async function syncWithClient(
         trainingEvidenceRows,
         assessmentRows,
         certificationRows,
+        revokedSessionRows,
         auditRows: audit.rowCount,
       } as const;
     });
