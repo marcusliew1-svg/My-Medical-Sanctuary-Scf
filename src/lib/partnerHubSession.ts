@@ -1,3 +1,5 @@
+import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
+import { postgresPartnerHubSessionProvider } from "@/lib/partnerHubSessionPostgres";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 export const MMS_PARTNER_SESSION_COOKIE = "mms_partner_session";
@@ -53,16 +55,20 @@ export function validatePartnerHubSessionClaims(claims: PartnerHubSessionClaims,
 }
 
 export function partnerHubSessionProviderAvailable(): boolean {
-  return false;
+  return process.env.MMS_PARTNER_HUB_ENABLED === "true" && mmsCommercialDatabaseClientAvailable();
 }
 
 /**
- * Authentication remains deliberately unavailable until MMS provisions a
- * first-party identity/session backend. Do not replace this with a shared
- * bearer token, Partner ID query parameter, browser localStorage identity or
- * an unsigned cookie.
+ * Uses the dedicated MMS commercial PostgreSQL backend only when both the Hub
+ * feature gate and database client are operational. Otherwise authentication
+ * remains fail-closed; never substitute a shared bearer token or unsigned
+ * browser identity.
  */
 export function partnerHubSessionProvider(): PartnerHubSessionProvider {
+  if (partnerHubSessionProviderAvailable()) {
+    return postgresPartnerHubSessionProvider(mmsCommercialDatabaseClient());
+  }
+
   return {
     async verify() {
       return {
