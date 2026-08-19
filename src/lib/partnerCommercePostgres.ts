@@ -16,7 +16,7 @@ function optionalIso(value: unknown): string | undefined {
 }
 function failure<T>(error: unknown): PartnerCommerceStoreResult<T> {
   const message = error instanceof Error ? error.message : "commerce_database_error";
-  if (/(conflict|not_|mismatch|precedes|already|eligible|owned|ready|idempotency|transition|live_payment)/.test(message)) {
+  if (/(conflict|not_|mismatch|precedes|already|eligible|owned|ready|idempotency|transition|live_payment|verification_missing)/.test(message)) {
     return { status: "conflict", reason: "Commercial workflow state changed or does not satisfy the requested transition." };
   }
   return { status: "unavailable", reason: "MMS commercial workflow database operation is unavailable." };
@@ -150,6 +150,22 @@ export function postgresPartnerCommerceStore(client: MmsCommercialDatabaseClient
         const record = await loadRecord(client, params.applicationId);
         if (!record?.payment || record.payment.paymentId !== row.public_payment_id) {
           return { status:"conflict", reason:"Recorded payment could not be reloaded." };
+        }
+        return { status:"ok", value:{ record, replayed:Boolean(row.replayed) } };
+      } catch(error) { return failure(error); }
+    },
+
+    async prepareMembership(params) {
+      try {
+        const result = await client.query<{ public_membership_id:string; replayed:boolean }>(
+          "select public_membership_id,replayed from mms_commercial.prepare_membership($1,$2,$3,$4)",
+          [params.applicationId,params.memberReference,params.preparedBy,params.preparedAt],
+        );
+        const row = result.rows[0];
+        if (!row) return { status:"conflict", reason:"Membership preparation did not return a durable membership ID." };
+        const record = await loadRecord(client, params.applicationId);
+        if (!record?.membership || record.membership.membershipId !== row.public_membership_id) {
+          return { status:"conflict", reason:"Prepared membership could not be reloaded." };
         }
         return { status:"ok", value:{ record, replayed:Boolean(row.replayed) } };
       } catch(error) { return failure(error); }

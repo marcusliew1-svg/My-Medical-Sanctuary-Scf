@@ -64,6 +64,18 @@ export type PaymentSubmissionResult = {
   replayed: boolean;
 };
 
+export type MembershipPreparationInput = {
+  applicationId: string;
+  memberReference: string;
+  preparedBy: string;
+  preparedAt: string;
+};
+
+export type MembershipPreparationResult = {
+  record: PartnerCommerceRecord;
+  replayed: boolean;
+};
+
 export type PartnerCommerceStoreResult<T> =
   | { status: "ok"; value: T }
   | { status: "unavailable"; reason: string }
@@ -74,6 +86,7 @@ export type PartnerCommerceStore = {
   submitPartnerApplication(params: PartnerApplicationSubmission): Promise<PartnerCommerceStoreResult<PartnerApplicationSubmissionResult>>;
   transitionApplication(params: ApplicationTransitionInput): Promise<PartnerCommerceStoreResult<ApplicationTransitionResult>>;
   recordPaymentSubmission(params: PaymentSubmissionInput): Promise<PartnerCommerceStoreResult<PaymentSubmissionResult>>;
+  prepareMembership(params: MembershipPreparationInput): Promise<PartnerCommerceStoreResult<MembershipPreparationResult>>;
   getApplication(applicationId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord | null>>;
   listApplicationsByPartner(partnerId: string): Promise<PartnerCommerceStoreResult<PartnerCommerceRecord[]>>;
   savePaymentVerification(params: {
@@ -97,6 +110,7 @@ export const PARTNER_COMMERCE_STORE_REQUIREMENTS = Object.freeze([
   "Application review transitions must use an explicit expected state and append an immutable workflow event.",
   "A lead may not have two simultaneous non-terminal commercial applications.",
   "Payment submission must be server-side, idempotent, tied to a Payment Pending application and append an immutable workflow event.",
+  "Pending membership preparation must be server-side, idempotent and allowed only after Finance-cleared payment evidence exists.",
   "Partner-facing commerce reads must be scoped by the authenticated permanent MMS Partner ID and must never expose another Partner's applications.",
   "Payment clearance evidence may only be written by the Finance-authorized service path.",
   "Application Paid and Payment Cleared must be persisted atomically from the same Finance verification.",
@@ -127,6 +141,7 @@ export function partnerCommerceStore(): PartnerCommerceStore {
     async submitPartnerApplication() { return unavailable(); },
     async transitionApplication() { return unavailable(); },
     async recordPaymentSubmission() { return unavailable(); },
+    async prepareMembership() { return unavailable(); },
     async getApplication() { return unavailable(); },
     async listApplicationsByPartner() { return unavailable(); },
     async savePaymentVerification() { return unavailable(); },
