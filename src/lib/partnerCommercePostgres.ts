@@ -2,6 +2,7 @@ import type { MmsCommercialDatabaseClient } from "@/lib/mmsCommercialDatabaseCli
 import type { PartnerCommerceRecord, PartnerCommerceStore, PartnerCommerceStoreResult } from "@/lib/partnerCommerceStore";
 import type { CommercialApplication, CommercialMembership, CommercialPayment } from "@/lib/partnerCommercialModel";
 import type { CommercialWorkflowEvent, MembershipActivationEvidence, PaymentVerificationEvidence } from "@/lib/partnerCommerceWorkflow";
+import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 function iso(value: unknown): string {
   if (value instanceof Date) return value.toISOString();
@@ -71,6 +72,28 @@ export function postgresPartnerCommerceStore(client: MmsCommercialDatabaseClient
       } catch(error){ return failure(error); }
     },
     async getApplication(applicationId){ try{return {status:"ok",value:await loadRecord(client,applicationId)}}catch(error){return failure(error)} },
+    async listApplicationsByPartner(partnerIdValue) {
+      try {
+        const partnerId = normalisePartnerId(partnerIdValue);
+        if (!partnerId) return { status: "conflict", reason: "A valid permanent MMS Partner ID is required." };
+        const ids = await client.query<{ public_application_id: string }>(
+          `select a.public_application_id
+             from mms_commercial.applications a
+             join mms_commercial.partners p on p.id = a.partner_id
+            where upper(p.partner_code) = upper($1)
+            order by coalesce(a.activated_at,a.approved_at,a.submitted_at,a.created_at) desc, a.created_at desc`,
+          [partnerId],
+        );
+        const records: PartnerCommerceRecord[] = [];
+        for (const row of ids.rows) {
+          const record = await loadRecord(client, row.public_application_id);
+          if (record && normalisePartnerId(record.application.partnerId) === partnerId) records.push(record);
+        }
+        return { status: "ok", value: records };
+      } catch (error) {
+        return failure(error);
+      }
+    },
     async savePaymentVerification({application,payment,evidence}) {
       try {
         await client.query("select mms_commercial.finance_verify_payment($1,$2,$3,$4,$5,$6,$7,$8)",[application.applicationId,payment.paymentId,evidence.verifiedBy,evidence.verifiedAt,evidence.clearedAmountMinorUnits,evidence.currency,evidence.source,evidence.sourceReference]);
