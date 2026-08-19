@@ -42,7 +42,7 @@ function validTimestamp(value: string): boolean {
 export function validateSalesPartnerTrainingEvidence(
   evidence: SalesPartnerTrainingEvidence | undefined,
 ): SalesPartnerTrainingValidation {
-  const requiredIds = SALES_PARTNER_CORE_MODULES.map((module) => module.id);
+  const requiredIds = SALES_PARTNER_CORE_MODULES.map((trainingModule) => trainingModule.id);
   if (!evidence || evidence.bundleVersion !== SALES_PARTNER_CORE_TRAINING_VERSION || !Array.isArray(evidence.modules)) {
     return { complete: false, missingModuleIds: requiredIds, invalidModuleIds: [] };
   }
@@ -50,22 +50,22 @@ export function validateSalesPartnerTrainingEvidence(
   const byId = new Map<SalesPartnerTrainingModuleId, SalesPartnerTrainingModuleEvidence>();
   const invalidModuleIds = new Set<SalesPartnerTrainingModuleId>();
 
-  for (const module of evidence.modules) {
-    if (!requiredIds.includes(module.moduleId)) continue;
-    if (byId.has(module.moduleId)) {
-      invalidModuleIds.add(module.moduleId);
+  for (const trainingModule of evidence.modules) {
+    if (!requiredIds.includes(trainingModule.moduleId)) continue;
+    if (byId.has(trainingModule.moduleId)) {
+      invalidModuleIds.add(trainingModule.moduleId);
       continue;
     }
-    byId.set(module.moduleId, module);
+    byId.set(trainingModule.moduleId, trainingModule);
 
     if (
-      module.version !== SALES_PARTNER_CORE_TRAINING_VERSION ||
-      !validTimestamp(module.completedAt) ||
-      !validTimestamp(module.acknowledgedAt) ||
-      module.refreshRequired ||
-      module.passed === false
+      trainingModule.version !== SALES_PARTNER_CORE_TRAINING_VERSION ||
+      !validTimestamp(trainingModule.completedAt) ||
+      !validTimestamp(trainingModule.acknowledgedAt) ||
+      trainingModule.refreshRequired ||
+      trainingModule.passed === false
     ) {
-      invalidModuleIds.add(module.moduleId);
+      invalidModuleIds.add(trainingModule.moduleId);
     }
   }
 
