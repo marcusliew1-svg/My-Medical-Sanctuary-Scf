@@ -1,5 +1,5 @@
 -- MMS commission-state transactional QA.
--- NON-PRODUCTION ONLY. Apply migrations through 0013 first.
+-- NON-PRODUCTION ONLY. Apply migrations through 0014 first.
 -- This script validates the persisted commission state machine and rolls back all synthetic rows.
 
 begin;
@@ -84,8 +84,28 @@ select mms_commercial.transition_commission(
   null,null,null,null
 );
 
+-- Held commission must be released before approval.
+do $$
+begin
+  begin
+    perform mms_commercial.transition_commission(
+      'MMSC-QA-STATE-0001','Held','Approved','qa-finance-approver',now()-interval '17 hours','Invalid approval while held.',
+      88880,null,null,null
+    );
+    raise exception 'QA failure: Held commission was approved without release';
+  exception when others then
+    if position('commission_transition_not_allowed' in sqlerrm)=0 then raise; end if;
+  end;
+end;
+$$;
+
 select mms_commercial.transition_commission(
-  'MMSC-QA-STATE-0001','Held','Approved','qa-finance-approver',now()-interval '16 hours','QA hold cleared and payout approved.',
+  'MMSC-QA-STATE-0001','Held','Eligible','qa-finance',now()-interval '16 hours','QA hold released.',
+  null,null,null,null
+);
+
+select mms_commercial.transition_commission(
+  'MMSC-QA-STATE-0001','Eligible','Approved','qa-finance-approver',now()-interval '15 hours','QA payout approved after hold release.',
   88880,null,null,null
 );
 
@@ -114,7 +134,6 @@ select mms_commercial.transition_commission(
   null,null,null,88880
 );
 
--- Final state and immutable-event assertions.
 do $$
 declare
   v_status text;
@@ -140,7 +159,7 @@ begin
   if v_batch <> 'QA-BATCH-0001' or v_payout <> 'QA-PAYOUT-0001' then
     raise exception 'QA failure: payout evidence not retained';
   end if;
-  if v_events <> 4 then raise exception 'QA failure: commission event count %',v_events; end if;
+  if v_events <> 5 then raise exception 'QA failure: commission event count %',v_events; end if;
 end;
 $$;
 

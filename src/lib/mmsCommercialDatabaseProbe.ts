@@ -18,6 +18,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0011_mms_lead_ownership_transfer.sql",
   "0012_mms_lead_duplicate_review_gate.sql",
   "0013_mms_partner_lead_lifecycle.sql",
+  "0014_mms_commission_transition_policy_alignment.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
