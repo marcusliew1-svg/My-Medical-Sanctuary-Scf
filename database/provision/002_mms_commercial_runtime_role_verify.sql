@@ -23,10 +23,10 @@ select
 select p.proname,has_function_privilege('mms_commercial_app',p.oid,'EXECUTE') as runtime_can_execute
 from pg_proc p join pg_namespace n on n.oid=p.pronamespace
 where n.nspname='mms_commercial' and p.proname in (
-  'allocate_partner_code','issue_partner_code_for_crm_record','register_partner_lead',
-  'review_lead_duplicate_status','transfer_lead_ownership','submit_partner_application',
-  'transition_application','record_payment_submission','finance_verify_payment',
-  'prepare_membership','activate_membership','create_eligible_commission',
+  'allocate_partner_code','issue_partner_code_for_crm_record','register_partner_lead','transfer_lead_ownership',
+  'review_lead_duplicate_status','transition_partner_lead_stage',
+  'submit_partner_application','transition_application','record_payment_submission',
+  'finance_verify_payment','prepare_membership','activate_membership','create_eligible_commission',
   'cancel_membership_and_reverse_commission','transition_commission'
 ) order by p.proname;
 

@@ -4,6 +4,7 @@ export type PartnerHubCapability =
   | "VIEW_DASHBOARD"
   | "VIEW_LEADS"
   | "REGISTER_LEAD"
+  | "UPDATE_LEAD_STAGE"
   | "CREATE_APPLICATION"
   | "VIEW_MEMBERSHIP_COMMERCIAL_STATUS"
   | "VIEW_COMMISSION_WALLET"
@@ -32,7 +33,7 @@ export function partnerHubCapabilities(state: PartnerHubAccessState): PartnerHub
   }
 
   if (state.stage === "Active" && state.sellingEnabled && state.certificationCurrent && state.crmAccessEnabled) {
-    capabilities.push("REGISTER_LEAD", "CREATE_APPLICATION", "SHARE_REFERRAL_LINK");
+    capabilities.push("REGISTER_LEAD", "UPDATE_LEAD_STAGE", "CREATE_APPLICATION", "SHARE_REFERRAL_LINK");
   }
 
   return capabilities;
@@ -43,5 +44,5 @@ export function canUsePartnerHubCapability(state: PartnerHubAccessState, capabil
 }
 
 // Suspended and Inactive Partners retain read-only commercial visibility where appropriate,
-// but cannot register new leads, submit applications, or share an active referral link.
+// but cannot register or advance leads, submit applications, or share an active referral link.
 // Clinical/member medical data is never a Partner Hub capability.
