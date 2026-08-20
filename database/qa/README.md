@@ -14,4 +14,6 @@ After migrations through `0016_mms_lead_ownership_certification_time.sql` are ap
 
 After migrations through `0017_mms_partner_lead_registration_eligibility.sql` are applied, run `008_partner_lead_registration_eligibility_transactional.sql`. It verifies that future-issued certification and disabled CRM access both block Partner lead registration, then confirms a valid Active/selling/CRM-enabled/current-certified Partner can register exactly one lead and that an exact idempotency replay returns the same lead without duplication. The script ends with `ROLLBACK`.
 
+After migrations through `0018_mms_partner_application_evidence_hardening.sql` are applied, run `009_partner_application_evidence_transactional.sql`. It verifies that application submission independently rejects a non-Clear lead, missing Partner agreement acceptance and missing compliance acknowledgement, then confirms a fully evidenced submission succeeds and exact idempotency replay returns the same application. The script ends with `ROLLBACK`.
+
 Never apply persistent QA fixtures to production. The transactional control tests are also intended for non-production validation only. All QA files create or exercise synthetic commercial Partner/lead data and must never be used in a patient/clinical database or any iPivot database.
