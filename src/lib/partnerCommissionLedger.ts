@@ -169,7 +169,7 @@ export function holdCommissionTransaction(params: {
   reason: string;
 }): { transaction: CommissionTransaction; event: CommissionLedgerEvent } {
   const { transaction } = params;
-  if (!["Eligible", "Approved"].includes(transaction.status)) throw new Error("Only Eligible or Approved commission can be placed on hold.");
+  if (transaction.status !== "Eligible") throw new Error("Only Eligible commission can be placed on hold.");
   const actor = requireActor(params.actor, "actor");
   requireTimestamp(params.occurredAt, "occurredAt");
   if (!params.reason.trim()) throw new Error("Commission hold reason is required.");
@@ -273,7 +273,6 @@ export function reverseCommissionForCancellation(params: {
     transaction: {
       ...params.transaction,
       status: "Reversed",
-      approvedCommissionMinorUnits: 0,
       reversedAt: params.occurredAt,
       reversalReason: params.reason.trim(),
       clawbackMinorUnits: clawback,
