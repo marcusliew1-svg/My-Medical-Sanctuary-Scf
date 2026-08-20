@@ -24,6 +24,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0017_mms_partner_lead_registration_eligibility.sql",
   "0018_mms_partner_application_evidence_hardening.sql",
   "0019_mms_finance_temporal_evidence_hardening.sql",
+  "0020_mms_commission_hold_release_evidence_hardening.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([

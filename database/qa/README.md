@@ -18,4 +18,6 @@ After migrations through `0018_mms_partner_application_evidence_hardening.sql` a
 
 After migrations through `0019_mms_finance_temporal_evidence_hardening.sql` are applied, run `010_finance_temporal_evidence_transactional.sql`. It verifies that Finance clearance cannot pre-date the persisted payment submission, materially future verification/activation evidence is rejected, activation cannot pre-date Finance clearance, and exact valid verification/activation retries remain idempotent. The script ends with `ROLLBACK`.
 
+After migrations through `0020_mms_commission_hold_release_evidence_hardening.sql` are applied, run `011_commission_hold_release_evidence_transactional.sql`. It verifies that a Finance hold persists its reason, release clears the hold reason, exact hold/release retries do not duplicate immutable events, and conflicting release replay evidence is rejected. The script ends with `ROLLBACK`.
+
 Never apply persistent QA fixtures to production. The transactional control tests are also intended for non-production validation only. All QA files create or exercise synthetic commercial Partner/lead data and must never be used in a patient/clinical database or any iPivot database.
