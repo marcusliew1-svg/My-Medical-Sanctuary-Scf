@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
       status: "ok",
       partnerId: result.value.partnerId,
       commissions: result.value.commissions,
+      recentTransactions: result.value.recentTransactions,
       generatedAt: result.value.generatedAt,
       note: "Commercial commission status only. Approved and Paid values are Finance-controlled and read-only.",
     },

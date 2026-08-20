@@ -14,17 +14,40 @@ type CommissionSummary = {
   clawbackMinorUnits: number;
 };
 
+type RecentCommissionTransaction = {
+  transactionId: string;
+  membershipCode: string;
+  currency: string;
+  status: string;
+  amountMinorUnits: number;
+  clawbackMinorUnits: number;
+  createdAt: string;
+};
+
 type WalletResponse = {
   status: string;
   message?: string;
   partnerId?: string;
   commissions?: CommissionSummary[];
+  recentTransactions?: RecentCommissionTransaction[];
   generatedAt?: string;
   note?: string;
 };
 
 function money(value: number, currency: string): string {
   return new Intl.NumberFormat("en-MY", { style: "currency", currency }).format(value / 100);
+}
+
+function displayDate(value: string): string {
+  const timestamp = Date.parse(value);
+  if (Number.isNaN(timestamp)) return "—";
+  return new Intl.DateTimeFormat("en-MY", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(timestamp));
 }
 
 export function PartnerHubCommissionWalletClient() {
@@ -107,6 +130,30 @@ export function PartnerHubCommissionWalletClient() {
 
             {(response.commissions || []).length === 0 ? (
               <p className="mt-6 rounded-2xl border border-stone-200 bg-white p-6 text-sm text-stone-500">No commission transactions yet.</p>
+            ) : null}
+
+            {(response.recentTransactions || []).length > 0 ? (
+              <section className="mt-8 rounded-3xl border border-stone-200 bg-white p-6 shadow-sm md:p-8">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-400">Recent activity</p>
+                  <h2 className="mt-2 text-2xl font-semibold text-stone-900">Commission transactions</h2>
+                  <p className="mt-2 text-sm text-stone-500">Latest 50 commercial ledger entries. Member identity, payout references and Finance operator details are not shown.</p>
+                </div>
+                <div className="mt-6 space-y-3">
+                  {(response.recentTransactions || []).map((transaction) => (
+                    <div key={transaction.transactionId} className="rounded-2xl border border-stone-100 bg-stone-50 p-4 sm:flex sm:items-center sm:justify-between sm:gap-6">
+                      <div>
+                        <p className="text-sm font-semibold text-stone-900">{transaction.membershipCode}</p>
+                        <p className="mt-1 text-xs text-stone-500">{transaction.transactionId} · {displayDate(transaction.createdAt)}</p>
+                      </div>
+                      <div className="mt-3 text-left sm:mt-0 sm:text-right">
+                        <p className="text-sm font-semibold text-stone-900">{money(transaction.amountMinorUnits, transaction.currency)}</p>
+                        <p className="mt-1 text-xs text-stone-500">{transaction.status}{transaction.clawbackMinorUnits > 0 ? ` · clawback ${money(transaction.clawbackMinorUnits, transaction.currency)}` : ""}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
             ) : null}
 
             <p className="mt-6 text-xs leading-5 text-stone-400">{response.note}</p>

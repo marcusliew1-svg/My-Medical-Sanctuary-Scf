@@ -108,7 +108,14 @@ function amountForStatus(transaction: CommissionTransaction, status: CommissionT
   if (status === "Pending Eligibility") return Math.max(0, transaction.grossCommissionMinorUnits);
   if (status === "Eligible" || status === "Held") return Math.max(0, transaction.grossCommissionMinorUnits + transaction.adjustmentMinorUnits);
   if (status === "Approved" || status === "Paid") return Math.max(0, transaction.approvedCommissionMinorUnits);
-  if (status === "Reversed") return Math.max(0, transaction.grossCommissionMinorUnits);
+  if (status === "Reversed") {
+    return Math.max(
+      0,
+      transaction.approvedCommissionMinorUnits > 0
+        ? transaction.approvedCommissionMinorUnits
+        : transaction.grossCommissionMinorUnits + transaction.adjustmentMinorUnits,
+    );
+  }
   return 0;
 }
 

@@ -1,10 +1,23 @@
 import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable } from "@/lib/mmsCommercialDatabaseClient";
 import type { PartnerHubCommissionSummary } from "@/lib/partnerHubDashboard";
+import type { CommissionTransactionStatus } from "@/lib/partnerCommissionLedger";
+import type { CommercialMembership } from "@/lib/partnerCommercialModel";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
+
+export type PartnerCommissionWalletTransaction = {
+  transactionId: string;
+  membershipCode: CommercialMembership["membershipCode"];
+  currency: string;
+  status: CommissionTransactionStatus;
+  amountMinorUnits: number;
+  clawbackMinorUnits: number;
+  createdAt: string;
+};
 
 export type PartnerCommissionWallet = {
   partnerId: string;
   commissions: PartnerHubCommissionSummary[];
+  recentTransactions: PartnerCommissionWalletTransaction[];
   generatedAt: string;
 };
 
@@ -19,6 +32,13 @@ function minorUnits(value: unknown): number {
     throw new Error("Commission aggregate is outside the supported minor-unit range.");
   }
   return parsed;
+}
+
+function iso(value: unknown): string {
+  if (value instanceof Date) return value.toISOString();
+  const date = new Date(String(value));
+  if (Number.isNaN(date.getTime())) throw new Error("Commission timestamp is invalid.");
+  return date.toISOString();
 }
 
 export async function loadPartnerCommissionWallet(partnerIdValue: string): Promise<PartnerCommissionWalletResult> {
@@ -56,12 +76,41 @@ export async function loadPartnerCommissionWallet(partnerIdValue: string): Promi
               sum(case when c.status='Held' then greatest(0,c.gross_commission_minor_units+c.adjustment_minor_units) else 0 end)::bigint as held_minor_units,
               sum(case when c.status='Approved' then greatest(0,c.approved_commission_minor_units) else 0 end)::bigint as approved_minor_units,
               sum(case when c.status='Paid' then greatest(0,c.approved_commission_minor_units) else 0 end)::bigint as paid_minor_units,
-              sum(case when c.status='Reversed' then greatest(0,c.gross_commission_minor_units) else 0 end)::bigint as reversed_minor_units,
+              sum(case when c.status='Reversed' then greatest(0,case when c.approved_commission_minor_units>0 then c.approved_commission_minor_units else c.gross_commission_minor_units+c.adjustment_minor_units end) else 0 end)::bigint as reversed_minor_units,
               sum(greatest(0,coalesce(c.clawback_minor_units,0)))::bigint as clawback_minor_units
          from mms_commercial.commission_transactions c
         where c.partner_id=$1::uuid
         group by upper(c.currency)
         order by upper(c.currency)`,
+      [row.id],
+    );
+
+    const recent = await client.query<{
+      public_transaction_id: string;
+      membership_code: CommercialMembership["membershipCode"];
+      currency: string;
+      status: CommissionTransactionStatus;
+      amount_minor_units: unknown;
+      clawback_minor_units: unknown;
+      created_at: unknown;
+    }>(
+      `select c.public_transaction_id,
+              c.membership_code,
+              upper(c.currency) as currency,
+              c.status,
+              greatest(0,case
+                when c.status='Pending Eligibility' then c.gross_commission_minor_units
+                when c.status in ('Eligible','Held') then c.gross_commission_minor_units+c.adjustment_minor_units
+                when c.status in ('Approved','Paid') then c.approved_commission_minor_units
+                when c.status='Reversed' and c.approved_commission_minor_units>0 then c.approved_commission_minor_units
+                when c.status='Reversed' then c.gross_commission_minor_units+c.adjustment_minor_units
+                else 0 end)::bigint as amount_minor_units,
+              greatest(0,coalesce(c.clawback_minor_units,0))::bigint as clawback_minor_units,
+              c.created_at
+         from mms_commercial.commission_transactions c
+        where c.partner_id=$1::uuid
+        order by c.created_at desc, c.public_transaction_id desc
+        limit 50`,
       [row.id],
     );
 
@@ -80,15 +129,29 @@ export async function loadPartnerCommissionWallet(partnerIdValue: string): Promi
       };
     });
 
+    const recentTransactions: PartnerCommissionWalletTransaction[] = recent.rows.map((transaction) => {
+      const currency = String(transaction.currency || "").trim().toUpperCase();
+      if (!/^[A-Z]{3}$/.test(currency)) throw new Error("Commission transaction currency is invalid.");
+      return {
+        transactionId: transaction.public_transaction_id,
+        membershipCode: transaction.membership_code,
+        currency,
+        status: transaction.status,
+        amountMinorUnits: minorUnits(transaction.amount_minor_units),
+        clawbackMinorUnits: minorUnits(transaction.clawback_minor_units),
+        createdAt: iso(transaction.created_at),
+      };
+    });
+
     return {
       status: "ok",
-      value: { partnerId, commissions, generatedAt: new Date().toISOString() },
+      value: { partnerId, commissions, recentTransactions, generatedAt: new Date().toISOString() },
     };
   } catch {
     return { status: "unavailable", reason: "Partner commission wallet database read is unavailable." };
   }
 }
 
-// Partner-facing commission wallet reads intentionally aggregate only the amounts needed for
-// the read-only wallet. Payment references, Finance actors, payout references and other
-// internal ledger metadata are not selected into the Partner-facing request path.
+// Partner-facing commission wallet reads intentionally expose only aggregate totals and a
+// limited commercial transaction history. Payment references, Finance actors, payout references,
+// member references and other internal ledger metadata are not selected into the Partner-facing path.
