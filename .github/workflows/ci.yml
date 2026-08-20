@@ -19,8 +19,29 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Generate PostgreSQL runtime lock candidate
+        run: |
+          rm -rf /tmp/mms-pg-lock
+          mkdir -p /tmp/mms-pg-lock
+          cp package.json package-lock.json /tmp/mms-pg-lock/
+          cd /tmp/mms-pg-lock
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --save-exact pg@8.23.0
+
+      - name: Upload PostgreSQL runtime lock candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: mms-pg-runtime-lock-candidate
+          path: |
+            /tmp/mms-pg-lock/package.json
+            /tmp/mms-pg-lock/package-lock.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Validate generated lock candidate
+        run: |
+          cp /tmp/mms-pg-lock/package.json package.json
+          cp /tmp/mms-pg-lock/package-lock.json package-lock.json
+          npm ci
 
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
