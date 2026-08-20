@@ -68,8 +68,15 @@ export const MEMBERSHIP_STAGE_TRANSITIONS: Readonly<Record<MembershipStage, read
   Expired: [],
 };
 
+const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000;
+
 function requireTimestamp(value: string, field: string): void {
   if (!value || Number.isNaN(Date.parse(value))) throw new Error(`${field} must be a valid timestamp.`);
+}
+
+function requireNotMateriallyFutureTimestamp(value: string, field: string, now = Date.now()): void {
+  requireTimestamp(value, field);
+  if (Date.parse(value) > now + MAX_CLOCK_SKEW_MS) throw new Error(`${field} cannot be materially in the future.`);
 }
 
 function requireActor(value: string, field = "actor"): void {
@@ -112,7 +119,13 @@ export function validatePaymentVerificationEvidence(
     throw new Error("Payment verification transaction reference does not match the payment record.");
   }
   requireActor(evidence.verifiedBy, "verifiedBy");
-  requireTimestamp(evidence.verifiedAt, "verifiedAt");
+  requireNotMateriallyFutureTimestamp(evidence.verifiedAt, "verifiedAt");
+  if (payment.submittedAt) {
+    requireTimestamp(payment.submittedAt, "payment.submittedAt");
+    if (Date.parse(evidence.verifiedAt) < Date.parse(payment.submittedAt)) {
+      throw new Error("Payment verification cannot precede payment submission.");
+    }
+  }
   if (!Number.isInteger(evidence.clearedAmountMinorUnits) || evidence.clearedAmountMinorUnits <= 0) {
     throw new Error("Cleared amount must be a positive integer in minor currency units.");
   }
@@ -193,8 +206,8 @@ export function assertMembershipActivationReady(params: {
     throw new Error("Membership activation evidence references do not match the commercial records.");
   }
   requireActor(evidence.activatedBy, "activatedBy");
-  requireTimestamp(evidence.activatedAt, "activatedAt");
-  requireTimestamp(evidence.financeVerifiedAt, "financeVerifiedAt");
+  requireNotMateriallyFutureTimestamp(evidence.activatedAt, "activatedAt");
+  requireNotMateriallyFutureTimestamp(evidence.financeVerifiedAt, "financeVerifiedAt");
   if (Date.parse(evidence.financeVerifiedAt) !== Date.parse(payment.clearedAt)) {
     throw new Error("Membership activation must retain the exact Finance verification timestamp.");
   }
