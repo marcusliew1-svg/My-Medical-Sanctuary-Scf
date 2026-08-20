@@ -1,8 +1,5 @@
 name: CI
 
-permissions:
-  contents: write
-
 on:
   pull_request:
   push:
@@ -22,19 +19,8 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Generate PostgreSQL runtime lock candidate
-        run: |
-          rm -rf /tmp/mms-pg-lock
-          mkdir -p /tmp/mms-pg-lock
-          cp package.json package-lock.json /tmp/mms-pg-lock/
-          cd /tmp/mms-pg-lock
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --save-exact pg@8.23.0
-
-      - name: Validate generated lock candidate
-        run: |
-          cp /tmp/mms-pg-lock/package.json package.json
-          cp /tmp/mms-pg-lock/package-lock.json package-lock.json
-          npm ci
+      - name: Install dependencies
+        run: npm ci
 
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
@@ -44,58 +30,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Promote validated PostgreSQL runtime lock
-        if: github.event_name == 'pull_request' && github.head_ref == 'commerce-recruitment-foundation'
-        env:
-          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          HEAD_REF_NAME: ${{ github.head_ref }}
-        run: |
-          git fetch origin "$HEAD_REF_NAME"
-          CURRENT_REMOTE_SHA="$(git rev-parse "origin/$HEAD_REF_NAME")"
-          if [ "$CURRENT_REMOTE_SHA" != "$EXPECTED_HEAD_SHA" ]; then
-            echo "Branch advanced during validation; refusing automatic promotion."
-            exit 1
-          fi
-          git checkout -B promote "$CURRENT_REMOTE_SHA"
-          cp /tmp/mms-pg-lock/package.json package.json
-          cp /tmp/mms-pg-lock/package-lock.json package-lock.json
-          cat > .github/workflows/ci.yml <<'EOF'
-          name: CI
-
-          on:
-            pull_request:
-            push:
-              branches:
-                - main
-
-          jobs:
-            build:
-              runs-on: ubuntu-latest
-              steps:
-                - name: Checkout
-                  uses: actions/checkout@v4
-
-                - name: Setup Node
-                  uses: actions/setup-node@v4
-                  with:
-                    node-version: 22
-                    cache: npm
-
-                - name: Install dependencies
-                  run: npm ci
-
-                - name: Typecheck
-                  run: npx tsc --noEmit --pretty false
-
-                - name: Lint
-                  run: npm run lint
-
-                - name: Build
-                  run: npm run build
-          EOF
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json .github/workflows/ci.yml
-          git commit -m "Install PostgreSQL runtime dependency"
-          git push origin HEAD:"$HEAD_REF_NAME"
