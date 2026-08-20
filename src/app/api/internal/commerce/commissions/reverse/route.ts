@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         status: "already_reversed",
         transactionId,
-        approvedCommissionMinorUnits: 0,
+        approvedCommissionMinorUnits: existing.transaction.approvedCommissionMinorUnits,
         clawbackMinorUnits: existing.transaction.clawbackMinorUnits || 0,
         currency: existing.transaction.currency,
         reversedAt: existing.transaction.reversedAt,
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       status: "reversed",
       transactionId,
-      approvedCommissionMinorUnits: 0,
+      approvedCommissionMinorUnits: saved.value.transaction.approvedCommissionMinorUnits,
       clawbackMinorUnits: saved.value.transaction.clawbackMinorUnits || 0,
       currency: saved.value.transaction.currency,
       reversedAt: saved.value.transaction.reversedAt,
