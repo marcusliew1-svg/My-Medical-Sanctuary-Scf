@@ -16,6 +16,7 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0009_mms_commission_eligibility_creation.sql",
   "0010_mms_membership_cancellation_and_commission_reversal.sql",
   "0011_mms_lead_ownership_transfer.sql",
+  "0012_mms_lead_duplicate_review_gate.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
@@ -23,7 +24,7 @@ export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
-  "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","transfer_lead_ownership","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","create_eligible_commission","cancel_membership_and_reverse_commission","transition_commission",
+  "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","review_lead_duplicate_status","transfer_lead_ownership","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","create_eligible_commission","cancel_membership_and_reverse_commission","transition_commission",
 ]);
 
 export type MmsCommercialDatabaseProbe = {
