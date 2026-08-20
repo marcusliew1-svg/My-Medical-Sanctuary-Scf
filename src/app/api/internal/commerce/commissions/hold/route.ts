@@ -82,6 +82,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "held", transactionId, heldAt: occurredAt, reason });
   }
 
+  if (current.status === "Eligible") {
+    const latestRelease = [...existingResult.value.events].reverse().find(
+      (event) => event.previousStatus === "Held" && event.nextStatus === "Eligible",
+    );
+    if (latestRelease?.actor === actor && latestRelease.reason === reason) {
+      return NextResponse.json({
+        status: "already_released",
+        transactionId,
+        releasedAt: latestRelease.occurredAt,
+        reason: latestRelease.reason,
+      });
+    }
+    if (latestRelease) {
+      return NextResponse.json({ status: "conflict", message: "Commission was already released under different evidence." }, { status: 409 });
+    }
+    return NextResponse.json({ status: "invalid_state", message: "Only Held commission can be released back to Eligible." }, { status: 409 });
+  }
+
   if (current.status !== "Held") {
     return NextResponse.json({ status: "invalid_state", message: "Only Held commission can be released back to Eligible." }, { status: 409 });
   }
