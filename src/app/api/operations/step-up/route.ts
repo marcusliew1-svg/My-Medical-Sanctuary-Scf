@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { MMS_OPERATOR_SESSION_COOKIE, authenticateOperatorRequest } from "@/lib/operatorSecurity";
 import {
   MMS_OPERATOR_ACCESS_TOKEN_COOKIE,
-  MMS_OPERATOR_REFRESH_TOKEN_COOKIE,
   getOperatorIdentityUser,
   issueOperatorSession,
   operatorIdentityCookieOptions,
@@ -33,7 +32,7 @@ export async function POST(request: NextRequest) {
   if (!currentUser?.email || currentUser.id !== auth.claims.subject) return redirectWithError(request, next, "session_required");
 
   const identity = await signInOperatorIdentity(currentUser.email, password);
-  if (!identity?.user || identity.user.id !== currentUser.id || !identity.access_token || !identity.refresh_token) {
+  if (!identity?.user || identity.user.id !== currentUser.id || !identity.access_token) {
     return redirectWithError(request, next, "invalid_credentials");
   }
 
@@ -42,8 +41,7 @@ export async function POST(request: NextRequest) {
 
   const response = NextResponse.redirect(new URL(next, request.url), 303);
   response.cookies.set(MMS_OPERATOR_SESSION_COOKIE, issued.token, operatorIdentityCookieOptions(issued.maxAge));
-  response.cookies.set(MMS_OPERATOR_ACCESS_TOKEN_COOKIE, identity.access_token, operatorIdentityCookieOptions(Math.max(60, identity.expires_in || 3600)));
-  response.cookies.set(MMS_OPERATOR_REFRESH_TOKEN_COOKIE, identity.refresh_token, operatorIdentityCookieOptions(60 * 60 * 24 * 30));
+  response.cookies.set(MMS_OPERATOR_ACCESS_TOKEN_COOKIE, identity.access_token, operatorIdentityCookieOptions(Math.min(issued.maxAge, Math.max(60, identity.expires_in || issued.maxAge))));
   response.headers.set("Cache-Control", "private, no-store, max-age=0");
   response.headers.set("Pragma", "no-cache");
   return response;
