@@ -14,11 +14,12 @@ This layer secures internal commercial mutations for My Medical Sanctuary. It is
 - Operator identity and audit timestamps are derived by the server and are never accepted from JSON request bodies.
 - Every protected operator request verifies both the signed `mms_operator_session` cookie and the backing Supabase operator identity/access token. A removed operator identity, removed operator metadata or changed role set fails closed and requires a fresh sign-in.
 - Operator authorization sessions are short-lived. `MMS_OPERATOR_SESSION_MAX_AGE_SECONDS` defaults to 900 seconds and is capped at 3600 seconds.
+- No long-lived operator refresh-token cookie is stored. When the short operator session expires, the operator signs in again.
 - Same-origin mutation checks require the request `Origin` to match `MMS_SITE_URL`; cross-site fetches are rejected.
 - Finance-sensitive actions require recent password step-up. The default maximum age is 600 seconds.
 - Step-up re-authenticates the same Supabase operator identity and issues a new signed operator session containing a server-derived `stepUpAt` timestamp.
 - Session tokens are HMAC-SHA256 authenticated with `MMS_OPERATOR_SESSION_SECRET`; the secret must remain server-side and be at least 32 characters.
-- Operator logout calls Supabase Auth logout and clears the operator session, access-token and refresh-token cookies.
+- Operator logout calls Supabase Auth logout and clears the operator session and short-lived access-token cookies.
 - `MMS_INTERNAL_API_TOKEN` and `MMS_FINANCE_API_TOKEN` remain for controlled service/diagnostic compatibility only. The converted browser-facing mutation routes no longer use them.
 
 ## Operator identity setup
