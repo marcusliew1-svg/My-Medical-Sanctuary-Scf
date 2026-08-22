@@ -9,6 +9,7 @@ export default function PartnerLoginPage({
   const next = safeRelativeNext(searchParams?.next);
   const hasError = searchParams?.error === "invalid_credentials";
   const unavailable = searchParams?.error === "auth_unavailable";
+  const notAuthorized = searchParams?.error === "not_authorized";
 
   return (
     <main className="min-h-screen bg-stone-50 px-4 py-16">
@@ -22,6 +23,11 @@ export default function PartnerLoginPage({
         {hasError ? (
           <div className="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
             The email or password was not accepted.
+          </div>
+        ) : null}
+        {notAuthorized ? (
+          <div className="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            This account is not linked to an authorised MMS Partner profile.
           </div>
         ) : null}
         {unavailable ? (
