@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { Inter, Playfair_Display } from "next/font/google";
 import { FooterV01 } from "@/components/FooterV01";
 import { Navbar } from "@/components/Navbar";
@@ -55,12 +54,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const requestHeaders = await headers();
-  const locale = requestHeaders.get("x-mms-document-locale") || "en";
-
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang={locale}>
+    <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         <Navbar />
         {children}
