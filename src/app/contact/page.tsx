@@ -6,7 +6,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 export const metadata: Metadata = {
   title: "Contact / Discovery Form",
   description:
-    "Contact My Medical Sanctuary to start a discovery discussion for membership, wellness coordination or corporate executive wellness.",
+    "My Medical Sanctuary is preparing its secure online discovery enquiry pathway for membership, wellness coordination and corporate executive wellness.",
 };
 
 export default function ContactPage() {
@@ -15,19 +15,19 @@ export default function ContactPage() {
       <Hero
         eyebrow="Contact / Discovery Form"
         title="Start with a discovery discussion."
-        subtitle="Share your context and the MMS team can guide the next appropriate step for your structured wellness journey."
+        subtitle="MMS is preparing its secure online enquiry pathway."
         image="/mms-about-hero.png"
       />
       <section className="bg-ivory px-4 py-20">
         <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.8fr_1.2fr]">
           <div>
             <SectionHeader
-              eyebrow="Zoho-ready later"
-              title="Discovery enquiry"
-              description="This v0.1 form logs submissions in the browser and can be connected to Zoho Forms or Zoho CRM later."
+              eyebrow="Discovery enquiry"
+              title="Start with the right next step."
+              description="Online enquiry submission is temporarily unavailable while MMS completes its secure CRM connection."
             />
             <p className="leading-8 text-warm-gray">
-              Recommended future mapping: contact details, interest, membership preference, enquiry type, consent, source page and timestamp.
+              Please do not send medical records, identity numbers or unnecessary sensitive health information through unverified channels. A verified direct contact route will be published here before online enquiry capture goes live.
             </p>
           </div>
           <ContactForm />
