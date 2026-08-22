@@ -2,10 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { MMS_PARTNER_REFERRAL_COOKIE } from "@/lib/referralTracking";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
-export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  const referral = normalisePartnerId(request.nextUrl.searchParams.get("ref"));
+function documentLocale(pathname: string): "en" | "ms" | "zh-CN" | "th" {
+  if (pathname === "/ms" || pathname.startsWith("/ms/")) return "ms";
+  if (pathname === "/zh" || pathname.startsWith("/zh/")) return "zh-CN";
+  if (pathname === "/th" || pathname.startsWith("/th/")) return "th";
+  return "en";
+}
 
+export function middleware(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-mms-document-locale", documentLocale(request.nextUrl.pathname));
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+
+  const referral = normalisePartnerId(request.nextUrl.searchParams.get("ref"));
   if (!referral) return response;
 
   response.cookies.set({
