@@ -15,6 +15,7 @@ export function MobileNav() {
     if (!open) return;
 
     const previousOverflow = document.body.style.overflow;
+    const trigger = triggerRef.current;
     document.body.style.overflow = "hidden";
 
     const panel = panelRef.current;
@@ -54,7 +55,7 @@ export function MobileNav() {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
-      triggerRef.current?.focus();
+      trigger?.focus();
     };
   }, [open]);
 
