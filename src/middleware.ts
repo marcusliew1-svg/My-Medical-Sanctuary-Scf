@@ -69,6 +69,14 @@ export async function middleware(request: NextRequest) {
     return loginRedirect(request);
   }
 
+  const partnerId = normalisePartnerId(
+    typeof user.app_metadata?.partner_id === "string" ? user.app_metadata.partner_id : null,
+  );
+  if (!partnerId) {
+    if (protectedApi) return NextResponse.json({ error: "not_authorized" }, { status: 403 });
+    return loginRedirect(request, "not_authorized");
+  }
+
   const response = NextResponse.next({ request });
   if (refreshed?.access_token && refreshed.refresh_token) {
     response.cookies.set(MMS_SUPABASE_ACCESS_COOKIE, refreshed.access_token, authCookieOptions(Math.max(60, refreshed.expires_in || 3600)));
