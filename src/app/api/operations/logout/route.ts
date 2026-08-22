@@ -1,18 +1,14 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { MMS_OPERATOR_SESSION_COOKIE } from "@/lib/operatorSecurity";
-import {
-  MMS_OPERATOR_ACCESS_TOKEN_COOKIE,
-  MMS_OPERATOR_REFRESH_TOKEN_COOKIE,
-  signOutOperatorIdentity,
-} from "@/lib/operatorIdentity";
+import { MMS_OPERATOR_ACCESS_TOKEN_COOKIE, signOutOperatorIdentity } from "@/lib/operatorIdentity";
 
 export async function POST(request: NextRequest) {
   const accessToken = request.cookies.get(MMS_OPERATOR_ACCESS_TOKEN_COOKIE)?.value || "";
   if (accessToken) await signOutOperatorIdentity(accessToken);
 
   const response = NextResponse.json({ status: "signed_out" });
-  for (const name of [MMS_OPERATOR_SESSION_COOKIE, MMS_OPERATOR_ACCESS_TOKEN_COOKIE, MMS_OPERATOR_REFRESH_TOKEN_COOKIE]) {
+  for (const name of [MMS_OPERATOR_SESSION_COOKIE, MMS_OPERATOR_ACCESS_TOKEN_COOKIE]) {
     response.cookies.set({
       name,
       value: "",
