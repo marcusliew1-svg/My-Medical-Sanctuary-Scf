@@ -1,6 +1,6 @@
 # Partner Hub Legacy Reconciliation
 
-This note reconciles the original Partner Hub Phase 1 work in PR #2 with the current MMS commercial architecture. PR #2 must not be merged directly into current production branches.
+This note reconciles the original Partner Hub Phase 1 work in PR #2 with the current MMS commercial architecture. PR #2 is closed without merge and must not be revived as a production implementation.
 
 ## Superseded by the modern transactional commercial stack
 
@@ -22,19 +22,29 @@ The database remains the source of truth for these rules. Zoho is an operational
 
 Implemented in `src/lib/mmsZohoBoundary.ts`.
 
-Any future live Zoho write adapter must call the boundary immediately before writing. Live writes fail closed unless the MMS Zoho organisation identifier and server-side credentials are configured and `MMS_CRM_DEBUG=false`. This prevents an MMS Partner Hub process from being treated as ready for writes when it could target an unintended Zoho tenant.
+Any future live Zoho write adapter must call the boundary immediately before writing. The boundary now requires two independently configured values:
 
-### Partner Hub production-readiness gate
+- `ZOHO_ORGANIZATION_ID` — the runtime target organisation;
+- `MMS_ZOHO_EXPECTED_ORGANIZATION_ID` — the independently approved MMS organisation identifier.
+
+Live writes fail closed unless those values match exactly, all required server-side Zoho credentials are present and `MMS_CRM_DEBUG=false`. This prevents a configured but incorrect Zoho tenant from being treated as live-write ready. Never populate the expected MMS identifier from browser input or from an iPivot/other-tenant configuration.
+
+### Partner Hub readiness gate
 
 Implemented in `src/lib/partnerHubReadiness.ts`.
 
-The environment-level gate checks the current architecture rather than PR #2's obsolete configuration names: Partner Hub feature gate, standalone MMS Supabase Auth configuration, dedicated commercial database runtime configuration, internal service token, explicit MMS Zoho organisation boundary and Zoho live-write boundary.
+Readiness is deliberately split into two states:
 
-Environment readiness is necessary but not sufficient for launch. Production activation still additionally requires:
+- **Partner Hub core readiness** — feature gate, standalone MMS Supabase Auth configuration, dedicated commercial database runtime configuration, internal service token, QA bootstrap disabled and exact approved Zoho organisation boundary;
+- **Zoho live-write readiness** — the exact organisation boundary plus complete server credentials and debug mode explicitly disabled.
 
-1. The standalone MMS Supabase project is fully migrated and verified.
+This allows Partner Hub Preview testing while Zoho remains safely in debug/no-write mode. Zoho live-write readiness is not required merely to test the core Hub.
+
+Environment readiness is necessary but not sufficient for launch. Production activation additionally requires:
+
+1. The standalone MMS Supabase project is fully migrated and verified through 0021.
 2. Partner authorization is derived only from server-controlled `app_metadata.partner_id`.
-3. The dedicated MMS commercial database passes the structural/security probe, including all required migrations.
+3. The dedicated MMS commercial database passes the structural/security probe using the final 22-table / 17-function baseline.
 4. Demo/QA bootstrap access is disabled in production.
 5. Zoho field mapping and the actual MMS organisation identifier are independently verified before debug mode is disabled.
 6. Payment verification has an approved source of truth; browser-provided payment evidence is never treated as verified.
@@ -51,6 +61,6 @@ Partner identity and internal operator identity remain separate authorization do
 
 Having one Supabase account does not automatically grant both permissions.
 
-## PR #2 retirement rule
+## PR #2 retirement status
 
-The two remaining PR #2 controls have now been represented in the modern Partner-auth branch. Keep PR #2 open only until these new controls pass branch CI/review. After that, PR #2 can be closed without merging.
+PR #2 is closed without merge. Its remaining useful safeguards are represented in the modern Partner-auth branch and should be maintained there rather than recovered from the legacy implementation.
