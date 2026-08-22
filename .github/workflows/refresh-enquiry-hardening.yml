@@ -1,0 +1,28 @@
+name: Refresh Enquiry Hardening Branch
+
+on:
+  push:
+    branches:
+      - enquiry-hardening-refresh
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout refresh branch
+        uses: actions/checkout@v4
+        with:
+          ref: enquiry-hardening-refresh
+          fetch-depth: 0
+
+      - name: Merge legacy enquiry hardening branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin batch-a-production-hardening
+          git merge --no-edit origin/batch-a-production-hardening
+          git push origin HEAD:enquiry-hardening-refresh
