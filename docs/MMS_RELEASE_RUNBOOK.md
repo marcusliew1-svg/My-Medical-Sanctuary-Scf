@@ -12,17 +12,23 @@ This runbook is the controlled path from the current draft/stacked branches to P
 - A cancelled/refunded membership has zero eligible commission; paid attributable commission must be reversible/recoverable.
 - No production merge, production feature enablement, secret entry or destructive infrastructure deletion is part of this runbook without explicit approval.
 
-## Phase 1 — standalone database completion
+## Phase 1 — standalone database completion — VERIFIED 2026-08-22
 
-1. Read the Supabase migration ledger on `mzdvcchausgqmcxnwbsy`.
-2. Confirm whether migration 0002 is already present before executing any DDL.
-3. Apply only missing repository migrations in order through 0021.
-4. Reconcile the repository migration manifest, including the historical 0015 filename discrepancy if still present.
-5. Apply the dedicated MMS commercial runtime-role provisioning.
-6. Verify least-privilege grants, RLS policies and required function execution rights.
-7. Run the structural probe for required migrations, tables and functions.
-8. Run Supabase security advisors; resolve all ERROR/WARN findings before activation.
-9. Run performance advisors and classify informational unused-index findings separately from correctness/security issues.
+Standalone MMS project `mzdvcchausgqmcxnwbsy` has been independently inspected and migrated using the repository migration package from `database/migrations/` on the Commission Control Centre branch.
+
+Verified baseline:
+
+- Repository migrations `0001` through `0021` are applied.
+- The historical migration 0015 legacy manifest key is retained and the canonical `0015_mms_commission_eligibility_evidence_hardening.sql` key is present as intended by 0021.
+- The MMS commercial runtime role was provisioned after 0005 and its grants rerun after 0021.
+- `mms_commercial` contains 22 required base tables, including `idempotency_keys` and `schema_migrations`.
+- All 22 commercial tables have RLS enabled and runtime policies present.
+- The schema contains 17 required functions, including the hardened trigger helpers `reject_immutable_mutation` and `touch_updated_at`.
+- `mms_commercial_app` is NOLOGIN, non-superuser, cannot create databases/roles, cannot create in the schema and has least-privilege runtime grants.
+- Security advisor reports no lints.
+- Performance advisor reports only informational unused-index notices expected on a newly provisioned database.
+
+Phase 1 is complete. Do not rerun migrations merely because an application-side probe still carries an older object list; update the probe to the verified 0021 schema instead.
 
 ## Phase 2 — Preview environment configuration
 
