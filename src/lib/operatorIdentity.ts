@@ -79,7 +79,7 @@ export async function signOutOperatorIdentity(accessToken: string) {
   }).catch(() => undefined);
 }
 
-function normaliseOperatorMetadata(user: OperatorIdentityUser) {
+export function operatorMetadataFromUser(user: OperatorIdentityUser) {
   const operatorId = typeof user.app_metadata?.operator_id === "string" ? user.app_metadata.operator_id.trim() : "";
   const rawRoles = Array.isArray(user.app_metadata?.operator_roles) ? user.app_metadata?.operator_roles : [];
   const roles = rawRoles.filter((value): value is OperatorRole => typeof value === "string" && OPERATOR_ROLE_SET.has(value as OperatorRole));
@@ -97,7 +97,7 @@ function operatorSessionSeconds() {
 }
 
 export function issueOperatorSession(user: OperatorIdentityUser, options?: { stepUp?: boolean }) {
-  const metadata = normaliseOperatorMetadata(user);
+  const metadata = operatorMetadataFromUser(user);
   const secret = sessionSecret();
   if (!metadata || secret.length < 32) return null;
 
