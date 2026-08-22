@@ -1,0 +1,28 @@
+name: Refresh Multilingual Branch
+
+on:
+  push:
+    branches:
+      - multilingual-core-refresh
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout refresh branch
+        uses: actions/checkout@v4
+        with:
+          ref: multilingual-core-refresh
+          fetch-depth: 0
+
+      - name: Merge legacy multilingual branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin multilingual-core-journey-phase1
+          git merge --no-edit origin/multilingual-core-journey-phase1
+          git push origin HEAD:multilingual-core-refresh
