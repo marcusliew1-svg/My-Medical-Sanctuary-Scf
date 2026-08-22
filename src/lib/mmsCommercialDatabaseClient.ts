@@ -1,4 +1,4 @@
-import { createRequire } from "node:module";
+import { Pool as PgPoolRuntime } from "pg";
 import { mmsCommercialDatabaseReadiness } from "@/lib/mmsCommercialDatabaseConfig";
 
 export type MmsCommercialQueryResult<Row extends Record<string, unknown> = Record<string, unknown>> = {
@@ -41,30 +41,7 @@ type PgPool = {
   connect(): Promise<PgPoolClient>;
 };
 
-type PgModule = {
-  Pool: new (config: {
-    connectionString: string;
-    max: number;
-    idleTimeoutMillis: number;
-    connectionTimeoutMillis: number;
-    application_name: string;
-  }) => PgPool;
-};
-
-const nodeRequire = createRequire(`${process.cwd()}/package.json`);
 let cachedPool: PgPool | null = null;
-let cachedPgModule: PgModule | null | undefined;
-
-function loadPgModule(): PgModule | null {
-  if (cachedPgModule !== undefined) return cachedPgModule;
-  try {
-    const loaded = nodeRequire("pg") as PgModule;
-    cachedPgModule = loaded?.Pool ? loaded : null;
-  } catch {
-    cachedPgModule = null;
-  }
-  return cachedPgModule;
-}
 
 function pool(): PgPool {
   if (cachedPool) return cachedPool;
@@ -73,17 +50,14 @@ function pool(): PgPool {
     throw new Error(readiness.blockers.join(" ") || "MMS commercial database configuration is unavailable.");
   }
 
-  const pg = loadPgModule();
-  if (!pg) throw new Error("MMS commercial PostgreSQL runtime dependency is not installed.");
-
   const connectionString = process.env.MMS_COMMERCIAL_DATABASE_URL?.trim() || "";
-  cachedPool = new pg.Pool({
+  cachedPool = new PgPoolRuntime({
     connectionString,
     max: 5,
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 8_000,
     application_name: "mms-commercial-web",
-  });
+  }) as unknown as PgPool;
   return cachedPool;
 }
 
@@ -95,20 +69,19 @@ function normalizedResult<Row extends Record<string, unknown>>(result: PgQueryRe
 }
 
 export function mmsCommercialDatabaseClientAvailable(): boolean {
-  return mmsCommercialDatabaseReadiness().readyForAdapters && Boolean(loadPgModule());
+  return mmsCommercialDatabaseReadiness().readyForAdapters;
 }
 
 /**
  * Runtime PostgreSQL provider for the dedicated MMS commercial datastore.
- * node-postgres is loaded only on the server. When the dependency or database
- * configuration is absent the entire persistence layer remains fail-closed.
+ * node-postgres is imported statically so Next/Vercel output tracing includes
+ * the production dependency in serverless bundles. Database configuration
+ * remains fail-closed when the Preview/Production gate or connection URL is absent.
  */
 export function mmsCommercialDatabaseClient(): MmsCommercialDatabaseClient {
   if (!mmsCommercialDatabaseClientAvailable()) {
     const readiness = mmsCommercialDatabaseReadiness();
-    const reason = !readiness.readyForAdapters
-      ? readiness.blockers.join(" ") || "MMS commercial database is unavailable."
-      : "MMS commercial PostgreSQL runtime dependency is not installed.";
+    const reason = readiness.blockers.join(" ") || "MMS commercial database is unavailable.";
     const unavailable = async (): Promise<never> => {
       throw new Error(reason);
     };

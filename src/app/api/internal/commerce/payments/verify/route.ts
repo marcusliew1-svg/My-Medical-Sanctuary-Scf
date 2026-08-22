@@ -1,10 +1,11 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { financeApiConfigured, isValidFinanceBearerToken } from "@/lib/internalApiAuth";
+import { requireOperatorMutation } from "@/lib/operatorSecurity";
 import { financeVerifyPayment, type PaymentVerificationEvidence } from "@/lib/partnerCommerceWorkflow";
 import { partnerCommerceStore, partnerCommerceStoreAvailable } from "@/lib/partnerCommerceStore";
 
 const MAX_BODY_BYTES = 12_000;
+const ALLOWED_FIELDS = new Set(["applicationId", "paymentId", "transactionReference", "currency", "source", "sourceReference", "clearedAmountMinorUnits"]);
 const verificationSources = new Set(["Stripe", "Bank Transfer", "Finance Manual Review", "Other Approved Gateway"]);
 
 function cleanString(value: unknown, max = 500): string {
@@ -12,8 +13,10 @@ function cleanString(value: unknown, max = 500): string {
 }
 
 export async function POST(request: NextRequest) {
-  if (!financeApiConfigured()) return NextResponse.json({ status: "unavailable", message: "Finance verification controls are not configured." }, { status: 503 });
-  if (!isValidFinanceBearerToken(request.headers.get("authorization"))) return NextResponse.json({ status: "unauthorized", message: "Unauthorized." }, { status: 401 });
+  const operator = await requireOperatorMutation(request, { roles: ["finance"], requireStepUp: true });
+  if (operator.status === "unavailable") return NextResponse.json({ status: "unavailable", message: operator.reason }, { status: 503 });
+  if (operator.status === "unauthorized") return NextResponse.json({ status: "unauthorized", message: operator.reason }, { status: 401 });
+  if (operator.status === "forbidden") return NextResponse.json({ status: "forbidden", message: operator.reason }, { status: 403 });
   if (!partnerCommerceStoreAvailable()) return NextResponse.json({ status: "store_unavailable", message: "MMS commercial workflow persistence is not configured." }, { status: 503 });
 
   const contentLength = Number(request.headers.get("content-length") || "0");
@@ -22,18 +25,17 @@ export async function POST(request: NextRequest) {
   let body: Record<string, unknown>;
   try { body = (await request.json()) as Record<string, unknown>; }
   catch { return NextResponse.json({ status: "invalid", message: "A JSON request body is required." }, { status: 400 }); }
+  if (Object.keys(body).some((field) => !ALLOWED_FIELDS.has(field))) return NextResponse.json({ status: "invalid", message: "Unexpected Finance verification fields were supplied." }, { status: 400 });
 
   const applicationId = cleanString(body.applicationId, 80);
   const paymentId = cleanString(body.paymentId, 80);
   const transactionReference = cleanString(body.transactionReference, 180);
-  const verifiedBy = cleanString(body.verifiedBy, 160);
-  const verifiedAt = cleanString(body.verifiedAt, 80);
   const currency = cleanString(body.currency, 3).toUpperCase();
   const source = cleanString(body.source, 60);
   const sourceReference = cleanString(body.sourceReference, 240);
   const clearedAmountMinorUnits = body.clearedAmountMinorUnits;
 
-  if (!applicationId || !paymentId || !transactionReference || !verifiedBy || !verifiedAt || Number.isNaN(Date.parse(verifiedAt)) || !/^[A-Z]{3}$/.test(currency) || !verificationSources.has(source) || !sourceReference || !Number.isInteger(clearedAmountMinorUnits)) {
+  if (!applicationId || !paymentId || !transactionReference || !/^[A-Z]{3}$/.test(currency) || !verificationSources.has(source) || !sourceReference || !Number.isInteger(clearedAmountMinorUnits)) {
     return NextResponse.json({ status: "invalid", message: "Required Finance verification fields are missing or invalid." }, { status: 400 });
   }
 
@@ -48,9 +50,14 @@ export async function POST(request: NextRequest) {
   }
 
   const evidence: PaymentVerificationEvidence = {
-    paymentId, transactionReference, verifiedBy, verifiedAt,
+    paymentId,
+    transactionReference,
+    verifiedBy: operator.actor,
+    verifiedAt: operator.occurredAt,
     clearedAmountMinorUnits: clearedAmountMinorUnits as number,
-    currency, source: source as PaymentVerificationEvidence["source"], sourceReference,
+    currency,
+    source: source as PaymentVerificationEvidence["source"],
+    sourceReference,
   };
 
   const replayCandidate = recordResult.value.payment.stage === "Cleared" && ["Paid", "Activated"].includes(recordResult.value.application.stage);
