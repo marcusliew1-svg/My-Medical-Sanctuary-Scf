@@ -31,12 +31,13 @@ const referralSteps = [
 ];
 
 type JoinMMSPageProps = {
-  searchParams?: { ref?: string | string[] };
+  searchParams?: Promise<{ ref?: string | string[] }>;
 };
 
-export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
+export default async function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
   const applicationsEnabled = process.env.MMS_SALES_PARTNER_APPLICATIONS_ENABLED === "true";
-  const rawReferrer = Array.isArray(searchParams?.ref) ? searchParams?.ref[0] : searchParams?.ref;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const rawReferrer = Array.isArray(resolvedSearchParams?.ref) ? resolvedSearchParams?.ref[0] : resolvedSearchParams?.ref;
   const initialReferrerCode = normalisePartnerId(rawReferrer);
 
   return (
