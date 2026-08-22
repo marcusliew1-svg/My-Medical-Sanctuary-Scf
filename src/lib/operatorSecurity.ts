@@ -1,5 +1,10 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
+import {
+  MMS_OPERATOR_ACCESS_TOKEN_COOKIE,
+  getOperatorIdentityUser,
+  operatorMetadataFromUser,
+} from "@/lib/operatorIdentity";
 
 export const MMS_OPERATOR_SESSION_COOKIE = "mms_operator_session";
 
@@ -119,6 +124,13 @@ function verifySignedSessionToken(token: string): OperatorSessionClaims {
   return normaliseClaims(payload);
 }
 
+function rolesMatch(left: OperatorRole[], right: OperatorRole[]) {
+  if (left.length !== right.length) return false;
+  const a = [...left].sort();
+  const b = [...right].sort();
+  return a.every((role, index) => role === b[index]);
+}
+
 export function operatorSessionProviderAvailable(): boolean {
   return operatorAccessEnabled() && operatorSessionSecret().length >= 32;
 }
@@ -128,10 +140,18 @@ export async function authenticateOperatorRequest(request: NextRequest): Promise
   if (!operatorSessionProviderAvailable()) return { status: "unavailable", reason: "MMS operator session verification is not configured." };
 
   const token = request.cookies.get(MMS_OPERATOR_SESSION_COOKIE)?.value?.trim() || "";
-  if (!token) return { status: "unauthenticated", reason: "Operator session is required." };
+  const accessToken = request.cookies.get(MMS_OPERATOR_ACCESS_TOKEN_COOKIE)?.value?.trim() || "";
+  if (!token || !accessToken) return { status: "unauthenticated", reason: "Operator session is required." };
 
   try {
-    return { status: "authenticated", claims: verifySignedSessionToken(token) };
+    const claims = verifySignedSessionToken(token);
+    const user = await getOperatorIdentityUser(accessToken);
+    const metadata = user ? operatorMetadataFromUser(user) : null;
+    if (!user || !metadata) return { status: "unauthenticated", reason: "Operator identity is invalid or revoked." };
+    if (user.id !== claims.subject || metadata.operatorId !== claims.operatorId || !rolesMatch(metadata.roles, claims.roles)) {
+      return { status: "unauthenticated", reason: "Operator authorization has changed. Sign in again." };
+    }
+    return { status: "authenticated", claims };
   } catch {
     return { status: "unauthenticated", reason: "Operator session is invalid or expired." };
   }
