@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { MMS_OPERATOR_SESSION_COOKIE } from "@/lib/operatorSecurity";
 import {
   MMS_OPERATOR_ACCESS_TOKEN_COOKIE,
-  MMS_OPERATOR_REFRESH_TOKEN_COOKIE,
   issueOperatorSession,
   operatorIdentityConfigured,
   operatorIdentityCookieOptions,
@@ -32,14 +31,13 @@ export async function POST(request: NextRequest) {
 
   const identity = await signInOperatorIdentity(email, password);
   const issued = identity?.user ? issueOperatorSession(identity.user) : null;
-  if (!identity?.access_token || !identity.refresh_token || !issued) {
+  if (!identity?.access_token || !issued) {
     return redirectWithError(request, next, "unauthorised_operator");
   }
 
   const response = NextResponse.redirect(new URL(next, request.url), 303);
   response.cookies.set(MMS_OPERATOR_SESSION_COOKIE, issued.token, operatorIdentityCookieOptions(issued.maxAge));
-  response.cookies.set(MMS_OPERATOR_ACCESS_TOKEN_COOKIE, identity.access_token, operatorIdentityCookieOptions(Math.max(60, identity.expires_in || 3600)));
-  response.cookies.set(MMS_OPERATOR_REFRESH_TOKEN_COOKIE, identity.refresh_token, operatorIdentityCookieOptions(60 * 60 * 24 * 30));
+  response.cookies.set(MMS_OPERATOR_ACCESS_TOKEN_COOKIE, identity.access_token, operatorIdentityCookieOptions(Math.min(issued.maxAge, Math.max(60, identity.expires_in || issued.maxAge))));
   response.headers.set("Cache-Control", "private, no-store, max-age=0");
   response.headers.set("Pragma", "no-cache");
   return response;
