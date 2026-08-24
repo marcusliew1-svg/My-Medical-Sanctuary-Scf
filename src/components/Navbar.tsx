@@ -6,33 +6,27 @@ import { languages, primaryNavigation } from "@/lib/siteRoutes";
 
 export function Navbar() {
   return (
-    <header className="absolute inset-x-0 top-0 z-40 px-4 py-5">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-5 rounded-full border border-ivory/18 bg-navy/[0.82] px-4 py-3 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+    <header className="absolute inset-x-0 top-0 z-40 px-5 text-ivory md:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 border-b border-white/16 py-5 backdrop-blur-[2px]">
         <Link href="/" className="flex items-center gap-3">
-          <span className="grid h-10 w-14 place-items-center rounded-full bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(181,111,91,0.22)]">
+          <span className="grid h-10 w-14 place-items-center bg-ivory/96 p-1.5">
             <Image src="/mms-logo-mark.png" alt="My Medical Sanctuary" width={430} height={310} className="h-full w-full object-contain" priority />
           </span>
-          <span className="hidden text-sm font-semibold tracking-wide md:block">My Medical Sanctuary</span>
+          <span className="hidden font-serif text-lg tracking-[.01em] md:block">My Medical Sanctuary</span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-4 text-sm font-medium xl:flex">
+        <nav aria-label="Primary navigation" className="hidden items-center gap-5 text-[13px] font-medium xl:flex">
           {primaryNavigation.map((item) => (
-            <Link key={item.href} href={item.href} className="text-ivory/76 transition hover:text-gold-light">
+            <Link key={item.href} href={item.href} className="text-ivory/74 transition hover:text-[#efc9a6]">
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Link href="/online-doctor" className="hidden text-sm font-semibold text-gold-light transition hover:text-ivory 2xl:block">Online doctor</Link>
-          <div className="hidden items-center gap-1 rounded-full border border-white/15 bg-white/[0.06] p-1 xl:flex" aria-label="Language selection">
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-2 xl:flex" aria-label="Language selection">
             {languages.map((language) => (
-              <Link
-                key={language.href}
-                href={language.href}
-                aria-label={language.aria}
-                className="rounded-full px-2 py-1 text-[10px] font-semibold text-ivory/78 transition hover:bg-white/[0.10] hover:text-white"
-              >
+              <Link key={language.href} href={language.href} aria-label={language.aria} className="text-[9px] font-semibold uppercase tracking-[.12em] text-ivory/58 transition hover:text-white">
                 {language.label}
               </Link>
             ))}
