@@ -7,73 +7,73 @@ import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
   title: "Memberships",
-  description:
-    "Explore MMS memberships including Ascend, Evolve, Eterna and Pinnacle for structured wellness coordination.",
+  description: "Explore MMS memberships including Ascend, Evolve, Eterna and Pinnacle for structured wellness coordination.",
 };
 
 const levels = [
-  { name: "Ascend", icon: "△", promise: "Discover", signal: "Baseline", forWhom: "Starting preventive care", tone: "from-deep-green to-navy" },
-  { name: "Evolve", icon: "◇", promise: "Optimise", signal: "Momentum", forWhom: "Improving energy or metabolism", tone: "from-sage to-deep-green" },
-  { name: "Eterna", icon: "♧", promise: "Protect", signal: "Continuity", forWhom: "Long-term health oversight", tone: "from-charcoal to-navy" },
-  { name: "Pinnacle", icon: "♛", promise: "Coordinate", signal: "Concierge", forWhom: "Executives and families", tone: "from-terracotta to-navy" },
+  { name: "Ascend", word: "Discover", signal: "Baseline", tone: "bg-[#355c59]", numeral: "01" },
+  { name: "Evolve", word: "Optimise", signal: "Momentum", tone: "bg-[#52736a]", numeral: "02" },
+  { name: "Eterna", word: "Protect", signal: "Continuity", tone: "bg-[#263b47]", numeral: "03" },
+  { name: "Pinnacle", word: "Coordinate", signal: "Concierge", tone: "bg-[#d7b18c] text-navy", numeral: "04" },
 ];
 
 export default function MembershipsPage() {
   return (
-    <main>
-      <section className="relative isolate overflow-hidden bg-navy px-4 pb-16 pt-32 text-ivory md:pb-24 md:pt-40">
-        <Image src="/mms-membership-journey.webp" alt="" fill priority className="-z-20 object-cover opacity-55" sizes="100vw" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,25,38,.98),rgba(9,25,38,.82)_52%,rgba(9,25,38,.5))]" />
-        <div className="mx-auto grid min-h-[60vh] max-w-7xl items-center gap-10 lg:grid-cols-[1fr_.8fr]">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">MMS Memberships</p>
-            <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-[1.04] md:text-7xl">Choose the depth of support that fits your life.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ivory/72">Four levels of continuity — from a preventive baseline to private, high-touch coordination.</p>
-            <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/ling">Ask Ling</CTAButton><CTAButton href="/contact" variant="outline">Speak with MMS</CTAButton></div>
+    <main className="overflow-hidden bg-[#f7f1e8]">
+      <section className="relative isolate min-h-[82vh] overflow-hidden bg-[#102f36] px-4 pb-16 pt-32 text-ivory md:pt-40">
+        <Image src="/mms-membership-journey.webp" alt="" fill priority className="-z-30 object-cover opacity-55" sizes="100vw" />
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(10,31,38,.98),rgba(10,31,38,.84)_46%,rgba(10,31,38,.28))]" />
+        <div className="absolute -right-20 top-24 -z-10 size-[34rem] rounded-full border border-[#e0b78e]/15" />
+        <div className="absolute right-12 top-44 -z-10 size-[22rem] rounded-full border border-[#e0b78e]/15" />
+        <div className="mx-auto grid min-h-[70vh] max-w-7xl items-center gap-12 lg:grid-cols-[.9fr_1.1fr]">
+          <div className="max-w-2xl">
+            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#e2bb95]">MMS memberships</p>
+            <h1 className="mt-5 font-serif text-6xl leading-[.98] md:text-8xl">Four depths.<span className="block text-[#e7c4a2]">One relationship.</span></h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-ivory/66">Choose how much continuity and coordination you want around your health.</p>
+            <div className="mt-9 flex flex-wrap gap-3"><CTAButton href="/ling">Find your fit</CTAButton><CTAButton href="/contact" variant="outline">Speak with MMS</CTAButton></div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             {levels.map((level, index) => (
-              <div key={level.name} className={`relative min-h-[170px] overflow-hidden rounded-[1.5rem] bg-gradient-to-br ${level.tone} p-5 shadow-xl`}>
-                <div className="absolute -right-8 -top-8 size-28 rounded-full border border-white/10" />
-                <div className="flex items-center justify-between"><span className="grid size-10 place-items-center rounded-full border border-white/15 text-gold-light">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-ivory/50">0{index + 1}</span></div>
-                <p className="mt-8 font-serif text-2xl">{level.name}</p><p className="text-xs uppercase tracking-[.14em] text-gold-light">{level.promise}</p>
-              </div>
+              <Link key={level.name} href="#membership-levels" className={`mms-shimmer group relative min-h-[230px] overflow-hidden rounded-[2rem] ${level.tone} p-6 shadow-[0_24px_70px_rgba(0,0,0,.2)] transition hover:-translate-y-2`}>
+                <div className="absolute -right-12 -top-12 size-40 rounded-full border border-white/12" />
+                <p className={`text-[10px] font-bold uppercase tracking-[.2em] ${index === 3 ? "text-[#7c4f35]" : "text-[#e4bd98]"}`}>{level.signal}</p>
+                <div className="mt-16 flex items-end justify-between gap-4"><div><h2 className="font-serif text-4xl">{level.name}</h2><p className={`mt-2 text-xs font-bold uppercase tracking-[.16em] ${index === 3 ? "text-navy/60" : "text-ivory/62"}`}>{level.word}</p></div><span className={`font-serif text-6xl ${index === 3 ? "text-navy/12" : "text-white/12"}`}>{level.numeral}</span></div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-20 md:py-28">
+      <section className="bg-[#efe5d8] px-4 py-20 md:py-28">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">At a glance</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-6xl">More continuity as you move up.</h2></div>
-          <div className="relative grid gap-4 lg:grid-cols-4">
-            {levels.map((level, index) => (
-              <article key={level.name} className="relative rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-soft">
-                {index < levels.length - 1 ? <span className="absolute -right-3 top-10 z-10 hidden size-7 place-items-center rounded-full bg-deep-green text-sm text-white lg:grid">→</span> : null}
-                <div className="flex items-center justify-between"><span className="grid size-12 place-items-center rounded-full bg-ivory font-serif text-2xl text-deep-green">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">{level.signal}</span></div>
-                <h3 className="mt-5 font-serif text-3xl text-navy">{level.name}</h3>
-                <p className="mt-2 text-sm font-semibold text-deep-green">{level.promise}</p>
-                <p className="mt-5 text-sm leading-6 text-warm-gray">{level.forWhom}</p>
-              </article>
-            ))}
+          <div className="grid gap-6 lg:grid-cols-[.7fr_1.3fr] lg:items-end">
+            <div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-terracotta">How to think about it</p><h2 className="mt-4 font-serif text-5xl leading-tight text-navy md:text-6xl">Not more products.<br/>More continuity.</h2></div>
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-[#cdb9a7] sm:grid-cols-4">
+              {["Discover","Plan","Coordinate","Continue"].map((item, index)=><div key={item} className="bg-[#f7f1e8] p-6 text-center"><span className="text-[10px] font-bold text-terracotta">0{index+1}</span><p className="mt-4 font-serif text-2xl text-navy">{item}</p></div>)}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-ivory px-4 py-20 md:py-28">
+      <section id="membership-levels" className="bg-[#f8f3eb] px-4 py-24 md:py-32">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-10 grid gap-5 md:grid-cols-[.7fr_1.3fr] md:items-end"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">See the journeys</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-5xl">Four memberships. Four different rhythms.</h2></div><p className="max-w-2xl text-base leading-7 text-warm-gray">The difference is not simply “more items”. It is the amount of continuity, access and coordination around you.</p></div>
-
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="mb-12 max-w-3xl"><p className="text-[10px] font-bold uppercase tracking-[.24em] text-terracotta">The four levels</p><h2 className="mt-4 font-serif text-5xl text-navy md:text-6xl">See the difference at a glance.</h2></div>
+          <div className="space-y-5">
             {memberships.map((membership, index) => (
-              <article key={membership.name} className="group overflow-hidden rounded-[2rem] bg-white shadow-soft">
-                <div className={`relative h-48 bg-gradient-to-br ${levels[index].tone} p-7 text-ivory`}>
-                  <div className="absolute -right-10 -top-10 size-40 rounded-full border border-white/10" />
-                  <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-gold-light">{membership.accessNote}</p><h3 className="mt-3 font-serif text-4xl">{membership.name}</h3><p className="mt-2 text-sm font-semibold text-ivory/75">{membership.tagline}</p></div><span className="font-serif text-5xl text-white/15">0{index + 1}</span></div>
-                </div>
-                <div className="p-7">
-                  <div className="grid gap-5 sm:grid-cols-2"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Best for</p><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p></div><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Coordination</p><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.coordination}</p></div></div>
-                  <div className="mt-6 border-t border-black/5 pt-5"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">Opening journey</p><div className="mt-3 flex flex-wrap gap-2">{membership.firstThirtyDays.slice(0,4).map(item => <span key={item} className="rounded-full bg-ivory px-3 py-2 text-xs text-navy">{item}</span>)}</div></div>
+              <article key={membership.name} className={`group relative overflow-hidden rounded-[2.4rem] border ${index === 3 ? "border-[#d4a97f] bg-[#e5c39f] text-navy" : "border-[#d8c8b8] bg-white"} shadow-[0_26px_80px_rgba(38,46,44,.08)]`}>
+                <div className="grid lg:grid-cols-[.62fr_1.38fr]">
+                  <div className={`relative min-h-[260px] overflow-hidden p-7 md:p-9 ${index === 0 ? "bg-[#355c59]" : index === 1 ? "bg-[#52736a]" : index === 2 ? "bg-[#263b47]" : "bg-[#e5c39f]"} ${index === 3 ? "text-navy" : "text-ivory"}`}>
+                    <div className="absolute -right-16 top-0 size-56 rounded-full border border-white/10" />
+                    <p className={`text-[10px] font-bold uppercase tracking-[.2em] ${index === 3 ? "text-[#7d5034]" : "text-[#dfb88f]"}`}>Level {index+1}</p>
+                    <h3 className="mt-8 font-serif text-5xl md:text-6xl">{membership.name}</h3>
+                    <p className={`mt-3 text-sm font-semibold ${index === 3 ? "text-navy/68" : "text-ivory/66"}`}>{membership.tagline}</p>
+                    <span className={`absolute bottom-5 right-7 font-serif text-8xl ${index === 3 ? "text-navy/10" : "text-white/10"}`}>0{index+1}</span>
+                  </div>
+                  <div className="grid gap-7 p-7 md:grid-cols-3 md:p-9">
+                    <div><p className="text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">Best for</p><p className="mt-3 font-serif text-2xl leading-snug text-navy">{membership.whoItSuits}</p></div>
+                    <div><p className="text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">Coordination</p><p className="mt-3 text-sm leading-7 text-warm-gray">{membership.coordination}</p></div>
+                    <div><p className="text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">Opening rhythm</p><div className="mt-3 flex flex-wrap gap-2">{membership.firstThirtyDays.slice(0,3).map(item => <span key={item} className="rounded-full border border-[#d8c6b5] bg-[#f8f3eb] px-3 py-2 text-[11px] text-navy">{item}</span>)}</div></div>
+                  </div>
                 </div>
               </article>
             ))}
@@ -81,11 +81,15 @@ export default function MembershipsPage() {
         </div>
       </section>
 
-      <section className="bg-deep-green px-4 py-20 text-ivory md:py-24">
-        <div className="mx-auto max-w-6xl text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Not sure where you fit?</p><h2 className="mt-3 font-serif text-4xl md:text-6xl">Start with your goals, not a package.</h2><p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-ivory/68">Ling can help you understand the differences before you speak with the MMS team.</p><div className="mt-8 flex justify-center"><CTAButton href="/ling">Ask Ling</CTAButton></div></div>
+      <section className="relative overflow-hidden bg-[#173d43] px-4 py-24 text-ivory md:py-28">
+        <div className="mms-kinetic-ring -right-20 top-1/2 size-80 -translate-y-1/2" />
+        <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-[1fr_.7fr] md:items-center">
+          <div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#dfb78f]">Not sure?</p><h2 className="mt-4 font-serif text-5xl leading-tight md:text-6xl">Start with your goals.<br/><span className="text-[#e6c3a2]">Not a package.</span></h2></div>
+          <div className="md:justify-self-end"><CTAButton href="/ling">Ask Ling</CTAButton></div>
+        </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-12"><div className="mx-auto max-w-5xl"><DisclaimerBox><p>Membership does not promise specific outcomes. Any wellness pathway is subject to discovery discussion, professional review and suitability assessment.</p></DisclaimerBox></div></section>
+      <section className="bg-[#f8f3eb] px-4 py-10"><div className="mx-auto max-w-5xl"><DisclaimerBox><p>Membership does not promise specific outcomes. Any wellness pathway is subject to professional review and suitability assessment.</p></DisclaimerBox></div></section>
     </main>
   );
 }
