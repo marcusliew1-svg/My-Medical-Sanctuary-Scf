@@ -1,51 +1,43 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ButtonLink";
-import { Section } from "@/components/Section";
 
-const screeningBenefits = ["Detect earlier", "Know your baseline", "See patterns", "Plan ahead"];
 const mayInclude = ["Blood investigations", "ECG", "Ultrasound", "Body composition", "Biological-age indicators", "Lifestyle assessment", "Doctor consultation", "Personalised report"];
-const journey = ["Book", "Assess", "Review", "Understand", "Plan", "Continue"];
+const journey = [["01","Book","Choose a starting point"],["02","Assess","Build the health picture"],["03","Review","Doctor-led interpretation"],["04","Understand","See what matters now"],["05","Plan","Agree the next step"],["06","Continue","Revisit over time"]];
 
 export default function HealthScreeningPage() {
   return (
     <main className="overflow-hidden bg-[#f7f1e8]">
-      <section className="relative isolate min-h-[86vh] overflow-hidden bg-[#102f36] px-4 pb-16 pt-32 text-ivory md:pt-40">
-        <Image src="/mms-health-screening-hero.png" alt="Doctor-led health screening consultation" fill priority className="-z-30 object-cover object-[62%_center] opacity-72" sizes="100vw" />
-        <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(10,31,38,.98),rgba(10,31,38,.88)_47%,rgba(10,31,38,.22)),linear-gradient(0deg,rgba(10,31,38,.72),transparent_55%)]" />
-        <div className="mms-kinetic-ring -right-24 top-24 -z-10 size-[36rem]" />
-        <div className="mx-auto grid min-h-[72vh] max-w-7xl items-center gap-12 lg:grid-cols-[.88fr_1.12fr]">
-          <div className="max-w-3xl">
-            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#dfb78f]">Health Screening</p>
-            <h1 className="mt-5 font-serif text-6xl leading-[.98] md:text-8xl">Know where<br/>you stand.</h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-ivory/64">A doctor-led starting point for understanding your current health and deciding what deserves attention next.</p>
-            <div className="mt-9 flex flex-wrap gap-3"><ButtonLink href="/contact">Book screening</ButtonLink><ButtonLink href="/ling" variant="light">Ask Ling</ButtonLink></div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {screeningBenefits.map((item,index)=><div key={item} className={`mms-shimmer min-h-[180px] rounded-[1.8rem] border p-5 ${index===1?"border-[#ddb58c]/35 bg-[#e4c09a] text-navy":"border-white/10 bg-white/[.055]"}`}><span className={`text-[9px] font-bold ${index===1?"text-[#7c4f35]":"text-[#dfb78f]"}`}>0{index+1}</span><p className="mt-12 font-serif text-3xl leading-tight">{item}</p></div>)}
-          </div>
+      <section className="relative isolate min-h-[88vh] overflow-hidden bg-[#15383a] text-ivory">
+        <Image src="/mms-health-screening-hero.png" alt="Doctor-led health screening consultation" fill priority className="-z-30 object-cover object-[62%_center]" sizes="100vw" />
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(20,55,58,.96),rgba(20,55,58,.76)_48%,rgba(20,55,58,.15))]" />
+        <div className="mx-auto flex min-h-[88vh] max-w-7xl items-center px-5 pb-20 pt-36 md:px-8 md:pt-44">
+          <div className="max-w-3xl"><p className="text-[10px] font-bold uppercase tracking-[.28em] text-[#e7bd98]">Health Screening</p><h1 className="mt-5 font-serif text-6xl leading-[.98] md:text-8xl">Know where you stand.<span className="block text-[#edc8a6]">Before deciding what comes next.</span></h1><p className="mt-7 max-w-xl text-lg leading-8 text-ivory/72">A physician-guided starting point for understanding your current health and deciding what deserves attention.</p><div className="mt-9 flex flex-wrap gap-3"><ButtonLink href="/contact">Book screening</ButtonLink><ButtonLink href="/ling" variant="light">Ask Ling</ButtonLink></div></div>
         </div>
       </section>
 
-      <Section eyebrow="The purpose" title="Clarity before intervention." lead="Screening should help create a useful baseline and guide appropriate professional review—not push people into generic treatment packages.">
-        <div className="grid gap-5 lg:grid-cols-[1.2fr_.8fr]">
-          <div className="relative min-h-[520px] overflow-hidden rounded-[2.4rem] shadow-[0_30px_90px_rgba(40,44,42,.12)]"><Image src="/mms-about-hero.png" alt="MMS screening review" fill className="object-cover" sizes="(min-width:1024px) 60vw,100vw"/><div className="absolute inset-0 bg-gradient-to-t from-[#102f36]/88 via-transparent to-transparent"/><div className="absolute inset-x-7 bottom-7 text-ivory"><p className="text-[9px] font-bold uppercase tracking-[.18em] text-[#dfb78f]">Doctor review</p><p className="mt-3 max-w-xl font-serif text-4xl">Numbers matter more when someone qualified helps put them in context.</p></div></div>
-          <div className="grid gap-4">{["Doctor-led","Evidence-informed","Personalised","Actionable"].map((item,index)=><div key={item} className={`relative overflow-hidden rounded-[1.8rem] p-6 ${index===2?"bg-[#e4c09a] text-navy":"bg-[#173d43] text-ivory"}`}><span className={`text-[9px] font-bold ${index===2?"text-[#7d4f33]":"text-[#dfb78f]"}`}>0{index+1}</span><p className="mt-8 font-serif text-3xl">{item}</p></div>)}</div>
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.82fr_1.18fr] lg:items-end">
+          <div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Why screen</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">Clarity before intervention.</h2></div>
+          <div className="lg:justify-self-end"><p className="max-w-xl text-lg leading-8 text-warm-gray">Screening should create a useful baseline, reveal patterns worth discussing and support appropriate professional review — not automatically lead to a treatment package.</p><div className="mt-9 flex flex-wrap gap-x-7 gap-y-3 border-t border-[#cdb9a6] pt-5 text-[10px] font-semibold uppercase tracking-[.14em] text-terracotta"><span>Detect earlier</span><span>Know your baseline</span><span>See patterns</span><span>Plan ahead</span></div></div>
         </div>
-      </Section>
+      </section>
 
-      <Section eyebrow="May include" title="A screening built from the right pieces." lead="Exact investigations are confirmed according to the person, clinical context and booking pathway." className="bg-[#eee4d7]">
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] border border-[#d1beac] bg-[#d1beac] md:grid-cols-4">
-          {mayInclude.map((item,index)=><div key={item} className="min-h-[150px] bg-[#faf6f0] p-5"><span className="text-[9px] font-bold text-terracotta">0{index+1}</span><p className="mt-8 font-serif text-xl leading-tight text-navy">{item}</p></div>)}
+      <section className="bg-[#eadccc] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
+          <div className="relative min-h-[680px] overflow-hidden rounded-[48%_52%_46%_54%/43%_44%_56%_57%]"><Image src="/mms-about-hero.png" alt="MMS screening review" fill className="object-cover" sizes="(min-width:1024px) 55vw,100vw"/><div className="absolute inset-0 bg-gradient-to-t from-[#15383a]/42 to-transparent"/></div>
+          <div className="lg:pl-8"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Doctor review</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">Numbers matter more when someone qualified puts them in context.</h2><p className="mt-7 max-w-xl text-lg leading-8 text-warm-gray">Results are only one part of the picture. History, symptoms, goals, risk and professional judgement determine what deserves attention next.</p></div>
         </div>
-      </Section>
+      </section>
 
-      <Section eyebrow="What happens next" title="Screen. Review. Then decide." dark>
-        <div className="grid gap-px overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 md:grid-cols-6">
-          {journey.map((step,index)=><div key={step} className={`relative min-h-[240px] p-5 ${index===2?"bg-[#e4c09a] text-navy":"bg-[#102f36] text-ivory"}`}><span className={`text-[9px] font-bold ${index===2?"text-[#7c4f35]":"text-[#dfb78f]"}`}>0{index+1}</span><div className={`mt-20 h-px w-10 ${index===2?"bg-navy/20":"bg-[#dfb78f]/35"}`}/><h3 className="mt-6 font-serif text-2xl">{step}</h3>{index<5?<span className={`absolute -right-3 top-1/2 z-10 hidden size-6 -translate-y-1/2 place-items-center rounded-full md:grid ${index===2?"bg-navy text-white":"bg-[#e4c09a] text-navy"}`}>→</span>:null}</div>)}
-        </div>
-      </Section>
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto max-w-7xl"><div className="grid gap-9 lg:grid-cols-[.78fr_1.22fr] lg:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">May include</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">Built from the right pieces for the right person.</h2></div><p className="max-w-xl text-lg leading-8 text-warm-gray lg:justify-self-end">Exact investigations are confirmed according to the individual, clinical context and booking pathway.</p></div><div className="mt-14 grid gap-0 border-y border-[#cdb9a6] sm:grid-cols-2 md:grid-cols-4">{mayInclude.map((item,index)=><div key={item} className="py-7 sm:px-6 sm:first:pl-0 md:[&+&]:border-l md:[&+&]:border-[#cdb9a6]"><span className="text-[9px] font-bold tracking-[.18em] text-terracotta">0{index+1}</span><p className="mt-4 font-serif text-xl leading-tight text-navy">{item}</p></div>)}</div></div>
+      </section>
 
-      <section className="bg-[#f8f3eb] px-4 py-24 md:py-28"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-center"><div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-terracotta">Next step</p><h2 className="mt-4 max-w-4xl font-serif text-5xl leading-tight text-navy md:text-6xl">Begin by understanding your health.</h2></div><ButtonLink href="/contact">Book screening</ButtonLink></div></section>
+      <section className="bg-[#15383a] px-5 py-24 text-ivory md:px-8 md:py-32">
+        <div className="mx-auto max-w-7xl"><div className="grid gap-9 lg:grid-cols-[.8fr_1.2fr] lg:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-[#e4ba93]">What happens next</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] md:text-7xl">Screen. Review. Then decide.</h2></div><p className="max-w-xl text-lg leading-8 text-ivory/64 lg:justify-self-end">The purpose of screening is to improve the next decision, not to rush it.</p></div><div className="relative mt-20 grid gap-12 md:grid-cols-6 md:gap-5"><div className="absolute left-0 right-0 top-[17px] hidden h-px bg-gradient-to-r from-[#e5bc98]/20 via-[#e5bc98]/70 to-[#e5bc98]/20 md:block" />{journey.map(([number,title,text])=><div key={number} className="relative"><span className="relative z-10 inline-grid size-9 place-items-center rounded-full border border-[#e5bc98]/55 bg-[#15383a] text-[9px] font-bold text-[#edc8a6]">{number}</span><h3 className="mt-7 font-serif text-2xl">{title}</h3><p className="mt-3 max-w-[180px] text-xs leading-6 text-ivory/56">{text}</p></div>)}</div></div>
+      </section>
+
+      <section className="bg-[#f8f3eb] px-5 py-24 md:px-8 md:py-28"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-center"><div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Next step</p><h2 className="mt-4 max-w-4xl font-serif text-5xl leading-tight text-navy md:text-6xl">Begin by understanding your health.</h2></div><ButtonLink href="/contact">Book screening</ButtonLink></div></section>
     </main>
   );
 }
