@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const signals = [
   ["01", "Physician-guided", "Medical decisions remain with qualified professionals."],
@@ -7,7 +10,12 @@ const signals = [
   ["04", "Continuity", "MMS is designed around an ongoing relationship, not a one-off sale."],
 ];
 
+const internalPrefixes = ["/operations", "/partner", "/api"];
+
 export function InstitutionTrustBand() {
+  const pathname = usePathname();
+  if (internalPrefixes.some((prefix) => pathname.startsWith(prefix))) return null;
+
   return (
     <section className="mms-trust-grid relative overflow-hidden bg-[#0d2b32] px-4 py-16 text-ivory md:py-20">
       <div className="mms-kinetic-ring -right-20 -top-28 size-80" />
