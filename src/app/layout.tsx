@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { FooterV01 } from "@/components/FooterV01";
+import { InstitutionTrustBand } from "@/components/InstitutionTrustBand";
 import { Navbar } from "@/components/Navbar";
 import { SiteMotion } from "@/components/SiteMotion";
 import "./globals.css";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteMotion />
         <Navbar />
         {children}
+        <InstitutionTrustBand />
         <FooterV01 />
       </body>
     </html>
