@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
-import { EcosystemVisual } from "@/components/EcosystemVisual";
-import { ServiceExplorer } from "@/components/ServiceExplorer";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 
 export const metadata: Metadata = {
@@ -11,48 +9,49 @@ export const metadata: Metadata = {
   description: "See how My Medical Sanctuary connects preventive care, Ling, coordination and professional review.",
 };
 
+const principles = [["01", "Prevent", "Look earlier, not only when something goes wrong."],["02", "Personalise", "Use context and professional judgement rather than a generic protocol."],["03", "Coordinate", "Make the journey easier to understand and navigate."],["04", "Continue", "Build a relationship that can evolve with your health."]];
+
 export default function AboutMMSPage() {
   return (
     <main className="overflow-hidden bg-[#f7f1e8]">
-      <Hero eyebrow="About MMS" title="Health should feel connected." subtitle="One relationship across discovery, coordination, professional review and long-term continuity." image="/mms-about-hero.png" primaryLabel="Start your journey" primaryHref="/ling" secondaryLabel="How MMS works" secondaryHref="/how-it-works" />
+      <Hero eyebrow="About MMS" title="Health should feel connected." subtitle="One relationship across discovery, coordination, professional review and long-term continuity." image="/mms-about-hero.png" primaryLabel="Start your journey" primaryHref="/health-discovery" secondaryLabel="How MMS works" secondaryHref="/how-it-works" />
 
-      <section className="bg-[#f8f3eb] px-4 py-24 md:py-32">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.12fr_.88fr] lg:items-stretch">
-          <div className="relative min-h-[620px] overflow-hidden rounded-[2.5rem] shadow-[0_35px_100px_rgba(45,44,40,.14)]">
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.12fr_.88fr] lg:items-center">
+          <div className="relative min-h-[680px] overflow-hidden rounded-[46%_54%_48%_52%/43%_44%_56%_57%]">
             <Image src="/mms-service-collage.webp" alt="MMS preventive care and longevity experience" fill className="object-cover" sizes="(min-width:1024px) 56vw,100vw" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#102f36]/92 via-transparent to-transparent" />
-            <div className="absolute inset-x-7 bottom-7 text-ivory"><p className="text-[9px] font-bold uppercase tracking-[.2em] text-[#dfb78f]">Why MMS exists</p><h2 className="mt-3 max-w-3xl font-serif text-4xl leading-tight md:text-5xl">From disconnected appointments to one continuous health relationship.</h2></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#15383a]/38 to-transparent" />
           </div>
-          <div className="grid gap-4">
-            {[["01","Prevent"],["02","Personalise"],["03","Coordinate"],["04","Continue"]].map(([number,title],index)=><div key={number} className={`relative overflow-hidden rounded-[2rem] p-7 ${index===1?"bg-[#e3bd98] text-navy":"bg-[#173d43] text-ivory"}`}><span className={`text-[9px] font-bold ${index===1?"text-[#7c4f35]":"text-[#dfb78f]"}`}>{number}</span><h3 className="mt-10 font-serif text-4xl">{title}</h3><div className={`absolute -right-12 -top-12 size-40 rounded-full border ${index===1?"border-navy/10":"border-white/10"}`} /></div>)}
-          </div>
+          <div className="lg:pl-8"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Why MMS exists</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">From disconnected appointments to one continuous health relationship.</h2><p className="mt-7 max-w-xl text-lg leading-8 text-warm-gray">The aim is not to sell more interventions. It is to help people understand their health earlier, navigate choices more clearly and stay connected to appropriate professional care.</p></div>
         </div>
       </section>
 
-      <section className="bg-[#eee4d7] px-4 py-24 md:py-28">
+      <section className="bg-[#eadccc] px-5 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-10 grid gap-7 lg:grid-cols-[.7fr_1.3fr] lg:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-terracotta">What MMS can coordinate</p><h2 className="mt-4 font-serif text-5xl leading-tight text-navy md:text-6xl">Different needs.<br/>One organised pathway.</h2></div><p className="max-w-lg text-base leading-8 text-warm-gray lg:justify-self-end">Explore by health goal. Suitability stays with qualified professionals.</p></div>
-          <ServiceExplorer />
+          <div className="grid gap-9 lg:grid-cols-[.78fr_1.22fr] lg:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Our principles</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">A quieter, more considered approach to health.</h2></div><p className="max-w-xl text-lg leading-8 text-warm-gray lg:justify-self-end">These principles shape the patient experience across screening, wellness, longevity, regional care and ongoing coordination.</p></div>
+          <div className="mt-16 divide-y divide-[#c6b19d] border-y border-[#c6b19d]">{principles.map(([number,title,text])=><div key={number} className="grid gap-5 py-8 md:grid-cols-[70px_.7fr_1.3fr] md:items-center"><span className="text-[10px] font-bold tracking-[.18em] text-terracotta">{number}</span><h3 className="font-serif text-3xl text-navy md:text-4xl">{title}</h3><p className="max-w-xl text-sm leading-7 text-warm-gray">{text}</p></div>)}</div>
         </div>
       </section>
 
-      <section className="bg-[#102f36] px-4 py-24 text-ivory md:py-32">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.62fr_1.38fr] lg:items-center">
-          <div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#dfb78f]">The operating model</p><h2 className="mt-4 font-serif text-5xl leading-tight md:text-6xl">Clear roles.<br/><span className="text-[#e5c19f]">Clear trust.</span></h2><p className="mt-5 max-w-lg text-base leading-8 text-ivory/58">Technology helps organise. MMS coordinates. Qualified professionals retain clinical authority.</p></div>
-          <EcosystemVisual />
+      <section className="relative min-h-[720px] overflow-hidden bg-[#15383a] text-ivory">
+        <Image src="/mms-health-screening-hero.png" alt="MMS medical trust" fill className="object-cover opacity-60" sizes="100vw" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,55,58,.96),rgba(20,55,58,.68)_48%,rgba(20,55,58,.18))]" />
+        <div className="relative mx-auto flex min-h-[720px] max-w-7xl items-center px-5 py-24 md:px-8">
+          <div className="max-w-2xl"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-[#e4ba93]">The operating model</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] md:text-7xl">Technology organises.<br/><span className="text-[#e9c6a5]">People care.<br/>Doctors decide.</span></h2><p className="mt-7 max-w-xl text-lg leading-8 text-ivory/68">Ling can help you understand and prepare. MMS can coordinate the journey. Qualified professionals retain clinical authority.</p></div>
         </div>
       </section>
 
-      <section className="bg-[#f8f3eb] px-4 py-24 md:py-28">
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="max-w-3xl"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Where the journey can go</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">Understand locally. Stay connected regionally.</h2></div>
+          <div className="mt-14 grid gap-10 md:grid-cols-3">
             {[
-              ["/medicine-intelligence","/mms-medicine-intelligence.webp","Intelligence","See more clearly"],
+              ["/insights","/mms-medicine-intelligence.webp","Health Intelligence","Learn before deciding"],
               ["/medical-tourism","/mms-membership-journey.webp","Regional care","Stay connected across borders"],
               ["/scf-lab-roadmap","/mms-about-hero.png","Future science","Capability for tomorrow"],
-            ].map(([href,image,eyebrow,title])=><Link key={href} href={href} className="group overflow-hidden rounded-[2rem] border border-[#d5c3b2] bg-white shadow-[0_24px_70px_rgba(40,43,41,.08)]"><div className="relative h-72 overflow-hidden"><Image src={image} alt="" fill className="object-cover transition duration-1000 group-hover:scale-[1.04]" sizes="(min-width:768px) 33vw,100vw"/><div className="absolute inset-0 bg-gradient-to-t from-[#102f36]/78 via-transparent to-transparent"/><div className="absolute bottom-5 left-5 text-ivory"><p className="text-[9px] font-bold uppercase tracking-[.18em] text-[#dfb78f]">{eyebrow}</p><h3 className="mt-2 font-serif text-3xl">{title}</h3></div></div></Link>)}
+            ].map(([href,image,eyebrow,title])=><Link key={href} href={href} className="group"><div className="relative aspect-[4/5] overflow-hidden"><Image src={image} alt="" fill className="object-cover transition duration-1000 group-hover:scale-[1.03]" sizes="(min-width:768px) 33vw,100vw"/><div className="absolute inset-0 bg-gradient-to-t from-[#15383a]/65 via-transparent to-transparent"/></div><p className="mt-5 text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">{eyebrow}</p><h3 className="mt-2 font-serif text-3xl text-navy">{title}</h3></Link>)}
           </div>
-          <div className="mt-8"><DisclaimerBox title="Future capability"><p>Future clinical and lab capability remains subject to regulatory, licensing, funding, technical and professional requirements.</p></DisclaimerBox></div>
+          <div className="mt-10"><DisclaimerBox title="Future capability"><p>Future clinical and lab capability remains subject to regulatory, licensing, funding, technical and professional requirements.</p></DisclaimerBox></div>
         </div>
       </section>
     </main>
