@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 export function SiteMotion() {
   useEffect(() => {
+    document.documentElement.classList.add("js");
+
     const sections = Array.from(document.querySelectorAll<HTMLElement>("main > section"));
     const cards = Array.from(
       document.querySelectorAll<HTMLElement>(
@@ -51,6 +53,7 @@ export function SiteMotion() {
       observer.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", updateScroll);
+      document.documentElement.classList.remove("js");
     };
   }, []);
 
