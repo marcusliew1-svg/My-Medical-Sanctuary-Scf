@@ -4,49 +4,20 @@ import { footerNavigation, legalNavigation, platformNavigation } from "@/lib/sit
 
 export function FooterV01() {
   return (
-    <footer className="bg-navy px-4 py-14 text-ivory">
-      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
-        <div>
-          <div className="mb-5 max-w-64 rounded-lg bg-ivory p-4">
-            <Image src="/mms-logo-lockup.png" alt="My Medical Sanctuary" width={1180} height={575} className="h-auto w-full" />
+    <footer className="relative overflow-hidden bg-[#081f26] px-4 py-16 text-ivory md:py-20">
+      <div className="absolute -right-24 -top-24 size-72 rounded-full border border-[#dfb78f]/10" />
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-12 border-b border-white/10 pb-12 lg:grid-cols-[1.1fr_.9fr]">
+          <div>
+            <div className="max-w-64 rounded-xl bg-ivory p-4"><Image src="/mms-logo-lockup.png" alt="My Medical Sanctuary" width={1180} height={575} className="h-auto w-full" /></div>
+            <p className="mt-6 max-w-xl font-serif text-3xl leading-tight text-ivory">Preventive Care.<br/><span className="text-[#e1bd99]">Personalised Longevity.</span></p>
           </div>
-          <p className="max-w-md leading-7 text-ivory/70">
-            Preventive Care • Personalised Longevity. A structured wellness journey supported by discovery, care coordination and professional review.
-          </p>
-        </div>
-        <div>
-          <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Explore</h2>
-          <div className="grid gap-2 text-sm text-ivory/72">
-            {footerNavigation.map((item) => (
-              <Link key={item.href} href={item.href} className="transition hover:text-gold-light">
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          <div className="mt-5 grid gap-2 border-t border-white/10 pt-4 text-sm text-ivory/72">
-            {legalNavigation.map((item) => (
-              <Link key={item.href} href={item.href} className="transition hover:text-gold-light">
-                {item.label}
-              </Link>
-            ))}
+          <div className="grid gap-8 sm:grid-cols-2 lg:justify-self-end">
+            <div><p className="text-[9px] font-bold uppercase tracking-[.2em] text-[#dfb78f]">Patient journey</p><div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-ivory/62">{footerNavigation.slice(0,8).map((item)=><Link key={item.href} href={item.href} className="transition hover:text-white">{item.label}</Link>)}</div></div>
+            <div><p className="text-[9px] font-bold uppercase tracking-[.2em] text-[#dfb78f]">More</p><div className="mt-4 grid gap-2 text-sm text-ivory/62">{platformNavigation.map((item)=><Link key={item.href} href={item.href} className="transition hover:text-white">{item.label}</Link>)}</div></div>
           </div>
         </div>
-        <div>
-          <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Medical boundary</h2>
-          <p className="text-sm leading-7 text-ivory/70">
-            General information only. Professional review is required before any personalised recommendation. Individual outcomes vary.
-          </p>
-        </div>
-        <div>
-          <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Platform</h2>
-          <div className="grid gap-2 text-sm text-ivory/72">
-            {platformNavigation.map((item) => (
-              <Link key={item.href} href={item.href} className="transition hover:text-gold-light">
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
+        <div className="flex flex-col gap-5 pt-7 text-xs text-ivory/42 md:flex-row md:items-center md:justify-between"><p className="max-w-2xl leading-6">General information only. Professional review is required before personalised medical recommendations. Individual outcomes vary.</p><div className="flex gap-5">{legalNavigation.map((item)=><Link key={item.href} href={item.href} className="transition hover:text-white">{item.label}</Link>)}</div></div>
       </div>
     </footer>
   );
