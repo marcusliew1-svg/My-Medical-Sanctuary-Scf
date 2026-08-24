@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const signals = [
-  ["01", "Physician-guided", "Medical decisions remain with qualified professionals."],
-  ["02", "Suitability first", "Advanced options are considered only after appropriate review."],
-  ["03", "Privacy-minded", "Sensitive health conversations are treated as private and personal."],
-  ["04", "Continuity", "MMS is designed around an ongoing relationship, not a one-off sale."],
+  ["Physician-guided", "Medical decisions remain with qualified professionals."],
+  ["Suitability first", "Advanced options are considered only after appropriate review."],
+  ["Private & personal", "Sensitive health conversations are treated with discretion."],
+  ["Continuity", "MMS is designed around an ongoing relationship, not a one-off sale."],
 ];
 
 const internalPrefixes = ["/operations", "/partner", "/api"];
@@ -17,30 +17,27 @@ export function InstitutionTrustBand() {
   if (internalPrefixes.some((prefix) => pathname.startsWith(prefix))) return null;
 
   return (
-    <section className="mms-trust-grid relative overflow-hidden bg-[#0d2b32] px-4 py-16 text-ivory md:py-20">
-      <div className="mms-kinetic-ring -right-20 -top-28 size-80" />
-      <div className="mms-kinetic-ring -right-2 -top-14 size-52" />
+    <section className="relative overflow-hidden bg-[#102f32] px-5 py-20 text-ivory md:px-8 md:py-28">
+      <div className="absolute -right-32 top-1/2 size-[28rem] -translate-y-1/2 rounded-full border border-[#e4ba93]/10" />
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
+        <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#dfb78f]">The MMS standard</p>
-            <h2 className="mt-3 max-w-xl font-serif text-4xl leading-tight md:text-5xl">Trust is built into the way care is approached.</h2>
+            <p className="text-[10px] font-bold uppercase tracking-[.26em] text-[#e4ba93]">The MMS standard</p>
+            <h2 className="mt-4 max-w-xl font-serif text-4xl leading-[1.04] md:text-6xl">Trust should be visible in the way care is approached.</h2>
           </div>
-          <div className="grid gap-px overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/10 sm:grid-cols-2">
-            {signals.map(([number, title, copy]) => (
-              <div key={number} className="bg-[#0d2b32]/95 p-5 md:p-6">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-8 place-items-center rounded-full border border-[#dcb58d]/35 text-[10px] font-bold text-[#e2bc96]">{number}</span>
-                  <h3 className="font-serif text-xl">{title}</h3>
-                </div>
-                <p className="mt-3 text-xs leading-6 text-ivory/58">{copy}</p>
+          <div className="grid gap-0 border-y border-white/14 sm:grid-cols-2">
+            {signals.map(([title, copy], index) => (
+              <div key={title} className="py-6 sm:px-6 sm:first:pl-0 sm:[&:nth-child(2n)]:border-l sm:[&:nth-child(2n)]:border-white/14 sm:[&:nth-child(n+3)]:border-t sm:[&:nth-child(n+3)]:border-white/14">
+                <span className="text-[9px] font-bold tracking-[.18em] text-[#e4ba93]">0{index + 1}</span>
+                <h3 className="mt-3 font-serif text-2xl">{title}</h3>
+                <p className="mt-2 max-w-sm text-xs leading-6 text-ivory/58">{copy}</p>
               </div>
             ))}
           </div>
         </div>
-        <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
-          <p className="text-xs leading-6 text-ivory/52">General information only. Individual suitability and outcomes vary.</p>
-          <Link href="/about-mms" className="text-xs font-bold uppercase tracking-[.16em] text-[#e2bc96] transition hover:text-white">How MMS approaches care →</Link>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/12 pt-6">
+          <p className="text-xs leading-6 text-ivory/48">General information only. Individual suitability and outcomes vary.</p>
+          <Link href="/about-mms" className="text-xs font-bold uppercase tracking-[.16em] text-[#e4ba93] transition hover:text-white">How MMS approaches care →</Link>
         </div>
       </div>
     </section>
