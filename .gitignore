@@ -6,3 +6,12 @@ dist/
 !.env.example
 *.tsbuildinfo
 vercel.json
+
+.vercel
+.env*
+.codex-temp/
+.codex-vercel-*.env
+.codex-*.tmp
+.codex-review/
+.next-local/
+.next-amended/

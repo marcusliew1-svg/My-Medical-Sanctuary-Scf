@@ -1,86 +1,47 @@
-import Image from "next/image";
-import { ButtonLink } from "@/components/ButtonLink";
-import { Section } from "@/components/Section";
+import { EditorialHero, EditorialStatement, FinalInvitation, SplitStory } from "@/components/Editorial";
+import { metadataFor } from "@/components/PatientEditorialPage";
 
-const reasons = [
-  {
-    title: "Trust starts with doctors",
-    text: "Personalised medical recommendations remain doctor-led, with technology used to support education and continuity.",
-  },
-  {
-    title: "The journey begins with screening",
-    text: "MMS helps patients understand their current health before considering programmes, memberships, or therapies.",
-  },
-  {
-    title: "Long-term thinking",
-    text: "The goal is not a single visit. The goal is a clear health roadmap that can evolve with your life.",
-  },
-];
+export const metadata = metadataFor(
+  "Why MMS",
+  "Why My Medical Sanctuary is built around earlier understanding, medical judgement and continuity.",
+);
 
 export default function WhyMmsPage() {
   return (
     <main>
-      <section className="relative isolate grid min-h-[70vh] items-end overflow-hidden bg-stone-950 px-4 text-white">
-        <Image
-          src="/mms-about-hero.png"
-          alt="Doctor-led consultation at My Medical Sanctuary"
-          fill
-          priority
-          className="-z-20 object-cover object-[62%_center]"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,28,31,0.94),rgba(9,28,31,0.64)_48%,rgba(9,28,31,0.24))]" />
-        <div className="mx-auto w-full max-w-6xl pb-16 pt-36">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-white/70">Why MMS</p>
-          <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-tight md:text-7xl">
-            A lifelong health partner, not a normal clinic website.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/[0.78]">
-            MMS exists to help people move from reactive treatment to proactive, doctor-led
-            health planning.
-          </p>
-        </div>
-      </section>
+      <EditorialHero
+        eyebrow="Why MMS"
+        title="Trust is built before a recommendation is made."
+        lead="MMS exists for patients who want serious preventive health guidance without hard-sell wellness noise."
+        image="/mms-about-hero.png"
+        imageAlt="Private doctor-led consultation."
+        primaryLabel="Start with clarity"
+        secondaryLabel="How MMS works"
+        secondaryHref="/how-it-works"
+      />
 
-      <Section
+      <EditorialStatement
         eyebrow="Trust"
-        title="Why should I trust MMS?"
-        lead="The MMS model is built around medical review, clear education, structured follow-up, and respect for clinical boundaries."
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {reasons.map((reason) => (
-            <article key={reason.title} className="rounded-lg border border-stone-200 bg-white p-7">
-              <h2 className="text-2xl font-semibold">{reason.title}</h2>
-              <p className="mt-4 leading-7 text-stone-600">{reason.text}</p>
-            </article>
-          ))}
-        </div>
-      </Section>
+        title="A patient should feel understood, informed and protected from rushed decisions."
+        lead="That is why MMS begins with screening, education, doctor assessment and continuity."
+      />
 
-      <Section
-        eyebrow="How MMS Helps"
-        title="From symptoms and uncertainty to a personalised health roadmap."
-        lead="Patients often arrive tired, worried about ageing, unsure about weight changes, or simply unclear about what to do next. MMS turns that uncertainty into a structured journey."
+      <SplitStory
+        eyebrow="What makes it different"
+        title="MMS is not trying to look like a normal clinic."
+        lead="The experience combines medical judgement, private care coordination and health education for people thinking about the next decade, not only the next appointment."
+        image="/mms-health-screening-hero.png"
+        imageAlt="Doctor and patient reviewing health results."
         dark
       >
-        <div className="grid gap-3 md:grid-cols-5">
-          {["Understand Your Health", "Health Screening", "Doctor Assessment", "Personalised Roadmap", "Health For Life"].map((step) => (
-            <div key={step} className="rounded-lg border border-white/[0.14] bg-white/[0.07] p-5">
-              <p className="font-semibold">{step}</p>
-            </div>
-          ))}
+        <div className="grid gap-5 text-ivory/74">
+          <p>Medical decisions remain with qualified professionals.</p>
+          <p>Technology supports learning and preparation.</p>
+          <p>Membership follows understanding, not pressure.</p>
         </div>
-      </Section>
+      </SplitStory>
 
-      <section className="px-4 py-20">
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 rounded-lg border border-stone-200 bg-[#eef6f3] p-8 md:flex-row md:items-center md:p-12">
-          <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-teal-700">Next Step</p>
-            <h2 className="text-3xl font-semibold md:text-5xl">Start with understanding.</h2>
-          </div>
-          <ButtonLink href="/contact">Book Health Screening</ButtonLink>
-        </div>
-      </section>
+      <FinalInvitation title="Start with understanding. Trust can grow from there." />
     </main>
   );
 }

@@ -1,50 +1,52 @@
 import type { Metadata } from "next";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { Hero } from "@/components/Hero";
-import { SectionHeader } from "@/components/SectionHeader";
+import { EditorialHero } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Privacy / Disclaimer",
-  description: "Privacy and disclaimer information for My Medical Sanctuary.",
+  title: "Privacy / Disclaimer | My Medical Sanctuary",
+  description: "Privacy and medical disclaimer information for My Medical Sanctuary.",
 };
+
+const boundaries = [
+  {
+    title: "General information only",
+    text: "Website content is for general information and education. It should not be treated as personalised medical advice.",
+  },
+  {
+    title: "Professional review required",
+    text: "Any membership journey, wellness pathway or service discussion requires discovery, professional review and suitability assessment.",
+  },
+  {
+    title: "No outcome promises",
+    text: "MMS does not promise specific outcomes. Individual experiences vary and depend on many personal factors.",
+  },
+  {
+    title: "Jurisdiction matters",
+    text: "Availability of services may depend on Malaysian laws, professional requirements, licensing and clinical governance.",
+  },
+];
 
 export default function PrivacyDisclaimerPage() {
   return (
     <main>
-      <Hero
+      <EditorialHero
         eyebrow="Privacy / Disclaimer"
-        title="Clear boundaries for a trustworthy wellness journey."
-        subtitle="MMS provides general education and discovery support. Personalised decisions require professional review."
+        title="Trust begins with clear boundaries."
+        lead="MMS provides education, discovery support and coordinated health journeys. Personalised decisions require appropriate professional review."
+        image="/mms-about-hero.png"
+        imageAlt="Private healthcare consultation with clear patient boundaries."
+        primaryLabel="Contact MMS"
+        primaryHref="/contact"
+        secondaryLabel="Ask Ling"
+        secondaryHref="/ling"
       />
-      <section className="bg-ivory px-4 py-20">
-        <div className="mx-auto max-w-4xl">
-          <SectionHeader
-            eyebrow="Important"
-            title="General information only."
-            description="This page is a v0.1 placeholder and should be reviewed by legal and clinical advisors before public launch."
-          />
-          <div className="grid gap-5">
-            <DisclaimerBox title="Not medical advice">
-              <p>
-                Website content is for general information and education only. It should not be treated as personalised medical advice.
-              </p>
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-5xl gap-5">
+          {boundaries.map((item) => (
+            <DisclaimerBox key={item.title} title={item.title}>
+              <p>{item.text}</p>
             </DisclaimerBox>
-            <DisclaimerBox title="Professional review required">
-              <p>
-                Any membership journey, wellness pathway or service discussion requires discovery, professional review and suitability assessment.
-              </p>
-            </DisclaimerBox>
-            <DisclaimerBox title="No outcome promises">
-              <p>
-                MMS does not promise specific outcomes. Individual experiences vary and depend on many personal factors.
-              </p>
-            </DisclaimerBox>
-            <DisclaimerBox title="Jurisdiction matters">
-              <p>
-                Availability of services may depend on Malaysian laws, professional requirements, licensing and clinical governance.
-              </p>
-            </DisclaimerBox>
-          </div>
+          ))}
         </div>
       </section>
     </main>

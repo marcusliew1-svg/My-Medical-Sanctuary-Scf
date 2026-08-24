@@ -1,60 +1,135 @@
-import Image from "next/image";
-import Link from "next/link";
-import { CTAButton } from "@/components/CTAButton";
+import type { Metadata } from "next";
+import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
+import { RevealCardGrid } from "@/components/ExperienceCards";
 import { LingPanel } from "@/components/LingPanel";
-import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { lingBoundaries } from "@/data/platformModules";
-import { lingDisclaimer } from "@/lib/content";
+import { lingDisclaimer, lingOptions } from "@/lib/content";
 
-const modes = [
-  { number: "01", title: "Ask", text: "Explore general health and MMS questions without registration." },
-  { number: "02", title: "Organise", text: "With permission, structure preferences, records and next actions." },
-  { number: "03", title: "Coordinate", text: "Prepare the journey for MMS teams and qualified doctors." },
+export const metadata: Metadata = {
+  title: "Ling | My Medical Sanctuary",
+  description: "Ling is the MMS AI Health Education Companion for learning, organising questions and preparing for doctor-led care.",
+};
+
+const lingRoles = [
+  {
+    title: "Welcoming guide",
+    eyebrow: "Begin",
+    text: "Helps you name what brought you here.",
+    detail: "Ling can turn a vague worry into a clearer first question for MMS.",
+    image: "/ling-concierge.png",
+  },
+  {
+    title: "Knowledge companion",
+    eyebrow: "Learn",
+    text: "Explains concepts in plain language.",
+    detail: "Ling can explain screening, longevity, metabolic health and medicine access concepts without diagnosing.",
+    image: "/ling-knowledge.png",
+  },
+  {
+    title: "Regional care guide",
+    eyebrow: "Navigate",
+    text: "Helps frame cross-country healthcare questions.",
+    detail: "Ling can explain why systems, prices and access pathways may differ before licensed review.",
+    image: "/ling-regional.png",
+  },
+  {
+    title: "Continuity guide",
+    eyebrow: "Continue",
+    text: "Helps you prepare for follow-up.",
+    detail: "Ling can organise questions for your next MMS conversation and remind you where doctor review is needed.",
+    image: "/ling-continuity.png",
+  },
 ];
-
-const examples = ["What should I ask at my health screening?", "How are Ascend and Evolve different?", "Can MMS coordinate care in Thailand?", "Help me prepare for a doctor discussion."];
 
 export default function LingPage() {
   return (
     <main>
-      <section className="relative isolate overflow-hidden bg-[#062e29] px-4 pb-14 pt-28 text-ivory md:pb-20 md:pt-36">
-        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_32%,rgba(212,190,133,.18),transparent_28%),radial-gradient(circle_at_15%_70%,rgba(126,163,143,.22),transparent_34%)]" />
-        <div className="mx-auto grid min-h-[650px] max-w-6xl items-center gap-10 lg:grid-cols-[.92fr_1.08fr]">
+      <EditorialHero
+        eyebrow="Ling"
+        title="Your personal health concierge for better questions."
+        lead="Ask. Understand. Prepare. Ling helps you organise what matters before doctor-led care."
+        image="/ling-knowledge.png"
+        imageAlt="Ling, the MMS AI Health Education Companion."
+        primaryLabel="Ask Ling"
+        secondaryLabel="Speak with MMS"
+        secondaryHref="/contact"
+        imagePosition="52% center"
+      />
+
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[.22em] text-gold-light">Meet Ling · MMS intelligent guide</p>
-            <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.03] md:text-7xl">A calmer way to navigate your health journey.</h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-ivory/72">Ask first. Organise what matters. Move to human care when it is time.</p>
-            <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="#try-ling">Ask Ling now</CTAButton><CTAButton href="/how-it-works" variant="outline">See the MMS journey</CTAButton></div>
-            <p className="mt-3 text-xs leading-5 text-ivory/58">No registration is needed to start asking general questions.</p>
-            <div className="mt-10 grid max-w-xl grid-cols-3 gap-2">{modes.map(mode => <div key={mode.number} className="rounded-2xl border border-white/10 bg-white/5 p-4"><span className="text-xs text-gold-light">{mode.number}</span><p className="mt-2 font-serif text-xl">{mode.title}</p></div>)}</div>
+            <p className="editorial-kicker mb-4 text-deep-green">What brings you here?</p>
+            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
+              Start with the question, not the programme.
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-warm-gray">
+              Ling is best for orientation. Personal medical advice belongs with an MMS doctor.
+            </p>
           </div>
-          <div className="relative min-h-[560px]">
-            <div className="absolute inset-x-4 bottom-0 top-0 overflow-hidden rounded-[2.4rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-sm">
-              <Image src="/ling-mms-guide.png" alt="Ling, My Medical Sanctuary intelligent guide" fill priority className="object-cover object-[50%_18%]" sizes="(min-width: 1024px) 50vw, 100vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#062e29] via-transparent to-transparent" />
-            </div>
-            <div className="absolute bottom-7 left-0 max-w-[300px] rounded-2xl border border-white/15 bg-[#0b1f27]/88 p-5 shadow-xl backdrop-blur-md"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">Ling can help now</p><p className="mt-2 font-serif text-2xl">“Tell me what you want to understand.”</p></div>
-            <div className="absolute right-0 top-10 rounded-2xl bg-ivory px-5 py-4 text-navy shadow-xl"><p className="text-xs font-bold uppercase tracking-[.14em] text-deep-green">Doctor-led</p><p className="mt-1 text-sm">Medical decisions remain human.</p></div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {lingOptions.slice(0, 6).map((option) => (
+              <div key={option} className="rounded-[1rem] border border-gold-light/45 bg-white/80 p-5 text-lg text-charcoal shadow-[0_18px_44px_rgba(11,26,46,0.06)]">
+                {option}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="try-ling" className="scroll-mt-24 bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl">
-        <div className="grid gap-6 lg:grid-cols-[.72fr_1.28fr] lg:items-start">
-          <div className="lg:sticky lg:top-28"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Try Ling</p><h2 className="mt-3 font-serif text-4xl leading-tight text-navy md:text-5xl">Start with a question, not a form.</h2><p className="mt-4 leading-7 text-warm-gray">{lingDisclaimer}</p><div className="mt-6 grid gap-2">{examples.map(example => <div key={example} className="rounded-xl bg-white px-4 py-3 text-sm text-navy shadow-soft">“{example}”</div>)}</div></div>
-          <LingPanel />
+      <section className="bg-navy px-4 py-20 text-ivory md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="editorial-kicker mb-4 text-gold-light">Ling visual system</p>
+              <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
+                One guide, different moments in the journey.
+              </h2>
+            </div>
+            <p className="max-w-sm text-sm leading-7 text-ivory/66">
+              Hover each role to see how Ling should support patients without replacing care.
+            </p>
+          </div>
+          <RevealCardGrid items={lingRoles} />
         </div>
-      </div></section>
+      </section>
 
-      <section className="bg-warm-white px-4 py-20"><div className="mx-auto max-w-6xl">
-        <div className="mb-12 grid overflow-hidden rounded-[2rem] bg-deep-green text-ivory shadow-premium md:grid-cols-3">{modes.map((mode,index)=><article key={mode.number} className="relative border-white/10 p-7 md:border-l first:border-l-0"><span className="text-xs font-bold text-gold-light">{mode.number}</span><h2 className="mt-3 font-serif text-3xl">{mode.title}</h2><p className="mt-3 text-sm leading-6 text-ivory/68">{mode.text}</p>{index<2?<span className="absolute -right-3 top-1/2 z-10 hidden size-6 place-items-center rounded-full bg-gold text-navy md:grid">→</span>:null}</article>)}</div>
-        <div className="grid gap-5 md:grid-cols-2">
-          <article className="rounded-[2rem] bg-[#dfe9e3] p-8"><p className="text-xs font-bold uppercase tracking-[.16em] text-deep-green">What Ling does</p><div className="mt-5 grid gap-3">{["Educates and clarifies","Organises non-clinical context","Supports onboarding and coordination","Escalates to the right human team"].map(item=><div key={item} className="flex items-center gap-3 rounded-xl bg-white/70 p-4"><span className="grid size-8 place-items-center rounded-full bg-deep-green text-white">✓</span><p className="font-semibold text-navy">{item}</p></div>)}</div></article>
-          <article className="rounded-[2rem] bg-navy p-8 text-ivory"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">What Ling never replaces</p><div className="mt-5 grid gap-3">{lingBoundaries.slice(0,4).map(item=><div key={item} className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-ivory/75">{item}</div>)}</div></article>
+      <SplitStory
+        eyebrow="Boundary"
+        title="Ling is useful because the boundary is clear."
+        lead={lingDisclaimer}
+        image="/mms-health-screening-hero.png"
+        imageAlt="Doctor-led consultation remains central to MMS care."
+        dark
+        reverse
+      >
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="border-t border-gold/45 pt-5">
+            <h3 className="font-serif text-3xl text-ivory">Ling can</h3>
+            <p className="mt-3 leading-7 text-ivory/70">Explain concepts, organise questions and prepare you for consultation.</p>
+          </div>
+          <div className="border-t border-gold/45 pt-5">
+            <h3 className="font-serif text-3xl text-ivory">Ling cannot</h3>
+            <p className="mt-3 leading-7 text-ivory/70">Diagnose, prescribe, interpret personal results or replace an MMS doctor.</p>
+          </div>
         </div>
-        <div className="mt-8"><DisclaimerBox title="Human review remains central"><p>A personalised medical recommendation, diagnosis, prescription or treatment decision must come from an appropriately qualified professional. Ling supports the journey; she does not become the clinician.</p></DisclaimerBox></div>
-        <div className="mt-10 text-center"><Link href="/register" className="font-semibold text-deep-green underline decoration-gold underline-offset-4">Create a secure account when you want Ling to remember your journey →</Link></div>
-      </div></section>
+      </SplitStory>
+
+      <section className="bg-warm-white px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+          <ImagePanel src="/ling-concierge.png" alt="Ling welcoming patients." className="min-h-[440px] rounded-[1.5rem] shadow-premium" objectPosition="50% center" />
+          <div>
+            <p className="editorial-kicker mb-4 text-deep-green">Prototype panel</p>
+            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-5xl">
+              A simple education layer, not a medical decision engine.
+            </h2>
+            <div className="mt-10">
+              <LingPanel />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <FinalInvitation title="You can begin with a question." lead="Ling can help you prepare, then MMS can guide the next step." />
     </main>
   );
 }

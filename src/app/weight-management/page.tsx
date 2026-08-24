@@ -1,29 +1,28 @@
-import { ConversionPanel } from "@/components/ConversionPanel";
-import { PageHero } from "@/components/PageHero";
-import { Section } from "@/components/Section";
+import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+
+export const metadata = metadataFor(
+  "Weight Management",
+  "MMS weight management starts with health context, metabolic review and personalised planning.",
+);
 
 export default function WeightManagementPage() {
   return (
-    <main>
-      <PageHero
-        eyebrow="Weight Management"
-        title="Understand the health factors behind weight change."
-        lead="MMS supports weight management through assessment, health screening, doctor review, and personalised planning."
-      />
-      <Section
-        eyebrow="Personalised Planning"
-        title="Weight is not treated as a cosmetic shortcut."
-        lead="The MMS approach considers metabolic health, lifestyle, sleep, stress, body composition, and clinical suitability."
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {["Body composition", "Metabolic review", "Sustainable follow-up"].map((item) => (
-            <div key={item} className="rounded-lg border border-stone-200 bg-white p-7">
-              <h2 className="text-2xl font-semibold">{item}</h2>
-            </div>
-          ))}
-        </div>
-      </Section>
-      <ConversionPanel title="Plan weight management with clinical context." />
-    </main>
+    <PatientEditorialPage
+      eyebrow="Weight Management"
+      title="Weight change deserves context, not judgement."
+      lead="MMS approaches weight through body composition, metabolic health, lifestyle patterns and professional review."
+      image="/mms-health-screening-hero.png"
+      introEyebrow="Metabolic health"
+      introTitle="The better question is what is driving the change."
+      introLead="Weight can reflect sleep, stress, hormones, glucose, habits, medication, travel and life stage."
+      points={[
+        { title: "Body composition", text: "Understand what is changing beyond a single number." },
+        { title: "Metabolic review", text: "Look for health patterns that may need professional attention." },
+        { title: "Sustainable follow-up", text: "A plan should fit real life, not only a short burst of motivation." },
+      ]}
+      trustTitle="Weight management should not feel like a cosmetic shortcut."
+      trustLead="MMS keeps the conversation clinical, respectful and personalised."
+      finalTitle="Start with the factors behind the change."
+    />
   );
 }

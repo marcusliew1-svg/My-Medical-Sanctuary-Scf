@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { DraftBanner } from "@/components/DraftBanner";
 import { FooterV01 } from "@/components/FooterV01";
 import { Navbar } from "@/components/Navbar";
 import "./globals.css";
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+        <DraftBanner />
         <Navbar />
         {children}
         <FooterV01 />

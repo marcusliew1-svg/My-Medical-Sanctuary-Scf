@@ -1,32 +1,27 @@
-import { ConversionPanel } from "@/components/ConversionPanel";
-import { PageHero } from "@/components/PageHero";
-import { Section } from "@/components/Section";
+import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+
+export const metadata = metadataFor(
+  "Preventive Care",
+  "Preventive care at MMS focuses on earlier understanding, doctor review and long-term planning.",
+);
 
 export default function PreventiveCarePage() {
   return (
-    <main>
-      <PageHero
-        eyebrow="Preventive Care"
-        title="Act before small health risks become larger concerns."
-        lead="Preventive care at MMS focuses on early detection, health baselines, doctor assessment, and personalised follow-up."
-      />
-      <Section
-        eyebrow="How MMS Helps"
-        title="From health screening to practical next steps."
-        lead="The goal is to reduce uncertainty and support better long-term decisions without exaggerated claims."
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {["Understand risk", "Review with a doctor", "Plan ahead"].map((item) => (
-            <div key={item} className="rounded-lg border border-stone-200 bg-white p-7">
-              <h2 className="text-2xl font-semibold">{item}</h2>
-              <p className="mt-4 leading-7 text-stone-600">
-                Subject to doctor assessment. Suitable candidates only. Individual outcomes vary.
-              </p>
-            </div>
-          ))}
-        </div>
-      </Section>
-      <ConversionPanel title="Book a preventive health consultation." />
-    </main>
+    <PatientEditorialPage
+      eyebrow="Preventive Care"
+      title="Act before small risks become larger concerns."
+      lead="Preventive care at MMS begins with a baseline, a doctor-led review and practical planning."
+      introEyebrow="Earlier care"
+      introTitle="Prevention is not a package. It is a way of thinking."
+      introLead="The goal is to reduce uncertainty and help people make calm decisions before pressure arrives."
+      points={[
+        { title: "Understand risk", text: "Screening and history help reveal what deserves attention." },
+        { title: "Decide better", text: "Doctor review keeps findings in context and avoids overreaction." },
+        { title: "Plan ahead", text: "A preventive roadmap can evolve with life, work, travel and ageing." },
+      ]}
+      trustTitle="The first recommendation is often patience and clarity."
+      trustLead="MMS does not need to rush visitors into programmes. The safer first step is understanding what matters."
+      finalTitle="Preventive care begins with a better first conversation."
+    />
   );
 }

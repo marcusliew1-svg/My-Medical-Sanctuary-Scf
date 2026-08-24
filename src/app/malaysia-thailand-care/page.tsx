@@ -1,21 +1,52 @@
-import { CTAButton } from "@/components/CTAButton";
-import { DisclaimerBox } from "@/components/DisclaimerBox";
-import { PageHero } from "@/components/PageHero";
-import { Section } from "@/components/Section";
-import { CapabilityStatus } from "@/components/CapabilityStatus";
+import type { Metadata } from "next";
+import { EditorialHero, FinalInvitation } from "@/components/Editorial";
 
-const steps = ["Understand the patient need", "Confirm consent and suitability", "Verify providers and availability", "Present scope and quotation", "Coordinate care and follow-up"];
+export const metadata: Metadata = {
+  title: "Malaysia Thailand Care",
+  description:
+    "Regional care coordination for patients considering preventive health continuity across Malaysia and Thailand.",
+};
+
+const regions = [
+  ["Malaysia", "Preventive health, MMS continuity and structured patient relationship management."],
+  ["Thailand", "Selected specialist, recovery and regional access discussions where appropriate."],
+  ["MMS coordination", "A single thread so the patient understands what happens before, during and after travel."],
+];
 
 export default function MalaysiaThailandCarePage() {
-  return <main>
-    <PageHero eyebrow="Malaysia–Thailand Care" title="One coordinated journey across two countries." lead="MMS helps patients move between assessment, suitable providers and follow-up with consent and human clinical oversight." primaryHref="/register" primaryLabel="Discuss with Ling" />
-    <Section eyebrow="The care corridor" title="Connected, not fragmented." lead="The exact pathway depends on the patient, provider availability and licensed professional review.">
-      <div className="mb-6"><CapabilityStatus status="partner" /></div>
-      <div className="grid gap-4 md:grid-cols-5">{steps.map((step, index) => <article key={step} className="rounded-2xl border border-gold-light/40 bg-white p-5 shadow-soft"><p className="text-xs font-bold uppercase tracking-[0.16em] text-gold">0{index + 1}</p><h2 className="mt-3 font-serif text-xl text-navy">{step}</h2></article>)}</div>
-    </Section>
-    <Section eyebrow="Patient control" title="Information moves only with consent." className="bg-warm-white">
-      <DisclaimerBox title="Clinical and operational boundary"><p>Ling may organise possible pathways internally. Provider suitability, treatment decisions and recommendations require qualified human review. Availability, travel and record transfer must be confirmed for each patient.</p></DisclaimerBox>
-      <div className="mt-8"><CTAButton href="/register">Start a secure discussion</CTAButton></div>
-    </Section>
-  </main>;
+  return (
+    <main>
+      <EditorialHero
+        eyebrow="Regional care"
+        title="Your care can travel with you."
+        lead="Malaysia and Thailand should not feel like generic medical tourism. MMS frames regional care around clarity, suitability and coordination."
+        image="/mms-health-screening-hero.png"
+        imageAlt="Doctor-led care coordination conversation."
+        primaryLabel="Discuss regional care"
+        secondaryLabel="Ask Ling"
+        secondaryHref="/ling"
+      />
+
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="editorial-kicker mb-4 text-deep-green">Care continuity</p>
+            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
+              Regional access needs a human coordinator.
+            </h2>
+          </div>
+          <div className="grid gap-8">
+            {regions.map(([title, text]) => (
+              <div key={title} className="border-t border-gold/45 pt-5">
+                <h3 className="font-serif text-3xl text-navy">{title}</h3>
+                <p className="mt-3 leading-7 text-warm-gray">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <FinalInvitation title="If care involves travel, clarity matters even more." />
+    </main>
+  );
 }

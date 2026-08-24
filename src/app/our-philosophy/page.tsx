@@ -1,36 +1,53 @@
-import { ConversionPanel } from "@/components/ConversionPanel";
-import { PageHero } from "@/components/PageHero";
-import { Section } from "@/components/Section";
+import { EditorialHero, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
+import { metadataFor } from "@/components/PatientEditorialPage";
 
-const pillars = [
-  "Prevention before crisis",
-  "Doctor-led decision making",
-  "Education before treatment",
-  "Long-term health planning",
+export const metadata = metadataFor(
+  "Our Philosophy",
+  "MMS believes healthcare should be clearer, earlier, more personal and professionally reviewed.",
+);
+
+const principles = [
+  { title: "Prevention", text: "Act earlier, before uncertainty becomes pressure." },
+  { title: "Personalisation", text: "Respect the individual health profile and life context." },
+  { title: "Education", text: "Help every patient leave more informed than when they arrived." },
+  { title: "Judgement", text: "Keep clinical decisions with qualified professionals." },
+  { title: "Continuity", text: "Support the patient after the first visit." },
 ];
 
 export default function OurPhilosophyPage() {
   return (
     <main>
-      <PageHero
+      <EditorialHero
         eyebrow="Our Philosophy"
-        title="Clearer, earlier, and more personal healthcare."
-        lead="MMS believes better health decisions begin with understanding, screening, doctor review, and a roadmap that evolves with the patient."
+        title="Clearer, earlier and more personal healthcare."
+        lead="MMS believes better decisions begin with understanding, screening, doctor review and a roadmap that evolves with the patient."
+        image="/mms-health-screening-hero.png"
+        imageAlt="Doctor-led preventive health review."
       />
-      <Section
-        eyebrow="Principles"
-        title="Premium care is calm, structured, and clinically grounded."
-        lead="We do not lead with isolated treatments. We lead with health understanding and doctor-led planning."
-      >
-        <div className="grid gap-4 md:grid-cols-4">
-          {pillars.map((pillar) => (
-            <div key={pillar} className="rounded-lg border border-stone-200 bg-white p-7">
-              <h2 className="text-xl font-semibold">{pillar}</h2>
-            </div>
-          ))}
+
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-14 max-w-3xl">
+            <p className="editorial-kicker mb-4 text-deep-green">Principles</p>
+            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
+              Premium care is calm because the principles are clear.
+            </h2>
+          </div>
+          <JourneyLine steps={principles} />
         </div>
-      </Section>
-      <ConversionPanel title="Build your health plan on understanding." />
+      </section>
+
+      <SplitStory
+        eyebrow="Respect"
+        title="Strong systems create consistency. People create excellence."
+        lead="MMS is built on humility, integrity and professionalism across patients, doctors, nurses, HRMs and staff."
+        image="/mms-about-hero.png"
+        imageAlt="Private consultation built around respect."
+        dark
+        reverse
+      />
+
+      <FinalInvitation title="Build your health plan on understanding." />
     </main>
   );
 }

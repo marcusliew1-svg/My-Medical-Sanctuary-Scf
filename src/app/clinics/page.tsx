@@ -1,16 +1,44 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { CTAButton } from "@/components/CTAButton";
+import { EditorialHero, FinalInvitation, SplitStory } from "@/components/Editorial";
 
-export const metadata: Metadata = { title: "Our Clinics", description: "Explore the developing MMS clinic and care-partner network across Malaysia and Thailand." };
+export const metadata: Metadata = {
+  title: "Locations",
+  description: "MMS locations and care contexts across Bangsar, SS2 and regional care coordination.",
+};
 
-const locations = [
-  { country: "Malaysia", label: "MMS home market", image: "/mms-health-screening-hero.png", status: "Clinic details being confirmed", services: ["Preventive screening", "Doctor review", "Wellness coordination", "Membership continuity"] },
-  { country: "Thailand", label: "Partner care corridor", image: "/mms-about-hero.png", status: "Partner locations being verified", services: ["Recovery pathways", "Specialist access", "Hospitality support", "Cross-border follow-up"] },
-];
+export default function ClinicsPage() {
+  return (
+    <main>
+      <EditorialHero
+        eyebrow="Locations"
+        title="Each care setting should have a clear personality."
+        lead="MMS is designed to feel warm, medically reliable and coordinated across the patient journey."
+        image="/mms-about-hero.png"
+        imageAlt="Private preventive healthcare setting."
+        primaryLabel="Speak with MMS"
+        secondaryLabel="Care travel"
+        secondaryHref="/malaysia-thailand-care"
+      />
 
-export default function ClinicsPage(){return <main>
-  <section className="relative isolate overflow-hidden bg-[#062e29] px-4 pb-16 pt-28 text-ivory md:pt-36"><div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_80%_32%,rgba(212,190,133,.15),transparent_28%),radial-gradient(circle_at_15%_74%,rgba(95,154,129,.2),transparent_34%)]"/><div className="mx-auto grid min-h-[560px] max-w-6xl items-center gap-10 lg:grid-cols-[.85fr_1.15fr]"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">MMS care network</p><h1 className="mt-4 text-balance font-serif text-5xl leading-[1.03] md:text-7xl">Care close to home. Connected across borders.</h1><p className="mt-6 max-w-xl text-lg leading-8 text-ivory/70">Malaysia anchors the journey. Thailand extends the options. MMS keeps the relationship continuous.</p><div className="mt-8"><CTAButton href="/contact">Ask about a location</CTAButton></div></div><div className="relative min-h-[470px]"><div className="absolute left-[18%] top-[16%] size-56 rounded-full border border-gold/20"/><div className="absolute bottom-[12%] right-[12%] size-64 rounded-full border border-white/10"/><div className="absolute left-[22%] top-[26%] rounded-2xl bg-ivory p-5 text-navy shadow-2xl"><p className="text-xs font-bold uppercase tracking-[.14em] text-deep-green">Malaysia</p><p className="mt-1 font-serif text-3xl">Home base</p></div><div className="absolute bottom-[22%] right-[6%] rounded-2xl bg-white/10 p-5 backdrop-blur-md"><p className="text-xs font-bold uppercase tracking-[.14em] text-gold-light">Thailand</p><p className="mt-1 font-serif text-3xl">Care corridor</p></div><div className="absolute left-[44%] top-[50%] h-px w-[35%] rotate-[18deg] bg-gradient-to-r from-gold-light to-white/20"/><div className="absolute left-[49%] top-[43%] grid size-16 place-items-center rounded-full bg-gold font-serif text-xl text-navy shadow-xl">MMS</div></div></div></section>
+      <SplitStory
+        eyebrow="Bangsar"
+        title="Warm preventive health and longevity planning."
+        lead="A setting for discovery, screening conversations, health education and long-term relationship coordination."
+        image="/mms-about-hero.png"
+        imageAlt="Warm private healthcare consultation environment."
+      />
 
-  <section className="bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl"><div className="mb-10"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">Clinic network</p><h2 className="mt-3 font-serif text-5xl text-navy">Two countries. One care relationship.</h2></div><div className="grid gap-6 md:grid-cols-2">{locations.map((location,index)=><article key={location.country} className={`overflow-hidden rounded-[2rem] shadow-premium ${index===1?"bg-deep-green text-ivory":"bg-white text-navy"}`}><div className="relative h-72"><Image src={location.image} alt="" fill className={`object-cover ${index===1?"opacity-80":""}`} sizes="50vw"/><div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"/><div className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-[.14em] text-deep-green">{location.label}</div></div><div className="p-7"><div className="flex items-center justify-between gap-3"><h3 className="font-serif text-4xl">{location.country}</h3><span className={`rounded-full px-3 py-2 text-[11px] font-bold ${index===1?"bg-white/10 text-gold-light":"bg-ivory text-deep-green"}`}>{location.status}</span></div><div className="mt-6 grid grid-cols-2 gap-3">{location.services.map(service=><div key={service} className={`rounded-xl p-3 text-sm ${index===1?"bg-white/5 text-ivory/75":"bg-ivory text-navy"}`}>✓ {service}</div>)}</div></div></article>)}</div><div className="mt-10 flex flex-wrap gap-3"><CTAButton href="/contact">Request clinic guidance</CTAButton><CTAButton href="/medical-tourism" variant="outline">Explore cross-border care</CTAButton></div></div></section>
-</main>}
+      <SplitStory
+        eyebrow="SS2"
+        title="Clinical reliability and specialised care context."
+        lead="SS2 should communicate medical depth, calm process and continuity without feeling cold or transactional."
+        image="/mms-health-screening-hero.png"
+        imageAlt="Clinical screening and medical review setting."
+        dark
+        reverse
+      />
+
+      <FinalInvitation title="Choose the setting after the right first conversation." />
+    </main>
+  );
+}

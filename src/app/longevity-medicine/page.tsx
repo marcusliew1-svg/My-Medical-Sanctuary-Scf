@@ -1,30 +1,28 @@
-import { ConversionPanel } from "@/components/ConversionPanel";
-import { PageHero } from "@/components/PageHero";
-import { Section } from "@/components/Section";
+import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+
+export const metadata = metadataFor(
+  "Longevity Medicine",
+  "Personalised longevity at MMS is approached through screening, doctor review, lifestyle context and continuity.",
+);
 
 export default function LongevityMedicinePage() {
   return (
-    <main>
-      <PageHero
-        eyebrow="Longevity Medicine"
-        title="Personalised health optimisation for healthy ageing."
-        lead="MMS approaches longevity through screening, doctor review, lifestyle context, and evidence-informed planning."
-      />
-      <Section
-        eyebrow="Longevity"
-        title="Support resilience, performance, and ageing well."
-        lead="Longevity programmes should be personalised to health status, goals, and clinical suitability."
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {["Biological age indicators", "Metabolic health", "Long-term monitoring"].map((item) => (
-            <div key={item} className="rounded-lg border border-stone-200 bg-white p-7">
-              <h2 className="text-2xl font-semibold">{item}</h2>
-              <p className="mt-4 leading-7 text-stone-600">Individual outcomes vary and must be reviewed with a doctor.</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-      <ConversionPanel title="Start your longevity journey with screening." />
-    </main>
+    <PatientEditorialPage
+      eyebrow="Longevity Medicine"
+      title="Ageing well deserves medical judgement, not hype."
+      lead="MMS approaches longevity through baseline understanding, evidence-informed discussion and professional review."
+      image="/mms-health-screening-hero.png"
+      introEyebrow="Healthy ageing"
+      introTitle="Longevity is most credible when it is personal and measured."
+      introLead="The right questions are usually about resilience, energy, metabolic health, recovery and long-term independence."
+      points={[
+        { title: "Baseline first", text: "Screening helps identify what is measurable today." },
+        { title: "Context matters", text: "Lifestyle, sleep, stress and family history shape the conversation." },
+        { title: "Follow over time", text: "Longer-view planning is more useful than one dramatic intervention." },
+      ]}
+      trustTitle="Advanced longevity discussions require careful boundaries."
+      trustLead="Suitability, uncertainty and individual variation should remain visible before any programme is considered."
+      finalTitle="Build longevity on clarity, not promises."
+    />
   );
 }

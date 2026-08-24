@@ -18,7 +18,7 @@ const interests = [
 const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "Other"];
 
 const fieldClass =
-  "min-h-12 rounded-md border border-gold-light/50 bg-ivory/40 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none";
+  "min-h-12 rounded-md border border-gold-light/50 bg-ivory/45 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-light/45";
 
 const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
 
@@ -71,11 +71,11 @@ export function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-lg border border-gold-light bg-white/[0.94] p-8 shadow-premium">
+      <div className="rounded-[1.5rem] border border-gold-light bg-white/[0.94] p-8 shadow-premium">
         <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-gold">Enquiry Received</p>
         <h3 className="font-serif text-3xl text-navy">Thank you.</h3>
         <p className="mt-4 leading-7 text-warm-gray">
-          Your discovery enquiry has been captured. The MMS team can connect this flow to Zoho later.
+          Your discovery enquiry has been captured. The MMS team will review your context and guide the next appropriate step.
         </p>
         <CTAButton onClick={() => setSubmitted(false)} className="mt-6">
           Submit another enquiry
@@ -85,10 +85,13 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 rounded-lg border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:grid-cols-2 md:p-8">
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[1.5rem] border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:grid-cols-2 md:p-8">
       <div className="md:col-span-2">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Discovery Enquiry</p>
-        <h3 className="mt-2 font-serif text-3xl text-navy">Tell MMS where to begin.</h3>
+        <h3 className="mt-2 font-serif text-3xl text-navy">Tell us where to begin.</h3>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-warm-gray">
+          This is not a medical consultation. It helps MMS understand who should contact you and what pathway may be relevant.
+        </p>
       </div>
       <label className={labelClass}>
         Full name
