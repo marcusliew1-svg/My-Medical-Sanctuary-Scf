@@ -1,75 +1,138 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 
 export const metadata: Metadata = {
   title: "Treatments & Wellness Pathways",
-  description: "Plain-English explanations of MMS screening, wellness, recovery and advanced-care pathways, with suitability and regulatory boundaries made clear.",
+  description: "Explore MMS screening, wellness, recovery and advanced-care pathways with clear suitability and medical boundaries.",
 };
 
-type Treatment = {
-  slug: string;
-  name: string;
-  short: string;
-  plain: string;
-  category: string;
-  status: "Core / commonly discussed" | "Suitability-led" | "Advanced / tightly regulated" | "Diagnostic / assessment";
-  watch: string;
-};
-
-const treatments: Treatment[] = [
-  { slug: "health-screening-ultrasound", name: "Health Screening & Ultrasound", short: "Preventive testing and imaging", plain: "A structured check of common health markers, often using blood tests, measurements and ultrasound to build a clearer picture of your current health before deciding what—if anything—needs attention.", category: "Screening & Assessment", status: "Diagnostic / assessment", watch: "The exact tests should be chosen by age, history, symptoms and doctor review rather than by package alone." },
-  { slug: "ecg-cardiovascular-risk-review", name: "ECG & Cardiovascular Risk Review", short: "Heart rhythm and risk assessment", plain: "An ECG records the electrical activity of the heart. It can be combined with blood pressure, cholesterol and other risk information to help a doctor understand cardiovascular risk more clearly.", category: "Screening & Assessment", status: "Diagnostic / assessment", watch: "An ECG is not a complete heart check by itself and abnormal findings may require further tests or specialist review." },
-  { slug: "iv-wellness-antioxidant-support", name: "IV Wellness & Antioxidant Support", short: "Fluids or selected nutrients given through a vein", plain: "An IV places fluid or selected ingredients directly into the bloodstream. The exact formulation should be chosen for a defined clinical reason or wellness objective and reviewed for safety, interactions and suitability.", category: "Cellular & Wellness Support", status: "Suitability-led", watch: "Sterility, ingredient quality, dose and medical history matter. IV therapy should never be treated as automatically beneficial for everyone." },
-  { slug: "nad-plus", name: "NAD+", short: "A molecule involved in cellular energy processes", plain: "NAD is naturally present in cells and helps with energy-related chemical reactions. In wellness settings it may be offered by IV, but the evidence for broad anti-ageing or performance claims remains limited and product quality matters.", category: "Cellular & Wellness Support", status: "Suitability-led", watch: "Avoid claims that NAD+ reverses ageing or treats disease. Injectable products require proper sterile preparation and professional supervision." },
-  { slug: "medical-weight-management", name: "Weight & Metabolic Health", short: "Structured support around weight, glucose and liver health", plain: "This pathway looks at how weight, blood sugar, insulin resistance, cholesterol, fatty-liver risk, sleep, diet and activity fit together. The focus is on measurable health markers rather than just a number on the scale.", category: "Metabolic & Hormonal Health", status: "Core / commonly discussed", watch: "Prescription medicines such as GLP-1 drugs require a clinician, proper indications and ongoing review; they are not automatic package inclusions." },
-  { slug: "hormone-therapy", name: "Hormone Review & Optimisation", short: "Assessment of hormone-related symptoms and laboratory findings", plain: "Hormones affect areas such as energy, sexual health, menstrual or menopausal symptoms, body composition and sleep. A responsible pathway begins with symptoms, examination and appropriate testing—not with assuming that everyone needs hormone treatment.", category: "Metabolic & Hormonal Health", status: "Suitability-led", watch: "Hormone therapy can have important benefits and risks. It should be prescribed only when clinically appropriate and monitored by a qualified professional." },
-  { slug: "peptides", name: "Peptides", short: "Short chains of amino acids used in many biological signalling processes", plain: "Peptides are small protein-like molecules. Some are established medicines for specific conditions, while many products marketed for recovery, body composition or longevity are experimental, compounded or not approved for those claims.", category: "Metabolic & Hormonal Health", status: "Suitability-led", watch: "The exact peptide matters. Avoid grouping approved medicines together with unapproved wellness peptides or promising broad anti-ageing effects." },
-  { slug: "gut-health-microbiome-support", name: "Gut Health & Microbiome Support", short: "Review of digestion, diet and gut-related factors", plain: "The microbiome is the community of microorganisms living in and on the body, especially the gut. MMS can help organise nutrition, symptoms, lifestyle and appropriate testing, but gut health should not be reduced to one test or detox claim.", category: "Gut Health & Recovery", status: "Core / commonly discussed", watch: "Microbiome science is evolving. Test results do not automatically translate into a specific treatment plan." },
-  { slug: "colon-cleansing", name: "Colon Cleansing", short: "A procedure intended to empty or irrigate the colon", plain: "Colon cleansing is sometimes offered in wellness settings. It is different from medically required bowel preparation and is not necessary for routine 'detoxification' in most people.", category: "Gut Health & Recovery", status: "Suitability-led", watch: "It can cause dehydration, electrolyte problems or bowel injury in some people and should only be considered with appropriate screening and a qualified provider." },
-  { slug: "hyperbaric-oxygen", name: "Hyperbaric Oxygen Chamber", short: "Breathing high-concentration oxygen under increased pressure", plain: "Hyperbaric oxygen therapy takes place in a pressurised chamber. The pressure allows the lungs to take in more oxygen. It has established medical uses for certain conditions, while many wellness claims go beyond proven indications.", category: "Recovery & Performance", status: "Suitability-led", watch: "Pressure-related ear or sinus injury and fire safety are important. Use should follow trained clinical protocols and equipment instructions." },
-  { slug: "red-light-photobiomodulation", name: "Red-Light / Photobiomodulation", short: "Low-level red or near-infrared light applied to tissue", plain: "Red-light therapy uses specific wavelengths of light intended to influence cellular activity in the treated area. Evidence varies widely depending on the condition, device, wavelength and dose.", category: "Recovery & Performance", status: "Suitability-led", watch: "Do not generalise evidence from one indication or device to every red-light product or claim." },
-  { slug: "prp", name: "PRP", short: "Platelet-rich plasma prepared from your own blood", plain: "A small amount of blood is processed to concentrate platelets, which contain signalling proteins involved in normal healing. The prepared plasma is then used in a targeted procedure where clinically appropriate.", category: "Regenerative & Recovery", status: "Suitability-led", watch: "Effectiveness depends heavily on the condition, preparation method and treatment site. PRP should not be described as guaranteed regeneration." },
-  { slug: "prgf", name: "PRGF", short: "A platelet-derived preparation focused on growth-factor-rich plasma", plain: "PRGF is a related blood-derived approach that concentrates selected plasma components from the patient's own blood. In simple terms, it is another way of preparing the patient's own platelet-related healing signals for a targeted procedure.", category: "Regenerative & Recovery", status: "Suitability-led", watch: "Protocols differ between systems and indications. Claims should match the actual product, preparation and evidence for the intended use." },
-  { slug: "exosome-services", name: "Exosome-Related Services", short: "Tiny cell-released particles that carry biological signals", plain: "Exosomes are microscopic packages released by cells that can carry proteins, fats and genetic material. They are an active research area, but marketed exosome products should not be assumed to be proven anti-ageing or disease treatments.", category: "Regenerative & Advanced Care", status: "Advanced / tightly regulated", watch: "Regulatory status is critical. Public claims should stay educational unless a specific product, indication and legal pathway are verified." },
-  { slug: "msc-stem-cell-pathways", name: "MSC / Stem-Cell Pathways", short: "Cell-based therapies using mesenchymal stromal/stem cells or other cell products", plain: "MSC-related therapies use living cells that are being studied for regenerative and immune-modulating effects. The science is complex and the legal status depends on the exact product, processing, indication and country.", category: "Regenerative & Advanced Care", status: "Advanced / tightly regulated", watch: "Do not promise tissue regrowth, age reversal or treatment of broad diseases. Cell products require strict regulatory, manufacturing and clinical controls." },
-  { slug: "nk-cell-therapy", name: "NK-Cell Therapy", short: "Immune-cell therapy using natural killer cells", plain: "Natural killer cells are part of the immune system and can recognise and attack abnormal cells. NK-cell therapies are being developed mainly in specialist cancer and immune-treatment settings rather than routine wellness care.", category: "Regenerative & Advanced Care", status: "Advanced / tightly regulated", watch: "This belongs in a specialist clinical pathway with product-specific evidence and regulatory oversight—not as a casual wellness add-on." },
-  { slug: "mced", name: "MCED / Multi-Cancer Early Detection", short: "A blood test designed to look for signals from several cancers", plain: "MCED tests look for biomarkers, often cancer-related DNA signals, in the blood. They are being studied as a way to screen for multiple cancers at once and may complement—not replace—established screening.", category: "Screening & Assessment", status: "Diagnostic / assessment", watch: "A positive result is not a cancer diagnosis and a negative result does not rule out cancer. Suitability and follow-up must be doctor-led." },
-  { slug: "car-t", name: "CAR-T", short: "A personalised immune-cell treatment engineered to recognise cancer", plain: "CAR-T treatment collects a patient's T cells, modifies them so they recognise a specific target on cancer cells, and gives them back under highly specialised hospital care. It is an advanced oncology therapy, not a general longevity treatment.", category: "Specialist Oncology / Future Pathway", status: "Advanced / tightly regulated", watch: "CAR-T can cause serious and potentially life-threatening reactions and requires specialist oncology centres, regulated products and intensive monitoring." },
+const pathways = [
+  {
+    number: "01",
+    title: "Screening & Assessment",
+    line: "Understand before deciding.",
+    image: "/mms-health-screening-hero.png",
+    items: [
+      ["Health Screening & Ultrasound", "health-screening-ultrasound"],
+      ["ECG & Cardiovascular Review", "ecg-cardiovascular-risk-review"],
+      ["MCED / Multi-Cancer Detection", "mced"],
+    ],
+  },
+  {
+    number: "02",
+    title: "Cellular Wellness",
+    line: "Support energy and cellular health.",
+    image: "/mms-medicine-intelligence.webp",
+    items: [
+      ["IV Wellness", "iv-wellness-antioxidant-support"],
+      ["NAD+", "nad-plus"],
+      ["Red-Light / Photobiomodulation", "red-light-photobiomodulation"],
+    ],
+  },
+  {
+    number: "03",
+    title: "Metabolic & Hormonal",
+    line: "Work on the systems that shape vitality.",
+    image: "/mms-service-collage.webp",
+    items: [
+      ["Weight & Metabolic Health", "medical-weight-management"],
+      ["Hormone Review", "hormone-therapy"],
+      ["Peptides", "peptides"],
+    ],
+  },
+  {
+    number: "04",
+    title: "Recovery & Performance",
+    line: "Recover better. Function better.",
+    image: "/mms-membership-journey.webp",
+    items: [
+      ["Hyperbaric Oxygen", "hyperbaric-oxygen"],
+      ["Gut & Microbiome Support", "gut-health-microbiome-support"],
+      ["Colon Cleansing", "colon-cleansing"],
+    ],
+  },
+  {
+    number: "05",
+    title: "Regenerative Support",
+    line: "Selected options, reviewed individually.",
+    image: "/mms-about-hero.png",
+    items: [
+      ["PRP", "prp"],
+      ["PRGF", "prgf"],
+      ["Exosome-Related Services", "exosome-services"],
+    ],
+  },
+  {
+    number: "06",
+    title: "Advanced & Specialist",
+    line: "Education first. Regulation always matters.",
+    image: "/mms-medicine-intelligence.webp",
+    items: [
+      ["MSC / Stem-Cell Pathways", "msc-stem-cell-pathways"],
+      ["NK-Cell Therapy", "nk-cell-therapy"],
+      ["CAR-T", "car-t"],
+    ],
+  },
 ];
-
-const categories = ["Screening & Assessment", "Cellular & Wellness Support", "Metabolic & Hormonal Health", "Gut Health & Recovery", "Recovery & Performance", "Regenerative & Recovery", "Regenerative & Advanced Care", "Specialist Oncology / Future Pathway"];
-
-function badge(status: Treatment["status"]) {
-  if (status === "Advanced / tightly regulated") return "bg-navy text-ivory";
-  if (status === "Diagnostic / assessment") return "bg-[#dfe9e3] text-deep-green";
-  if (status === "Suitability-led") return "bg-[#efe8de] text-navy";
-  return "bg-white text-deep-green";
-}
 
 export default function TreatmentsPage() {
   return (
-    <main>
-      <section className="relative isolate overflow-hidden bg-[#062e29] px-4 pb-16 pt-28 text-ivory md:pt-36">
-        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_78%_28%,rgba(112,165,142,.22),transparent_30%),radial-gradient(circle_at_18%_76%,rgba(196,174,133,.12),transparent_34%)]" />
-        <div className="mx-auto grid min-h-[570px] max-w-6xl items-center gap-10 lg:grid-cols-[.95fr_1.05fr]">
-          <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[#d7c9a7]">Treatment & service guide</p><h1 className="mt-4 text-balance font-serif text-5xl leading-[1.03] md:text-7xl">Understand the options before choosing anything.</h1><p className="mt-6 max-w-xl text-lg leading-8 text-ivory/72">A plain-English guide to the screening, wellness, recovery and advanced-care pathways that may sit within an MMS membership journey.</p><div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/health-discovery">Start with discovery</CTAButton><CTAButton href="/memberships" variant="outline">See memberships</CTAButton></div></div>
-          <div className="grid grid-cols-2 gap-3">{[["01","Screen"],["02","Understand"],["03","Discuss"],["04","Decide with a doctor"]].map(([n,label],index)=><div key={n} className={`rounded-[1.7rem] border border-white/10 p-6 ${index===3?"bg-ivory text-navy":"bg-white/5"}`}><span className={`text-xs font-bold ${index===3?"text-deep-green":"text-[#d7c9a7]"}`}>{n}</span><p className="mt-3 font-serif text-3xl">{label}</p></div>)}</div>
+    <main className="overflow-hidden bg-[#f7f1e8]">
+      <section className="relative isolate min-h-[82vh] overflow-hidden bg-[#0d2d33] px-4 pb-16 pt-32 text-ivory md:pt-40">
+        <Image src="/mms-service-collage.webp" alt="" fill priority className="-z-30 object-cover opacity-52" sizes="100vw" />
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(9,31,36,.98),rgba(9,31,36,.88)_47%,rgba(9,31,36,.28))]" />
+        <div className="mms-kinetic-ring -right-24 top-28 -z-10 size-[34rem]" />
+        <div className="mms-kinetic-ring right-14 top-48 -z-10 size-[21rem]" />
+        <div className="mx-auto grid min-h-[70vh] max-w-7xl items-center gap-12 lg:grid-cols-[.92fr_1.08fr]">
+          <div className="max-w-3xl">
+            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#e1b98f]">Treatment discovery</p>
+            <h1 className="mt-5 font-serif text-6xl leading-[.98] md:text-8xl">Explore first.<span className="block text-[#e6c29f]">Decide later.</span></h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-ivory/64">Browse the possibilities. A qualified professional decides what is appropriate for you.</p>
+            <div className="mt-9 flex flex-wrap gap-3"><CTAButton href="/health-discovery">Start with discovery</CTAButton><CTAButton href="/ling" variant="outline">Ask Ling</CTAButton></div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {["Screen","Understand","Discuss","Review"].map((item,index)=><div key={item} className={`mms-shimmer min-h-[170px] rounded-[1.7rem] border p-5 ${index===3?"border-[#dfb78f]/40 bg-[#e5c29e] text-navy":"border-white/10 bg-white/[.055]"}`}><span className={`text-[10px] font-bold ${index===3?"text-[#7b4f35]":"text-[#dfb78f]"}`}>0{index+1}</span><p className="mt-10 font-serif text-3xl">{item}</p></div>)}
+          </div>
         </div>
       </section>
 
-      <section className="bg-ivory px-4 py-14"><div className="mx-auto max-w-6xl"><div className="rounded-[2rem] border border-stone-200 bg-white p-7 shadow-soft md:p-9"><div className="grid gap-5 md:grid-cols-[.8fr_1.2fr] md:items-center"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">How to use this page</p><h2 className="mt-3 font-serif text-4xl text-navy">Research first. Self-select interest—not treatment.</h2></div><div className="grid gap-3 sm:grid-cols-3">{[["Learn","Understand what the term actually means."],["Shortlist","Note which topics you want to discuss."],["Review","A qualified professional decides suitability."]].map(([title,text])=><div key={title} className="rounded-xl bg-ivory p-4"><p className="font-serif text-xl text-navy">{title}</p><p className="mt-2 text-xs leading-5 text-warm-gray">{text}</p></div>)}</div></div></div></div></section>
+      <section className="bg-[#efe5d8] px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-7 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
+            <div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-terracotta">Browse by pathway</p><h2 className="mt-4 font-serif text-5xl leading-tight text-navy md:text-6xl">Six doors into the MMS experience.</h2></div>
+            <p className="max-w-xl text-base leading-8 text-warm-gray lg:justify-self-end">The detailed medical explanation lives inside each guide. This page is for orientation, not self-prescribing.</p>
+          </div>
 
-      {categories.map((category, categoryIndex) => {
-        const items = treatments.filter(item => item.category === category);
-        if (!items.length) return null;
-        return <section key={category} className={`${categoryIndex % 2 ? "bg-warm-white" : "bg-ivory"} px-4 py-16`}><div className="mx-auto max-w-6xl"><div className="mb-8 flex flex-col justify-between gap-3 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">0{categoryIndex+1}</p><h2 className="mt-2 font-serif text-4xl text-navy md:text-5xl">{category}</h2></div><p className="max-w-sm text-sm leading-6 text-warm-gray">Plain-language explanations for orientation only. Availability varies by location and clinical pathway.</p></div><div className="grid gap-5 lg:grid-cols-2">{items.map(item=><article key={item.name} className="rounded-[1.7rem] border border-stone-200 bg-white p-6 shadow-soft md:p-7"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-warm-gray">{item.short}</p><h3 className="mt-2 font-serif text-3xl text-navy">{item.name}</h3></div><span className={`rounded-full px-3 py-2 text-[11px] font-bold ${badge(item.status)}`}>{item.status}</span></div><div className="mt-5 rounded-xl bg-[#edf2ef] p-4"><p className="text-xs font-bold uppercase tracking-[.14em] text-deep-green">In plain English</p><p className="mt-2 text-sm leading-6 text-navy">{item.plain}</p></div><div className="mt-4 border-l-2 border-[#95ad9f] pl-4"><p className="text-xs font-bold uppercase tracking-[.14em] text-warm-gray">What to know</p><p className="mt-2 text-sm leading-6 text-warm-gray">{item.watch}</p></div><Link href={`/treatments/${item.slug}`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-deep-green transition hover:gap-3">Read the full guide <span aria-hidden="true">→</span></Link></article>)}</div></div></section>;
-      })}
+          <div className="mt-14 grid gap-5 lg:grid-cols-2">
+            {pathways.map((pathway,index)=><article key={pathway.title} className="group overflow-hidden rounded-[2.2rem] border border-[#d6c3b1] bg-white shadow-[0_26px_70px_rgba(36,44,43,.08)]">
+              <div className="relative min-h-[300px] overflow-hidden">
+                <Image src={pathway.image} alt="" fill className="object-cover transition duration-1000 group-hover:scale-[1.035]" sizes="(min-width:1024px) 50vw,100vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#102f36]/92 via-[#102f36]/28 to-transparent" />
+                <div className="absolute inset-x-6 bottom-6 flex items-end justify-between gap-5 text-ivory">
+                  <div><p className="text-[9px] font-bold uppercase tracking-[.2em] text-[#dfb78f]">{pathway.number}</p><h3 className="mt-2 font-serif text-4xl">{pathway.title}</h3><p className="mt-2 text-sm text-ivory/62">{pathway.line}</p></div>
+                  <span className="grid size-12 shrink-0 place-items-center rounded-full border border-white/20 bg-white/[.07] text-xl">↗</span>
+                </div>
+              </div>
+              <div className="grid gap-px bg-[#e0d5ca] sm:grid-cols-3">
+                {pathway.items.map(([name,slug])=><Link key={slug} href={`/treatments/${slug}`} className="group/link bg-[#faf6f0] p-5 transition hover:bg-[#f1e6da]"><p className="font-serif text-xl leading-snug text-navy">{name}</p><p className="mt-3 text-[9px] font-bold uppercase tracking-[.16em] text-terracotta transition group-hover/link:translate-x-1">Open guide →</p></Link>)}
+              </div>
+            </article>)}
+          </div>
+        </div>
+      </section>
 
-      <section className="bg-[#07372f] px-4 py-20 text-ivory"><div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-[#d7c9a7]">Membership relationship</p><h2 className="mt-3 font-serif text-5xl leading-tight">Your package gives you access to a pathway—not automatic entitlement to every procedure.</h2></div><div className="grid gap-3 sm:grid-cols-2">{[["Included core care","Screening, doctor review, coordination and defined membership benefits."],["Health Reserve","Where applicable, credits may be used against selected eligible services."],["Member privilege","Selected-service preferential rates depend on the tier and approved rules."],["Clinical suitability","The doctor-approved plan always overrides a shopping-list approach."]].map(([title,text])=><div key={title} className="rounded-[1.4rem] border border-white/10 bg-white/5 p-5"><p className="font-serif text-2xl">{title}</p><p className="mt-2 text-sm leading-6 text-ivory/65">{text}</p></div>)}</div></div></section>
+      <section className="relative overflow-hidden bg-[#15383f] px-4 py-24 text-ivory md:py-28">
+        <div className="absolute right-0 top-0 h-full w-1/2 bg-[radial-gradient(circle_at_center,rgba(224,183,141,.12),transparent_55%)]" />
+        <div className="relative mx-auto grid max-w-6xl gap-9 lg:grid-cols-[1fr_.7fr] lg:items-center">
+          <div><p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#dfb78f]">The rule</p><h2 className="mt-4 font-serif text-5xl leading-tight md:text-6xl">Advanced does not automatically mean better.</h2><p className="mt-5 max-w-2xl text-base leading-8 text-ivory/62">The right option depends on evidence, regulation, goals, risks and professional assessment.</p></div>
+          <div className="grid grid-cols-2 gap-3 lg:justify-self-end"><div className="rounded-[1.6rem] border border-white/10 bg-white/[.05] p-5"><span className="text-[9px] font-bold text-[#dfb78f]">01</span><p className="mt-5 font-serif text-2xl">Suitability</p></div><div className="rounded-[1.6rem] border border-[#dcb58d]/30 bg-[#e3bd98] p-5 text-navy"><span className="text-[9px] font-bold text-[#7d5034]">02</span><p className="mt-5 font-serif text-2xl">Medical review</p></div></div>
+        </div>
+      </section>
 
-      <section className="bg-ivory px-4 py-16"><div className="mx-auto max-w-5xl"><DisclaimerBox title="Important clinical and regulatory boundary"><p>Nothing on this page is a diagnosis, recommendation or guarantee that a service is appropriate or available to you. Individual services depend on professional assessment, informed consent, operational availability, product-specific evidence, local licensing and applicable regulation. Advanced cell, gene, exosome and oncology therapies require especially strict product and jurisdiction-specific review.</p></DisclaimerBox><div className="mt-8 flex flex-wrap justify-center gap-3"><CTAButton href="/health-discovery">Discuss your goals first</CTAButton><Link href="/ling" className="rounded-full border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-deep-green">Ask Ling what a term means</Link></div></div></section>
+      <section className="bg-[#f8f3eb] px-4 py-10"><div className="mx-auto max-w-5xl"><DisclaimerBox><p>Educational information only. Treatment availability, legality and suitability vary by location, product, indication and individual clinical assessment.</p></DisclaimerBox></div></section>
     </main>
   );
 }
