@@ -7,85 +7,76 @@ import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
   title: "Memberships",
-  description:
-    "Explore MMS memberships including Ascend, Evolve, Eterna and Pinnacle for structured wellness coordination.",
+  description: "Explore MMS memberships including Ascend, Evolve, Eterna and Pinnacle for structured wellness coordination.",
 };
 
-const levels = [
-  { name: "Ascend", icon: "△", promise: "Discover", signal: "Baseline", forWhom: "Starting preventive care", tone: "from-deep-green to-navy" },
-  { name: "Evolve", icon: "◇", promise: "Optimise", signal: "Momentum", forWhom: "Improving energy or metabolism", tone: "from-sage to-deep-green" },
-  { name: "Eterna", icon: "♧", promise: "Protect", signal: "Continuity", forWhom: "Long-term health oversight", tone: "from-charcoal to-navy" },
-  { name: "Pinnacle", icon: "♛", promise: "Coordinate", signal: "Concierge", forWhom: "Executives and families", tone: "from-terracotta to-navy" },
-];
+const descriptors = ["Understand your baseline", "Build momentum", "Protect continuity", "Private coordination"];
 
 export default function MembershipsPage() {
   return (
-    <main>
-      <section className="relative isolate overflow-hidden bg-navy px-4 pb-16 pt-32 text-ivory md:pb-24 md:pt-40">
-        <Image src="/mms-membership-journey.webp" alt="" fill priority className="-z-20 object-cover opacity-55" sizes="100vw" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,25,38,.98),rgba(9,25,38,.82)_52%,rgba(9,25,38,.5))]" />
-        <div className="mx-auto grid min-h-[60vh] max-w-7xl items-center gap-10 lg:grid-cols-[1fr_.8fr]">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">MMS Memberships</p>
-            <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-[1.04] md:text-7xl">Choose the depth of support that fits your life.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ivory/72">Four levels of continuity — from a preventive baseline to private, high-touch coordination.</p>
-            <div className="mt-8 flex flex-wrap gap-3"><CTAButton href="/ling">Ask Ling</CTAButton><CTAButton href="/contact" variant="outline">Speak with MMS</CTAButton></div>
+    <main className="overflow-hidden bg-[#f7f1e8]">
+      <section className="relative isolate min-h-[84vh] overflow-hidden bg-[#15383a] text-ivory">
+        <Image src="/mms-membership-journey.webp" alt="" fill priority className="-z-30 object-cover object-center" sizes="100vw" />
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(20,55,57,.96),rgba(20,55,57,.76)_48%,rgba(20,55,57,.16))]" />
+        <div className="mx-auto flex min-h-[84vh] max-w-7xl items-center px-5 pb-20 pt-36 md:px-8 md:pt-44">
+          <div className="max-w-3xl">
+            <p className="text-[10px] font-bold uppercase tracking-[.28em] text-[#e9c3a0]">MMS programmes</p>
+            <h1 className="mt-5 font-serif text-6xl leading-[.98] md:text-8xl">Different depths.<span className="block text-[#edc8a6]">One relationship.</span></h1>
+            <p className="mt-7 max-w-xl text-lg leading-8 text-ivory/72">Choose the level of continuity and coordination that fits your life. The medical standard stays the same.</p>
+            <div className="mt-9 flex flex-wrap gap-3"><CTAButton href="#membership-levels">Explore the levels</CTAButton><CTAButton href="/ling" variant="outline">Start with your goals</CTAButton></div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            {levels.map((level, index) => (
-              <div key={level.name} className={`relative min-h-[170px] overflow-hidden rounded-[1.5rem] bg-gradient-to-br ${level.tone} p-5 shadow-xl`}>
-                <div className="absolute -right-8 -top-8 size-28 rounded-full border border-white/10" />
-                <div className="flex items-center justify-between"><span className="grid size-10 place-items-center rounded-full border border-white/15 text-gold-light">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-ivory/50">0{index + 1}</span></div>
-                <p className="mt-8 font-serif text-2xl">{level.name}</p><p className="text-xs uppercase tracking-[.14em] text-gold-light">{level.promise}</p>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-end">
+            <div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Why membership</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">Not more products.<br/><span className="text-[#b7795e]">More continuity.</span></h2></div>
+            <p className="max-w-xl text-lg leading-8 text-warm-gray lg:justify-self-end">Membership is the structure around the relationship: discovery, coordination, review and follow-through. Treatment decisions still depend on professional assessment and suitability.</p>
+          </div>
+          <div className="mt-16 grid gap-0 border-y border-[#cbb8a5] md:grid-cols-4">
+            {["Discover", "Plan", "Coordinate", "Continue"].map((item, index) => (
+              <div key={item} className="py-8 md:px-7 md:first:pl-0 md:last:pr-0 md:[&+&]:border-l md:[&+&]:border-[#cbb8a5]">
+                <span className="text-[10px] font-bold tracking-[.18em] text-terracotta">0{index + 1}</span>
+                <p className="mt-4 font-serif text-3xl text-navy">{item}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-20 md:py-28">
+      <section id="membership-levels" className="bg-[#eadccc] px-5 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">At a glance</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-6xl">More continuity as you move up.</h2></div>
-          <div className="relative grid gap-4 lg:grid-cols-4">
-            {levels.map((level, index) => (
-              <article key={level.name} className="relative rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-soft">
-                {index < levels.length - 1 ? <span className="absolute -right-3 top-10 z-10 hidden size-7 place-items-center rounded-full bg-deep-green text-sm text-white lg:grid">→</span> : null}
-                <div className="flex items-center justify-between"><span className="grid size-12 place-items-center rounded-full bg-ivory font-serif text-2xl text-deep-green">{level.icon}</span><span className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">{level.signal}</span></div>
-                <h3 className="mt-5 font-serif text-3xl text-navy">{level.name}</h3>
-                <p className="mt-2 text-sm font-semibold text-deep-green">{level.promise}</p>
-                <p className="mt-5 text-sm leading-6 text-warm-gray">{level.forWhom}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-10 grid gap-5 md:grid-cols-[.7fr_1.3fr] md:items-end"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-deep-green">See the journeys</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-5xl">Four memberships. Four different rhythms.</h2></div><p className="max-w-2xl text-base leading-7 text-warm-gray">The difference is not simply “more items”. It is the amount of continuity, access and coordination around you.</p></div>
-
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="mb-14 max-w-3xl"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">The four levels</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">A deeper relationship as your needs become more complex.</h2></div>
+          <div className="divide-y divide-[#c4ad98] border-y border-[#c4ad98]">
             {memberships.map((membership, index) => (
-              <article key={membership.name} className="group overflow-hidden rounded-[2rem] bg-white shadow-soft">
-                <div className={`relative h-48 bg-gradient-to-br ${levels[index].tone} p-7 text-ivory`}>
-                  <div className="absolute -right-10 -top-10 size-40 rounded-full border border-white/10" />
-                  <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-gold-light">{membership.accessNote}</p><h3 className="mt-3 font-serif text-4xl">{membership.name}</h3><p className="mt-2 text-sm font-semibold text-ivory/75">{membership.tagline}</p></div><span className="font-serif text-5xl text-white/15">0{index + 1}</span></div>
+              <article key={membership.name} className="grid gap-7 py-10 md:grid-cols-[80px_.72fr_1.28fr] md:items-start md:py-14">
+                <span className="text-[10px] font-bold tracking-[.2em] text-terracotta">0{index + 1}</span>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">{descriptors[index]}</p>
+                  <h3 className="mt-3 font-serif text-5xl text-navy md:text-6xl">{membership.name}</h3>
+                  <p className="mt-3 text-sm text-warm-gray">{membership.tagline}</p>
                 </div>
-                <div className="p-7">
-                  <div className="grid gap-5 sm:grid-cols-2"><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Best for</p><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p></div><div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-deep-green">Coordination</p><p className="mt-2 text-sm leading-6 text-warm-gray">{membership.coordination}</p></div></div>
-                  <div className="mt-6 border-t border-black/5 pt-5"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">Opening journey</p><div className="mt-3 flex flex-wrap gap-2">{membership.firstThirtyDays.slice(0,4).map(item => <span key={item} className="rounded-full bg-ivory px-3 py-2 text-xs text-navy">{item}</span>)}</div></div>
+                <div className="grid gap-7 sm:grid-cols-2">
+                  <div><p className="text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">Best for</p><p className="mt-3 font-serif text-2xl leading-snug text-navy">{membership.whoItSuits}</p></div>
+                  <div><p className="text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">Continuity</p><p className="mt-3 text-sm leading-7 text-warm-gray">{membership.coordination}</p></div>
                 </div>
               </article>
             ))}
           </div>
+          <div className="mt-10 flex flex-wrap gap-3"><CTAButton href="/ling">Ask Ling which level fits</CTAButton><CTAButton href="/contact" variant="outline">Speak with MMS</CTAButton></div>
         </div>
       </section>
 
-      <section className="bg-deep-green px-4 py-20 text-ivory md:py-24">
-        <div className="mx-auto max-w-6xl text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Not sure where you fit?</p><h2 className="mt-3 font-serif text-4xl md:text-6xl">Start with your goals, not a package.</h2><p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-ivory/68">Ling can help you understand the differences before you speak with the MMS team.</p><div className="mt-8 flex justify-center"><CTAButton href="/ling">Ask Ling</CTAButton></div></div>
+      <section className="relative min-h-[640px] overflow-hidden bg-[#15383a] text-ivory">
+        <Image src="/mms-about-hero.png" alt="MMS long-term health relationship" fill className="object-cover opacity-55" sizes="100vw" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,55,57,.95),rgba(20,55,57,.63),rgba(20,55,57,.16))]" />
+        <div className="relative mx-auto flex min-h-[640px] max-w-7xl items-center px-5 py-24 md:px-8">
+          <div className="max-w-2xl"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-[#e7bd98]">Still deciding?</p><h2 className="mt-5 font-serif text-5xl leading-[1.03] md:text-7xl">Start with your health goals. Not a package.</h2><p className="mt-7 max-w-xl text-lg leading-8 text-ivory/70">The right level should follow from what you need, how much continuity you want, and what a professional review suggests.</p><div className="mt-9"><CTAButton href="/health-discovery">Begin with Health Discovery</CTAButton></div></div>
+        </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-12"><div className="mx-auto max-w-5xl"><DisclaimerBox><p>Membership does not promise specific outcomes. Any wellness pathway is subject to discovery discussion, professional review and suitability assessment.</p></DisclaimerBox></div></section>
+      <section className="bg-[#f8f3eb] px-5 py-10 md:px-8"><div className="mx-auto max-w-5xl"><DisclaimerBox><p>Membership does not promise specific outcomes. Any wellness pathway is subject to professional review and suitability assessment.</p></DisclaimerBox></div></section>
     </main>
   );
 }

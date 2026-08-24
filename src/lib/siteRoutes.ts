@@ -37,49 +37,48 @@ export const routes = {
 } as const;
 
 export const primaryNavigation = [
-  { label: "Memberships", href: routes.memberships },
+  { label: "About", href: routes.aboutMms },
+  { label: "Your Journey", href: routes.howItWorks },
+  { label: "Programmes", href: routes.memberships },
   { label: "Treatments", href: routes.treatments },
-  { label: "Health Concerns", href: routes.healthConcerns },
-  { label: "How It Works", href: routes.howItWorks },
-  { label: "Care Travel", href: routes.medicalTourism },
-  { label: "SCF", href: routes.scfLabRoadmap },
+  { label: "Health Intelligence", href: routes.insights },
+  { label: "Locations", href: routes.clinics },
 ] as const;
 
 export const mobileNavigation = [
-  { label: "How MMS Works", href: routes.howItWorks },
-  { label: "Memberships", href: routes.memberships },
-  { label: "Treatments & Wellness Guide", href: routes.treatments },
-  { label: "Health Concerns & Research", href: routes.healthConcerns },
-  { label: "Medicine Price Compare", href: routes.medicineIntelligence },
-  { label: "Malaysia–Thailand Care Travel", href: routes.medicalTourism },
-  { label: "Online Doctor", href: routes.onlineDoctor },
-  { label: "Our Clinics", href: routes.clinics },
-  { label: "SCF & Future Medicine", href: routes.scfLabRoadmap },
-  { label: "MMS Insights", href: routes.insights },
-  { label: "Video & Media Room", href: routes.mediaRoom },
-  { label: "Regional Care Access", href: routes.malaysiaThailandCare },
   { label: "About MMS", href: routes.aboutMms },
+  { label: "Your MMS Journey", href: routes.howItWorks },
+  { label: "Programmes & Memberships", href: routes.memberships },
+  { label: "Treatments & Wellness Guide", href: routes.treatments },
+  { label: "Health Screening", href: routes.healthScreening },
+  { label: "Health Intelligence", href: routes.insights },
+  { label: "Health Concerns & Research", href: routes.healthConcerns },
+  { label: "Our Locations", href: routes.clinics },
+  { label: "Malaysia–Thailand Care", href: routes.medicalTourism },
+  { label: "Online Doctor", href: routes.onlineDoctor },
+  { label: "Video & Media Room", href: routes.mediaRoom },
+  { label: "Medicine Access Intelligence", href: routes.medicineIntelligence },
+  { label: "SCF Future Science Roadmap", href: routes.scfLabRoadmap },
 ] as const;
 
 export const footerNavigation = [
   { label: "About MMS", href: routes.aboutMms },
-  { label: "Memberships", href: routes.memberships },
-  { label: "How It Works", href: routes.howItWorks },
+  { label: "Programmes", href: routes.memberships },
+  { label: "Your Journey", href: routes.howItWorks },
   { label: "Health Discovery", href: routes.healthDiscovery },
-  { label: "Malaysia–Thailand Care", href: routes.malaysiaThailandCare },
-  { label: "Care Travel", href: routes.medicalTourism },
+  { label: "Health Screening", href: routes.healthScreening },
+  { label: "Health Intelligence", href: routes.insights },
+  { label: "Malaysia–Thailand Care", href: routes.medicalTourism },
+  { label: "Our Locations", href: routes.clinics },
   { label: "Online Doctor", href: routes.onlineDoctor },
-  { label: "Our Clinics", href: routes.clinics },
-  { label: "MMS Insights", href: routes.insights },
-  { label: "Video & Media Room", href: routes.mediaRoom },
   { label: "Education", href: routes.education },
   { label: "Contact", href: routes.contact },
 ] as const;
 
 export const platformNavigation = [
-  { label: "SCF Lab Roadmap", href: routes.scfLabRoadmap },
-  { label: "Medicine Access Intelligence", href: routes.internationalMedicineAccess },
   { label: "Ling", href: routes.ling },
+  { label: "Medicine Access Intelligence", href: routes.internationalMedicineAccess },
+  { label: "SCF Lab Roadmap", href: routes.scfLabRoadmap },
 ] as const;
 
 export const legalNavigation = [

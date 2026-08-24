@@ -1,57 +1,57 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
-import { DisclaimerBox } from "@/components/DisclaimerBox";
+import Link from "next/link";
 import { Hero } from "@/components/Hero";
-import { EcosystemVisual } from "@/components/EcosystemVisual";
-import { ServiceExplorer } from "@/components/ServiceExplorer";
+import { DisclaimerBox } from "@/components/DisclaimerBox";
 
 export const metadata: Metadata = {
   title: "About MMS",
-  description: "See how My Medical Sanctuary connects preventive care, Ling, coordination and future science.",
+  description: "See how My Medical Sanctuary connects preventive care, Ling, coordination and professional review.",
 };
 
-const pillars = [
-  ["Prevent", "Understand earlier"],
-  ["Personalise", "Shape care around the person"],
-  ["Coordinate", "Reduce fragmentation"],
-  ["Continue", "Keep the relationship moving"],
-];
+const principles = [["01", "Prevent", "Look earlier, not only when something goes wrong."],["02", "Personalise", "Use context and professional judgement rather than a generic protocol."],["03", "Coordinate", "Make the journey easier to understand and navigate."],["04", "Continue", "Build a relationship that can evolve with your health."]];
 
 export default function AboutMMSPage() {
   return (
-    <main>
-      <Hero eyebrow="About MMS" title="Health should feel connected." subtitle="One relationship across discovery, coordination, doctor-led decisions and long-term continuity." image="/mms-about-hero.png" />
+    <main className="overflow-hidden bg-[#f7f1e8]">
+      <Hero eyebrow="About MMS" title="Health should feel connected." subtitle="One relationship across discovery, coordination, professional review and long-term continuity." image="/mms-about-hero.png" primaryLabel="Start your journey" primaryHref="/health-discovery" secondaryLabel="How MMS works" secondaryHref="/how-it-works" />
 
-      <section className="bg-warm-white px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid overflow-hidden rounded-[2rem] bg-white shadow-premium lg:grid-cols-[1.08fr_.92fr]">
-            <div className="relative min-h-[500px]"><Image src="/mms-service-collage.webp" alt="MMS preventive healthcare and longevity experience" fill className="object-cover" sizes="(min-width:1024px) 54vw,100vw" /><div className="absolute inset-0 bg-gradient-to-t from-navy/55 via-transparent to-transparent" /><div className="absolute bottom-6 left-6 right-6"><p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">The shift</p><h2 className="mt-2 max-w-2xl font-serif text-4xl leading-tight text-white md:text-5xl">From one-off purchases to one continuous health relationship.</h2></div></div>
-            <div className="flex flex-col justify-center p-8 md:p-12">
-              <p className="text-xs font-bold uppercase tracking-[.2em] text-gold">Why MMS exists</p>
-              <p className="mt-4 text-lg leading-8 text-warm-gray">Most people encounter healthcare as separate appointments, separate providers and separate decisions. MMS is designed to connect the journey.</p>
-              <div className="mt-8 grid grid-cols-2 gap-3">{pillars.map(([title,text],index)=><div key={title} className="rounded-2xl bg-ivory p-4"><span className="text-xs font-bold text-gold">0{index+1}</span><p className="mt-2 font-serif text-2xl text-navy">{title}</p><p className="mt-1 text-sm text-warm-gray">{text}</p></div>)}</div>
-            </div>
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.12fr_.88fr] lg:items-center">
+          <div className="relative min-h-[680px] overflow-hidden rounded-[46%_54%_48%_52%/43%_44%_56%_57%]">
+            <Image src="/mms-service-collage.webp" alt="MMS preventive care and longevity experience" fill className="object-cover" sizes="(min-width:1024px) 56vw,100vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#15383a]/38 to-transparent" />
           </div>
+          <div className="lg:pl-8"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Why MMS exists</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">From disconnected appointments to one continuous health relationship.</h2><p className="mt-7 max-w-xl text-lg leading-8 text-warm-gray">The aim is not to sell more interventions. It is to help people understand their health earlier, navigate choices more clearly and stay connected to appropriate professional care.</p></div>
         </div>
       </section>
 
-      <section className="bg-ivory px-4 py-20"><div className="mx-auto max-w-6xl"><div className="mb-10 max-w-3xl"><p className="text-xs font-bold uppercase tracking-[.2em] text-gold">What MMS can coordinate</p><h2 className="mt-3 font-serif text-4xl text-navy md:text-5xl">Different needs. One organised pathway.</h2></div><ServiceExplorer /></div></section>
-
-      <section className="bg-deep-green px-4 py-20 text-ivory">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">The operating model</p><h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">Intelligence where useful. Human authority where it matters.</h2><p className="mt-4 text-lg leading-8 text-ivory/70">Ling helps organise information and continuity. MMS coordinates. Qualified doctors remain responsible for medical decisions.</p></div><div className="rounded-[2rem] bg-white p-4 text-charcoal shadow-premium md:p-6"><EcosystemVisual /></div></div>
+      <section className="bg-[#eadccc] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-9 lg:grid-cols-[.78fr_1.22fr] lg:items-end"><div><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Our principles</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">A quieter, more considered approach to health.</h2></div><p className="max-w-xl text-lg leading-8 text-warm-gray lg:justify-self-end">These principles shape the patient experience across screening, wellness, longevity, regional care and ongoing coordination.</p></div>
+          <div className="mt-16 divide-y divide-[#c6b19d] border-y border-[#c6b19d]">{principles.map(([number,title,text])=><div key={number} className="grid gap-5 py-8 md:grid-cols-[70px_.7fr_1.3fr] md:items-center"><span className="text-[10px] font-bold tracking-[.18em] text-terracotta">{number}</span><h3 className="font-serif text-3xl text-navy md:text-4xl">{title}</h3><p className="max-w-xl text-sm leading-7 text-warm-gray">{text}</p></div>)}</div>
         </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-5 md:grid-cols-3">
-            <Link href="/medicine-intelligence" className="group overflow-hidden rounded-[1.75rem] bg-white shadow-soft transition hover:-translate-y-1"><div className="relative h-56"><Image src="/mms-medicine-intelligence.webp" alt="Medicine intelligence" fill className="object-cover" sizes="(min-width: 768px) 33vw, 100vw" /></div><div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Intelligence</p><h3 className="mt-2 font-serif text-3xl text-navy">Medicine intelligence.</h3><p className="mt-2 text-sm leading-6 text-warm-gray">More visibility around medicine access and pricing.</p></div></Link>
-            <Link href="/scf-lab-roadmap" className="group overflow-hidden rounded-[1.75rem] bg-deep-green text-ivory shadow-soft transition hover:-translate-y-1"><div className="relative h-56 bg-[#082f29]"><Image src="/scf-logo-new.png" alt="SCF" fill className="object-contain p-12" sizes="(min-width: 768px) 33vw, 100vw" /></div><div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold-light">Future science</p><h3 className="mt-2 font-serif text-3xl">SCF capability.</h3><p className="mt-2 text-sm leading-6 text-ivory/70">A future pathway toward deeper science and clinical capability.</p></div></Link>
-            <Link href="/medical-tourism" className="group overflow-hidden rounded-[1.75rem] bg-white shadow-soft transition hover:-translate-y-1"><div className="relative h-56"><Image src="/mms-membership-journey.webp" alt="Malaysia and Thailand care journey" fill className="object-cover" sizes="(min-width: 768px) 33vw, 100vw" /></div><div className="p-6"><p className="text-xs font-bold uppercase tracking-[.16em] text-gold">Regional care</p><h3 className="mt-2 font-serif text-3xl text-navy">Malaysia ↔ Thailand.</h3><p className="mt-2 text-sm leading-6 text-warm-gray">Cross-border coordination without losing continuity.</p></div></Link>
+      <section className="relative min-h-[720px] overflow-hidden bg-[#15383a] text-ivory">
+        <Image src="/mms-health-screening-hero.png" alt="MMS medical trust" fill className="object-cover opacity-60" sizes="100vw" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,55,58,.96),rgba(20,55,58,.68)_48%,rgba(20,55,58,.18))]" />
+        <div className="relative mx-auto flex min-h-[720px] max-w-7xl items-center px-5 py-24 md:px-8">
+          <div className="max-w-2xl"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-[#e4ba93]">The operating model</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] md:text-7xl">Technology organises.<br/><span className="text-[#e9c6a5]">People care.<br/>Doctors decide.</span></h2><p className="mt-7 max-w-xl text-lg leading-8 text-ivory/68">Ling can help you understand and prepare. MMS can coordinate the journey. Qualified professionals retain clinical authority.</p></div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f1e8] px-5 py-24 md:px-8 md:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl"><p className="text-[10px] font-bold uppercase tracking-[.26em] text-terracotta">Where the journey can go</p><h2 className="mt-5 font-serif text-5xl leading-[1.02] text-navy md:text-7xl">Understand locally. Stay connected regionally.</h2></div>
+          <div className="mt-14 grid gap-10 md:grid-cols-3">
+            {[
+              ["/insights","/mms-medicine-intelligence.webp","Health Intelligence","Learn before deciding"],
+              ["/medical-tourism","/mms-membership-journey.webp","Regional care","Stay connected across borders"],
+              ["/scf-lab-roadmap","/mms-about-hero.png","Future science","Capability for tomorrow"],
+            ].map(([href,image,eyebrow,title])=><Link key={href} href={href} className="group"><div className="relative aspect-[4/5] overflow-hidden"><Image src={image} alt="" fill className="object-cover transition duration-1000 group-hover:scale-[1.03]" sizes="(min-width:768px) 33vw,100vw"/><div className="absolute inset-0 bg-gradient-to-t from-[#15383a]/65 via-transparent to-transparent"/></div><p className="mt-5 text-[9px] font-bold uppercase tracking-[.18em] text-terracotta">{eyebrow}</p><h3 className="mt-2 font-serif text-3xl text-navy">{title}</h3></Link>)}
           </div>
-          <div className="mt-10"><DisclaimerBox title="Clinical and lab roadmap"><p>MMS aims to develop deeper clinical and lab capability in 2027, subject to regulatory, licensing, funding, technical and professional requirements.</p></DisclaimerBox></div>
+          <div className="mt-10"><DisclaimerBox title="Future capability"><p>Future clinical and lab capability remains subject to regulatory, licensing, funding, technical and professional requirements.</p></DisclaimerBox></div>
         </div>
       </section>
     </main>
