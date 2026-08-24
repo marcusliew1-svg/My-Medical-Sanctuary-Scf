@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+
+const internalPrefixes = ["/operations", "/partner", "/api"];
 
 export function SiteMotion() {
+  const pathname = usePathname();
+  const isInternal = internalPrefixes.some((prefix) => pathname.startsWith(prefix));
+
   useEffect(() => {
+    if (isInternal) return;
+
     document.documentElement.classList.add("js");
 
     const sections = Array.from(document.querySelectorAll<HTMLElement>("main > section"));
@@ -55,7 +63,9 @@ export function SiteMotion() {
       window.removeEventListener("scroll", updateScroll);
       document.documentElement.classList.remove("js");
     };
-  }, []);
+  }, [isInternal, pathname]);
+
+  if (isInternal) return null;
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[5] overflow-hidden">
