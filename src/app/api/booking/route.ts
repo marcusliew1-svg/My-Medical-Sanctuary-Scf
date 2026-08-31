@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { zohoLeadFieldMapping } from "@/lib/content";
+import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
 
 type BookingForm = {
   fullName?: string;
@@ -15,52 +17,103 @@ type BookingForm = {
   consentToContact?: string;
   consentVersion?: string;
   sourcePath?: string;
+  website?: string;
 };
 
 async function readBookingForm(request: NextRequest): Promise<BookingForm> {
-  const contentType = request.headers.get("content-type") ?? "";
-
-  if (contentType.includes("application/json")) {
-    return request.json() as Promise<BookingForm>;
-  }
-
-  const formData = await request.formData();
+  const fields = await readPublicForm(request);
 
   return {
-    fullName: String(formData.get("fullName") ?? ""),
-    mobileNumber: String(formData.get("mobileNumber") ?? ""),
-    email: String(formData.get("email") ?? ""),
-    country: String(formData.get("country") ?? ""),
-    preferredLanguage: String(formData.get("preferredLanguage") ?? ""),
-    interestedIn: String(formData.get("interestedIn") ?? ""),
-    preferredContactMethod: String(formData.get("preferredContactMethod") ?? ""),
-    preferredAppointmentDate: String(formData.get("preferredAppointmentDate") ?? ""),
-    message: String(formData.get("message") ?? ""),
-    consentToContact: String(formData.get("consentToContact") ?? ""),
-    consentVersion: String(formData.get("consentVersion") ?? ""),
-    sourcePath: String(formData.get("sourcePath") ?? ""),
+    fullName: fields.fullName,
+    mobileNumber: fields.mobileNumber,
+    email: fields.email,
+    country: fields.country,
+    preferredLanguage: fields.preferredLanguage,
+    interestedIn: fields.interestedIn,
+    preferredContactMethod: fields.preferredContactMethod,
+    preferredAppointmentDate: fields.preferredAppointmentDate,
+    message: fields.message,
+    consentToContact: fields.consentToContact,
+    consentVersion: fields.consentVersion,
+    sourcePath: fields.sourcePath,
+    website: fields.website,
   };
 }
 
+function clientKey(request: NextRequest): string {
+  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  return forwardedFor || realIp || "unknown";
+}
+
 export async function POST(request: NextRequest) {
-  const form = await readBookingForm(request);
+  if (bodyTooLarge(request)) {
+    return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
+  }
+
+  const rateLimit = checkInMemoryRateLimit(`booking:${clientKey(request)}`, {
+    limit: 6,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { status: "rate_limited", message: "Too many enquiry attempts. Please try again later." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": String(rateLimit.limit),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
+  }
+
+  let form: BookingForm;
+  try {
+    form = await readBookingForm(request);
+  } catch {
+    return NextResponse.json({ status: "invalid", message: "Unsupported request format." }, { status: 415 });
+  }
+
+  const honeypot = clean(form.website, 120);
+  if (honeypot) {
+    return NextResponse.json({ status: "accepted" }, { status: 202 });
+  }
+
+  const fullName = clean(form.fullName, 120);
+  const mobileNumber = clean(form.mobileNumber, 40);
+  const email = clean(form.email, 254).toLowerCase();
+  const country = clean(form.country, 120);
+  const interestedIn = clean(form.interestedIn, 160);
+
+  if (fullName.length < 2 || mobileNumber.length < 6 || !isEmail(email) || !country || !interestedIn) {
+    return NextResponse.json(
+      {
+        status: "invalid",
+        message: "Please provide a valid name, mobile number, email, location and enquiry interest.",
+      },
+      { status: 400 },
+    );
+  }
+
   const consentGranted = form.consentToContact === "true";
   const consentVersion = form.consentVersion === "MMS-WEB-2026-08-v1" ? form.consentVersion : null;
   const zohoLeadPayload = {
-    "Full Name": form.fullName,
-    Mobile: form.mobileNumber,
-    Email: form.email,
-    Country: form.country,
-    "Preferred Language": form.preferredLanguage,
-    "Interested Service": form.interestedIn,
-    "Preferred Contact Method": form.preferredContactMethod,
-    "Next Follow-up / Appointment Preference": form.preferredAppointmentDate,
+    "Full Name": fullName,
+    Mobile: mobileNumber,
+    Email: email,
+    Country: country,
+    "Preferred Language": clean(form.preferredLanguage, 80),
+    "Interested Service": interestedIn,
+    "Preferred Contact Method": clean(form.preferredContactMethod, 80),
+    "Next Follow-up / Appointment Preference": clean(form.preferredAppointmentDate, 160),
     Source: "Website",
     "Consent to Contact": consentGranted,
     "Consent Version": consentVersion,
     "Consent Timestamp": consentGranted ? new Date().toISOString() : null,
-    "Source Path": form.sourcePath,
-    Message: form.message,
+    "Source Path": clean(form.sourcePath, 300),
+    Message: clean(form.message, 2_000),
   };
 
   if (!consentGranted || consentVersion == null) {

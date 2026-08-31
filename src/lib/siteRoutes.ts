@@ -18,6 +18,7 @@ export const routes = {
   knowledgeHub: "/knowledge-hub",
   healthArticles: "/health-articles",
   ling: "/ling",
+  healthIntelligence: "/health-intelligence",
   internationalMedicineAccess: "/international-medicine-access",
   medicineIntelligence: "/medicine-intelligence",
   insights: "/insights",
@@ -37,12 +38,12 @@ export const routes = {
 } as const;
 
 export const primaryNavigation = [
+  { label: "Your Health", href: routes.healthScreening },
+  { label: "Care & Treatments", href: routes.treatments },
+  { label: "Health Intelligence", href: routes.healthIntelligence },
   { label: "Memberships", href: routes.memberships },
-  { label: "Treatments", href: routes.treatments },
-  { label: "Health Concerns", href: routes.healthConcerns },
   { label: "How It Works", href: routes.howItWorks },
-  { label: "Care Travel", href: routes.medicalTourism },
-  { label: "SCF", href: routes.scfLabRoadmap },
+  { label: "Locations", href: routes.clinics },
 ] as const;
 
 export const mobileNavigation = [
@@ -51,6 +52,7 @@ export const mobileNavigation = [
   { label: "Treatments & Wellness Guide", href: routes.treatments },
   { label: "Health Concerns & Research", href: routes.healthConcerns },
   { label: "Medicine Price Compare", href: routes.medicineIntelligence },
+  { label: "Health Intelligence", href: routes.healthIntelligence },
   { label: "Malaysia–Thailand Care Travel", href: routes.medicalTourism },
   { label: "Online Doctor", href: routes.onlineDoctor },
   { label: "Our Clinics", href: routes.clinics },
@@ -114,6 +116,7 @@ export const publicSitemapRoutes = [
   routes.knowledgeHub,
   routes.healthArticles,
   routes.ling,
+  routes.healthIntelligence,
   routes.internationalMedicineAccess,
   routes.medicineIntelligence,
   routes.insights,

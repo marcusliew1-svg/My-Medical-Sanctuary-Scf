@@ -15,3 +15,6 @@ vercel.json
 .codex-review/
 .next-local/
 .next-amended/
+.next-release2a-dev/
+artifacts/
+supabase/.temp/

@@ -57,6 +57,10 @@ textarea {
   box-shadow: 0 18px 50px rgba(11, 26, 46, 0.08);
 }
 
+body:has([data-internal-console]) [data-public-chrome] {
+  display: none;
+}
+
 @keyframes slowZoom {
   from {
     transform: scale(1.04);

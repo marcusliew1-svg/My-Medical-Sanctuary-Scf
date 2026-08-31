@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
+import { getCanonicalUrl } from "@/lib/siteConfig";
 
 const routes = [
   "",
@@ -21,6 +20,7 @@ const routes = [
   "/education",
   "/knowledge-hub",
   "/health-articles",
+  "/health-intelligence",
   "/insights",
   "/ling",
   "/clinics",
@@ -45,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   return routes.map((route) => ({
-    url: `${siteUrl}${route}`,
+    url: getCanonicalUrl(route),
     lastModified: now,
     changeFrequency: route === "" ? "weekly" : "monthly",
     priority: route === "" ? 1 : 0.7,

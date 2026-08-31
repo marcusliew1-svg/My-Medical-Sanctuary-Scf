@@ -10,7 +10,7 @@ const links = [
 
 export function FooterV01() {
   return (
-    <footer className="bg-[#07151d] px-4 py-14 text-ivory">
+    <footer data-public-chrome className="bg-[#07151d] px-4 py-14 text-ivory">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.25fr_1fr_1fr_1fr]">
         <div>
           <div className="mb-5 max-w-64 bg-ivory p-4">

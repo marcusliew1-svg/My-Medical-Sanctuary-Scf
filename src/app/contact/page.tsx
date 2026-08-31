@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
-import { EditorialHero, ImagePanel, JourneyLine } from "@/components/Editorial";
+import {
+  CTASection,
+  EditorialSplit,
+  JourneyStepRail,
+  PublicHero,
+  SectionHeading,
+  TrustBar,
+} from "@/components/PublicExperience";
 
 export const metadata: Metadata = {
   title: "Contact / Discovery Form | My Medical Sanctuary",
@@ -34,60 +41,71 @@ const contactPath = [
 export default function ContactPage() {
   return (
     <main>
-      <EditorialHero
+      <PublicHero
         eyebrow="Contact MMS"
         title="Start with a private discovery discussion."
-        lead="Share your context once. MMS can help you understand the right next step before any programme or recommendation is considered."
+        brandLine="Private, careful and suitability-first."
+        lead="Share your context once. MMS can help route you toward the right first step before any programme or recommendation is considered."
         image="/mms-concierge-lounge.png"
-        imageAlt="Private doctor-led consultation at My Medical Sanctuary."
-        primaryLabel="Send enquiry"
+        imageAlt="Private concierge lounge for a discovery discussion at My Medical Sanctuary."
+        primaryLabel="Send Private Enquiry"
         primaryHref="#discovery-form"
-        secondaryLabel="Ask Ling first"
+        secondaryLabel="Ask Ling First"
         secondaryHref="/ling"
         imagePosition="50% center"
-        trustItems={[
-          { title: "Private intake", text: "A calm first discussion before recommendations." },
-          { title: "Careful routing", text: "Screening, membership, corporate or education pathways." },
-          { title: "Professional review", text: "Medical decisions remain doctor-led." },
-          { title: "Clear follow-up", text: "MMS helps organise the next step." },
+      />
+
+      <TrustBar
+        items={[
+          { title: "Private", text: "A discreet first conversation before recommendations." },
+          { title: "Routed", text: "Screening, membership, corporate or education pathways." },
+          { title: "Doctor-led", text: "Medical decisions remain professionally reviewed." },
+          { title: "Clear", text: "A practical next step, not a pressure sequence." },
+          { title: "Human", text: "A team member reviews the context." },
+          { title: "Prepared", text: "Your appointment can begin with better information." },
         ]}
       />
 
       <section id="discovery-form" className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-          <aside className="lg:sticky lg:top-28">
-            <p className="editorial-kicker mb-4 text-deep-green">Concierge intake</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              A calm first step, not a sales counter.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              The discovery form helps MMS understand whether you are looking for screening, continuity,
-              education, executive wellness or a broader preventive health journey.
-            </p>
-            <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-gold-light/60 bg-white shadow-premium">
-              <ImagePanel
-                src="/mms-doctor-couple-consult.png"
-                alt="Doctor and patient in a private discovery discussion."
-                objectPosition="50% center"
-                className="min-h-[340px]"
-              />
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
+          <div className="lg:sticky lg:top-28">
+            <SectionHeading
+              eyebrow="Concierge intake"
+              title="A calm first step, not a sales counter."
+              lead="The form helps MMS understand whether you are looking for screening, continuity, education, executive wellness or a broader preventive health journey."
+            />
+            <div className="mt-8 grid gap-4 border-y border-gold/35 py-6 text-sm leading-6 text-warm-gray">
+              <p>
+                <strong className="text-navy">What to share:</strong> symptoms, goals, travel needs, family context,
+                prior screening, current concerns or uncertainty about where to begin.
+              </p>
+              <p>
+                <strong className="text-navy">What happens next:</strong> MMS reviews the enquiry and guides the
+                appropriate appointment, education or membership conversation.
+              </p>
             </div>
-          </aside>
+          </div>
           <ContactForm />
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-20 text-ivory md:py-24">
-        <div className="mx-auto max-w-6xl">
-          <p className="editorial-kicker mb-5 text-gold-light">What happens after you enquire</p>
-          <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-            The next step should match the patient, not the other way around.
-          </h2>
-          <div className="mt-12">
-            <JourneyLine dark steps={contactPath} />
-          </div>
-        </div>
-      </section>
+      <EditorialSplit
+        eyebrow="What happens after you enquire"
+        title="The next step should match the patient, not the other way around."
+        lead="A strong patient experience begins by listening carefully, then routing the enquiry toward the correct clinical or concierge pathway."
+        image="/mms-doctor-couple-consult.png"
+        imageAlt="Doctor and patient in a private discovery discussion."
+        imagePosition="50% center"
+        dark
+        reverse
+      >
+        <JourneyStepRail dark steps={contactPath} />
+      </EditorialSplit>
+
+      <CTASection
+        title="Start with clarity."
+        lead="Send a private enquiry and let MMS guide the most appropriate first conversation."
+      />
     </main>
   );
 }

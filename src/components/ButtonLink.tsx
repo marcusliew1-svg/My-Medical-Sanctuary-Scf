@@ -10,7 +10,7 @@ type ButtonLinkProps = {
 
 const variants = {
   primary:
-    "bg-gold text-navy shadow-[0_14px_34px_rgba(181,111,91,0.22)] hover:bg-gold-light",
+    "bg-gold text-navy shadow-[0_14px_34px_rgba(169,138,82,0.22)] hover:bg-gold-light",
   light: "bg-ivory text-navy hover:bg-white",
   outline:
     "border border-gold/70 bg-transparent text-navy hover:bg-gold hover:text-navy",

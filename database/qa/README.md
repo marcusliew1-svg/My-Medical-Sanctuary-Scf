@@ -8,6 +8,12 @@ Run `002_partner_hub_verify.sql` afterwards to verify the fixture before using t
 
 After migrations through `0013_mms_partner_lead_lifecycle.sql` are applied, run `005_partner_lead_controls_transactional.sql` as an operator. It is a self-contained transaction that tests the duplicate-clearance gate, Partner-owned lead progression, stale-stage rejection, ownership transfer, exact transfer replay, application attribution and the ownership lock after application creation. The script ends with `ROLLBACK`.
 
+After migration `0021_mms_health_intelligence_foundation.sql` and runtime grant script `003_mms_health_intelligence_runtime_grants.sql`, run `012_health_intelligence_transactional.sql`. It verifies the seven-market seed, private raw-table privileges and transactional demo product creation, then rolls back.
+
+After migration `0022_mms_health_intelligence_data_operations.sql` and runtime grant script `004_mms_health_intelligence_operations_grants.sql`, run `013_health_intelligence_operations_transactional.sql`. It verifies Malaysia, Thailand and Singapore operational coverage and confirms raw observations and private evidence are unavailable to public roles.
+
+After migration `0023_mms_health_intelligence_assisted_ingestion.sql` and runtime grant script `005_mms_health_intelligence_ingestion_grants.sql`, run `014_health_intelligence_ingestion_transactional.sql`. It verifies the migration ledger, connector RLS and public denial, validates an approved synthetic connector configuration, rejects plaintext credential-like connector configuration, and rolls back.
+
 After migrations through `0014_mms_commission_transition_policy_alignment.sql` are applied, run `006_commission_state_machine_transactional.sql`. It validates the Finance commission transition policy, hold/release path, payout evidence retention and full Paid clawback behavior, then rolls back.
 
 After migrations through `0016_mms_lead_ownership_certification_time.sql` are applied, run `007_partner_provenance_and_certification_time_transactional.sql`. It verifies that future-issued certification cannot qualify a destination Partner for an earlier lead transfer and that commission eligibility independently requires Clear duplicate review plus accepted Partner agreement evidence before a valid persisted commercial chain can become commission-eligible. It also ends with `ROLLBACK`.

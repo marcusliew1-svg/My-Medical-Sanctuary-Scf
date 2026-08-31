@@ -1,10 +1,13 @@
 export const navigation = [
-  { label: "About MMS", href: "/about-mms" },
-  { label: "Our Approach", href: "/how-it-works" },
-  { label: "Programmes", href: "/memberships" },
-  { label: "Advanced Care", href: "/treatments" },
-  { label: "Health Intelligence", href: "/insights" },
+  { label: "Home", href: "/" },
+  { label: "Your Health", href: "/health-screening" },
+  { label: "Care & Treatments", href: "/treatments" },
+  { label: "Health Intelligence", href: "/health-intelligence" },
+  { label: "Memberships", href: "/memberships" },
+  { label: "Medical Team", href: "/about-mms#medical-team" },
   { label: "Locations", href: "/clinics" },
+  { label: "International Patients", href: "/malaysia-thailand-care" },
+  { label: "Insights", href: "/insights" },
 ];
 
 export const legalLinks = [

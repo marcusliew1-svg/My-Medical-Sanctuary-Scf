@@ -1,261 +1,198 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { EditorialHero, EditorialStatement, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, MarketSignalPanel, RevealCardGrid } from "@/components/ExperienceCards";
+import {
+  CTASection,
+  EditorialSplit,
+  HealthIntelligenceFeature,
+  ImageFeature,
+  JourneyStepRail,
+  LocationFeature,
+  PublicHero,
+  SectionHeading,
+  TrustBar,
+} from "@/components/PublicExperience";
+import { mmsLocations } from "@/data/locations";
+import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
   description:
-    "My Medical Sanctuary is a private preventive healthcare and personalised longevity institution built around discovery, doctor review and continuity.",
+    "My Medical Sanctuary is a doctor-led preventive healthcare and personalised longevity platform built around assessment, professional review and continuity.",
 };
 
-const goals = [
+const trustItems = [
+  { title: "Physician-guided", text: "Professional review before personalised recommendations." },
+  { title: "Suitability-first", text: "Programmes begin with context, not pressure." },
+  { title: "Evidence-aware", text: "Clear about what is known, uncertain and worth reviewing." },
+  { title: "Privacy-minded", text: "Discretion and consent are part of the experience." },
+  { title: "Continuity-focused", text: "Care is organised beyond a single appointment." },
+  { title: "Human-led", text: "Technology supports. Qualified professionals decide." },
+];
+
+const healthGoals = [
   {
-    title: "Understand my health",
-    eyebrow: "Start here",
-    text: "Begin with a baseline and doctor-led review.",
-    detail: "MMS helps translate uncertainty into screening, review and a practical next conversation.",
-    image: "/mms-diagnostics-screening.png",
-    href: "/health-screening",
-  },
-  {
-    title: "Age well",
-    eyebrow: "Longevity",
-    text: "Plan for resilience, independence and long-term clarity.",
-    detail: "Personalised longevity begins with context, not hype or one-size-fits-all advice.",
+    title: "Healthy Ageing",
+    eyebrow: "Longer view",
+    text: "Plan for strength, independence and resilience.",
+    detail: "Begin with screening, history and a clinician-led understanding of what deserves attention.",
     image: "/mms-doctor-couple-consult.png",
     href: "/longevity-medicine",
   },
   {
-    title: "Energy & vitality",
-    eyebrow: "Metabolic health",
-    text: "Explore sleep, stress, metabolic and lifestyle patterns.",
-    detail: "MMS can help organise the question before suitability and professional review.",
+    title: "Energy & Recovery",
+    eyebrow: "Daily vitality",
+    text: "Explore fatigue, sleep, stress and recovery patterns.",
+    detail: "MMS helps organise the question before any supplement, infusion or advanced option is discussed.",
     image: "/mms-doctor-results-review.png",
     href: "/health-discovery",
   },
   {
-    title: "Advanced options",
-    eyebrow: "Education first",
-    text: "Learn what deserves professional suitability review.",
-    detail: "Advanced care should be discussed responsibly, with evidence boundaries and doctor-led decisions.",
+    title: "Weight & Metabolic Health",
+    eyebrow: "Metabolic clarity",
+    text: "Understand glucose, body composition and lifestyle signals.",
+    detail: "The pathway starts with assessment and suitability review rather than a one-size treatment plan.",
+    image: "/mms-diagnostics-screening.png",
+    href: "/weight-management",
+  },
+  {
+    title: "Sleep & Stress",
+    eyebrow: "Recovery systems",
+    text: "Make stress, sleep and resilience part of the health conversation.",
+    detail: "Patterns often matter as much as isolated results; MMS helps patients see both.",
     image: "/mms-concierge-lounge.png",
+    href: "/health-concerns/poor-sleep-stress-recovery",
+  },
+  {
+    title: "Hormone Health",
+    eyebrow: "Professional review",
+    text: "Discuss symptoms with appropriate testing and context.",
+    detail: "Hormone conversations need careful benefit-risk review and are not based on symptoms alone.",
+    image: "/mms-doctor-results-review.png",
+    href: "/treatments/hormone-therapy",
+  },
+  {
+    title: "Cancer Screening",
+    eyebrow: "Early questions",
+    text: "Understand what screening can and cannot answer.",
+    detail: "MMS keeps cancer screening education careful: abnormal results need follow-up; normal results are not a guarantee.",
+    image: "/mms-health-screening-hero.png",
+    href: "/health-concerns/cancer-risk-early-detection",
+  },
+  {
+    title: "Regenerative Recovery",
+    eyebrow: "Advanced care",
+    text: "Learn before considering regenerative options.",
+    detail: "Advanced therapies need indication-specific evidence, product clarity and professional suitability assessment.",
+    image: "/mms-medicine-access-consult.png",
     href: "/treatments",
   },
-];
-
-const method = [
-  { title: "Discover", text: "A calm first conversation about goals, concerns and context." },
-  { title: "Assess", text: "Screening and information gathering before decisions are made." },
-  { title: "Review", text: "Doctors interpret what matters and what does not." },
-  { title: "Personalise", text: "A practical roadmap shaped around suitability and priorities." },
-  { title: "Continue", text: "Health Relationship Managers help the journey stay organised." },
-];
-
-const programmes = [
   {
-    title: "Ascend",
-    eyebrow: "Start strong",
-    text: "Understand your baseline.",
-    detail: "A structured beginning for patients who want clarity, screening and professional review.",
-    image: "/mms-concierge-lounge.png",
-    href: "/memberships",
-  },
-  {
-    title: "Evolve",
-    eyebrow: "Optimise",
-    text: "Improve and optimise.",
-    detail: "Closer coordination around energy, weight, lifestyle and metabolic health.",
-    image: "/mms-doctor-results-review.png",
-    href: "/memberships",
-  },
-  {
-    title: "Eterna",
-    eyebrow: "Protect",
-    text: "Protect long-term health.",
-    detail: "Longer-horizon preventive planning with continuity and repeated review.",
-    image: "/mms-doctor-couple-consult.png",
-    href: "/memberships",
-  },
-  {
-    title: "Pinnacle",
-    eyebrow: "Private",
-    text: "Private health coordination.",
-    detail: "Highly coordinated care, subject to capacity, invitation and clinical suitability.",
+    title: "Kidney Health",
+    eyebrow: "Specialised care",
+    text: "Bring renal risk and continuity into preventive planning.",
+    detail: "Kidney health belongs inside a broader care journey, especially when long-term monitoring matters.",
     image: "/mms-diagnostics-screening.png",
-    href: "/memberships",
+    href: "/health-concerns",
   },
+];
+
+const careModel = [
+  { title: "Assess", text: "Listen, screen and build a useful health baseline." },
+  { title: "Personalise", text: "Shape the next step around findings, goals and suitability." },
+  { title: "Care", text: "Coordinate qualified review, appointments and clear guidance." },
+  { title: "Continue", text: "Keep long-term preventive health visible after the visit." },
 ];
 
 export default function HomePage() {
   return (
     <main>
-      <EditorialHero
+      <PublicHero
         eyebrow="My Medical Sanctuary"
         title="Your health deserves a longer view."
-        lead="Preventive care. Personalised longevity. Physician-guided."
+        brandLine="Preventive Care. Personalised Longevity. Physician-guided."
+        lead="MMS is a doctor-led preventive healthcare and personalised longevity platform for people who want to understand their health earlier and plan with greater confidence."
         image="/mms-doctor-couple-consult.png"
-        imageAlt="Doctor reviewing health information with a patient in a calm private consultation room."
+        imageAlt="Doctor reviewing health goals with a patient in a private consultation room."
         imagePosition="62% center"
       />
-
-      <EditorialStatement
-        eyebrow="Why MMS"
-        title="Most healthcare begins when something goes wrong. MMS begins earlier."
-        lead="We help patients understand earlier, decide better and stay healthier longer, without turning care into a treatment catalogue."
-      />
+      <TrustBar items={trustItems} />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Start with your goal</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              You do not need to know the treatment name.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              Begin with what you want to understand. MMS helps translate that into the right screening,
-              review and next conversation.
-            </p>
-          </div>
-          <RevealCardGrid items={goals} />
-        </div>
-      </section>
-
-      <SplitStory
-        eyebrow="Medical judgement"
-        title="Medical judgement comes first."
-        lead="Technology can support. Advanced therapies can expand options. Clinical decisions remain with qualified professionals."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor and patient discussing screening information."
-        dark
-        imagePosition="62% center"
-      >
-        <div className="grid max-w-xl gap-4 border-l border-gold/40 pl-6 text-ivory/74">
-          <p>Education before recommendation.</p>
-          <p>Suitability before programme selection.</p>
-          <p>Continuity before one-off treatment decisions.</p>
-        </div>
-      </SplitStory>
-
-      <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-14 max-w-3xl">
-            <p className="editorial-kicker mb-4 text-deep-green">The MMS method</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              One connected journey, not a menu of services.
-            </h2>
-          </div>
-          <JourneyLine steps={method} />
-        </div>
-      </section>
-
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-          <ImagePanel
-            src="/mms-concierge-lounge.png"
-            alt="Private consultation room designed for calm preventive care."
-            className="min-h-[460px] rounded-[2rem] shadow-premium"
-            objectPosition="42% center"
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
+          <SectionHeading
+            eyebrow="What matters most to you?"
+            title="Start from the concern, not the treatment name."
+            lead="A premium health journey begins by understanding what the patient is trying to protect, improve or clarify."
           />
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">The sanctuary</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Healthcare should feel considered from the moment you arrive.
-            </h2>
-            <div className="mt-8 grid gap-6 border-l border-gold/40 pl-6">
-              <div>
-                <h3 className="font-serif text-2xl text-navy">Bangsar</h3>
-                <p className="mt-2 leading-7 text-warm-gray">Warm preventive health, longevity planning and hospitality-led coordination.</p>
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl text-navy">SS2</h3>
-                <p className="mt-2 leading-7 text-warm-gray">Clinical reliability and specialised care context, presented with calm continuity.</p>
-              </div>
-            </div>
-          </div>
+          <ImageFeature items={healthGoals} />
         </div>
       </section>
 
-      <section className="bg-[#07151d] px-4 py-20 text-ivory md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">Programmes</p>
-              <h2 className="text-balance font-serif text-4xl leading-tight md:text-6xl">
-                Four depths of one relationship.
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-ivory/70">
-                Membership is discussed after discovery and review. It should feel like increasing continuity, not public pricing.
-              </p>
-            </div>
-            <RevealCardGrid items={programmes} />
-          </div>
-        </div>
-      </section>
-
-      <CareTeamStrip
-        image="/mms-doctor-couple-consult.png"
-        eyebrow="Human care, digitally supported"
-        title="Technology should make care feel clearer, not colder."
-        text="Ling supports education and preparation, while MMS doctors and Health Relationship Managers remain the visible centre of the patient journey."
-        points={["Ling educates", "Doctors decide", "MMS follows through"]}
-      />
-
-      <MarketSignalPanel
-        title="A regional access opportunity patients already feel."
-        lead="When a medicine or specialist pathway is expensive in one country and potentially more accessible in Malaysia or Thailand, MMS can convert curiosity into a paid, verified access-intelligence discussion."
-      />
+      <EditorialSplit
+        eyebrow="The MMS care model"
+        title="Technology supports. MMS coordinates. Qualified professionals decide."
+        lead="Ling can help patients prepare better questions. Health Relationship Managers keep the journey organised. Doctors remain responsible for personalised medical judgement."
+        image="/mms-doctor-results-review.png"
+        imageAlt="Doctor reviewing health information with a patient."
+        dark
+        reverse
+      >
+        <JourneyStepRail steps={careModel} dark />
+      </EditorialSplit>
 
       <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Health Intelligence</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              A better health journey is also a better learning journey.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              MMS content should help patients separate evidence, uncertainty, suitability and next questions for their clinician.
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 grid gap-8 md:grid-cols-[0.78fr_1fr] md:items-end">
+            <SectionHeading
+              eyebrow="MMS network"
+              title="One MMS. Three specialised centres."
+              lead="Each location must be presented according to its approved status, so the public experience never implies an unapproved operation."
+            />
+            <p className="text-sm leading-7 text-warm-gray">
+              Release 1B uses a structured location model. Addresses, detailed services and operational language should be added only after owner and regulatory approval.
             </p>
-            <Link href="/insights" className="mt-8 inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8">
-              Explore Health Intelligence
-            </Link>
           </div>
-          <div className="grid gap-6 border-l border-gold/40 pl-6">
-            {["Preventive Health", "Longevity Science", "Treatments Explained", "Metabolic Health"].map((topic) => (
-              <div key={topic}>
-                <h3 className="font-serif text-3xl text-navy">{topic}</h3>
-                <p className="mt-2 leading-7 text-warm-gray">Plain-language education with clear boundaries and room for clinical judgement.</p>
-              </div>
+          <LocationFeature locations={mmsLocations} />
+        </div>
+      </section>
+
+      <HealthIntelligenceFeature />
+
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
+          <SectionHeading
+            eyebrow="Memberships"
+            title="Four depths of ongoing health management."
+            lead="Membership should feel like continuity, coordination and memory. It should not feel like a public price shelf."
+          />
+          <div className="grid gap-6 md:grid-cols-2">
+            {memberships.map((membership) => (
+              <article key={membership.name} className="border-t border-gold/35 pt-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold">{membership.accessNote}</p>
+                <h3 className="mt-3 font-serif text-3xl text-navy">{membership.name}</h3>
+                <p className="mt-2 font-semibold text-deep-green">{membership.tagline}</p>
+                <p className="mt-4 text-sm leading-6 text-warm-gray">{membership.whoItSuits}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-navy px-4 py-20 text-ivory md:py-28">
-        <Image src="/mms-medicine-access-consult.png" alt="" fill className="-z-0 object-cover opacity-20" sizes="100vw" />
-        <div className="absolute inset-0 bg-navy/80" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="editorial-kicker mb-4 text-gold-light">Regional care</p>
-          <h2 className="max-w-4xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-            Your care can travel with you.
-          </h2>
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {[
-              ["Malaysia", "Preventive health, MMS continuity and patient relationship management."],
-              ["Thailand", "Selected specialist, recovery and regional access discussions where appropriate."],
-              ["MMS", "Coordination that keeps the patient journey understandable."],
-            ].map(([title, text]) => (
-              <div key={title} className="border-t border-gold/45 pt-5">
-                <h3 className="font-serif text-3xl">{title}</h3>
-                <p className="mt-3 leading-7 text-ivory/70">{text}</p>
-              </div>
-            ))}
-          </div>
+      <EditorialSplit
+        eyebrow="My Sanctuary"
+        title="A future relationship layer for appointments, health journeys and trusted continuity."
+        lead="My Sanctuary remains gated in production. Release 1B presents the idea tastefully without exposing an unfinished portal."
+        image="/ling-mms-guide.png"
+        imageAlt="MMS digital guide visual representing the future My Sanctuary patient layer."
+        imagePosition="50% 20%"
+      >
+        <div className="grid gap-4 border-y border-gold/35 py-6 sm:grid-cols-2">
+          {["Appointments", "Membership", "Health journey", "Medicine review", "Future health passport", "Ling"].map((item) => (
+            <p key={item} className="text-sm font-semibold uppercase tracking-[0.12em] text-deep-green">{item}</p>
+          ))}
         </div>
-      </section>
+      </EditorialSplit>
 
-      <FinalInvitation />
+      <CTASection />
     </main>
   );
 }

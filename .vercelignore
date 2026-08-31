@@ -1,0 +1,6 @@
+.codex-review/
+.codex-temp/
+.next*/
+artifacts/
+supabase/.temp/
+*.log

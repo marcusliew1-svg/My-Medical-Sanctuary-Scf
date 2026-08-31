@@ -25,14 +25,19 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0018_mms_partner_application_evidence_hardening.sql",
   "0019_mms_finance_temporal_evidence_hardening.sql",
   "0020_mms_commission_hold_release_evidence_hardening.sql",
+  "0021_mms_health_intelligence_foundation.sql",
+  "0022_mms_health_intelligence_data_operations.sql",
+  "0023_mms_health_intelligence_assisted_ingestion.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
   "partners","partner_audit_events","partner_training_evidence","partner_assessment_attempts","partner_certifications","partner_sessions","partner_csrf_tokens","leads","lead_duplicate_decisions","lead_ownership_events","lead_lifecycle_events","applications","payments","payment_verifications","memberships","commercial_workflow_events","commission_rules","commission_transactions","commission_events","presentation_assets","schema_migrations",
+  "health_intelligence_markets","active_ingredients","brands","manufacturers","dosage_forms","routes_of_administration","release_types","medicine_products","medicine_product_ingredients","price_sources","market_registrations","price_observations","fx_rates","generic_relationships","match_reviews","regulatory_notes","verification_events","health_intelligence_audit_events","medicine_search_events","generic_search_events","cost_review_events","source_trust_reviews","product_creation_candidates","operational_price_observations","observation_evidence","freshness_policies","observation_import_batches","observation_import_rows","source_connectors",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
   "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","transfer_lead_ownership","review_lead_duplicate_status","transition_partner_lead_stage","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","create_eligible_commission","cancel_membership_and_reverse_commission","transition_commission",
+  "health_intelligence_price_publication_eligibility",
 ]);
 
 export type MmsCommercialDatabaseProbe = {
