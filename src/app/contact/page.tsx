@@ -68,7 +68,7 @@ export default function ContactPage() {
 
       <section id="discovery-form" className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
-          <div className="lg:sticky lg:top-28">
+          <div className="min-w-0 lg:sticky lg:top-28">
             <SectionHeading
               eyebrow="Concierge intake"
               title="A calm first step, not a sales counter."

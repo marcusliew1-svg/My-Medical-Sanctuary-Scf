@@ -18,7 +18,7 @@ const interests = [
 const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "Other"];
 
 const fieldClass =
-  "min-h-12 rounded-md border border-gold-light/50 bg-ivory/45 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-light/45";
+  "min-h-12 min-w-0 w-full rounded-md border border-gold-light/50 bg-ivory/45 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-light/45";
 
 const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
 
@@ -85,7 +85,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[1.5rem] border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:grid-cols-2 md:p-8">
+    <form onSubmit={handleSubmit} className="grid min-w-0 w-full gap-5 rounded-[1.5rem] border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:grid-cols-2 md:p-8">
       <div className="md:col-span-2">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Discovery Enquiry</p>
         <h3 className="mt-2 font-serif text-3xl text-navy">Tell us where to begin.</h3>
