@@ -3,7 +3,7 @@ import { unavailableFeatureForPath } from "@/lib/featureGates";
 import { MMS_PARTNER_REFERRAL_COOKIE } from "@/lib/referralTracking";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const unavailableFeature = unavailableFeatureForPath(request.nextUrl.pathname);
   if (unavailableFeature) {
     return new NextResponse("Not Found", {

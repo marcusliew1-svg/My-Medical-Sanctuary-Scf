@@ -26,8 +26,13 @@ export function generateStaticParams() {
   return allTreatmentEducation.map((item) => ({ slug: item.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const item = getTreatment(params.slug);
+type TreatmentPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: TreatmentPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const item = getTreatment(slug);
   if (!item) return {};
   return {
     title: `${item.name} explained in plain English`,
@@ -37,8 +42,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function TreatmentEducationPage({ params }: { params: { slug: string } }) {
-  const item = getTreatment(params.slug);
+export default async function TreatmentEducationPage({ params }: TreatmentPageProps) {
+  const { slug } = await params;
+  const item = getTreatment(slug);
   if (!item) notFound();
 
   return (

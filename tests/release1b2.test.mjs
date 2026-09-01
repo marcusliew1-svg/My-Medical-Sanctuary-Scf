@@ -68,11 +68,10 @@ test("Release 1B.2 database client removes dynamic createRequire warning source"
   assert.doesNotMatch(dbClient, /process\.cwd\(\).*package\.json/);
 });
 
-test("Release 1B.2 dependency patch targets stay within the approved major versions", () => {
+test("Release 1B.2 dependency patch targets preserve the separately approved framework baseline", () => {
   const pkg = packageJson();
 
-  assert.equal(pkg.dependencies.next, "^14.2.35");
-  assert.equal(pkg.devDependencies["eslint-config-next"], "^14.2.35");
+  assert.equal(pkg.dependencies.next, "^16.3.4");
+  assert.equal(pkg.devDependencies["eslint-config-next"], "^16.3.4");
   assert.equal(pkg.devDependencies.postcss, "^8.5.26");
 });
-

@@ -25,8 +25,13 @@ export function generateStaticParams() {
   return allConcerns.map((item) => ({ slug: item.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const concern = getConcern(params.slug);
+type HealthConcernPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: HealthConcernPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const concern = getConcern(slug);
   if (!concern) return {};
   return {
     title: concern.searchTitle,
@@ -72,11 +77,12 @@ function topicHref(label: string, href?: string) {
   return href;
 }
 
-export default function HealthConcernDetailPage({ params }: { params: { slug: string } }) {
-  const resolvedSlug = resolveConcernSlug(params.slug);
-  if (resolvedSlug !== params.slug) redirect(`/health-concerns/${resolvedSlug}`);
+export default async function HealthConcernDetailPage({ params }: HealthConcernPageProps) {
+  const { slug } = await params;
+  const resolvedSlug = resolveConcernSlug(slug);
+  if (resolvedSlug !== slug) redirect(`/health-concerns/${resolvedSlug}`);
 
-  const concern = getConcern(params.slug);
+  const concern = getConcern(slug);
   if (!concern) notFound();
 
   return (

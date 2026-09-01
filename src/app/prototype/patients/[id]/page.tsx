@@ -10,13 +10,14 @@ import {
 import { getPerson } from "../../data";
 
 type PatientDetailPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default function PatientDetailPage({ params }: PatientDetailPageProps) {
-  const person = getPerson(params.id);
+export default async function PatientDetailPage({ params }: PatientDetailPageProps) {
+  const { id } = await params;
+  const person = getPerson(id);
 
   if (!person) {
     notFound();

@@ -12,7 +12,7 @@ Authoritative configuration lives in `src/lib/siteConfig.ts`.
 
 ## Production Feature Gates
 
-Production route availability is enforced by `src/middleware.ts` through `src/lib/featureGates.ts`.
+Production route availability is enforced by `src/proxy.ts` through `src/lib/featureGates.ts`.
 
 Default-off production surfaces:
 
@@ -55,7 +55,7 @@ The rate limiter is suitable as a first Release 1A abuse-control layer, but shou
 
 ## Referral Cookie Audit
 
-Implementation: `src/middleware.ts` and `src/lib/referralTracking.ts`.
+Implementation: `src/proxy.ts` and `src/lib/referralTracking.ts`.
 
 - Trigger: any route with a valid `?ref=` query value.
 - Cookie name: `mms_partner_ref`.

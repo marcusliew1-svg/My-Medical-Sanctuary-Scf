@@ -17,11 +17,13 @@ export const metadata = {
 export default async function HealthIntelligenceInternalPage({
   searchParams,
 }: {
-  searchParams?: { access?: string };
+  searchParams?: Promise<{ access?: string }>;
 }) {
+  const resolvedSearchParams = await searchParams;
+  const cookieStore = await cookies();
   const configured = healthIntelligenceAuthConfigured();
   const authenticated = verifyHealthIntelligenceReviewerSession(
-    cookies().get(HEALTH_INTELLIGENCE_REVIEWER_COOKIE)?.value,
+    cookieStore.get(HEALTH_INTELLIGENCE_REVIEWER_COOKIE)?.value,
   );
   if (!configured || !authenticated) {
     return (
@@ -58,7 +60,7 @@ export default async function HealthIntelligenceInternalPage({
                 autoComplete="current-password"
                 required
               />
-              {searchParams?.access === "denied" ? (
+              {resolvedSearchParams?.access === "denied" ? (
                 <p className="text-sm text-red-300">Access was not accepted.</p>
               ) : null}
               <button
