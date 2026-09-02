@@ -28,6 +28,9 @@ jobs:
       - name: Operations Console integration tests
         run: npm run test:operations-console
 
+      - name: Commission Control Centre integration tests
+        run: npm run test:commission-centre
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
