@@ -35,7 +35,7 @@ function load(relative, cache = new Map()) {
 const migration = fs.readFileSync(
   path.resolve(
     root,
-    "database/migrations/0022_mms_health_intelligence_data_operations.sql",
+    "database/migrations/0023_mms_health_intelligence_data_operations.sql",
   ),
   "utf8",
 );

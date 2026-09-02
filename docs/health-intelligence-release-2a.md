@@ -12,7 +12,7 @@ This release provides product identity, provenance, price/FX history, matching, 
 
 ## Database rollout
 
-1. Apply `database/migrations/0021_mms_health_intelligence_foundation.sql` to an approved non-production MMS database only.
+1. Apply `database/migrations/0022_mms_health_intelligence_foundation.sql` to an approved non-production MMS database only, after the applied commercial hardening migration `0021_mms_database_post_provision_hardening.sql`.
 2. Apply `database/provision/003_mms_health_intelligence_runtime_grants.sql`.
 3. Run `database/qa/012_health_intelligence_transactional.sql`.
 4. Run Supabase security/performance advisors and resolve findings before enabling database-backed Preview review.

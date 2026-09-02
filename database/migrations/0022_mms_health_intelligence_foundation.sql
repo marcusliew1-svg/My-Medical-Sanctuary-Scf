@@ -429,7 +429,7 @@ do $$ declare v_table text; begin
 end $$;
 
 insert into mms_commercial.schema_migrations(migration_key,notes)
-values('0021_mms_health_intelligence_foundation.sql','Normalized product identity, market/source provenance, immutable price/FX history, deterministic review records, publication eligibility and audit controls.')
+values('0022_mms_health_intelligence_foundation.sql','Normalized product identity, market/source provenance, immutable price/FX history, deterministic review records, publication eligibility and audit controls.')
 on conflict(migration_key) do nothing;
 
 commit;

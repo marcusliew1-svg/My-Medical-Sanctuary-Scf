@@ -1,4 +1,4 @@
--- Run after migration 0022. The application role is a trusted server-only role;
+-- Run after migration 0023. The application role is a trusted server-only role;
 -- collector/reviewer/publisher authorization is enforced by the internal API.
 begin;
 
@@ -29,4 +29,3 @@ do $$ declare v_table text; begin
 end $$;
 
 commit;
-

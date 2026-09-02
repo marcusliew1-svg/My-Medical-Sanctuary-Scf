@@ -6,7 +6,7 @@ Tagline: **Preventive Care • Personalised Longevity**
 
 ## Release 2C.1 operations foundation
 
-Release 2C.1 adds controlled source onboarding, manual observation capture, unresolved-product queues, basis/source/verification checkpoints, separate publication approval, freshness policies, anomaly flags and CSV dry-run validation for Malaysia, Thailand and Singapore. The seven-market model remains intact. Migration `0022` and its runtime grants are migration-ready but are not applied remotely by this branch.
+Release 2C.1 adds controlled source onboarding, manual observation capture, unresolved-product queues, basis/source/verification checkpoints, separate publication approval, freshness policies, anomaly flags and CSV dry-run validation for Malaysia, Thailand and Singapore. The seven-market model remains intact. Migration `0023` and its runtime grants are migration-ready but are not applied remotely by this branch.
 
 ## Stack
 
@@ -184,7 +184,7 @@ Use cautious wording:
 Avoid exaggerated medical claims.
 # Release 2A Health Intelligence
 
-The private Health Intelligence data foundation is defined by `database/migrations/0021_mms_health_intelligence_foundation.sql`. The internal reviewer console is `/internal/health-intelligence` and is default-off behind `MMS_HEALTH_INTELLIGENCE_INTERNAL_ENABLED`. See `docs/health-intelligence-release-2a.md` before enabling it. No demo data or raw pricing table is public.
+The private Health Intelligence data foundation is defined by `database/migrations/0022_mms_health_intelligence_foundation.sql`. The internal reviewer console is `/internal/health-intelligence` and is default-off behind `MMS_HEALTH_INTELLIGENCE_INTERNAL_ENABLED`. See `docs/health-intelligence-release-2a.md` before enabling it. No demo data or raw pricing table is public.
 # Release 2C.2 assisted ingestion
 
 Release 2C.2 adds a controlled, internal-only ingestion framework for approved Health Intelligence sources. CSV and future approved API adapters create traceable batches and collected/unverified observation candidates only. Connectors cannot verify product identity, verify a price, or publish data. Real data remains excluded from public reads unless `MMS_HEALTH_INTELLIGENCE_REAL_DATA_ENABLED=true` and the existing publication eligibility controls also pass.

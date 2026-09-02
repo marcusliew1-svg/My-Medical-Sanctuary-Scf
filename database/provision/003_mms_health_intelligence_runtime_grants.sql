@@ -1,4 +1,4 @@
--- Run after migration 0021. Grants only the dedicated MMS server role access.
+-- Run after migration 0022. Grants only the dedicated MMS server role access.
 begin;
 grant select on all tables in schema mms_commercial to mms_commercial_app;
 grant insert,update on table

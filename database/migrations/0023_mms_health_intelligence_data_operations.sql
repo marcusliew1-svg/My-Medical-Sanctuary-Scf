@@ -242,6 +242,6 @@ do $$ declare v_table text; begin
 end $$;
 
 insert into mms_commercial.schema_migrations(migration_key)
-values ('0022_mms_health_intelligence_data_operations.sql') on conflict do nothing;
+values ('0023_mms_health_intelligence_data_operations.sql') on conflict do nothing;
 
 commit;

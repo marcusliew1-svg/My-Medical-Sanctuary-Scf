@@ -34,7 +34,7 @@ function load(relative, cache = new Map()) {
 }
 
 const migration = fs.readFileSync(
-  path.resolve(root, "database/migrations/0023_mms_health_intelligence_assisted_ingestion.sql"),
+  path.resolve(root, "database/migrations/0024_mms_health_intelligence_assisted_ingestion.sql"),
   "utf8",
 );
 const grants = fs.readFileSync(

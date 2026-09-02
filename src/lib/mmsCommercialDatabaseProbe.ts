@@ -25,9 +25,10 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0018_mms_partner_application_evidence_hardening.sql",
   "0019_mms_finance_temporal_evidence_hardening.sql",
   "0020_mms_commission_hold_release_evidence_hardening.sql",
-  "0021_mms_health_intelligence_foundation.sql",
-  "0022_mms_health_intelligence_data_operations.sql",
-  "0023_mms_health_intelligence_assisted_ingestion.sql",
+  "0021_mms_database_post_provision_hardening.sql",
+  "0022_mms_health_intelligence_foundation.sql",
+  "0023_mms_health_intelligence_data_operations.sql",
+  "0024_mms_health_intelligence_assisted_ingestion.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([

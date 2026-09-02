@@ -134,7 +134,7 @@ do $$ declare v_table text; begin
 end $$;
 
 insert into mms_commercial.schema_migrations(migration_key,notes)
-values ('0023_mms_health_intelligence_assisted_ingestion.sql','Controlled connectors, traceable batches, row lineage, idempotency and assisted ingestion controls.')
+values ('0024_mms_health_intelligence_assisted_ingestion.sql','Controlled connectors, traceable batches, row lineage, idempotency and assisted ingestion controls.')
 on conflict do nothing;
 
 commit;

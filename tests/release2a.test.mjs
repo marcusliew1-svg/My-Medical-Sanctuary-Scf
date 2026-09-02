@@ -28,7 +28,7 @@ function loadTsModule(relativePath, cache = new Map()) {
   return module.exports;
 }
 
-const migration = fs.readFileSync(path.resolve(repoRoot, "database/migrations/0021_mms_health_intelligence_foundation.sql"), "utf8");
+const migration = fs.readFileSync(path.resolve(repoRoot, "database/migrations/0022_mms_health_intelligence_foundation.sql"), "utf8");
 
 test("Release 2A migration contains normalized identity, provenance, history, FX, review and audit concepts", () => {
   for (const table of ["health_intelligence_markets","active_ingredients","brands","manufacturers","dosage_forms","routes_of_administration","release_types","medicine_products","medicine_product_ingredients","market_registrations","price_observations","price_sources","generic_relationships","match_reviews","regulatory_notes","verification_events","fx_rates","health_intelligence_audit_events"]) {

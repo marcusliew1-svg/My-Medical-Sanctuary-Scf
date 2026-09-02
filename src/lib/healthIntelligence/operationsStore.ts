@@ -90,7 +90,7 @@ function audit(
 export async function operationsSnapshot(): Promise<OperationsSnapshot> {
   if (!healthIntelligenceDemoModeEnabled())
     throw new Error(
-      "Release 2C.1 operations require the approved 0022 migration before database mode can be enabled.",
+      "Release 2C.1 operations require the approved 0023 migration before database mode can be enabled.",
     );
   return state();
 }
