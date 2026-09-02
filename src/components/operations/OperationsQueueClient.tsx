@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type QueueKind = "applications" | "finance" | "memberships";
@@ -74,7 +75,12 @@ export default function OperationsQueueClient({ kind, initialFilter = "" }: { ki
     }
   }, [filter, filterParam, kind, search]);
 
-  useEffect(() => { void load(null, false); }, [load]);
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void load(null, false);
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [load]);
 
   const columns = useMemo(() => {
     if (kind === "applications") return ["Application", "Customer", "Partner", "Package", "Stage", "Payment", "Submitted"];
@@ -101,7 +107,7 @@ export default function OperationsQueueClient({ kind, initialFilter = "" }: { ki
               {items.map((item, index) => {
                 if (kind === "applications") return (
                   <tr key={String(item.applicationId || index)} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 font-semibold"><a className="text-slate-950 underline-offset-2 hover:underline" href={`/operations/applications/${item.applicationId}`}>{String(item.applicationId)}</a></td>
+                    <td className="px-4 py-3 font-semibold"><Link className="text-slate-950 underline-offset-2 hover:underline" href={`/operations/applications/${item.applicationId}`}>{String(item.applicationId)}</Link></td>
                     <td className="px-4 py-3">{String(item.customerName || "—")}</td>
                     <td className="px-4 py-3">{String(item.partnerCode || "—")}</td>
                     <td className="px-4 py-3">{String(item.membershipCode || "—")}</td>
