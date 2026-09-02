@@ -6,6 +6,7 @@ export type MmsFeature =
   | "patientPortal"
   | "membershipCheckout"
   | "productionLingAi"
+  | "operatorAccess"
   | "healthIntelligenceInternal";
 
 type FeatureRule = {
@@ -39,6 +40,11 @@ export const mmsFeatureRules: Record<MmsFeature, FeatureRule> = {
     envVar: "MMS_PRODUCTION_LING_AI_ENABLED",
     enabledOutsideProduction: false,
     description: "Production AI responses for Ling. Placeholder routing remains available.",
+  },
+  operatorAccess: {
+    envVar: "MMS_OPERATOR_ACCESS_ENABLED",
+    enabledOutsideProduction: false,
+    description: "Internal MMS operator sign-in, session and commercial mutation surfaces.",
   },
   healthIntelligenceInternal: {
     envVar: "MMS_HEALTH_INTELLIGENCE_INTERNAL_ENABLED",
@@ -79,6 +85,8 @@ export const gatedRoutePrefixes: ReadonlyArray<{ prefix: string; feature: MmsFea
   { prefix: "/onboarding", feature: "patientPortal" },
   { prefix: "/my-sanctuary", feature: "patientPortal" },
   { prefix: "/membership-checkout", feature: "membershipCheckout" },
+  { prefix: "/operations", feature: "operatorAccess" },
+  { prefix: "/api/operations", feature: "operatorAccess" },
   { prefix: "/internal/health-intelligence", feature: "healthIntelligenceInternal" },
   { prefix: "/api/internal/health-intelligence", feature: "healthIntelligenceInternal" },
 ] as const;
