@@ -19,7 +19,8 @@
     "test:release2c1": "node --test tests/release2c1.test.mjs",
     "test:release2c2": "node --test tests/release2c2.test.mjs",
     "test:release2d0": "node --test tests/release2d0.test.mjs",
-    "test:operator-security": "node --test tests/operator-security.test.mjs"
+    "test:operator-security": "node --test tests/operator-security.test.mjs",
+    "test:operations-console": "node --test tests/operations-console-integration.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
