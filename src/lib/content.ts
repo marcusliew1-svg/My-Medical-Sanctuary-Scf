@@ -1,14 +1,6 @@
-export const navigation = [
-  { label: "Home", href: "/" },
-  { label: "Your Health", href: "/health-screening" },
-  { label: "Care & Treatments", href: "/treatments" },
-  { label: "Health Intelligence", href: "/health-intelligence" },
-  { label: "Memberships", href: "/memberships" },
-  { label: "Medical Team", href: "/about-mms#medical-team" },
-  { label: "Locations", href: "/clinics" },
-  { label: "International Patients", href: "/malaysia-thailand-care" },
-  { label: "Insights", href: "/insights" },
-];
+import { navigation as siteNavigation } from "@/lib/siteRoutes";
+
+export const navigation = siteNavigation;
 
 export const legalLinks = [
   { label: "Privacy Policy", href: "/privacy-policy" },

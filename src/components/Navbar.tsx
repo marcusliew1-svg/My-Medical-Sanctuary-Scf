@@ -1,25 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNav } from "@/components/MobileNav";
-import { navigation } from "@/lib/content";
+import { moreNavigation, navigation } from "@/lib/siteRoutes";
 
 const visibleNavigation = navigation.filter(
   (item) => !["Home", "International Patients", "Insights"].includes(item.label),
 );
 
-const moreNavigation = [
-  { label: "Home", href: "/" },
-  { label: "International Patients", href: "/malaysia-thailand-care" },
-  { label: "Insights", href: "/insights" },
-  { label: "About MMS", href: "/about-mms" },
-  { label: "Ling", href: "/ling" },
-] as const;
-
 export function Navbar() {
   return (
     <header data-public-chrome className="fixed inset-x-0 top-9 z-40 px-4 py-3">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 border border-ivory/12 bg-[#07151d]/88 px-4 py-3 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.2)] backdrop-blur-xl md:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 border border-ivory/12 bg-[#07151d] px-4 py-3 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:px-6">
         <Link href="/" className="flex items-center gap-3">
           <span className="grid h-10 w-14 place-items-center bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.22)]">
             <Image src="/mms-logo-mark.png" alt="My Medical Sanctuary" width={430} height={310} className="h-full w-full object-contain" priority />
@@ -53,7 +46,8 @@ export function Navbar() {
           </div>
         </nav>
         <div className="hidden items-center gap-3 xl:flex">
-          <Link href="/my-sanctuary" className="text-sm font-semibold text-gold-light transition hover:text-ivory">My Sanctuary</Link>
+          <LanguageSwitcher />
+          <Link href="/my-sanctuary" prefetch={false} className="text-sm font-semibold text-gold-light transition hover:text-ivory">My Sanctuary</Link>
           <CTAButton href="/contact" className="min-h-10 px-4 text-xs">
             Book Consultation
           </CTAButton>

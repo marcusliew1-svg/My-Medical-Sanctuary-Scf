@@ -25,11 +25,17 @@ jobs:
       - name: Operator security tests
         run: npm run test:operator-security
 
+      - name: Next major upgrade tests
+        run: npm run test:next-major
+
       - name: Operations Console integration tests
         run: npm run test:operations-console
 
       - name: Commission Control Centre integration tests
         run: npm run test:commission-centre
+
+      - name: Multilingual integration tests
+        run: npm run test:multilingual
 
       - name: Typecheck
         run: npx tsc --noEmit --pretty false

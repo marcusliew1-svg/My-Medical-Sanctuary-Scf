@@ -1,3 +1,8 @@
-import Link from "next/link";
-import { LingPanel } from "@/components/LingPanel";
-export default function ChineseHome(){return <main className="min-h-screen bg-ivory px-4 pb-20 pt-36"><div className="mx-auto max-w-6xl"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">My Medical Sanctuary · 简体中文</p><h1 className="mt-5 max-w-4xl font-serif text-5xl leading-tight text-navy md:text-7xl">预防保健，个性化长寿管理。</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-warm-gray">连接马来西亚与泰国的协调式健康旅程，所有医疗决定均由合格医生审核与主导。</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/ling" className="rounded-full bg-deep-green px-6 py-3 font-semibold text-white">从 Ling 开始</Link><Link href="/online-doctor" className="rounded-full border border-gold px-6 py-3 font-semibold text-navy">预约线上医生</Link></div><div className="mt-16"><LingPanel /></div></div></main>}
+import type { Metadata } from "next";
+import { LocalizedRegionalHome, regionalMetadata } from "@/components/LocalizedRegionalExperience";
+
+export const metadata: Metadata = regionalMetadata("zh");
+
+export default function ChineseHome() {
+  return <LocalizedRegionalHome locale="zh" />;
+}

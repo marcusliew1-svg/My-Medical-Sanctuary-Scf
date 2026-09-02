@@ -1,3 +1,5 @@
+import { isRegionalLocale } from "@/lib/i18nRouting";
+
 export type DeploymentEnvironment = "production" | "preview" | "development";
 
 export type MmsFeature =
@@ -91,8 +93,17 @@ export const gatedRoutePrefixes: ReadonlyArray<{ prefix: string; feature: MmsFea
   { prefix: "/api/internal/health-intelligence", feature: "healthIntelligenceInternal" },
 ] as const;
 
+export function pathForFeatureEvaluation(pathname: string): string {
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts.length > 1 && isRegionalLocale(parts[0])) return `/${parts.slice(1).join("/")}`;
+  return pathname;
+}
+
 export function unavailableFeatureForPath(pathname: string, env: NodeJS.ProcessEnv = process.env): MmsFeature | null {
-  const matched = gatedRoutePrefixes.find(({ prefix }) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+  const evaluatedPath = pathForFeatureEvaluation(pathname);
+  const matched = gatedRoutePrefixes.find(
+    ({ prefix }) => evaluatedPath === prefix || evaluatedPath.startsWith(`${prefix}/`),
+  );
   if (!matched) return null;
   return isMmsFeatureEnabled(matched.feature, env) ? null : matched.feature;
 }

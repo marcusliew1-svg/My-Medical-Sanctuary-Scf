@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { navigation } from "@/lib/content";
+import { legalNavigation, navigation } from "@/lib/siteRoutes";
 
 const links = [
   ...navigation.map((item) => [item.label, item.href] as const),
@@ -39,12 +39,7 @@ export function FooterV01() {
         <div>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Legal</h2>
           <div className="grid gap-2 text-sm text-ivory/72">
-            {[
-              ["Privacy Policy", "/privacy-policy"],
-              ["Privacy / PDPA", "/privacy-pdpa"],
-              ["Terms of Use", "/terms-of-use"],
-              ["Disclaimer", "/privacy-disclaimer"],
-            ].map(([label, href]) => (
+            {legalNavigation.map(({ label, href }) => (
               <Link key={href} href={href} className="transition hover:text-gold-light">
                 {label}
               </Link>

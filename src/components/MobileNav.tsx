@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { navigation } from "@/lib/content";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { navigation } from "@/lib/siteRoutes";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -76,6 +77,7 @@ export function MobileNav() {
             ))}
           </nav>
           <div className="mx-auto mt-8 grid max-w-md gap-3 border-t border-champagne/20 pt-6">
+            <LanguageSwitcher variant="mobile" onNavigate={() => setOpen(false)} />
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
@@ -85,6 +87,7 @@ export function MobileNav() {
             </Link>
             <Link
               href="/my-sanctuary"
+              prefetch={false}
               onClick={() => setOpen(false)}
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-champagne/45 px-5 text-sm font-semibold text-ivory"
             >

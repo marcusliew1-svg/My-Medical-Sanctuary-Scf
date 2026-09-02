@@ -1,5 +1,5 @@
 export const routes = {
-  home: "",
+  home: "/",
   aboutMms: "/about-mms",
   whyMms: "/why-mms",
   ourPhilosophy: "/our-philosophy",
@@ -11,6 +11,7 @@ export const routes = {
   weightManagement: "/weight-management",
   ivTherapy: "/iv-therapy",
   memberships: "/memberships",
+  membership: "/membership",
   treatments: "/treatments",
   healthConcerns: "/health-concerns",
   howItWorks: "/how-it-works",
@@ -33,67 +34,39 @@ export const routes = {
   medicalTourism: "/medical-tourism",
   faq: "/faq",
   contact: "/contact",
+  bookAppointment: "/book-appointment",
+  privacyDisclaimer: "/privacy-disclaimer",
   privacyPdpa: "/privacy-pdpa",
+  privacyPolicy: "/privacy-policy",
+  terms: "/terms",
   termsOfUse: "/terms-of-use",
 } as const;
 
-export const primaryNavigation = [
+export const navigation = [
+  { label: "Home", href: routes.home },
   { label: "Your Health", href: routes.healthScreening },
   { label: "Care & Treatments", href: routes.treatments },
   { label: "Health Intelligence", href: routes.healthIntelligence },
   { label: "Memberships", href: routes.memberships },
-  { label: "How It Works", href: routes.howItWorks },
+  { label: "Medical Team", href: `${routes.aboutMms}#medical-team` },
   { label: "Locations", href: routes.clinics },
+  { label: "International Patients", href: routes.malaysiaThailandCare },
+  { label: "Insights", href: routes.insights },
 ] as const;
 
-export const mobileNavigation = [
-  { label: "How MMS Works", href: routes.howItWorks },
-  { label: "Memberships", href: routes.memberships },
-  { label: "Treatments & Wellness Guide", href: routes.treatments },
-  { label: "Health Concerns & Research", href: routes.healthConcerns },
-  { label: "Medicine Price Compare", href: routes.medicineIntelligence },
-  { label: "Health Intelligence", href: routes.healthIntelligence },
-  { label: "Malaysia–Thailand Care Travel", href: routes.medicalTourism },
-  { label: "Online Doctor", href: routes.onlineDoctor },
-  { label: "Our Clinics", href: routes.clinics },
-  { label: "SCF & Future Medicine", href: routes.scfLabRoadmap },
-  { label: "MMS Insights", href: routes.insights },
-  { label: "Video & Media Room", href: routes.mediaRoom },
-  { label: "Regional Care Access", href: routes.malaysiaThailandCare },
+export const moreNavigation = [
+  { label: "Home", href: routes.home },
+  { label: "International Patients", href: routes.malaysiaThailandCare },
+  { label: "Insights", href: routes.insights },
   { label: "About MMS", href: routes.aboutMms },
-] as const;
-
-export const footerNavigation = [
-  { label: "About MMS", href: routes.aboutMms },
-  { label: "Memberships", href: routes.memberships },
-  { label: "How It Works", href: routes.howItWorks },
-  { label: "Health Discovery", href: routes.healthDiscovery },
-  { label: "Malaysia–Thailand Care", href: routes.malaysiaThailandCare },
-  { label: "Care Travel", href: routes.medicalTourism },
-  { label: "Online Doctor", href: routes.onlineDoctor },
-  { label: "Our Clinics", href: routes.clinics },
-  { label: "MMS Insights", href: routes.insights },
-  { label: "Video & Media Room", href: routes.mediaRoom },
-  { label: "Education", href: routes.education },
-  { label: "Contact", href: routes.contact },
-] as const;
-
-export const platformNavigation = [
-  { label: "SCF Lab Roadmap", href: routes.scfLabRoadmap },
-  { label: "Medicine Access Intelligence", href: routes.internationalMedicineAccess },
   { label: "Ling", href: routes.ling },
 ] as const;
 
 export const legalNavigation = [
+  { label: "Privacy Policy", href: routes.privacyPolicy },
   { label: "Privacy / PDPA", href: routes.privacyPdpa },
   { label: "Terms of Use", href: routes.termsOfUse },
-] as const;
-
-export const languages = [
-  { label: "EN", href: "/", aria: "English" },
-  { label: "BM", href: "/ms", aria: "Bahasa Malaysia" },
-  { label: "中文", href: "/zh", aria: "Simplified Chinese" },
-  { label: "ไทย", href: "/th", aria: "Thai" },
+  { label: "Disclaimer", href: routes.privacyDisclaimer },
 ] as const;
 
 export const publicSitemapRoutes = [
@@ -104,33 +77,34 @@ export const publicSitemapRoutes = [
   routes.healthJourney,
   routes.healthDiscovery,
   routes.healthScreening,
+  routes.treatments,
   routes.preventiveCare,
   routes.longevityMedicine,
   routes.weightManagement,
   routes.ivTherapy,
   routes.memberships,
-  routes.treatments,
-  routes.healthConcerns,
+  routes.membership,
   routes.howItWorks,
   routes.education,
   routes.knowledgeHub,
   routes.healthArticles,
-  routes.ling,
   routes.healthIntelligence,
-  routes.internationalMedicineAccess,
-  routes.medicineIntelligence,
   routes.insights,
-  routes.mediaRoom,
-  routes.malaysiaThailandCare,
-  routes.onlineDoctor,
+  routes.ling,
   routes.clinics,
+  routes.internationalMedicineAccess,
   routes.scfLabRoadmap,
   routes.corporateExecutiveWellness,
   routes.corporateWellness,
   routes.professionalAllianceProgramme,
   routes.medicalTourism,
+  routes.malaysiaThailandCare,
   routes.faq,
   routes.contact,
+  routes.bookAppointment,
+  routes.privacyDisclaimer,
   routes.privacyPdpa,
+  routes.privacyPolicy,
+  routes.terms,
   routes.termsOfUse,
 ] as const;
