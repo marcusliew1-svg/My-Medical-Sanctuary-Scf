@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import {
   CTASection,
   EditorialSplit,
-  ImageFeature,
   JourneyStepRail,
   PublicHero,
   SectionHeading,
 } from "@/components/PublicExperience";
+import { EditorialIndex, PrincipleRow } from "@/components/PublicEditorialModules";
 
 export const metadata: Metadata = {
   title: "Our Approach",
@@ -27,28 +27,24 @@ const roles = [
     eyebrow: "Education",
     text: "Understand concepts before the appointment.",
     detail: "Ling helps organise questions while staying inside educational boundaries.",
-    image: "/ling-concierge.png",
   },
   {
     title: "MMS coordinates",
     eyebrow: "Concierge",
     text: "Appointments and next steps become clearer.",
     detail: "Health Relationship Manager coordination helps patients feel guided between visits.",
-    image: "/mms-concierge-lounge.png",
   },
   {
     title: "Doctors decide",
     eyebrow: "Clinical review",
     text: "Personalised medical recommendations remain professional-led.",
     detail: "Doctors interpret findings and decide suitability where appropriate.",
-    image: "/mms-doctor-results-review.png",
   },
   {
     title: "Continuity follows",
     eyebrow: "Long view",
     text: "The journey does not end after one visit.",
     detail: "MMS is designed around long-term preventive planning.",
-    image: "/mms-doctor-couple-consult.png",
   },
 ];
 
@@ -101,7 +97,24 @@ export default function HowItWorksPage() {
               lead="Technology supports. MMS coordinates. Qualified professionals decide."
             />
           </div>
-          <ImageFeature items={roles} />
+          <EditorialIndex items={roles} />
+        </div>
+      </section>
+
+      <section className="bg-ivory px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            eyebrow="What patients can expect"
+            title="Clarity at every handoff."
+            lead="The experience is designed so education, coordination and professional judgement each have a visible place."
+          />
+          <div className="mt-12">
+            <PrincipleRow items={[
+              { title: "Understand", text: "Know why a question, test or next step matters." },
+              { title: "Decide", text: "Make choices after findings and suitability are reviewed." },
+              { title: "Continue", text: "Leave with an organised plan and a route back to care." },
+            ]} />
+          </div>
         </div>
       </section>
 
