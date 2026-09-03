@@ -37,6 +37,9 @@ jobs:
       - name: Multilingual integration tests
         run: npm run test:multilingual
 
+      - name: Enquiry hardening tests
+        run: npm run test:enquiry-hardening
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
