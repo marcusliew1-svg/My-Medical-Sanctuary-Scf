@@ -240,7 +240,7 @@ export function ImageFeature({
 
 export function JourneyStepRail({ steps, dark = false }: { steps: Array<{ title: string; text: string }>; dark?: boolean }) {
   return (
-    <ol className={`grid gap-8 border-l pl-7 md:grid-cols-4 md:border-l-0 md:border-t md:pl-0 md:pt-8 ${dark ? "border-champagne/40" : "border-gold/45"}`}>
+    <ol className={`grid gap-8 border-l pl-7 ${steps.length >= 5 ? "md:grid-cols-5" : "md:grid-cols-4"} md:border-l-0 md:border-t md:pl-0 md:pt-8 ${dark ? "border-champagne/40" : "border-gold/45"}`}>
       {steps.map((step, index) => (
         <li key={step.title} className="relative md:pr-6">
           <span className={`absolute -left-[2.1rem] top-1 size-4 rounded-full md:-top-10 md:left-0 ${dark ? "bg-champagne" : "bg-gold"}`} />
