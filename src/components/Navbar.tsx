@@ -9,8 +9,8 @@ const visibleNavigation = primaryNavigation;
 
 export function Navbar() {
   return (
-    <header data-public-chrome className="fixed inset-x-0 top-9 z-40 px-4 py-3">
-      <div className="mx-auto flex max-w-[90rem] items-center justify-between gap-4 border border-ivory/12 bg-[#07151d]/[0.97] px-4 py-3 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:px-6">
+    <header data-public-chrome className="fixed inset-x-0 top-9 z-40 px-3 py-3 sm:px-4">
+      <div className="mx-auto flex max-w-[90rem] items-center justify-between gap-4 border border-ivory/12 bg-[#07151d]/[0.97] px-4 py-2.5 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:px-6">
         <Link href="/" className="flex min-h-11 shrink-0 items-center gap-3" aria-label="My Medical Sanctuary home">
           <span className="grid h-10 w-14 place-items-center rounded-sm bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.22)]">
             <Image src="/mms-logo-mark.png" alt="My Medical Sanctuary" width={430} height={310} className="h-full w-full object-contain" priority />

@@ -4,10 +4,10 @@ import { legalNavigation, primaryNavigation, utilityNavigation } from "@/lib/sit
 
 export function FooterV01() {
   return (
-    <footer data-public-chrome className="border-t border-champagne/15 bg-[#07151d] px-4 py-14 text-ivory">
-      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.35fr_0.9fr_0.9fr_1fr]">
+    <footer data-public-chrome className="border-t border-champagne/15 bg-[#07151d] px-4 py-16 text-ivory md:py-20">
+      <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.35fr_0.9fr_0.9fr_1fr]">
         <div>
-          <div className="mb-5 max-w-64 rounded-sm bg-ivory p-4">
+          <div className="mb-7 max-w-64 rounded-sm bg-ivory p-4">
             <Image src="/mms-logo-lockup.png" alt="My Medical Sanctuary" width={1180} height={575} className="h-auto w-full" />
           </div>
           <p className="max-w-md leading-7 text-ivory/70">
@@ -40,6 +40,7 @@ export function FooterV01() {
           <p className="text-sm leading-7 text-ivory/70">
             General information only. Professional review is required before any personalised recommendation. Individual outcomes vary.
           </p>
+          <p className="mt-6 text-xs uppercase tracking-[0.16em] text-champagne">Understand earlier. Personalise carefully. Continue over time.</p>
           <h2 className="mb-3 mt-6 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Legal</h2>
           <div className="grid gap-2 text-sm text-ivory/72">
             {legalNavigation.map(({ label, href }) => (

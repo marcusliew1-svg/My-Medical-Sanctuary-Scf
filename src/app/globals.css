@@ -17,6 +17,7 @@
   --mms-content-width: 72rem;
   --mms-reading-width: 42rem;
   --mms-section-space: 6rem;
+  --mms-section-space-compact: 4rem;
   --mms-radius: 0.5rem;
   --mms-motion-fast: 180ms;
   --mms-motion-standard: 280ms;
@@ -73,8 +74,14 @@ textarea {
   box-shadow: 0 18px 50px rgba(11, 26, 46, 0.08);
 }
 
+main {
+  overflow: clip;
+}
+
 [data-public-section] {
   isolation: isolate;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
 }
 
 .public-media {
@@ -134,4 +141,20 @@ body:has([data-internal-console]) [data-public-chrome] {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+}
+
+.editorial-rule {
+  width: 3rem;
+  height: 1px;
+  background: var(--mms-color-bronze);
+}
+
+.public-prose p + p {
+  margin-top: 1rem;
+}
+
+@media (max-width: 767px) {
+  [data-public-section] {
+    contain-intrinsic-size: auto 980px;
+  }
 }

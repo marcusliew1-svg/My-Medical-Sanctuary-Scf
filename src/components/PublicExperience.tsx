@@ -25,9 +25,9 @@ export function SectionHeading({
   dark?: boolean;
 }) {
   return (
-    <div>
+    <div className="max-w-3xl">
       {eyebrow ? <Eyebrow dark={dark}>{eyebrow}</Eyebrow> : null}
-      <h2 className={`mt-4 text-balance font-serif text-4xl leading-[1.02] md:text-6xl ${dark ? "text-ivory" : "text-navy"}`}>
+      <h2 className={`mt-4 text-balance font-serif text-4xl leading-[1.04] md:text-6xl ${dark ? "text-ivory" : "text-navy"}`}>
         {title}
       </h2>
       {lead ? (
@@ -121,7 +121,7 @@ export function PublicHero({
         sizes="100vw"
       />
       <div className={`absolute inset-0 -z-10 ${toneClasses.overlay}`} />
-      <div className="mx-auto grid min-h-[min(720px,74vh)] max-w-6xl content-center py-16 md:py-20">
+      <div className="mx-auto grid min-h-[min(760px,78vh)] max-w-6xl content-end py-16 md:content-center md:py-20">
         <div className="max-w-3xl">
           <Eyebrow dark={toneClasses.eyebrow}>{eyebrow}</Eyebrow>
           <h1 className={`mt-5 text-balance font-serif text-5xl leading-[0.98] md:text-7xl lg:text-8xl ${toneClasses.title}`}>
@@ -144,7 +144,7 @@ export function PublicHero({
 export function TrustBar({ items }: { items: Array<{ title: string; text: string }> }) {
   return (
     <section className="bg-[#07151d] px-4 text-ivory">
-      <div className="mx-auto grid max-w-6xl border-x border-white/10 md:grid-cols-3 lg:grid-cols-6">
+      <div className="mx-auto grid max-w-6xl border-x border-white/10 sm:grid-cols-2 lg:grid-cols-6">
         {items.map((item) => (
           <div key={item.title} className="border-b border-r border-white/10 px-5 py-5 last:border-r-0 md:border-b-0">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-champagne">{item.title}</p>
@@ -285,8 +285,10 @@ export function HealthIntelligenceFeature() {
     ["Preventive Health", "Earlier understanding before problems become urgent."],
     ["Longevity Science", "Evidence-aware views on ageing, vitality and resilience."],
     ["Treatments Explained", "Clear context before advanced care discussions."],
-    ["Medicine Intelligence", "In development: understand why medicine costs and access differ globally."],
-    ["Regional Care Intelligence", "Malaysia and Thailand pathways explained without overpromising."],
+    ["Medicine Price Intelligence", "Compare verified price observations with dates, sources and uncertainty visible."],
+    ["Generic Medicine Finder", "Understand names and equivalents without encouraging unsupervised substitution."],
+    ["Medication Cost Review", "Prepare a medicine list for professional review before any change is considered."],
+    ["Regional Care Intelligence", "Navigate Malaysia and Thailand pathways without promises about access or availability."],
   ];
 
   return (
@@ -298,11 +300,12 @@ export function HealthIntelligenceFeature() {
           lead="MMS will help patients understand healthcare systems, access questions and uncertainty before any personalised review or licensed next step."
           dark
         />
-        <div className="grid gap-5 md:grid-cols-2">
-          {items.map(([title, text]) => (
-            <article key={title} className="border-t border-champagne/35 pt-5">
-              <h3 className="font-serif text-3xl leading-tight text-ivory">{title}</h3>
-              <p className="mt-3 text-sm leading-6 text-ivory/68">{text}</p>
+        <div className="border-t border-champagne/30">
+          {items.map(([title, text], index) => (
+            <article key={title} className="grid gap-3 border-b border-champagne/18 py-5 sm:grid-cols-[2.5rem_0.8fr_1.2fr]">
+              <span className="text-xs text-champagne">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="font-serif text-2xl leading-tight text-ivory">{title}</h3>
+              <p className="text-sm leading-6 text-ivory/68">{text}</p>
             </article>
           ))}
         </div>
@@ -312,8 +315,8 @@ export function HealthIntelligenceFeature() {
 }
 
 export function CTASection({
-  title = "Start with understanding your health.",
-  lead = "Book a private discovery discussion and let MMS guide the right first step.",
+  title = "Your health journey can begin with a conversation.",
+  lead = "Begin with clarity, then decide with professional guidance.",
 }: {
   title?: string;
   lead?: string;
@@ -327,8 +330,8 @@ export function CTASection({
           <p className="mt-5 max-w-2xl text-lg leading-8 text-warm-gray">{lead}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <ButtonLink href="/contact">Book Health Assessment</ButtonLink>
-          <ButtonLink href="/contact" variant="outline">Speak with MMS</ButtonLink>
+          <ButtonLink href="/contact">Book Consultation</ButtonLink>
+          <ButtonLink href="/how-it-works" variant="outline">How MMS Works</ButtonLink>
         </div>
       </PublicContainer>
     </section>
