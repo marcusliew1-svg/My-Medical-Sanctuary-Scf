@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type {
@@ -313,8 +314,10 @@ export function PublicMedicineIntelligence({ mode }: { mode: Mode }) {
   const copy = modeCopy[mode];
   return (
     <main className="bg-ivory">
-      <section className="bg-[#06171d] px-4 pb-16 pt-36 text-ivory md:pb-24">
-        <div className="mx-auto max-w-6xl">
+      <section className="relative isolate overflow-hidden bg-[#06171d] px-4 pb-16 pt-36 text-ivory md:pb-24 md:pt-44">
+        <Image src="/mms-medicine-access-consult.png" alt="" fill priority className="-z-20 object-cover object-[64%_center]" sizes="100vw" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(6,23,29,.98),rgba(6,23,29,.86)_48%,rgba(6,23,29,.38)),linear-gradient(0deg,rgba(6,23,29,.86),transparent_60%)]" />
+        <div className="mx-auto grid min-h-[520px] max-w-6xl content-end md:min-h-[580px]">
           <p className="editorial-kicker text-champagne">{copy.eyebrow}</p>
           <h1 className="mt-5 max-w-4xl font-serif text-5xl leading-[.98] md:text-7xl">
             {copy.title}
@@ -322,23 +325,23 @@ export function PublicMedicineIntelligence({ mode }: { mode: Mode }) {
           <p className="mt-6 max-w-2xl text-lg leading-8 text-ivory/75">
             {copy.lead}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-9 flex flex-wrap gap-3">
             <Link
               href="/health-intelligence"
-              className="rounded-md border border-ivory/40 px-5 py-3 text-sm font-semibold text-ivory"
+              className="inline-flex min-h-11 items-center rounded-md border border-ivory/40 px-5 py-3 text-sm font-semibold text-ivory"
             >
               Health Intelligence
             </Link>
             <Link
               href="/contact"
-              className="rounded-md bg-champagne px-5 py-3 text-sm font-semibold text-navy"
+              className="inline-flex min-h-11 items-center rounded-md bg-champagne px-5 py-3 text-sm font-semibold text-navy"
             >
               Ask MMS to review my options
             </Link>
           </div>
         </div>
       </section>
-      <section className="px-4 py-14 md:py-20">
+      <section data-public-section className="px-4 py-16 md:py-24">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.72fr_1.28fr]">
           <div>
             <p className="editorial-kicker text-deep-green">
@@ -353,7 +356,7 @@ export function PublicMedicineIntelligence({ mode }: { mode: Mode }) {
               local availability, import rules, licensed dispensing and clinical
               suitability all matter.
             </p>
-            <div className="mt-7 border-t border-gold/35 pt-5 text-sm leading-6 text-warm-gray">
+            <div className="mt-7 border-l-2 border-bronze bg-warm-white px-5 py-4 text-sm leading-6 text-warm-gray">
               <strong className="text-navy">Important:</strong> This tool
               provides education and published reference information only. It
               does not prescribe, recommend a switch, or provide purchase or
@@ -388,7 +391,7 @@ export function PublicMedicineIntelligence({ mode }: { mode: Mode }) {
                           {product.brandName}
                         </h2>
                       </div>
-                      <span className="rounded-full border border-gold/50 px-3 py-1 text-xs font-semibold uppercase tracking-[.12em] text-deep-green">
+                      <span className="border border-gold/50 px-3 py-1 text-xs font-semibold uppercase tracking-[.12em] text-deep-green">
                         {product.identityStatus === "demo_preview"
                           ? "Demo preview"
                           : "Verified identity"}
@@ -489,7 +492,7 @@ export function PublicMedicineIntelligence({ mode }: { mode: Mode }) {
           </div>
         </div>
       </section>
-      <section className="bg-[#07151d] px-4 py-14 text-ivory">
+      <section data-public-section className="bg-[#07151d] px-4 py-16 text-ivory md:py-20">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6">
           <div>
             <p className="editorial-kicker text-champagne">The next step</p>
