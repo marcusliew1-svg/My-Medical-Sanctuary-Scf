@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
+import { PublicContainer, PublicSectionShell, ResponsiveEditorialImage } from "@/components/PublicVisualPrimitives";
 import { locationStatusLabels, type MmsLocation } from "@/data/locations";
 
 export function Eyebrow({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
@@ -112,7 +113,7 @@ export function PublicHero({
     <section className={`relative isolate overflow-hidden px-4 pt-28 md:pt-36 ${toneClasses.section}`}>
       <Image
         src={image}
-        alt=""
+        alt={imageAlt}
         fill
         priority
         className="-z-20 object-cover"
@@ -136,7 +137,6 @@ export function PublicHero({
           </div>
         </div>
       </div>
-      <span className="sr-only">{imageAlt}</span>
     </section>
   );
 }
@@ -178,18 +178,22 @@ export function EditorialSplit({
   imagePosition?: string;
 }) {
   return (
-    <section className={`px-4 py-20 md:py-28 ${dark ? "bg-[#06171d] text-ivory" : "bg-ivory text-charcoal"}`}>
-      <div className={`mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center ${reverse ? "lg:grid-flow-dense" : ""}`}>
+    <PublicSectionShell tone={dark ? "midnight" : "ivory"}>
+      <div className={`grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center ${reverse ? "lg:grid-flow-dense" : ""}`}>
         <div className={reverse ? "lg:col-start-2" : ""}>
           <SectionHeading eyebrow={eyebrow} title={title} lead={lead} dark={dark} />
           {children ? <div className="mt-9">{children}</div> : null}
         </div>
-        <figure className={`${reverse ? "lg:col-start-1 lg:row-start-1" : ""} relative min-h-[360px] overflow-hidden rounded-[1.25rem] shadow-premium md:min-h-[540px]`}>
-          <Image src={image} alt={imageAlt} fill className="object-cover" style={{ objectPosition: imagePosition }} sizes="(min-width: 1024px) 50vw, 100vw" />
+        <ResponsiveEditorialImage
+          src={image}
+          alt={imageAlt}
+          objectPosition={imagePosition}
+          className={`${reverse ? "lg:col-start-1 lg:row-start-1" : ""} min-h-[360px] md:min-h-[540px]`}
+        >
           <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(11,26,46,.22))]" />
-        </figure>
+        </ResponsiveEditorialImage>
       </div>
-    </section>
+    </PublicSectionShell>
   );
 }
 
@@ -202,7 +206,7 @@ export function ImageFeature({
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {items.map((item, index) => {
         const content = (
-          <article className={`group relative min-h-[320px] overflow-hidden rounded-[1.15rem] bg-[#07151d] text-ivory outline-none ${index % 3 === 0 ? "lg:translate-y-8" : ""}`}>
+          <article className={`group relative min-h-[320px] overflow-hidden rounded-md bg-[#07151d] text-ivory outline-none ${index % 3 === 0 ? "lg:translate-y-8" : ""}`}>
             <Image src={item.image} alt="" fill className="object-cover opacity-75 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-52" sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw" />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,21,29,0.08),rgba(7,21,29,0.78)_66%,rgba(7,21,29,0.96))]" />
             <div className="relative flex min-h-[320px] flex-col justify-end p-6">
@@ -255,11 +259,11 @@ export function LocationFeature({ locations }: { locations: MmsLocation[] }) {
   return (
     <div className="grid gap-4 lg:grid-cols-3">
       {locations.map((location, index) => (
-        <article key={location.slug} className={`overflow-hidden rounded-[1.1rem] bg-white shadow-soft ${index === 1 ? "lg:translate-y-10" : ""}`}>
+        <article key={location.slug} className={`overflow-hidden rounded-md bg-white shadow-soft ${index === 1 ? "lg:translate-y-10" : ""}`}>
           <div className="relative min-h-[260px]">
             <Image src={location.image} alt={`${location.name} visual placeholder`} fill className="object-cover" sizes="(min-width: 1024px) 33vw, 100vw" />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(7,21,29,.62))]" />
-            <span className="absolute left-5 top-5 rounded-full bg-ivory/92 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-deep-green">
+            <span className="absolute left-5 top-5 rounded-md bg-ivory/92 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-deep-green">
               {locationStatusLabels[location.status]}
             </span>
           </div>
@@ -286,8 +290,8 @@ export function HealthIntelligenceFeature() {
   ];
 
   return (
-    <section className="bg-[#06171d] px-4 py-20 text-ivory md:py-28">
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+    <PublicSectionShell tone="midnight">
+      <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
         <SectionHeading
           eyebrow="Health Intelligence"
           title="Healthcare is global. Prices aren't."
@@ -303,7 +307,7 @@ export function HealthIntelligenceFeature() {
           ))}
         </div>
       </div>
-    </section>
+    </PublicSectionShell>
   );
 }
 
@@ -315,8 +319,8 @@ export function CTASection({
   lead?: string;
 }) {
   return (
-    <section className="relative overflow-hidden bg-ivory px-4 py-20 md:py-28">
-      <div className="mx-auto grid max-w-6xl gap-10 border-y border-gold/30 py-12 md:grid-cols-[1fr_auto] md:items-end">
+    <section data-public-section className="relative overflow-hidden bg-ivory py-16 md:py-24 lg:py-28">
+      <PublicContainer className="grid gap-10 border-y border-gold/30 py-12 md:grid-cols-[1fr_auto] md:items-end">
         <div>
           <Eyebrow>Your health, our commitment</Eyebrow>
           <h2 className="mt-4 max-w-3xl text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">{title}</h2>
@@ -326,7 +330,7 @@ export function CTASection({
           <ButtonLink href="/contact">Book Health Assessment</ButtonLink>
           <ButtonLink href="/contact" variant="outline">Speak with MMS</ButtonLink>
         </div>
-      </div>
+      </PublicContainer>
     </section>
   );
 }

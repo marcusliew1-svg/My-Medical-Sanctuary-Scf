@@ -54,13 +54,25 @@ export const navigation = [
   { label: "Insights", href: routes.insights },
 ] as const;
 
-export const moreNavigation = [
-  { label: "Home", href: routes.home },
+export const primaryNavigation = [
+  { label: "About", href: routes.aboutMms },
+  { label: "Your Health", href: routes.healthScreening },
+  { label: "Programmes", href: routes.memberships },
+  { label: "Treatments", href: routes.treatments },
+  { label: "Health Intelligence", href: routes.healthIntelligence },
+  { label: "Locations", href: routes.clinics },
+] as const;
+
+export const utilityNavigation = [
+  { label: "Medical Team", href: `${routes.aboutMms}#medical-team` },
   { label: "International Patients", href: routes.malaysiaThailandCare },
   { label: "Insights", href: routes.insights },
-  { label: "About MMS", href: routes.aboutMms },
-  { label: "Ling", href: routes.ling },
+  { label: "My Sanctuary", href: "/my-sanctuary", prefetch: false },
+  { label: "Contact", href: routes.contact },
+  { label: "Partner Login", href: "/partner-login", prefetch: false },
 ] as const;
+
+export const moreNavigation = utilityNavigation;
 
 export const legalNavigation = [
   { label: "Privacy Policy", href: routes.privacyPolicy },

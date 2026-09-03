@@ -10,6 +10,7 @@ import {
   SectionHeading,
   TrustBar,
 } from "@/components/PublicExperience";
+import { PublicSectionShell } from "@/components/PublicVisualPrimitives";
 import { mmsLocations } from "@/data/locations";
 import { memberships } from "@/data/memberships";
 
@@ -104,7 +105,7 @@ const careModel = [
 
 export default function HomePage() {
   return (
-    <main>
+    <main data-public-home-shell>
       <PublicHero
         eyebrow="My Medical Sanctuary"
         title="Your health deserves a longer view."
@@ -116,8 +117,8 @@ export default function HomePage() {
       />
       <TrustBar items={trustItems} />
 
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
+      <PublicSectionShell>
+        <div className="grid gap-12 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
           <SectionHeading
             eyebrow="What matters most to you?"
             title="Start from the concern, not the treatment name."
@@ -125,7 +126,7 @@ export default function HomePage() {
           />
           <ImageFeature items={healthGoals} />
         </div>
-      </section>
+      </PublicSectionShell>
 
       <EditorialSplit
         eyebrow="The MMS care model"
@@ -139,8 +140,8 @@ export default function HomePage() {
         <JourneyStepRail steps={careModel} dark />
       </EditorialSplit>
 
-      <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-6xl">
+      <PublicSectionShell tone="stone">
+        <div>
           <div className="mb-12 grid gap-8 md:grid-cols-[0.78fr_1fr] md:items-end">
             <SectionHeading
               eyebrow="MMS network"
@@ -153,12 +154,12 @@ export default function HomePage() {
           </div>
           <LocationFeature locations={mmsLocations} />
         </div>
-      </section>
+      </PublicSectionShell>
 
       <HealthIntelligenceFeature />
 
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
+      <PublicSectionShell>
+        <div className="grid gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
           <SectionHeading
             eyebrow="Memberships"
             title="Four depths of ongoing health management."
@@ -175,7 +176,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </PublicSectionShell>
 
       <EditorialSplit
         eyebrow="My Sanctuary"

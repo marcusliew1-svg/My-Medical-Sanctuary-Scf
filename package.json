@@ -25,7 +25,8 @@
     "test:commission-centre": "node --test tests/commission-centre-integration.test.mjs",
     "test:multilingual": "node --test tests/multilingual-integration.test.mjs",
     "test:enquiry-hardening": "node --test tests/enquiry-hardening-wave5.test.mjs",
-    "test:partner-auth": "node --test tests/partner-auth-wave6.test.mjs"
+    "test:partner-auth": "node --test tests/partner-auth-wave6.test.mjs",
+    "test:design-foundation": "node --test tests/design-foundation-wave7.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
