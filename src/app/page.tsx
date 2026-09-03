@@ -77,7 +77,7 @@ export default function HomePage() {
         ]} /></div></div>
       </div></PublicSectionShell>
 
-      <PublicSectionShell><SectionHeading eyebrow="Locations" title="One MMS. Different centres of expertise." lead="Every centre is presented according to its verified status. Planned services are not described as operational." /><div className="mt-12"><LocationFeature locations={mmsLocations} /></div></PublicSectionShell>
+      <PublicSectionShell><SectionHeading eyebrow="Locations" title="One MMS. Three specialised centres." lead="Different centres of expertise, each presented according to its verified status. Planned services are not described as operational." /><div className="mt-12"><LocationFeature locations={mmsLocations} /></div></PublicSectionShell>
 
       <PublicSectionShell tone="midnight"><div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
         <SectionHeading eyebrow="Programmes" title="Four depths of one relationship." lead="Membership follows discovery and professional review. It is a level of coordination, not a public price shelf." dark />

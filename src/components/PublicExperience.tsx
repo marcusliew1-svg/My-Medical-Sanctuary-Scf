@@ -257,21 +257,21 @@ export function JourneyStepRail({ steps, dark = false }: { steps: Array<{ title:
 
 export function LocationFeature({ locations }: { locations: MmsLocation[] }) {
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
+    <div className="border-t border-bronze/30">
       {locations.map((location, index) => (
-        <article key={location.slug} className={`overflow-hidden rounded-md bg-white shadow-soft ${index === 1 ? "lg:translate-y-10" : ""}`}>
-          <div className="relative min-h-[260px]">
+        <article key={location.slug} className={`grid gap-8 border-b border-bronze/25 py-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center ${index % 2 ? "lg:grid-flow-dense" : ""}`}>
+          <div className={`relative min-h-[300px] overflow-hidden rounded-md md:min-h-[390px] ${index % 2 ? "lg:col-start-2" : ""}`}>
             <Image src={location.image} alt={`${location.name} visual placeholder`} fill className="object-cover" sizes="(min-width: 1024px) 33vw, 100vw" />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(7,21,29,.62))]" />
-            <span className="absolute left-5 top-5 rounded-md bg-ivory/92 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-deep-green">
+            <span className="absolute left-5 top-5 bg-ivory/92 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-deep-green">
               {locationStatusLabels[location.status]}
             </span>
           </div>
-          <div className="p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold">{location.city}</p>
-            <h3 className="mt-3 font-serif text-3xl leading-tight text-navy">{location.name}</h3>
-            <p className="mt-2 font-semibold text-deep-green">{location.positioning}</p>
-            <p className="mt-4 text-sm leading-6 text-warm-gray">{location.overview}</p>
+          <div className={index % 2 ? "lg:col-start-1 lg:row-start-1" : ""}>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-bronze">{String(index + 1).padStart(2, "0")} · {location.city}</p>
+            <h3 className="mt-4 font-serif text-4xl leading-tight text-navy md:text-5xl">{location.name}</h3>
+            <p className="mt-3 text-lg font-semibold text-deep-green">{location.positioning}</p>
+            <p className="mt-5 max-w-xl leading-8 text-warm-gray">{location.overview}</p>
             {location.address ? <p className="mt-4 text-sm text-charcoal">{location.address}</p> : null}
           </div>
         </article>

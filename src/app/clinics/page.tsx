@@ -1,71 +1,20 @@
 import type { Metadata } from "next";
-import {
-  CTASection,
-  EditorialSplit,
-  JourneyStepRail,
-  LocationFeature,
-  PublicHero,
-  SectionHeading,
-} from "@/components/PublicExperience";
+import { CTASection, EditorialSplit, LocationFeature, PublicHero, SectionHeading } from "@/components/PublicExperience";
+import { ClinicalBoundary, PrincipleRow } from "@/components/PublicEditorialModules";
+import { PublicSectionShell } from "@/components/PublicVisualPrimitives";
 import { mmsLocations } from "@/data/locations";
 
-export const metadata: Metadata = {
-  title: "Locations",
-  description:
-    "MMS location architecture across Bangsar, SS2 and Johor, presented with approved status boundaries and patient-first positioning.",
-};
-
-const networkPrinciples = [
-  { title: "Status-led", text: "Each centre is labelled according to its approved current status." },
-  { title: "Patient-led", text: "Locations are explained through the patient journey, not service hype." },
-  { title: "Care-aware", text: "Clinical, wellness and future lab capabilities stay clearly distinguished." },
-  { title: "Expandable", text: "The model can support Malaysia-first and ASEAN-ready growth." },
-];
-
+export const metadata: Metadata = { title: "Locations", description: "The planned MMS network across Bangsar, SS2 and Johor, presented with clear status and distinct care purpose." };
 export default function ClinicsPage() {
-  return (
-    <main>
-      <PublicHero
-        eyebrow="Locations"
-        title="One MMS. Three specialised centres."
-        brandLine="A care network designed for clarity, privacy and continuity."
-        lead="MMS presents each location according to approved status and purpose, so patients can understand the network without confusion."
-        image="/mms-concierge-lounge.png"
-        imageAlt="Private healthcare hospitality environment."
-        primaryLabel="Speak with MMS"
-        primaryHref="/contact"
-        secondaryLabel="Regional Care"
-        secondaryHref="/malaysia-thailand-care"
-        imagePosition="48% center"
-        tone="location"
-      />
-
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 max-w-3xl">
-            <SectionHeading
-              eyebrow="MMS network"
-              title="Each centre has a role. Each role needs a clear boundary."
-              lead="Release 1B uses structured status labels rather than hard-coded operational claims."
-            />
-          </div>
-          <LocationFeature locations={mmsLocations} />
-        </div>
-      </section>
-
-      <EditorialSplit
-        eyebrow="Expansion discipline"
-        title="A premium network earns trust by being precise about what exists today."
-        lead="Future services, addresses and facility claims should be added only after owner, clinical, operational and regulatory approval."
-        image="/mms-health-screening-hero.png"
-        imageAlt="Clinical screening and health review environment."
-        dark
-        reverse
-      >
-        <JourneyStepRail steps={networkPrinciples} dark />
-      </EditorialSplit>
-
-      <CTASection title="Choose the right setting after the right first conversation." />
-    </main>
-  );
+  return <main>
+    <PublicHero eyebrow="Locations" title="One MMS. Different centres of expertise." brandLine="One standard of attention, expressed for different care needs." lead="MMS is developing a Malaysia-first network for preventive health, specialist continuity and future advanced capability. Every location below remains clearly labelled by status." image="/mms-concierge-lounge.png" imageAlt="A calm private healthcare environment representing the MMS location experience." primaryLabel="Discuss Your Care Needs" primaryHref="/contact" secondaryLabel="Regional Care" secondaryHref="/malaysia-thailand-care" tone="location" />
+    <PublicSectionShell><SectionHeading eyebrow="The MMS network" title="Each centre has a distinct role." lead="A single visual identity should not flatten the differences between hospitality-led preventive care, specialist renal continuity and a future advanced medical hub." /><div className="mt-12"><LocationFeature locations={mmsLocations} /></div></PublicSectionShell>
+    <EditorialSplit eyebrow="Truth before promotion" title="Location status is part of patient trust." lead="MMS will add addresses, operating details and verified services only after the necessary owner, clinical, operational and regulatory approvals." image="/mms-health-screening-hero.png" imageAlt="Clinical environment representing careful operational readiness." dark reverse><ClinicalBoundary>All three centres are currently presented as planned. This website does not represent them as open or accepting appointments at those locations.</ClinicalBoundary></EditorialSplit>
+    <PublicSectionShell tone="stone"><SectionHeading eyebrow="One standard" title="Different environments. Consistent principles." lead="Wherever care happens, patients should experience clarity, privacy and professional responsibility." /><div className="mt-12"><PrincipleRow items={[
+      { title: "Clear", text: "Know the purpose, status and next step before travelling." },
+      { title: "Private", text: "Discretion and consent are part of every setting." },
+      { title: "Connected", text: "Information and follow-up remain part of one MMS journey." },
+    ]} /></div></PublicSectionShell>
+    <CTASection title="Let the care need guide the setting." lead="Speak with MMS before making travel or appointment plans." />
+  </main>;
 }
