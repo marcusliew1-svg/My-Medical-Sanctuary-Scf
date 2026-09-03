@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function PartnerHubSignOutButton() {
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   async function signOut() {
@@ -21,8 +23,9 @@ export function PartnerHubSignOutButton() {
           [csrf.headerName || "x-mms-csrf-token"]: csrf.csrfToken,
         },
       });
-      if (!logoutRequest.ok) throw new Error("logout_failed");
-      window.location.assign("/partner-hub");
+      if (!logoutRequest.ok && logoutRequest.status < 500) throw new Error("logout_failed");
+      router.replace("/partner-login");
+      router.refresh();
     } catch {
       setBusy(false);
     }

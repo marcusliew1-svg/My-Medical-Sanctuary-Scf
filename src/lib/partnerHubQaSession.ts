@@ -40,7 +40,8 @@ export async function issueQaPartnerSession(params: {
 
   const partnerId = normalisePartnerId(params.partnerId);
   if (!partnerId) return { status: "not_found", reason: "A valid MMS Partner ID is required." };
-  const subject = params.subject.trim().slice(0, 200);
+  const subjectValue = params.subject.trim().slice(0, 197);
+  const subject = subjectValue ? `qa:${subjectValue}` : "";
   if (!subject) return { status: "not_allowed", reason: "A QA session subject is required." };
 
   const ttlMinutes = Math.min(60, Math.max(5, Math.trunc(params.ttlMinutes || 30)));

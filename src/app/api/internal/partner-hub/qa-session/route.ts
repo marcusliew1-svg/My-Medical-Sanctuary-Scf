@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     value: result.sessionToken,
     httpOnly: true,
     secure: false,
-    sameSite: "lax",
+    sameSite: "strict",
     path: "/",
     expires: new Date(result.expiresAt),
   });
