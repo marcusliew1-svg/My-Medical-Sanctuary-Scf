@@ -23,7 +23,8 @@
     "test:operator-security": "node --test tests/operator-security.test.mjs",
     "test:operations-console": "node --test tests/operations-console-integration.test.mjs",
     "test:commission-centre": "node --test tests/commission-centre-integration.test.mjs",
-    "test:multilingual": "node --test tests/multilingual-integration.test.mjs"
+    "test:multilingual": "node --test tests/multilingual-integration.test.mjs",
+    "test:enquiry-hardening": "node --test tests/enquiry-hardening-wave5.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",

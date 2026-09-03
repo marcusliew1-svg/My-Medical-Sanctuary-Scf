@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AttributedHandoffLink } from "@/components/AttributedHandoffLink";
 import {
   alternatePaths,
   localizedPath,
@@ -124,7 +125,7 @@ export function LocalizedRegionalPage({ locale, section }: { locale: RegionalLoc
     <p className="mt-6 max-w-3xl text-lg leading-8 text-warm-gray">{page.intro}</p>
     <div className="mt-10 grid gap-4 md:grid-cols-3">{page.points.map((point, index) => <div key={point} className="rounded-[1.5rem] border border-stone-200 bg-white p-5 shadow-soft"><span className="grid size-8 place-items-center rounded-full bg-[#e7efea] text-xs font-bold text-deep-green">{index + 1}</span><p className="mt-4 text-sm leading-7 text-navy">{point}</p></div>)}</div>
     <div className="mt-8 rounded-2xl border border-gold/20 bg-[#fbf7ef] p-5 text-sm leading-7 text-warm-gray">{content.phaseNotice}</div>
-    <div className="mt-8 flex flex-wrap gap-3"><Link href={page.englishHref} className="rounded-full bg-deep-green px-6 py-3 font-semibold text-white">{page.englishLabel}</Link><Link href={`/${locale}`} className="rounded-full border border-gold px-6 py-3 font-semibold text-navy">{content.backHome}</Link></div>
+    <div className="mt-8 flex flex-wrap gap-3">{section === "contact" ? <AttributedHandoffLink href={page.englishHref} locale={locale} className="rounded-full bg-deep-green px-6 py-3 font-semibold text-white">{page.englishLabel}</AttributedHandoffLink> : <Link href={page.englishHref} className="rounded-full bg-deep-green px-6 py-3 font-semibold text-white">{page.englishLabel}</Link>}<Link href={`/${locale}`} className="rounded-full border border-gold px-6 py-3 font-semibold text-navy">{content.backHome}</Link></div>
     <LocaleNav locale={locale} /><p className="mt-8 max-w-4xl text-xs leading-6 text-warm-gray">{content.safety}</p>
   </div></main>;
 }

@@ -7,6 +7,7 @@ type CTAButtonProps = {
   variant?: "primary" | "secondary" | "outline";
   type?: "button" | "submit";
   onClick?: () => void;
+  disabled?: boolean;
   className?: string;
 };
 
@@ -24,6 +25,7 @@ export function CTAButton({
   variant = "primary",
   type = "button",
   onClick,
+  disabled = false,
   className = "",
 }: CTAButtonProps) {
   const classes = `inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold transition duration-300 hover:-translate-y-0.5 ${variants[variant]} ${className}`;
@@ -37,7 +39,12 @@ export function CTAButton({
   }
 
   return (
-    <button type={type} onClick={onClick} className={classes}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`${classes} disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0`}
+    >
       {children}
     </button>
   );

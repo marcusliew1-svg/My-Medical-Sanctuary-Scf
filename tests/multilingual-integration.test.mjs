@@ -121,17 +121,21 @@ test("referral cookie remains first-party, secure in production and site-wide", 
 test("translated navigation never changes enquiry canonical backend values", () => {
   const form = read("src/components/ContactForm.tsx");
   const regional = read("src/components/LocalizedRegionalExperience.tsx");
+  const options = read("src/lib/bookingOptions.ts");
   assert.match(form, /interestedIn:\s*String\(formData\.get\("mainInterest"\)/);
-  assert.match(form, /consentVersion:\s*"MMS-WEB-2026-08-v1"/);
+  assert.match(form, /consentVersion:\s*BOOKING_CONSENT_VERSION/);
+  assert.match(options, /value:\s*"health_screening"/);
   assert.match(form, /name="website"/);
   assert.doesNotMatch(regional, /<ContactForm/);
 });
 
 test("booking abuse protection remains intact", () => {
   const booking = read("src/app/api/booking/route.ts");
+  const validation = read("src/lib/bookingSubmission.ts");
   assert.match(booking, /checkInMemoryRateLimit/);
   assert.match(booking, /form\.website/);
-  assert.match(booking, /consentVersion === "MMS-WEB-2026-08-v1"/);
+  assert.match(validation, /BOOKING_CONSENT_VERSION = "MMS-WEB-2026-08-v1"/);
+  assert.match(validation, /raw\.consentVersion !== BOOKING_CONSENT_VERSION/);
 });
 
 test("Health Intelligence and internal consoles remain English-only", () => {

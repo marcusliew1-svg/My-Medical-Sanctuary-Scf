@@ -1,57 +1,27 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { zohoLeadFieldMapping } from "@/lib/content";
-import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
+import { validateBookingSubmission } from "@/lib/bookingSubmission";
+import {
+  bodyTooLarge,
+  clean,
+  hasAllowedPublicOrigin,
+  publicRequestClientKey,
+  publicSubmissionErrorStatus,
+  readPublicForm,
+} from "@/lib/publicSubmission";
 import { checkInMemoryRateLimit } from "@/lib/rateLimit";
-
-type BookingForm = {
-  fullName?: string;
-  mobileNumber?: string;
-  email?: string;
-  country?: string;
-  preferredLanguage?: string;
-  interestedIn?: string;
-  preferredContactMethod?: string;
-  preferredAppointmentDate?: string;
-  message?: string;
-  consentToContact?: string;
-  consentVersion?: string;
-  sourcePath?: string;
-  website?: string;
-};
-
-async function readBookingForm(request: NextRequest): Promise<BookingForm> {
-  const fields = await readPublicForm(request);
-
-  return {
-    fullName: fields.fullName,
-    mobileNumber: fields.mobileNumber,
-    email: fields.email,
-    country: fields.country,
-    preferredLanguage: fields.preferredLanguage,
-    interestedIn: fields.interestedIn,
-    preferredContactMethod: fields.preferredContactMethod,
-    preferredAppointmentDate: fields.preferredAppointmentDate,
-    message: fields.message,
-    consentToContact: fields.consentToContact,
-    consentVersion: fields.consentVersion,
-    sourcePath: fields.sourcePath,
-    website: fields.website,
-  };
-}
-
-function clientKey(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  return forwardedFor || realIp || "unknown";
-}
+import { MMS_PARTNER_REFERRAL_COOKIE, referralPartnerId } from "@/lib/referralTracking";
 
 export async function POST(request: NextRequest) {
   if (bodyTooLarge(request)) {
     return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
   }
 
-  const rateLimit = checkInMemoryRateLimit(`booking:${clientKey(request)}`, {
+  if (!hasAllowedPublicOrigin(request)) {
+    return NextResponse.json({ status: "denied", message: "This request could not be accepted." }, { status: 403 });
+  }
+
+  const rateLimit = checkInMemoryRateLimit(`booking:${publicRequestClientKey(request)}`, {
     limit: 6,
     windowMs: 10 * 60 * 1000,
   });
@@ -69,11 +39,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let form: BookingForm;
+  let form: Record<string, string>;
   try {
-    form = await readBookingForm(request);
-  } catch {
-    return NextResponse.json({ status: "invalid", message: "Unsupported request format." }, { status: 415 });
+    form = await readPublicForm(request);
+  } catch (error) {
+    const status = publicSubmissionErrorStatus(error);
+    return NextResponse.json(
+      { status: "invalid", message: status === 413 ? "Request is too large." : "Unsupported or invalid request format." },
+      { status },
+    );
   }
 
   const honeypot = clean(form.website, 120);
@@ -81,57 +55,44 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "accepted" }, { status: 202 });
   }
 
-  const fullName = clean(form.fullName, 120);
-  const mobileNumber = clean(form.mobileNumber, 40);
-  const email = clean(form.email, 254).toLowerCase();
-  const country = clean(form.country, 120);
-  const interestedIn = clean(form.interestedIn, 160);
-
-  if (fullName.length < 2 || mobileNumber.length < 6 || !isEmail(email) || !country || !interestedIn) {
-    return NextResponse.json(
-      {
-        status: "invalid",
-        message: "Please provide a valid name, mobile number, email, location and enquiry interest.",
-      },
-      { status: 400 },
-    );
+  const validation = validateBookingSubmission(form);
+  if (!validation.ok) {
+    return NextResponse.json({ status: "invalid", message: validation.message }, { status: 400 });
   }
 
-  const consentGranted = form.consentToContact === "true";
-  const consentVersion = form.consentVersion === "MMS-WEB-2026-08-v1" ? form.consentVersion : null;
+  const consentTimestamp = new Date().toISOString();
+  const authoritativePartnerId = referralPartnerId(
+    request.cookies.get(MMS_PARTNER_REFERRAL_COOKIE)?.value,
+  );
   const zohoLeadPayload = {
-    "Full Name": fullName,
-    Mobile: mobileNumber,
-    Email: email,
-    Country: country,
-    "Preferred Language": clean(form.preferredLanguage, 80),
-    "Interested Service": interestedIn,
-    "Preferred Contact Method": clean(form.preferredContactMethod, 80),
-    "Next Follow-up / Appointment Preference": clean(form.preferredAppointmentDate, 160),
+    "Full Name": validation.value.fullName,
+    Mobile: validation.value.mobileNumber,
+    Email: validation.value.email,
+    Country: validation.value.country,
+    "Preferred Language": validation.value.preferredLanguage,
+    "Interested Service": validation.value.interestedIn,
+    "Preferred Membership": validation.value.preferredMembership,
+    "Enquiring For": validation.value.enquiringFor,
+    "Preferred Contact Method": validation.value.preferredContactMethod,
+    "Next Follow-up / Appointment Preference": validation.value.preferredAppointmentDate,
     Source: "Website",
-    "Consent to Contact": consentGranted,
-    "Consent Version": consentVersion,
-    "Consent Timestamp": consentGranted ? new Date().toISOString() : null,
-    "Source Path": clean(form.sourcePath, 300),
-    Message: clean(form.message, 2_000),
+    "Consent to Contact": true,
+    "Consent Version": validation.value.consentVersion,
+    "Consent Timestamp": consentTimestamp,
+    "Source Path": validation.value.sourcePath,
+    "Campaign Attribution": validation.campaign,
+    "Authoritative Partner ID": authoritativePartnerId || null,
+    Message: validation.value.message,
   };
 
-  if (!consentGranted || consentVersion == null) {
-    return NextResponse.json(
-      {
-        status: "invalid",
-        message: "Consent is required before MMS can contact the visitor.",
-      },
-      { status: 400 },
-    );
-  }
+  // Keep the validated CRM-safe contract ready without claiming persistence before a destination is approved.
+  void zohoLeadPayload;
 
-  return NextResponse.json({
-    status: "placeholder",
-    message:
-      "Zoho CRM integration-ready route. Add lead creation after Zoho credentials and consent flow are configured.",
-    mapping: zohoLeadFieldMapping,
-    zohoModule: "Leads",
-    acceptedFields: Object.keys(zohoLeadPayload),
-  });
+  return NextResponse.json(
+    {
+      status: "not_persisted",
+      message: "Online enquiry capture is temporarily unavailable. Please try again later.",
+    },
+    { status: 503 },
+  );
 }
