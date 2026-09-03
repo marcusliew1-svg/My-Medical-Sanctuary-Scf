@@ -20,13 +20,13 @@ const trustItems = [
 ];
 
 const healthGoals = [
-  ["Healthy Ageing", "Strength, independence and resilience.", "/mms-doctor-couple-consult.png", "/health-concerns/healthy-ageing-longevity"],
+  ["Healthy Ageing", "Strength, independence and resilience.", "/mms-doctor-couple-consult.png", "/longevity-medicine"],
   ["Metabolic Health", "Weight, glucose and cardiovascular risk in context.", "/mms-diagnostics-screening.png", "/health-concerns/weight-gain-metabolic-health"],
   ["Energy & Recovery", "Look beyond fatigue to the patterns underneath.", "/mms-doctor-results-review.png", "/health-concerns/unexplained-fatigue-low-energy"],
   ["Sleep & Stress", "Understand recovery before reaching for quick fixes.", "/mms-concierge-lounge.png", "/health-concerns/poor-sleep-stress-recovery"],
   ["Hormone Health", "Symptoms, testing and benefit-risk review together.", "/mms-about-hero.png", "/health-concerns/low-libido-low-testosterone-symptoms"],
   ["Cancer Screening", "Know what screening can and cannot answer.", "/mms-health-screening-hero.png", "/health-concerns/cancer-risk-early-detection"],
-  ["Kidney Health", "Bring renal risk into long-term health planning.", "/mms-medicine-access-consult.png", "/health-concerns/kidney-health-renal-risk"],
+  ["Kidney Health", "Bring renal risk into long-term health planning.", "/mms-medicine-access-consult.png", "/health-screening"],
   ["Executive Health", "Make prevention workable around a demanding life.", "/mms-doctor-couple-consult.png", "/corporate-executive-wellness"],
 ].map(([title, text, image, href]) => ({ title, text, image, href, eyebrow: "Your health", detail: "Begin with your concern, then let screening and professional review shape the next step." }));
 
