@@ -38,6 +38,7 @@ export const routes = {
   privacyDisclaimer: "/privacy-disclaimer",
   privacyPdpa: "/privacy-pdpa",
   privacyPolicy: "/privacy-policy",
+  cookieNotice: "/cookie-notice",
   terms: "/terms",
   termsOfUse: "/terms-of-use",
 } as const;
@@ -77,6 +78,7 @@ export const moreNavigation = utilityNavigation;
 export const legalNavigation = [
   { label: "Privacy Policy", href: routes.privacyPolicy },
   { label: "Privacy / PDPA", href: routes.privacyPdpa },
+  { label: "Cookie Notice", href: routes.cookieNotice },
   { label: "Terms of Use", href: routes.termsOfUse },
   { label: "Disclaimer", href: routes.privacyDisclaimer },
 ] as const;
@@ -117,6 +119,7 @@ export const publicSitemapRoutes = [
   routes.privacyDisclaimer,
   routes.privacyPdpa,
   routes.privacyPolicy,
+  routes.cookieNotice,
   routes.terms,
   routes.termsOfUse,
 ] as const;

@@ -51,6 +51,9 @@ jobs:
       - name: T5 production readiness tests
         run: npm run test:t5
 
+      - name: T6 P0 blocker closure tests
+        run: npm run test:t6
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

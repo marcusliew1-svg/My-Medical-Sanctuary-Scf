@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { bookingPersistenceAvailability, persistBookingToZoho } from "@/lib/bookingPersistence";
 import { validateBookingSubmission } from "@/lib/bookingSubmission";
 import {
   bodyTooLarge,
@@ -64,29 +65,32 @@ export async function POST(request: NextRequest) {
   const authoritativePartnerId = referralPartnerId(
     request.cookies.get(MMS_PARTNER_REFERRAL_COOKIE)?.value,
   );
-  const zohoLeadPayload = {
-    "Full Name": validation.value.fullName,
-    Mobile: validation.value.mobileNumber,
-    Email: validation.value.email,
-    Country: validation.value.country,
-    "Preferred Language": validation.value.preferredLanguage,
-    "Interested Service": validation.value.interestedIn,
-    "Preferred Membership": validation.value.preferredMembership,
-    "Enquiring For": validation.value.enquiringFor,
-    "Preferred Contact Method": validation.value.preferredContactMethod,
-    "Next Follow-up / Appointment Preference": validation.value.preferredAppointmentDate,
-    Source: "Website",
-    "Consent to Contact": true,
-    "Consent Version": validation.value.consentVersion,
-    "Consent Timestamp": consentTimestamp,
-    "Source Path": validation.value.sourcePath,
-    "Campaign Attribution": validation.campaign,
-    "Authoritative Partner ID": authoritativePartnerId || null,
-    Message: validation.value.message,
-  };
-
-  // Keep the validated CRM-safe contract ready without claiming persistence before a destination is approved.
-  void zohoLeadPayload;
+  const persistence = bookingPersistenceAvailability();
+  if (persistence.ready) {
+    try {
+      const result = await persistBookingToZoho(
+        validation.value,
+        validation.campaign,
+        authoritativePartnerId,
+        consentTimestamp,
+        persistence,
+      );
+      return NextResponse.json(
+        {
+          status: "persisted",
+          reference: result.reference,
+          message: `Enquiry received. Your reference is ${result.reference}.`,
+        },
+        { status: 201 },
+      );
+    } catch {
+      console.error("MMS booking persistence failed");
+      return NextResponse.json(
+        { status: "error", message: "Your enquiry could not be saved safely. Please try again later." },
+        { status: 502 },
+      );
+    }
+  }
 
   return NextResponse.json(
     {

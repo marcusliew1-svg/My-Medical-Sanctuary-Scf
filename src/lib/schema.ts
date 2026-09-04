@@ -1,19 +1,14 @@
-import { getCanonicalSiteUrl, getCanonicalUrl, siteConfig } from "@/lib/siteConfig";
+import { getCanonicalSiteUrl, siteConfig } from "@/lib/siteConfig";
 
 type JsonLd = Record<string, unknown>;
 
-export function organizationJsonLd(): JsonLd {
+export function websiteJsonLd(): JsonLd {
   return {
     "@context": "https://schema.org",
-    "@type": "MedicalOrganization",
+    "@type": "WebSite",
     name: siteConfig.name,
     url: getCanonicalSiteUrl(),
-    logo: getCanonicalUrl("/mms-logo-lockup.png"),
     description: siteConfig.defaultDescription,
-    medicalSpecialty: [
-      "PreventiveMedicine",
-      "PrimaryCare",
-    ],
   };
 }
 

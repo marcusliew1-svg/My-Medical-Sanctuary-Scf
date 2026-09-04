@@ -3,7 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { DraftBanner } from "@/components/DraftBanner";
 import { FooterV01 } from "@/components/FooterV01";
 import { Navbar } from "@/components/Navbar";
-import { jsonLdScriptPayload, organizationJsonLd } from "@/lib/schema";
+import { jsonLdScriptPayload, websiteJsonLd } from "@/lib/schema";
 import { composeMetadataTitle, getCanonicalSiteUrl, siteConfig } from "@/lib/siteConfig";
 import "./globals.css";
 
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLdScriptPayload(organizationJsonLd()) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdScriptPayload(websiteJsonLd()) }}
         />
         <DraftBanner />
         <Navbar />

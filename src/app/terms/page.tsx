@@ -17,6 +17,15 @@ const terms = [
   "Website content may be updated as MMS services, programmes and clinical workflows evolve.",
 ];
 
+const launchBlockers = [
+  "Verified contracting/legal entity, company or registration details and contact address",
+  "Effective date, governing law, jurisdiction and dispute process",
+  "Approved intellectual-property ownership and permitted-use terms",
+  "Approved programme, payment, cancellation, refund and renewal terms for any commercial launch scope",
+  "Approved liability, indemnity, suspension, termination and change-notice provisions",
+  "Legal-counsel owner and dated publication approval",
+];
+
 export default function TermsPage() {
   return (
     <main>
@@ -51,6 +60,19 @@ export default function TermsPage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-warm-white px-4 py-20 md:py-24">
+        <div className="mx-auto max-w-5xl border-y border-gold/35 py-10">
+          <p className="editorial-kicker text-deep-green">Publication blocker</p>
+          <h2 className="mt-4 font-serif text-4xl text-navy md:text-5xl">These are interim website boundaries, not final legal terms.</h2>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-warm-gray">
+            The following owner-supplied and counsel-approved fields remain required before this page can be treated as launch-ready.
+          </p>
+          <ul className="mt-8 grid gap-4 text-base leading-7 text-charcoal">
+            {launchBlockers.map((item) => <li key={item} className="border-t border-gold-light/60 pt-4">{item}</li>)}
+          </ul>
         </div>
       </section>
 

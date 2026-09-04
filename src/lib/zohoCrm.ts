@@ -245,10 +245,10 @@ export async function updateZohoRecord(
   }
 }
 
-export function zohoCrmConfigured(): boolean {
+export function zohoCrmConfigured(env: NodeJS.ProcessEnv = process.env): boolean {
   return Boolean(
-    process.env.ZOHO_CLIENT_ID?.trim() &&
-      process.env.ZOHO_CLIENT_SECRET?.trim() &&
-      process.env.ZOHO_REFRESH_TOKEN?.trim(),
+    env.ZOHO_CLIENT_ID?.trim() &&
+      env.ZOHO_CLIENT_SECRET?.trim() &&
+      env.ZOHO_REFRESH_TOKEN?.trim(),
   );
 }
