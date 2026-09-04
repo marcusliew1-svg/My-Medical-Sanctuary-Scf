@@ -45,6 +45,12 @@ jobs:
       - name: Public design foundation tests
         run: npm run test:design-foundation
 
+      - name: T4 public redesign tests
+        run: npm run test:t4
+
+      - name: T5 production readiness tests
+        run: npm run test:t5
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

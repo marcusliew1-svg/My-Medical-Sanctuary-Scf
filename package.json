@@ -27,7 +27,8 @@
     "test:enquiry-hardening": "node --test tests/enquiry-hardening-wave5.test.mjs",
     "test:partner-auth": "node --test tests/partner-auth-wave6.test.mjs",
     "test:design-foundation": "node --test tests/design-foundation-wave7.test.mjs",
-    "test:t4": "node --test tests/t4-public-redesign.test.mjs"
+    "test:t4": "node --test tests/t4-public-redesign.test.mjs",
+    "test:t5": "node --test tests/t5-production-readiness.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
