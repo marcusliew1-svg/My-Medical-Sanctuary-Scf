@@ -1,17 +1,23 @@
 import Link from "next/link";
 import { PatientAccessShell } from "@/components/PatientAccessShell";
+import { safePatientNext } from "@/lib/patientIdentity";
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }: { searchParams?: Promise<{ error?: string; next?: string; reset?: string; verified?: string }> }) {
+  const query = await searchParams;
+  const next = safePatientNext(query?.next);
   return (
-    <PatientAccessShell eyebrow="Returning patient" title="Welcome back to My Sanctuary." lead="Continue your conversations with Ling and see what is awaiting care-team review.">
-      <form className="grid gap-5" action="/my-sanctuary">
-        <label className="grid gap-2 text-sm font-semibold text-navy">Email or mobile number<input required autoComplete="username" className="rounded-xl border border-stone-200 px-4 py-3 font-normal outline-none transition focus:border-gold" /></label>
-        <label className="grid gap-2 text-sm font-semibold text-navy">Password<input type="password" required autoComplete="current-password" className="rounded-xl border border-stone-200 px-4 py-3 font-normal outline-none transition focus:border-gold" /></label>
-        <div className="flex items-center justify-between text-sm"><label className="flex items-center gap-2 text-warm-gray"><input type="checkbox" className="accent-[#315B4C]" /> Remember me</label><span className="text-deep-green underline underline-offset-4">Forgot access?</span></div>
-        <button className="min-h-12 rounded-full bg-deep-green px-6 font-semibold text-white transition hover:bg-navy">Enter demo sanctuary</button>
+    <PatientAccessShell eyebrow="My Sanctuary" title="Welcome back." lead="Sign in to manage your contact preferences and view available booking or programme updates.">
+      {query?.error ? <p role="alert" className="mb-5 border-l-2 border-gold bg-ivory px-4 py-3 text-sm text-navy">{query.error === "auth_unavailable" ? "Patient sign-in is not available in this environment." : query.error === "invalid_link" ? "That verification or recovery link is invalid or has expired." : "The sign-in details were not accepted."}</p> : null}
+      {query?.verified === "1" ? <p className="mb-5 border-l-2 border-deep-green bg-ivory px-4 py-3 text-sm text-navy">Your email was verified. Account access still requires an approved MMS patient identity.</p> : null}
+      {query?.reset === "1" ? <p className="mb-5 border-l-2 border-deep-green bg-ivory px-4 py-3 text-sm text-navy">Your password was updated. Please sign in again.</p> : null}
+      <form className="grid gap-5" action="/api/patient-auth/login" method="post">
+        <input type="hidden" name="next" value={next} />
+        <div className="absolute left-[-10000px] size-px overflow-hidden" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
+        <label className="grid gap-2 text-sm font-semibold text-navy">Email<input name="email" type="email" maxLength={254} required autoComplete="email" className="rounded-xl border border-stone-200 px-4 py-3 font-normal outline-none transition focus:border-gold" /></label>
+        <label className="grid gap-2 text-sm font-semibold text-navy">Password<input name="password" type="password" maxLength={512} required autoComplete="current-password" className="rounded-xl border border-stone-200 px-4 py-3 font-normal outline-none transition focus:border-gold" /></label>
+        <button className="min-h-12 rounded-full bg-deep-green px-6 font-semibold text-white transition hover:bg-navy">Sign in securely</button>
       </form>
-      <p className="mt-3 text-xs leading-5 text-warm-gray">Internal preview: authentication and recovery are simulated. Do not enter real patient information.</p>
-      <p className="mt-6 text-sm text-warm-gray">New to MMS? <Link href="/register" className="font-semibold text-deep-green underline underline-offset-4">Create an account</Link></p>
+      <div className="mt-6 flex flex-wrap justify-between gap-3 text-sm"><Link href="/patient-password-recovery" className="font-semibold text-deep-green underline underline-offset-4">Forgot password?</Link><Link href="/register" className="font-semibold text-deep-green underline underline-offset-4">Create account</Link></div>
     </PatientAccessShell>
   );
 }

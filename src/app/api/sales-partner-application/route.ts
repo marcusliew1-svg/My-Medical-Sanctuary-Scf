@@ -26,8 +26,8 @@ const allowedLeadSources = new Set([
   "Twitter",
   "Facebook",
 ]);
-const partnerApplicationFields = new Set(["fullName", "email", "mobile", "country", "city", "nationality", "occupation", "salesBackground", "relevantExperience", "preferredTerritory", "expectedMonthlyActivity", "referrerCode", "introducer", "complianceDeclaration", "approvedRepresentationsDeclaration", "agreementAcknowledgement", "privacyConsent", "sourcePath", "website"]);
-const partnerApplicationLimits = { fullName: 120, email: 254, mobile: 60, country: 80, city: 80, nationality: 80, occupation: 120, salesBackground: 1500, relevantExperience: 1500, preferredTerritory: 120, expectedMonthlyActivity: 80, referrerCode: 40, introducer: 120, complianceDeclaration: 10, approvedRepresentationsDeclaration: 10, agreementAcknowledgement: 10, privacyConsent: 10, sourcePath: 160, website: 120 };
+const partnerApplicationFields = new Set(["fullName", "email", "mobile", "country", "city", "occupation", "salesBackground", "relevantExperience", "preferredTerritory", "expectedMonthlyActivity", "referrerCode", "introducer", "complianceDeclaration", "approvedRepresentationsDeclaration", "agreementAcknowledgement", "privacyConsent", "sourcePath", "website"]);
+const partnerApplicationLimits = { fullName: 120, email: 254, mobile: 60, country: 80, city: 80, occupation: 120, salesBackground: 1500, relevantExperience: 1500, preferredTerritory: 120, expectedMonthlyActivity: 80, referrerCode: 40, introducer: 120, complianceDeclaration: 10, approvedRepresentationsDeclaration: 10, agreementAcknowledgement: 10, privacyConsent: 10, sourcePath: 160, website: 120 };
 
 function splitName(fullName: string) {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);
@@ -84,7 +84,6 @@ export async function POST(request: NextRequest) {
     mobile: clean(form.mobile, 60),
     country: clean(form.country, 80),
     city: clean(form.city, 80),
-    nationality: clean(form.nationality, 80),
     occupation: clean(form.occupation, 120),
     salesBackground: clean(form.salesBackground, 1_500),
     relevantExperience: clean(form.relevantExperience, 1_500),
@@ -194,7 +193,6 @@ export async function POST(request: NextRequest) {
     "[MMS_PARTNER_APPLICATION]",
     `Application Reference: ${reference}`,
     "Partner Stage: Applicant",
-    `Nationality: ${payload.nationality || "Not supplied"}`,
     `Occupation/Company: ${payload.occupation || "Not supplied"}`,
     `Referrer Partner ID: ${payload.referrerCode || "None"}`,
     "Approved Representations Declaration: accepted",

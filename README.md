@@ -182,6 +182,19 @@ Use cautious wording:
 - discovery discussion
 
 Avoid exaggerated medical claims.
+
+## Partner and patient access
+
+Partner Hub and My Sanctuary are separate, default-off trust domains. Partner access uses the dedicated Partner Supabase configuration plus a revocable commercial-database session. Patient access uses `MMS_PATIENT_SUPABASE_URL` and `MMS_PATIENT_SUPABASE_PUBLISHABLE_KEY`, with `MMS_PATIENT_PORTAL_ENABLED` and the additional `MMS_PATIENT_REGISTRATION_ENABLED` gate. Never place service-role or admin credentials in these variables.
+
+My Sanctuary Day-1 is limited to account identity, contact preferences, booking administration and programme administration. It is not a clinical portal. See `docs/t6-3-partner-patient-access-readiness.md` for boundaries, state mapping, tests, and the launch recommendation.
+
+Run the focused access-readiness suite with:
+
+```bash
+npm run test:t6-3
+```
+
 # Release 2A Health Intelligence
 
 The private Health Intelligence data foundation is defined by `database/migrations/0022_mms_health_intelligence_foundation.sql`. The internal reviewer console is `/internal/health-intelligence` and is default-off behind `MMS_HEALTH_INTELLIGENCE_INTERNAL_ENABLED`. See `docs/health-intelligence-release-2a.md` before enabling it. No demo data or raw pricing table is public.

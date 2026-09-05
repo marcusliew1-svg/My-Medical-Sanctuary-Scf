@@ -110,7 +110,6 @@ export function SalesPartnerApplicationForm({ enabled, initialReferrerCode = "" 
         <Field name="mobile" label="Mobile / WhatsApp" required disabled={!enabled} autoComplete="tel" />
         <Field name="country" label="Country" required disabled={!enabled} autoComplete="country-name" />
         <Field name="city" label="City" disabled={!enabled} />
-        <Field name="nationality" label="Nationality" disabled={!enabled} />
         <Field name="occupation" label="Current occupation / company" disabled={!enabled} />
         <label className="block">
           <span className={labelClass}>Preferred market / territory</span>
