@@ -15,6 +15,8 @@
   const q = (s) => document.querySelector(s);
   const sceneKey = () => `${q('.story-count')?.textContent || ''}|${q('.story-chapter')?.textContent || ''}`;
   const narrationText = () => {
+    const scene = q('.story-scene');
+    if (scene?.dataset?.narration) return scene.dataset.narration;
     const root = q('.story-copy-wrap');
     if (!root) return '';
     const copy = root.cloneNode(true);
@@ -24,7 +26,8 @@
   const durationFor = (text) => {
     const words = text.split(/\s+/).filter(Boolean).length;
     const hasDense = !!q('.treatment-grid, .package-panel');
-    return Math.max(11000, Math.min(hasDense ? 30000 : 22000, Math.round((words / 2.45) * 1000 + 3500)));
+    const base = Math.round((words / 2.25) * 1000 + 4200);
+    return Math.max(12000, Math.min(hasDense ? 36000 : 30000, base));
   };
   const nextButton = () => q('.story-controls button:last-child');
   const prevButton = () => q('.story-controls button:first-child');
@@ -38,7 +41,7 @@
     if (!voiceOn || muted || !playing || !('speechSynthesis' in window) || !text) return;
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.9;
+    utter.rate = 0.88;
     utter.pitch = 0.96;
     utter.volume = 0.9;
     const selected = chooseVoice();
@@ -54,9 +57,15 @@
     audio.volume = 0.12;
   }
 
+  function sceneMusicLevel() {
+    const raw = q('.story-scene')?.dataset?.musicLevel;
+    const n = Number(raw);
+    return Number.isFinite(n) ? Math.max(0, Math.min(.22, n)) : .12;
+  }
+
   function syncAudio() {
     ensureAudio();
-    audio.volume = muted ? 0 : 0.12;
+    audio.volume = muted ? 0 : sceneMusicLevel();
     if (playing && !muted) audio.play().catch(() => {});
     else audio.pause();
   }
@@ -139,7 +148,7 @@
     ensureUI();
     if (current && current !== lastSceneKey) {
       lastSceneKey = current;
-      startScene(false);
+      window.setTimeout(() => startScene(false), 80);
     }
   }
 
@@ -155,5 +164,5 @@
 
   const observer = new MutationObserver(checkScene);
   observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-  window.addEventListener('load', () => { setTimeout(checkScene, 300); if ('speechSynthesis' in window) window.speechSynthesis.getVoices(); });
+  window.addEventListener('load', () => { setTimeout(checkScene, 350); if ('speechSynthesis' in window) window.speechSynthesis.getVoices(); });
 })();
