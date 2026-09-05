@@ -12,7 +12,10 @@
   }
 
   function applyHierarchy(scene, chapter) {
-    scene.classList.remove('hierarchy-image','hierarchy-graphic','hierarchy-copy','hierarchy-quiet','hierarchy-premium','hierarchy-clinical');
+    scene.classList.remove(
+      'hierarchy-image','hierarchy-graphic','hierarchy-copy','hierarchy-quiet','hierarchy-premium','hierarchy-clinical',
+      'copy-headline','copy-lean','copy-detail','copy-package'
+    );
 
     if (/PROLOGUE|EPILOGUE|THE QUIET CHANGE|YOUR PATH|CLIENT BOOK|CAREER/.test(chapter)) {
       scene.classList.add('hierarchy-image');
@@ -31,6 +34,17 @@
     }
     if (/DISCOVER|RESTORE|OPTIMISE|REGENERATE|CONTINUITY/.test(chapter)) {
       scene.classList.add('hierarchy-clinical');
+    }
+
+    /* Film text modes: narration carries explanation; screen carries only what must be read. */
+    if (/PROLOGUE|EPILOGUE|THE QUIET CHANGE|WHAT IF|MEET MMS|YOUR PATH|BEYOND THE CLINIC|THE NOISE|CAREER/.test(chapter)) {
+      scene.classList.add('copy-headline');
+    } else if (/START WITH UNDERSTANDING|THE ROLE|WHY CLIENTS CARE|WHAT PARTNERS REPRESENT|CLIENT BOOK|GROWTH/.test(chapter)) {
+      scene.classList.add('copy-lean');
+    } else if (/ASCEND|EVOLVE|ETERNA|PINNACLE/.test(chapter)) {
+      scene.classList.add('copy-package');
+    } else {
+      scene.classList.add('copy-detail');
     }
   }
 
@@ -59,16 +73,21 @@
     const imageFirst = scene.classList.contains('hierarchy-image');
     const graphicFirst = scene.classList.contains('hierarchy-graphic');
     const quiet = scene.classList.contains('hierarchy-quiet');
+    const headlineOnly = scene.classList.contains('copy-headline');
+    const lean = scene.classList.contains('copy-lean');
+    const packageMode = scene.classList.contains('copy-package');
 
     stage(chapter, imageFirst ? 650 : 250);
     stage(title, imageFirst ? 1500 : 850);
     stage(lead, imageFirst ? 3000 : 1900);
-    stage(body, quiet ? 4300 : 3300);
-    stage(beats, graphicFirst ? 3300 : 3800);
-    stage(treatments, graphicFirst ? 3600 : 4400);
-    stage(pack, 3900);
-    stage(quote, quiet ? 5700 : 5000);
-    stage(cta, 6400);
+
+    if (!headlineOnly && !packageMode) stage(body, quiet ? 4300 : 3300);
+    if (!headlineOnly && !lean && !packageMode) stage(beats, graphicFirst ? 3300 : 3800);
+    if (!headlineOnly) stage(treatments, graphicFirst ? 3600 : 4400);
+    if (packageMode) stage(pack, 3300);
+    else stage(pack, 3900);
+    if (!headlineOnly || /PROLOGUE|EPILOGUE/.test(chapterUpper)) stage(quote, quiet ? 5700 : 5000);
+    stage(cta, packageMode ? 5400 : 6400);
 
     const introLike = /PROLOGUE|EPILOGUE/.test(chapterUpper);
     scene.classList.toggle('film-title-card', introLike);
