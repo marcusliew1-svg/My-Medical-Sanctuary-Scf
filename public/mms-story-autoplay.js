@@ -1,7 +1,5 @@
 (() => {
   const MUSIC = "https://heygen-product.s3-accelerate.amazonaws.com/astral_generated_music/0c383469558546baa4391e026c7eb0ac.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA3FLD4S3AS7WYJKBK%2F20260905%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20260905T063524Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=51152415f9896fb49032cea9fe69ff92b9c1f24c989bba3dad68115d0010d046";
-  const OPENING_HOLD = 1900;
-  const END_HOLD = 1400;
   let playing = true;
   let muted = false;
   let voiceOn = true;
@@ -9,6 +7,8 @@
   let timer = null;
   let tick = null;
   let narrationTimer = null;
+  let musicTimer = null;
+  let endRiseTimer = null;
   let sceneStarted = 0;
   let sceneDuration = 14000;
   let lastSceneKey = "";
@@ -17,6 +17,7 @@
 
   const q = (s) => document.querySelector(s);
   const sceneKey = () => `${q('.story-count')?.textContent || ''}|${q('.story-chapter')?.textContent || ''}`;
+  const chapterName = () => (q('.story-chapter')?.textContent || '').toUpperCase();
   const narrationText = () => {
     const scene = q('.story-scene');
     if (scene?.dataset?.narration) return scene.dataset.narration;
@@ -26,13 +27,28 @@
     copy.querySelectorAll('button').forEach(el => el.remove());
     return (copy.textContent || '').replace(/\s+/g, ' ').trim();
   };
-  const durationFor = (text) => {
+
+  function soundProfile() {
+    const chapter = chapterName();
+    if (/PROLOGUE/.test(chapter)) return { opening: 3000, ending: 1800, rate: .82, pitch: .94, bed: .17, duck: .055, rise: .16, tail: 1500 };
+    if (/EPILOGUE/.test(chapter)) return { opening: 2700, ending: 3000, rate: .80, pitch: .94, bed: .16, duck: .045, rise: .18, tail: 2500 };
+    if (/THE QUIET CHANGE|WHAT IF|YOUR PATH|CLIENT BOOK|CAREER/.test(chapter)) return { opening: 2400, ending: 1800, rate: .84, pitch: .95, bed: .14, duck: .05, rise: .135, tail: 1200 };
+    if (/REGENERATE|CONTINUITY|THE RULES/.test(chapter)) return { opening: 2500, ending: 2100, rate: .81, pitch: .94, bed: .10, duck: .035, rise: .09, tail: 1500 };
+    if (/DISCOVER|START WITH UNDERSTANDING|RESTORE|OPTIMISE/.test(chapter)) return { opening: 1900, ending: 1500, rate: .85, pitch: .95, bed: .115, duck: .045, rise: .105, tail: 900 };
+    if (/ASCEND|EVOLVE|ETERNA|PINNACLE/.test(chapter)) return { opening: 2600, ending: 2100, rate: .82, pitch: .95, bed: .15, duck: .05, rise: .15, tail: 1400 };
+    if (/THE NOISE|THE ECONOMICS|THE OPERATING SYSTEM/.test(chapter)) return { opening: 1500, ending: 1200, rate: .89, pitch: .96, bed: .13, duck: .05, rise: .12, tail: 700 };
+    return { opening: 1900, ending: 1400, rate: .86, pitch: .95, bed: .12, duck: .045, rise: .115, tail: 900 };
+  }
+
+  const durationFor = (text, profile) => {
     const words = text.split(/\s+/).filter(Boolean).length;
     const hasDense = !!q('.treatment-grid, .package-panel');
-    const spoken = Math.round((words / 2.18) * 1000);
-    const total = spoken + OPENING_HOLD + END_HOLD;
-    return Math.max(13000, Math.min(hasDense ? 41000 : 35000, total));
+    const wordsPerSecond = Math.max(1.72, Math.min(2.25, 1.86 / profile.rate));
+    const spoken = Math.round((words / wordsPerSecond) * 1000);
+    const total = spoken + profile.opening + profile.ending;
+    return Math.max(13000, Math.min(hasDense ? 43000 : 37000, total));
   };
+
   const nextButton = () => q('.story-controls button:last-child');
   const prevButton = () => q('.story-controls button:first-child');
 
@@ -41,15 +57,18 @@
     return voices.find(v => /Daniel|Serena|Samantha|Karen|Aria|Google UK English/i.test(v.name)) || voices.find(v => /^en/i.test(v.lang)) || voices[0];
   }
 
-  function speak(text) {
+  function speak(text, profile) {
     if (!voiceOn || muted || !playing || !('speechSynthesis' in window) || !text) return;
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.86;
-    utter.pitch = 0.95;
+    utter.rate = profile.rate;
+    utter.pitch = profile.pitch;
     utter.volume = 0.88;
     const selected = chooseVoice();
     if (selected) utter.voice = selected;
+    utter.onstart = () => fadeMusic(profile.duck, 650);
+    utter.onend = () => fadeMusic(profile.rise, 1200);
+    utter.onerror = () => fadeMusic(profile.rise, 800);
     window.speechSynthesis.speak(utter);
   }
 
@@ -58,20 +77,47 @@
     audio = new Audio(MUSIC);
     audio.loop = true;
     audio.preload = 'auto';
-    audio.volume = 0.12;
+    audio.volume = 0;
   }
 
   function sceneMusicLevel() {
     const raw = q('.story-scene')?.dataset?.musicLevel;
     const n = Number(raw);
-    return Number.isFinite(n) ? Math.max(0, Math.min(.22, n)) : .12;
+    return Number.isFinite(n) ? Math.max(0, Math.min(.22, n)) : soundProfile().bed;
+  }
+
+  function fadeMusic(target, duration = 700) {
+    ensureAudio();
+    if (!audio || muted) return;
+    if (musicTimer) clearInterval(musicTimer);
+    const start = audio.volume;
+    const end = Math.max(0, Math.min(.22, target));
+    const began = performance.now();
+    musicTimer = setInterval(() => {
+      const p = Math.min(1, (performance.now() - began) / duration);
+      const eased = p * p * (3 - 2 * p);
+      audio.volume = start + (end - start) * eased;
+      if (p >= 1) {
+        clearInterval(musicTimer);
+        musicTimer = null;
+      }
+    }, 40);
   }
 
   function syncAudio() {
     ensureAudio();
-    audio.volume = muted ? 0 : sceneMusicLevel();
-    if (playing && !muted) audio.play().catch(() => {});
-    else audio.pause();
+    if (muted) {
+      audio.volume = 0;
+      audio.pause();
+      return;
+    }
+    if (playing) {
+      audio.play().catch(() => {});
+      fadeMusic(sceneMusicLevel(), 900);
+    } else {
+      fadeMusic(0, 300);
+      setTimeout(() => { if (!playing) audio.pause(); }, 320);
+    }
   }
 
   function ensureUI() {
@@ -107,14 +153,16 @@
         muted = !muted;
         btn.textContent = muted ? 'Sound off' : 'Sound on';
         if (muted && 'speechSynthesis' in window) window.speechSynthesis.cancel();
-        else if (voiceOn) setTimeout(() => speak(narrationText()), 250);
+        else if (voiceOn) setTimeout(() => speak(narrationText(), soundProfile()), 250);
         syncAudio();
       }
       if (action === 'voice') {
         voiceOn = !voiceOn;
         btn.textContent = voiceOn ? 'Voice on' : 'Voice off';
-        if (!voiceOn && 'speechSynthesis' in window) window.speechSynthesis.cancel();
-        else setTimeout(() => speak(narrationText()), 250);
+        if (!voiceOn && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          fadeMusic(soundProfile().bed, 700);
+        } else setTimeout(() => speak(narrationText(), soundProfile()), 250);
       }
       if (action === 'cc') {
         captionsOn = !captionsOn;
@@ -130,7 +178,8 @@
     if (timer) clearTimeout(timer);
     if (tick) clearInterval(tick);
     if (narrationTimer) clearTimeout(narrationTimer);
-    timer = tick = narrationTimer = null;
+    if (endRiseTimer) clearTimeout(endRiseTimer);
+    timer = tick = narrationTimer = endRiseTimer = null;
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     document.body.classList.remove('cinema-visual-hold');
   }
@@ -140,7 +189,8 @@
     if (!ui || !q('.story-scene')) return;
     stopTimers();
     const text = narrationText();
-    sceneDuration = durationFor(text);
+    const profile = soundProfile();
+    sceneDuration = durationFor(text, profile);
     sceneStarted = Date.now();
     const caption = ui.querySelector('.cinema-caption');
     caption.textContent = '';
@@ -150,12 +200,22 @@
     document.body.classList.add('cinema-visual-hold');
 
     if (playing) {
-      syncAudio();
+      ensureAudio();
+      if (!muted) {
+        audio.play().catch(() => {});
+        fadeMusic(profile.bed, resume ? 350 : 1200);
+      }
+
       narrationTimer = setTimeout(() => {
         document.body.classList.remove('cinema-visual-hold');
-        speak(text);
-        window.dispatchEvent(new CustomEvent('mms:narration-start', { detail: { text, duration: Math.max(5000, sceneDuration - OPENING_HOLD - END_HOLD) } }));
-      }, resume ? 300 : OPENING_HOLD);
+        if (voiceOn && !muted) fadeMusic(profile.duck, 600);
+        speak(text, profile);
+        window.dispatchEvent(new CustomEvent('mms:narration-start', { detail: { text, duration: Math.max(5000, sceneDuration - profile.opening - profile.ending) } }));
+      }, resume ? 300 : profile.opening);
+
+      endRiseTimer = setTimeout(() => {
+        if (!muted) fadeMusic(profile.rise, 1200);
+      }, Math.max(profile.opening + 1000, sceneDuration - profile.ending - profile.tail));
 
       tick = setInterval(() => {
         const elapsed = Date.now() - sceneStarted;
@@ -170,7 +230,8 @@
           playing = false;
           const p = ui.querySelector('[data-action="play"]');
           if (p) p.textContent = '▶';
-          syncAudio();
+          fadeMusic(0, 1800);
+          setTimeout(() => audio?.pause(), 1850);
         }
       }, sceneDuration);
     }
