@@ -1,0 +1,46 @@
+@keyframes orbitSoft{to{transform:rotate(360deg)}}
+@keyframes drawLine{from{stroke-dashoffset:1200}to{stroke-dashoffset:0}}
+@keyframes driftLabel{0%,100%{transform:translate3d(0,0,0);opacity:.45}50%{transform:translate3d(0,-10px,0);opacity:.95}}
+@keyframes pulseNode{0%,100%{transform:scale(.8);opacity:.35}50%{transform:scale(1.35);opacity:1}}
+@keyframes doorRise{from{transform:translateY(26px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes scanMove{0%{transform:translateY(-130%)}100%{transform:translateY(650%)}}
+@keyframes panelBlink{0%,100%{opacity:.35}50%{opacity:.95}}
+@keyframes flareSweep{0%{transform:translateX(-180%) rotate(-8deg);opacity:0}30%{opacity:.45}70%{opacity:.25}100%{transform:translateX(210%) rotate(-8deg);opacity:0}}
+
+.scene-cinema-layer{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.story-copy-wrap,.story-topbar,.story-footer{position:relative;z-index:4}
+.cinema-graphic{position:absolute;right:3vw;top:18%;width:min(42vw,660px);height:min(62vh,650px);display:flex;align-items:center;justify-content:center;opacity:.72;mix-blend-mode:screen}
+.cinema-graphic svg{width:100%;height:100%;overflow:visible}
+.cinema-graphic svg *{vector-effect:non-scaling-stroke}
+.rings circle,.links path,.journey-line,.shield,.check,.renal-path,.renal-line,.pulse{fill:none;stroke:rgba(234,215,170,.4);stroke-width:1.5;stroke-dasharray:1200;stroke-dashoffset:1200;animation:drawLine 4.5s ease forwards}
+.pulse{stroke:#c9a15a;stroke-width:2.4;filter:drop-shadow(0 0 10px rgba(201,161,90,.55))}
+.cells circle{fill:rgba(201,161,90,.06);stroke:rgba(234,215,170,.34);stroke-width:1.2;transform-box:fill-box;transform-origin:center;animation:pulseNode 4s ease-in-out infinite}
+.cells circle:nth-child(2){animation-delay:.6s}.cells circle:nth-child(3){animation-delay:1.2s}.cells circle:nth-child(4){animation-delay:1.8s}
+.nodes circle{fill:#c9a15a;filter:drop-shadow(0 0 12px rgba(201,161,90,.75));transform-box:fill-box;transform-origin:center;animation:pulseNode 3.4s ease-in-out infinite}
+.nodes circle:nth-child(2){animation-delay:.4s}.nodes circle:nth-child(3){animation-delay:.9s}.nodes circle:nth-child(4){animation-delay:1.3s}.nodes circle:nth-child(5){animation-delay:1.7s}
+.journey-line{stroke-width:2.1;stroke:#c9a15a;filter:drop-shadow(0 0 8px rgba(201,161,90,.35))}
+.j1,.j2,.j3,.j4,.j5{fill:#ead7aa;opacity:.6;animation:pulseNode 2.7s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.j2{animation-delay:.35s}.j3{animation-delay:.7s}.j4{animation-delay:1.05s}.j5{animation-delay:1.4s}
+.shield{stroke-width:1.8}.check{stroke:#c9a15a;stroke-width:4}
+.renal-path{stroke-width:1.4}.renal-line{stroke:#c9a15a;stroke-width:2}
+.cinema-labels{position:absolute;right:5vw;top:16%;bottom:20%;width:min(35vw,520px)}
+.cinema-labels span{position:absolute;right:calc((var(--i) % 3) * 24%);top:calc(8% + (var(--i) * 14%));font-size:9px;letter-spacing:.22em;color:rgba(234,215,170,.72);padding:7px 10px;border:1px solid rgba(234,215,170,.14);background:rgba(2,22,18,.24);backdrop-filter:blur(9px);animation:driftLabel 5s ease-in-out infinite;animation-delay:calc(var(--i) * .45s)}
+.cinema-flare{position:absolute;left:-35%;top:15%;width:38%;height:75%;background:linear-gradient(100deg,transparent,rgba(234,215,170,.06),rgba(201,161,90,.17),transparent);filter:blur(18px);animation:flareSweep 9s ease-in-out infinite}
+
+.cinema-doors{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:82%;height:58%}
+.cinema-doors i{display:block;border:1px solid rgba(234,215,170,.25);background:linear-gradient(180deg,rgba(201,161,90,.08),rgba(3,31,25,.35));box-shadow:inset 0 0 40px rgba(201,161,90,.04);animation:doorRise 1.1s cubic-bezier(.2,.8,.2,1) both}
+.cinema-doors i:nth-child(2){animation-delay:.18s}.cinema-doors i:nth-child(3){animation-delay:.36s}.cinema-doors i:nth-child(4){animation-delay:.54s}
+.kind-tier .cinema-doors i:not(:first-child){opacity:.18}.kind-tier .cinema-doors i:first-child{background:linear-gradient(180deg,rgba(201,161,90,.2),rgba(3,31,25,.44));box-shadow:0 0 60px rgba(201,161,90,.12)}
+
+.cinema-dashboard{width:82%;height:58%;display:grid;grid-template-columns:1.2fr .8fr;grid-template-rows:repeat(3,1fr);gap:11px;position:relative}
+.cinema-dashboard i{border:1px solid rgba(234,215,170,.18);background:rgba(4,43,35,.28);backdrop-filter:blur(10px);animation:panelBlink 4.2s ease-in-out infinite}.cinema-dashboard i:nth-child(2){animation-delay:.5s}.cinema-dashboard i:nth-child(3){animation-delay:1s}.cinema-dashboard i:nth-child(4){animation-delay:1.5s}.cinema-dashboard i:nth-child(5){animation-delay:2s}.cinema-dashboard span{position:absolute;left:9%;right:9%;bottom:12%;height:1px;background:linear-gradient(90deg,transparent,#c9a15a,transparent);box-shadow:0 0 18px rgba(201,161,90,.5)}
+
+.cinema-scan{width:72%;height:72%;border:1px solid rgba(234,215,170,.2);position:relative;background:radial-gradient(circle at 50% 45%,rgba(201,161,90,.08),transparent 42%)}
+.cinema-scan i{position:absolute;left:0;right:0;top:0;height:1px;background:#c9a15a;box-shadow:0 0 22px rgba(201,161,90,.7);animation:scanMove 4s linear infinite}
+.cinema-scan span{position:absolute;border:1px solid rgba(234,215,170,.22);border-radius:50%}.cinema-scan span:nth-of-type(1){width:60%;height:60%;left:20%;top:20%}.cinema-scan span:nth-of-type(2){width:38%;height:38%;left:31%;top:31%}.cinema-scan span:nth-of-type(3){width:14%;height:14%;left:43%;top:43%;background:rgba(201,161,90,.11);animation:pulseNode 3s ease-in-out infinite}
+
+.cinema-noise-cloud{position:relative;width:78%;height:66%}.cinema-noise-cloud i{position:absolute;border:1px solid rgba(234,215,170,.2);background:rgba(2,22,18,.3);width:120px;height:52px;transform:rotate(-7deg);animation:driftLabel 4s ease-in-out infinite}.cinema-noise-cloud i:nth-child(1){left:2%;top:12%}.cinema-noise-cloud i:nth-child(2){right:8%;top:5%;animation-delay:.4s}.cinema-noise-cloud i:nth-child(3){left:30%;top:42%;animation-delay:.8s}.cinema-noise-cloud i:nth-child(4){right:18%;bottom:6%;animation-delay:1.2s}.cinema-noise-cloud i:nth-child(5){left:5%;bottom:10%;animation-delay:1.6s}
+
+@media (max-width:980px){.cinema-graphic{right:-9vw;top:28%;width:58vw;opacity:.42}.cinema-labels{right:2vw;width:45vw;opacity:.62}}
+@media (max-width:720px){.scene-cinema-layer{opacity:.55}.cinema-graphic{right:-28vw;top:34%;width:88vw}.cinema-labels{display:none}}
+@media (prefers-reduced-motion:reduce){.scene-cinema-layer *{animation:none!important}}
