@@ -1,33 +1,37 @@
 (() => {
   const sceneSets = {
     patient: {
-      "THE QUIET CHANGE": { kind: "biomarkers", labels: ["ENERGY", "SLEEP", "GLUCOSE", "RECOVERY", "STRESS"] },
-      "WHAT IF": { kind: "journey", labels: ["DISCOVER", "ASSESS", "REVIEW", "PERSONALISE", "CONTINUE"] },
-      "MEET MMS": { kind: "network", labels: ["BANGSAR", "SS2", "JOHOR", "MY SANCTUARY", "LING", "HEALTH INTELLIGENCE"] },
-      "DISCOVER": { kind: "scan", labels: ["SCREENING", "ULTRASOUND", "METABOLIC", "CARDIOVASCULAR", "CANCER SCREENING"] },
-      "RESTORE": { kind: "molecules", labels: ["IV", "NAD+", "HYDRATION", "RECOVERY"] },
-      "OPTIMISE": { kind: "rings", labels: ["METABOLISM", "SLEEP", "HORMONES", "STRESS", "WEIGHT"] },
-      "REGENERATE": { kind: "cells", labels: ["PRP", "PRGF", "EXOSOMES", "MSC", "NK"] },
-      "RENAL": { kind: "renal", labels: ["CONSISTENCY", "SAFETY", "MONITORING", "TRUST"] },
-      "MEMBERSHIP": { kind: "tiers", labels: ["ASCEND", "EVOLVE", "ETERNA", "PINNACLE"] },
-      "ASCEND": { kind: "tier", labels: ["ASCEND", "RM8,888"] },
-      "EVOLVE": { kind: "tier", labels: ["EVOLVE", "RM28,888"] },
-      "ETERNA": { kind: "tier", labels: ["ETERNA", "RM78,888"] },
-      "PINNACLE": { kind: "tier", labels: ["PINNACLE", "RM128,888"] },
-      "BEYOND": { kind: "digital", labels: ["APPOINTMENTS", "REPORTS", "HEALTH PASSPORT", "LING"] }
+      "THE QUIET CHANGE": { kind: "biomarkers", labels: ["ENERGY", "SLEEP", "GLUCOSE", "RECOVERY", "STRESS"], tempo: "slow" },
+      "WHAT IF": { kind: "journey", labels: ["DISCOVER", "ASSESS", "REVIEW", "PERSONALISE", "CONTINUE"], tempo: "lift" },
+      "MEET MMS": { kind: "network", labels: ["BANGSAR", "SS2", "JOHOR", "MY SANCTUARY", "LING", "HEALTH INTELLIGENCE"], tempo: "wide" },
+      "START WITH UNDERSTANDING": { kind: "aura", labels: ["HISTORY", "SYMPTOMS", "SCREENING", "REVIEW"], tempo: "quiet" },
+      "DISCOVER": { kind: "scan", labels: ["SCREENING", "ULTRASOUND", "METABOLIC", "CARDIOVASCULAR", "CANCER SCREENING"], tempo: "clinical" },
+      "RESTORE": { kind: "molecules", labels: ["IV", "NAD+", "HYDRATION", "RECOVERY"], tempo: "flow" },
+      "OPTIMISE": { kind: "rings", labels: ["METABOLISM", "SLEEP", "HORMONES", "STRESS", "WEIGHT"], tempo: "pulse" },
+      "REGENERATE": { kind: "cells", labels: ["PRP", "PRGF", "EXOSOMES", "MSC", "NK"], tempo: "caution" },
+      "CONTINUITY": { kind: "renal", labels: ["CONSISTENCY", "SAFETY", "MONITORING", "TRUST"], tempo: "steady" },
+      "YOUR PATH": { kind: "tiers", labels: ["ASCEND", "EVOLVE", "ETERNA", "PINNACLE"], tempo: "reveal" },
+      "ASCEND": { kind: "tier", labels: ["ASCEND", "RM8,888"], tempo: "tier" },
+      "EVOLVE": { kind: "tier", labels: ["EVOLVE", "RM28,888"], tempo: "tier" },
+      "ETERNA": { kind: "tier", labels: ["ETERNA", "RM78,888"], tempo: "tier" },
+      "PINNACLE": { kind: "tier", labels: ["PINNACLE", "RM128,888"], tempo: "tier-signature" },
+      "BEYOND THE CLINIC": { kind: "digital", labels: ["APPOINTMENTS", "REPORTS", "HEALTH PASSPORT", "LING"], tempo: "lift" },
+      "EPILOGUE": { kind: "aura", labels: ["UNDERSTAND", "DECIDE", "CONTINUE"], tempo: "finale" }
     },
     partner: {
-      "THE NOISE": { kind: "noise", labels: ["CLAIMS", "TRENDS", "SOCIAL MEDIA", "SUPPLEMENTS", "ADVERTISING"] },
-      "THE ROLE": { kind: "bridge", labels: ["CURIOSITY", "ASSESSMENT", "REVIEW", "CONTINUITY"] },
-      "THE PLATFORM": { kind: "network", labels: ["BANGSAR", "SS2", "JOHOR", "PARTNER HUB", "LING", "HEALTH INTELLIGENCE"] },
-      "WHAT CLIENTS WANT": { kind: "journey", labels: ["ENQUIRY", "SCREENING", "REVIEW", "PLAN", "FOLLOW-UP", "RENEWAL"] },
-      "MEMBERSHIPS": { kind: "tiers", labels: ["ASCEND", "EVOLVE", "ETERNA", "PINNACLE"] },
-      "CLIENT BOOK": { kind: "constellation", labels: ["TRUST", "FOLLOW-UP", "RENEWAL", "REFERRAL"] },
-      "INCOME": { kind: "funnel", labels: ["INTRODUCE", "CONVERT", "SERVE", "RENEW"] },
-      "PARTNER HUB": { kind: "dashboard", labels: ["LEADS", "PIPELINE", "APPOINTMENTS", "TRAINING", "COMMISSIONS"] },
-      "AI": { kind: "digital", labels: ["CRM", "AI SUPPORT", "CONTENT", "MULTILINGUAL", "FOLLOW-UP"] },
-      "RULES": { kind: "shield", labels: ["NO CURE CLAIMS", "NO GUARANTEES", "NO DIAGNOSIS BY SALES", "PRIVACY"] },
-      "GROWTH": { kind: "growth", labels: ["TRUST", "CLIENT BOOK", "RENEWALS", "CHANNELS", "LEADERSHIP"] }
+      "THE NOISE": { kind: "noise", labels: ["CLAIMS", "TRENDS", "SOCIAL MEDIA", "SUPPLEMENTS", "ADVERTISING"], tempo: "urgent" },
+      "THE ROLE": { kind: "bridge", labels: ["CURIOSITY", "ASSESSMENT", "REVIEW", "CONTINUITY"], tempo: "lift" },
+      "THE PLATFORM": { kind: "network", labels: ["BANGSAR", "SS2", "JOHOR", "MY SANCTUARY", "LING", "HEALTH INTELLIGENCE"], tempo: "wide" },
+      "WHY CLIENTS CARE": { kind: "journey", labels: ["ENQUIRY", "SCREENING", "REVIEW", "PLAN", "FOLLOW-UP", "RENEWAL"], tempo: "human" },
+      "WHAT YOU REPRESENT": { kind: "constellation", labels: ["SCREENING", "LONGEVITY", "METABOLIC", "WELLNESS", "INTELLIGENCE"], tempo: "wide" },
+      "THE MEMBERSHIP PATH": { kind: "tiers", labels: ["ASCEND", "EVOLVE", "ETERNA", "PINNACLE"], tempo: "reveal" },
+      "THE ECONOMICS": { kind: "funnel", labels: ["INTRODUCE", "CONVERT", "SERVE", "RENEW"], tempo: "business" },
+      "THE CLIENT BOOK": { kind: "constellation", labels: ["TRUST", "FOLLOW-UP", "RENEWAL", "REFERRAL"], tempo: "compound" },
+      "THE OPERATING SYSTEM": { kind: "dashboard", labels: ["LEADS", "PIPELINE", "APPOINTMENTS", "TRAINING", "COMMISSIONS"], tempo: "system" },
+      "THE RULES": { kind: "shield", labels: ["NO CURE CLAIMS", "NO GUARANTEES", "NO DIAGNOSIS BY SALES", "PRIVACY"], tempo: "caution" },
+      "WHO WINS": { kind: "growth", labels: ["TRUST", "DISCIPLINE", "FOLLOW-UP", "REPUTATION"], tempo: "human" },
+      "CAREER": { kind: "growth", labels: ["CLIENT BOOK", "RENEWALS", "CHANNELS", "LEADERSHIP"], tempo: "lift" },
+      "EPILOGUE": { kind: "aura", labels: ["HEALTH", "TRUST", "REPUTATION"], tempo: "finale" }
     }
   };
 
@@ -65,7 +69,7 @@
 
   function buildLayer(cfg) {
     const layer = document.createElement('div');
-    layer.className = `scene-cinema-layer kind-${cfg.kind}`;
+    layer.className = `scene-cinema-layer kind-${cfg.kind} tempo-${cfg.tempo || 'default'}`;
     layer.innerHTML = `<div class="cinema-graphic">${svgFor(cfg.kind)}</div><div class="cinema-labels">${cfg.labels.map((l,i)=>`<span style="--i:${i}">${l}</span>`).join('')}</div><div class="cinema-flare"></div>`;
     return layer;
   }
@@ -79,8 +83,10 @@
     if (key === lastKey) return;
     lastKey = key;
     document.querySelectorAll('.scene-cinema-layer').forEach(n=>n.remove());
+    scene.removeAttribute('data-cinema-tempo');
     const cfg = findConfig(deck,text);
     if (!cfg) return;
+    scene.dataset.cinemaTempo = cfg.tempo || 'default';
     const layer = buildLayer(cfg);
     scene.appendChild(layer);
   }
