@@ -1,39 +1,39 @@
 (() => {
-  let timer=null;
-  let lastScene='';
-  function clear(){if(timer)clearInterval(timer);timer=null;}
-  function key(){return `${document.querySelector('.story-count')?.textContent||''}|${document.querySelector('.story-chapter')?.textContent||''}`;}
-  function sentences(){
-    const root=document.querySelector('.story-copy-wrap');
-    if(!root)return[];
-    const clone=root.cloneNode(true);
-    clone.querySelectorAll('button,.scene-deepdive,.cinema-visual').forEach(el=>el.remove());
-    const text=(clone.textContent||'').replace(/\s+/g,' ').trim();
-    return (text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[]).map(s=>s.trim()).filter(s=>s.length>8);
+  let timers = [];
+  const clear = () => { timers.forEach(clearTimeout); timers = []; };
+  const splitSentences = (text) => (text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map(s => s.trim()).filter(s => s.length > 8);
+  const weight = (sentence) => Math.max(1, sentence.split(/\s+/).filter(Boolean).length);
+
+  function showSentence(caption, text) {
+    caption.classList.remove('caption-pulse');
+    void caption.offsetWidth;
+    caption.textContent = text;
+    caption.classList.add('sentence-mode', 'caption-pulse');
   }
-  function run(){
-    const current=key();
-    if(!document.querySelector('.story-scene')){clear();lastScene='';return;}
-    if(!current||current===lastScene)return;
-    lastScene=current;clear();
-    setTimeout(()=>{
-      const caption=document.querySelector('.cinema-caption');
-      if(!caption)return;
-      const parts=sentences();
-      if(!parts.length)return;
-      let i=0;
-      caption.textContent=parts[0];
-      caption.classList.add('sentence-mode');
-      timer=setInterval(()=>{
-        i++;
-        if(i>=parts.length){clear();return;}
-        caption.classList.remove('caption-pulse');
-        void caption.offsetWidth;
-        caption.textContent=parts[i];
-        caption.classList.add('caption-pulse');
-      },3600);
-    },1200);
+
+  function schedule(text, duration) {
+    clear();
+    const caption = document.querySelector('.cinema-caption');
+    if (!caption) return;
+    const parts = splitSentences(text);
+    if (!parts.length) return;
+    const totalWeight = parts.reduce((sum, s) => sum + weight(s), 0);
+    const usable = Math.max(4500, duration || 16000);
+    let cursor = 0;
+    parts.forEach((sentence, index) => {
+      const delay = Math.round(cursor * usable);
+      timers.push(setTimeout(() => showSentence(caption, sentence), delay));
+      cursor += weight(sentence) / totalWeight;
+    });
   }
-  new MutationObserver(run).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
-  window.addEventListener('load',()=>setTimeout(run,900));
+
+  window.addEventListener('mms:narration-start', (event) => {
+    const detail = event.detail || {};
+    schedule(detail.text || '', detail.duration || 16000);
+  });
+
+  const observer = new MutationObserver(() => {
+    if (!document.querySelector('.story-scene')) clear();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
