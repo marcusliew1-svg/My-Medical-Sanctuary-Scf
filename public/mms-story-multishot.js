@@ -40,10 +40,15 @@
       "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=2200&q=88",
       "https://images.unsplash.com/photo-1581093458791-9d42e3c54b0b?auto=format&fit=crop&w=2200&q=88"
     ]],
-    ["RENAL",[
+    ["CONTINUITY",[
       "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=2200&q=88",
       "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=2200&q=88",
       "https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=2200&q=88"
+    ]],
+    ["YOUR PATH",[
+      "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=2200&q=88"
     ]],
     ["ASCEND",[
       "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=2200&q=88",
@@ -61,6 +66,21 @@
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=88",
       "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=88"
     ]],
+    ["BEYOND THE CLINIC",[
+      "https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=2200&q=88"
+    ]],
+    ["WHY CLIENTS CARE",[
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=2200&q=88"
+    ]],
+    ["THE ECONOMICS",[
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=2200&q=88"
+    ]],
     ["CLIENT BOOK",[
       "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=2200&q=88",
       "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=2200&q=88",
@@ -69,6 +89,15 @@
     ["OPERATING SYSTEM",[
       "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=2200&q=88",
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2200&q=88"
+    ]],
+    ["THE RULES",[
+      "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2200&q=88"
+    ]],
+    ["CAREER",[
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=88",
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2200&q=88"
     ]]
   ];
 
