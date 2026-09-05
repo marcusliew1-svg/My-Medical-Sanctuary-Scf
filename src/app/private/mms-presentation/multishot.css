@@ -1,0 +1,5 @@
+@keyframes shotCycle{0%{opacity:0;transform:scale(1.03)}7%{opacity:1}28%{opacity:1}38%{opacity:0;transform:scale(1.09)}100%{opacity:0;transform:scale(1.09)}}
+.multi-shot-sequence{position:absolute;inset:0;z-index:-3;overflow:hidden;background:#061c17}
+.multi-shot{position:absolute;inset:-2%;background-size:cover;background-position:center;opacity:0;filter:saturate(.82) contrast(1.02);animation:shotCycle calc(var(--count) * 7s) ease-in-out infinite;animation-delay:calc(var(--shot) * 7s)}
+.multi-shot-sequence::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,22,18,.95) 0%,rgba(2,22,18,.76) 42%,rgba(2,22,18,.26) 73%,rgba(2,22,18,.12) 100%),linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.24));pointer-events:none}
+@media(prefers-reduced-motion:reduce){.multi-shot{animation:none}.multi-shot:first-child{opacity:1}}
