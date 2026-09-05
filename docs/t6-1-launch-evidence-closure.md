@@ -89,12 +89,12 @@ Medical/licensing launch status: **BLOCKED**. Bangsar, SS2, and Johor remain Pla
 | Existing deployments | Existing Ready Preview deployments remain accessible; deployment protection is active. | VERIFIED |
 | Fresh Preview from exact baseline | Deployment `dpl_6XAExbdKskdwsAZRMsAfeCbi6Pun` reached Ready from `59849b7`. | CLOSED |
 | Fresh Preview route health | `/`, `/contact`, `/privacy-pdpa`, `/terms`, `/cookie-notice`, `/privacy-disclaimer`, and `/clinics` returned HTTP 200 through authenticated `vercel curl`. | VERIFIED |
-| GitHub integration | The Vercel Git check attached to baseline commit `59849b7` previously failed immediately with `Account is blocked.` A CLI Preview now works, but a later branch check must prove Git-triggered deployment recovery. | BLOCKED |
-| Billing/account action | No current proof identifies a required billing action. The historical Git check error remains the evidence requiring Vercel/account-owner investigation. | OPEN |
+| GitHub integration | After the evidence-only branch push, the Vercel Git check passed and deployment `dpl_BCEhd8ydqoPVN7k1SrDbLrmYHQ32` reached Ready. The earlier `Account is blocked.` result is superseded by this current successful check. | CLOSED |
+| Billing/account action | No current billing/account action is required for Preview deployment: authenticated CLI and Git-triggered Preview paths both pass. | VERIFIED |
 
-Fresh Preview requirement: **PASS**. Vercel Git-integration readiness: **BLOCKED** pending a successful Git-triggered Preview check.
+Fresh Preview requirement: **PASS**. Vercel Git-integration readiness: **PASS**.
 
-Preview URL (Vercel access protection applies): `https://my-medical-sanctuary-gm3j6othq-ml168.vercel.app`
+Current Git-triggered Preview URL (Vercel access protection applies): `https://my-medical-sanctuary-chnelsxjr-ml168.vercel.app`
 
 ## H. Day-1 Feature Lock
 
@@ -117,7 +117,7 @@ Preview URL (Vercel access protection applies): `https://my-medical-sanctuary-gm
 | Final Production domain | Owner; Brand; Legal; IT | Exact approved HTTPS origin and ownership/TLS/redirect plan | Temporary `https://www.scf.center` only / 2026-09-05 | BLOCKED | Production P0 | Supply the owner-approved final origin; validate it without changing DNS. |
 | Medical/licensing approval | Medical Director; Regulatory/Legal; Operations | Dated reviewer/role/version approval for all F-register scopes | No attributable approvals / 2026-09-05 | BLOCKED | Production P0 | Complete route/topic sign-off and documentary location/service status review. |
 | Fresh Vercel Preview | Technical owner | Ready Preview from exact baseline and route evidence | Ready deployment plus seven HTTP 200 checks / 2026-09-05 | CLOSED | Fresh Preview condition met | Retain deployment evidence; do not promote it. |
-| Vercel Git integration | Vercel account owner; technical owner | Successful Git-triggered Preview check on current/later integration commit | Prior current-baseline check says `Account is blocked`; authorized CLI deployment works / 2026-09-05 | BLOCKED | Automated release path unproven | Resolve the account/Git integration error and capture one successful branch Preview check. |
+| Vercel Git integration | Vercel account owner; technical owner | Successful Git-triggered Preview check on the integration branch | GitHub Vercel check passed; Ready deployment `dpl_BCEhd8ydqoPVN7k1SrDbLrmYHQ32` / 2026-09-05 | CLOSED | Automated Preview release path proven | Retain evidence and do not promote the Preview. |
 
 ## J-P. Validation And Decision
 
@@ -127,7 +127,7 @@ Preview URL (Vercel access protection applies): `https://my-medical-sanctuary-gm
 - **Audits:** production-only and full `npm audit` both report **0 vulnerabilities**. The built client bundle scan is clean for known secret and server-only environment names.
 - **Route inventory:** **164 normalized** and **189 expanded** routes, with zero route-source changes or removals in T6.1.
 - **Preview result:** PASS for a fresh exact-baseline Preview; protected public-route checks passed 7/7.
-- **Remaining P0s:** legal/entity, real Zoho E2E, final domain, medical/licensing, and Git-triggered Vercel deployment recovery.
+- **Remaining P0s:** legal/entity, real Zoho E2E, final domain, and medical/licensing.
 - **Recommendation:** **NO-GO**. GO-READY criteria are not met.
 
 **T6.1 STATUS: PASS WITH BLOCKERS**
