@@ -3,176 +3,379 @@
 import { useEffect, useMemo, useState } from "react";
 
 type DeckKey = "partner" | "patient";
-type SlideKind = "cover" | "editorial" | "journey" | "treatment" | "package" | "network" | "income" | "rules" | "closing";
-type Slide = {
-  eyebrow: string;
+type StoryScene = {
+  chapter: string;
   title: string;
-  subtitle?: string;
+  lead: string;
   body?: string;
-  bullets?: string[];
   quote?: string;
-  kind?: SlideKind;
-  image?: string;
-  imagePosition?: string;
-  stat?: string;
-  statLabel?: string;
-  packageName?: string;
-  packagePrice?: string;
-  packageTag?: string;
-  packagePoints?: string[];
+  image: string;
+  tone?: "dark" | "warm" | "light" | "burgundy";
+  beats?: string[];
+  treatments?: { name: string; explainer: string }[];
+  package?: { name: string; price: string; promise: string; details: string[] };
+  cta?: string;
 };
 
-const IMG = {
-  consult: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=88",
-  doctor: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1800&q=88",
-  mature: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1800&q=88",
-  wellness: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1800&q=88",
-  lab: "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1800&q=88",
-  microscope: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1800&q=88",
-  executive: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=88",
-  recovery: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1800&q=88",
-  digital: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1800&q=88",
-  clinic: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1800&q=88",
-  city: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1800&q=88",
-  calm: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=88",
-};
-
-const partner: Slide[] = [
-  { eyebrow: "MMS PARTNER EXPERIENCE", title: "Build a Meaningful Business Around Better Health", subtitle: "A private-healthcare growth opportunity for people who value trust, relationships and long-term reputation.", quote: "Preventive Care. Personalised Longevity.", kind: "cover", image: IMG.consult },
-  { eyebrow: "01 — THE SHIFT", title: "Healthcare Is Moving Earlier", subtitle: "The old model waits for symptoms. A growing number of people want to understand risk, performance and ageing before a crisis forces the conversation.", body: "MMS is designed for that shift: more proactive, more personalised and more continuous — while keeping medical judgement where it belongs, with qualified professionals.", bullets: ["Preventive health", "Personalised guidance", "Longevity planning", "Continuity", "Trusted navigation"], kind: "editorial", image: IMG.mature },
-  { eyebrow: "02 — WHY THIS MATTERS", title: "The Opportunity Is Not ‘Selling More Treatments’", subtitle: "It is helping people enter healthcare earlier — and stay connected for longer.", body: "A trusted introducer can become the bridge between a person who knows something needs to change and a medical team that can assess what actually matters.", quote: "The strongest partners create trust before they create revenue.", kind: "editorial", image: IMG.executive },
-  { eyebrow: "03 — THE PLATFORM", title: "More Than a Clinic", subtitle: "MMS is being built as a connected healthcare platform with physical centres, digital continuity and health intelligence.", bullets: ["Bangsar — Wellness & Longevity Flagship · Opening pathway", "SS2 — Renal & Dialysis Centre · Planned", "Johor — Advanced Medical / ACC / Laboratory Hub · Planned", "My Sanctuary — patient continuity layer", "Ling — digital health guide", "MMS Health Intelligence — medicine and regional-care intelligence"], kind: "network", image: IMG.clinic },
-  { eyebrow: "04 — THE PATIENT EXPERIENCE", title: "People Want to Feel Understood Before They Are Sold Anything", subtitle: "MMS is designed around a simple emotional sequence: I feel understood → I understand MMS → I trust the medical foundation → I can see the next step.", body: "That is why the partner role is different. Your job is not to diagnose or prescribe. Your job is to open a credible door and help the relationship begin well.", quote: "Medical judgement comes first.", kind: "editorial", image: IMG.consult },
-  { eyebrow: "05 — WHAT YOU REPRESENT", title: "A Journey, Not a Menu", subtitle: "MMS organises care around patient goals and professional review rather than pushing isolated procedures.", bullets: ["Discover what matters", "Assess appropriately", "Review with qualified professionals", "Personalise the direction", "Continue with support"], kind: "journey", image: IMG.doctor },
-  { eyebrow: "06 — TREATMENT KNOWLEDGE", title: "Discover & Assess", subtitle: "Screening, diagnostics and executive health are the starting point for understanding what deserves attention.", body: "Depending on the patient, this may include health history, physical review, laboratory testing, ultrasound or other appropriate screening. The purpose is not to find a treatment to sell — it is to understand the person better.", bullets: ["Executive screening", "Metabolic markers", "Cardiovascular risk review", "Liver and kidney markers", "Cancer screening pathways", "Ultrasound / diagnostics where appropriate"], quote: "Assessment determines direction. It does not guarantee treatment suitability.", kind: "treatment", image: IMG.lab },
-  { eyebrow: "07 — TREATMENT KNOWLEDGE", title: "Restore & Recover", subtitle: "MMS may use supportive wellness services where clinically appropriate to help patients address hydration, recovery, nutritional status and energy-related concerns.", body: "IV therapies, NAD+ and antioxidant-based programmes are not positioned as miracle solutions. They sit within a broader physician-guided plan and are subject to suitability, evidence, local regulation and clinical judgement.", bullets: ["IV hydration and nutrient support", "NAD+ pathways", "Antioxidant support", "Recovery-oriented programmes", "Oxygen / red-light modalities where appropriate"], kind: "treatment", image: IMG.recovery },
-  { eyebrow: "08 — TREATMENT KNOWLEDGE", title: "Optimise Metabolic & Hormonal Health", subtitle: "Weight, insulin resistance, sleep, stress and hormone patterns can shape how people feel and how they age.", body: "MMS approaches these areas through assessment first. Medical options may include evidence-based metabolic care, physician-supervised weight management, hormone review or peptide-related services where clinically and legally appropriate.", bullets: ["Metabolic health", "Weight-management pathways", "Hormone assessment", "Sleep & stress", "Peptide-related services subject to medical review"], kind: "treatment", image: IMG.wellness },
-  { eyebrow: "09 — TREATMENT KNOWLEDGE", title: "Regenerative & Recovery Medicine", subtitle: "Some patients explore regenerative approaches because they are seeking better recovery, function or a more advanced care pathway.", body: "PRP / PRGF and other regenerative procedures are evaluated service by service. Evidence, indication, regulation and patient suitability matter. Advanced products such as exosome-related services require particularly careful review.", bullets: ["PRP / PRGF", "Recovery procedures", "Musculoskeletal-focused pathways", "Advanced biologic / exosome-related services only where permitted and appropriate"], kind: "treatment", image: IMG.microscope },
-  { eyebrow: "10 — TREATMENT KNOWLEDGE", title: "Advanced Cellular Wellness", subtitle: "MMS may develop access to advanced cellular services through appropriately licensed pathways and specialist review.", body: "MSC, NK-cell and other cellular concepts should never be presented as guaranteed cures. The evidence varies by indication and the regulatory pathway matters. Partners must refer all clinical questions back to MMS.", quote: "Advanced does not mean automatic. Suitability, evidence and regulation come first.", kind: "treatment", image: IMG.microscope },
-  { eyebrow: "11 — A DISTINCT CAPABILITY", title: "Kidney & Renal Care", subtitle: "SS2 is planned as a dedicated renal and dialysis centre, creating a very different kind of long-term healthcare relationship.", body: "Renal care depends on continuity, disciplined operations, medical oversight and trust. It also broadens MMS beyond wellness into a more serious healthcare platform.", bullets: ["Renal assessment pathways", "Dialysis services subject to licensing", "Long-term continuity", "Family and caregiver support", "Clinical governance"], kind: "treatment", image: IMG.doctor },
-  { eyebrow: "12 — THE MEMBERSHIP MODEL", title: "Four Levels of Relationship", subtitle: "The membership structure is designed to make continuity easier to understand — from an essential preventive-health foundation to a signature concierge relationship.", quote: "Access. Continuity. Care. Not discount selling.", kind: "journey", image: IMG.calm },
-  { eyebrow: "13 — ASCEND", title: "Ascend", packageName: "ASCEND", packagePrice: "RM8,888", packageTag: "Essential preventive-health foundation", body: "For people who want a structured entry into MMS: understand where they are, establish a baseline and begin a more intentional relationship with their health.", packagePoints: ["Health Reserve Credits aligned to the package value", "Executive-health / assessment pathway", "Doctor-review access according to approved package terms", "12-month continuity / concierge support", "Founders benefits where applicable"], kind: "package", image: IMG.consult },
-  { eyebrow: "14 — EVOLVE", title: "Evolve", packageName: "EVOLVE", packagePrice: "RM28,888", packageTag: "Advanced wellness & optimisation", body: "For patients who want more depth: broader assessment, more frequent review and a more active optimisation plan across metabolic, recovery and longevity priorities.", packagePoints: ["Health Reserve Credits aligned to package value", "Enhanced assessment pathway", "More frequent doctor review according to approved terms", "Priority continuity support", "Founder / privilege benefits where applicable"], kind: "package", image: IMG.wellness },
-  { eyebrow: "15 — ETERNA", title: "Eterna", packageName: "ETERNA", packagePrice: "RM78,888", packageTag: "Comprehensive longevity relationship", body: "For patients who want a deeper, longer-view relationship with MMS and expect more coordination, review and access across a wider care journey.", packagePoints: ["Higher Health Reserve Credit allocation", "Broader assessment and review pathway", "Enhanced continuity and concierge support", "Family-related privileges where approved", "Priority access to suitable services"], kind: "package", image: IMG.calm },
-  { eyebrow: "16 — PINNACLE", title: "Pinnacle", packageName: "PINNACLE", packagePrice: "RM128,888", packageTag: "Signature personalised health management", body: "The highest-touch MMS relationship: designed for people who value coordination, privacy, executive-level attention and a more bespoke healthcare-navigation experience.", packagePoints: ["Signature Health Reserve Credit allocation", "Executive review cadence according to approved terms", "Premium concierge relationship", "Family planning / navigation support where approved", "Priority coordination across MMS capabilities"], kind: "package", image: IMG.executive },
-  { eyebrow: "17 — WHY PARTNERS CARE", title: "Build a Client Book — Not Just a One-Time Sale", subtitle: "The real commercial value is continuity: relationships, follow-up, renewals and reputation.", body: "A strong partner should know who they introduced, where the commercial relationship stands and when follow-up matters — without ever seeing confidential clinical information.", bullets: ["Lead ownership / attribution", "Relationship history", "Follow-up discipline", "Approved renewal opportunities", "Long-term client value"], kind: "income", image: IMG.executive },
-  { eyebrow: "18 — INCOME LOGIC", title: "Earn Through Performance, Not Hype", subtitle: "Partners may earn through approved introductions, membership conversions, programme enrolments, renewals and channel-development activity.", body: "There are no guaranteed earnings. Actual income depends on activity, conversion, relationship quality, compliance and the approved commission structure in force at the time.", quote: "No pyramids. No recruitment-income promises. No exaggerated earnings claims.", kind: "income", image: IMG.executive },
-  { eyebrow: "19 — CAREER PATH", title: "A Business Opportunity That Can Become a Career", subtitle: "For the right people, MMS can create a progression from individual relationship-building into a more senior commercial role.", bullets: ["Associate", "Senior", "Elite", "Channel / leadership responsibilities", "Approved renewal participation"], body: "Progression should be earned through performance, conduct and the ability to represent MMS responsibly — not simply by recruiting more people.", kind: "journey", image: IMG.executive },
-  { eyebrow: "20 — PARTNER HUB", title: "MMS Gives You a Professional Operating System", subtitle: "The Partner Hub is designed to make disciplined selling easier and safer.", bullets: ["Lead registration", "Commercial-status visibility", "Commission tracking", "Training", "Approved marketing assets", "Renewal prompts", "Support"], quote: "Partners see commercial progress. They do not see diagnosis, medicines, labs, notes or other confidential clinical information.", kind: "network", image: IMG.digital },
-  { eyebrow: "21 — TRAINING", title: "You Are Not Expected to Improvise", subtitle: "MMS should give every approved partner a clear story, approved language, product knowledge and a repeatable process.", bullets: ["Brand & positioning", "Patient journey", "Membership knowledge", "Treatment boundaries", "Objection handling", "Lead registration", "Privacy & compliance"], kind: "editorial", image: IMG.executive },
-  { eyebrow: "22 — THE RULES", title: "Trust Is Part of the Business Model", subtitle: "The rules are simple because reputation compounds — both positively and negatively.", bullets: ["Never promise a cure", "Never guarantee an outcome", "Never claim treatment suitability", "Never invent medical evidence", "Never pressure-sell", "Never disclose confidential patient information", "Refer clinical questions to qualified professionals"], quote: "Technology supports. MMS coordinates. Qualified professionals decide.", kind: "rules", image: IMG.doctor },
-  { eyebrow: "23 — WHO FITS", title: "We Want Fewer, Better Partners", subtitle: "The ideal MMS partner is trusted, disciplined, ambitious and comfortable building relationships over time.", bullets: ["Credible personal network", "Professional communication", "Strong follow-up", "Reputation-conscious", "Comfortable with approved messaging", "Interested in healthcare and longevity"], quote: "Not for fast-money thinking, aggressive selling or exaggerated health claims.", kind: "editorial", image: IMG.executive },
-  { eyebrow: "24 — THE CLOSE", title: "Build Something Worth Representing", subtitle: "If you want to grow in healthcare without becoming another pushy salesperson, MMS is designed to give you a more credible platform.", quote: "Apply → Train → Become Approved → Introduce → Build → Grow", kind: "closing", image: IMG.consult },
+const patientScenes: StoryScene[] = [
+  {
+    chapter: "PROLOGUE",
+    title: "Your health deserves a longer view.",
+    lead: "We plan our finances years ahead. Our careers years ahead. Our families years ahead. But our health? Too often, we wait.",
+    quote: "Preventive Care. Personalised Longevity.",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "01 · THE QUIET CHANGE",
+    title: "Health rarely changes all at once.",
+    lead: "Energy drops. Sleep worsens. Recovery slows. Weight shifts. Risk builds quietly in the background.",
+    body: "Most people do not wake up one morning and suddenly feel old or unwell. Health changes accumulate — slowly enough to be ignored, but meaningfully enough to matter.",
+    beats: ["Energy", "Sleep", "Metabolism", "Stress", "Screening"],
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "02 · WHAT IF",
+    title: "What if healthcare started earlier?",
+    lead: "Not with a treatment. Not with a package. With understanding.",
+    body: "MMS is designed around a simple idea: the earlier you understand what is changing, the more informed your choices can become.",
+    beats: ["Discover", "Assess", "Review", "Personalise", "Continue"],
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "03 · MEET MMS",
+    title: "One relationship around your health.",
+    lead: "MMS is more than a clinic. It is a connected preventive-health and longevity ecosystem.",
+    body: "Bangsar anchors the wellness and longevity experience. SS2 is planned around renal and dialysis care. Johor is intended to extend the network into advanced medical and laboratory capability. My Sanctuary, Ling and Health Intelligence create continuity around the patient.",
+    beats: ["Bangsar", "SS2", "Johor", "My Sanctuary", "Ling", "Health Intelligence"],
+    image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "04 · START WITH UNDERSTANDING",
+    title: "You do not need to know which treatment you need.",
+    lead: "That is not your job. Your first job is to understand your health.",
+    body: "A consultation can bring together your priorities, history, symptoms, screening and relevant results. From there, qualified professionals can decide what deserves attention — and what does not.",
+    quote: "Medical judgement comes first.",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "05 · DISCOVER",
+    title: "See more of the picture.",
+    lead: "Screening and diagnostics help create a more useful baseline for your health journey.",
+    treatments: [
+      { name: "Executive & Preventive Screening", explainer: "A structured view of key health risks, chosen according to age, history and clinical need." },
+      { name: "Ultrasound & Diagnostics", explainer: "Imaging and diagnostic tools may help clinicians investigate specific questions and establish a baseline." },
+      { name: "Metabolic & Cardiovascular Review", explainer: "Weight, glucose, lipids, blood pressure and other markers can be considered together rather than in isolation." },
+      { name: "Cancer Screening", explainer: "Appropriate screening pathways are considered according to risk, age, guidelines and physician judgement." }
+    ],
+    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "06 · RESTORE",
+    title: "Support recovery and resilience — where appropriate.",
+    lead: "Some patients explore supportive therapies as part of a broader health plan.",
+    treatments: [
+      { name: "IV Therapy", explainer: "Clinician-supervised infusions may be used for selected hydration or nutrient-support purposes where medically appropriate." },
+      { name: "NAD+", explainer: "NAD+ infusions are marketed in longevity care, but suitability, evidence and expectations should be reviewed individually." },
+      { name: "Antioxidant Support", explainer: "Selected antioxidant therapies may be considered in context, not as a substitute for diagnosis or standard medical care." },
+      { name: "Recovery Support", explainer: "Sleep, nutrition, hydration, stress and recovery remain part of the conversation — not just procedures." }
+    ],
+    image: "https://images.unsplash.com/photo-1516841273335-e39b37888115?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "07 · OPTIMISE",
+    title: "Health is interconnected.",
+    lead: "Energy, sleep, metabolism, hormones and stress do not exist in separate boxes.",
+    treatments: [
+      { name: "Metabolic & Weight Health", explainer: "Lifestyle, body composition, metabolic markers and medication options can be considered together under medical supervision." },
+      { name: "Hormone Health", explainer: "Symptoms and laboratory results may justify further review; treatment depends on diagnosis, risk and suitability." },
+      { name: "Peptide Programmes", explainer: "Any peptide-based therapy requires careful medical and regulatory review; not all products or indications are appropriate." },
+      { name: "Sleep & Stress", explainer: "Poor sleep and chronic stress can affect recovery, appetite, performance and quality of life, so they deserve structured attention." }
+    ],
+    image: "https://images.unsplash.com/photo-1542884748-2b87b36c6b90?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "08 · REGENERATE",
+    title: "Advanced options require more questions, not fewer.",
+    lead: "Regenerative and cellular therapies should never be presented as shortcuts or miracle solutions.",
+    treatments: [
+      { name: "PRP / PRGF", explainer: "Autologous platelet-based approaches may be considered in selected musculoskeletal or aesthetic contexts after professional assessment." },
+      { name: "Exosome-related Services", explainer: "Evidence, product quality, jurisdiction and indication matter. MMS should only proceed where medically and legally appropriate." },
+      { name: "MSC / Cellular Therapies", explainer: "Stem-cell related interventions are highly indication- and jurisdiction-dependent and require specialist review and regulatory discipline." },
+      { name: "NK / Advanced Cellular Care", explainer: "Advanced cellular services require careful evidence, sourcing, suitability and regulatory evaluation before any patient pathway is considered." }
+    ],
+    quote: "Suitability first. Evidence aware. No miracle claims.",
+    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "09 · CONTINUITY",
+    title: "When continuity matters most.",
+    lead: "Kidney and renal care remind us why healthcare cannot be reduced to one-off transactions.",
+    body: "Renal pathways, including dialysis, depend on consistency, safety, monitoring and trusted teams. MMS SS2 is planned as a dedicated renal and dialysis centre, subject to licensing, fit-out and operational approvals.",
+    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "10 · YOUR PATH",
+    title: "Different people need different levels of support.",
+    lead: "The MMS memberships are designed as levels of relationship and continuity — not a catalogue of discounts.",
+    body: "Start with the level of support that fits your current needs. Your clinical care still depends on assessment, suitability and professional judgement.",
+    beats: ["Ascend", "Evolve", "Eterna", "Pinnacle"],
+    image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1800&q=88",
+    tone: "burgundy"
+  },
+  {
+    chapter: "11 · ASCEND",
+    title: "Ascend — begin with structure.",
+    lead: "A preventive-health foundation for people who want to stop treating health as an afterthought.",
+    package: { name: "ASCEND", price: "RM8,888", promise: "Essential preventive-health foundation", details: ["Designed as an entry point into ongoing MMS care", "Supports structured review and continuity", "Health Reserve Credits align spending with your care journey", "All services remain subject to clinical suitability"] },
+    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "12 · EVOLVE",
+    title: "Evolve — go deeper.",
+    lead: "For patients who want a more active relationship with optimisation, review and continuity.",
+    package: { name: "EVOLVE", price: "RM28,888", promise: "Advanced wellness & optimisation", details: ["Broader room for ongoing care planning", "More frequent review can support adjustment over time", "Suitable for patients with multiple wellness goals", "No package guarantees treatment eligibility"] },
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "13 · ETERNA",
+    title: "Eterna — build a longevity relationship.",
+    lead: "A more comprehensive level of continuity for patients who want deeper, longer-term health management.",
+    package: { name: "ETERNA", price: "RM78,888", promise: "Comprehensive longevity relationship", details: ["Designed for broader, longer-horizon care", "Supports multiple health priorities over time", "More room for review, monitoring and coordination", "Clinical decisions remain independent of package value"] },
+    image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "14 · PINNACLE",
+    title: "Pinnacle — concierge-level continuity.",
+    lead: "For patients seeking the highest level of MMS relationship, coordination and personalised health management.",
+    package: { name: "PINNACLE", price: "RM128,888", promise: "Signature personalised health management", details: ["Highest-touch MMS membership positioning", "Designed around coordination and continuity", "Can support complex, multi-priority health journeys", "Premium access never overrides medical judgement"] },
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=88",
+    tone: "burgundy"
+  },
+  {
+    chapter: "15 · BEYOND THE CLINIC",
+    title: "Your relationship should not end when you walk out the door.",
+    lead: "My Sanctuary and Ling are designed to support navigation, reminders, organisation and continuity around care.",
+    body: "The goal is not to replace clinicians with AI. It is to make the patient journey easier to understand and harder to lose track of.",
+    beats: ["Appointments", "Health Journey", "Reports", "Medication Reviews", "Health Passport", "Ling"],
+    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "EPILOGUE",
+    title: "Start with understanding your health.",
+    lead: "You do not need to decide everything today. Begin with a conversation. Understand where you are. Then decide what comes next.",
+    quote: "Medical judgement comes first.",
+    cta: "Begin with an MMS Health Review",
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  }
 ];
 
-const patient: Slide[] = [
-  { eyebrow: "MMS PATIENT EXPERIENCE", title: "Your Health Deserves a Longer View", subtitle: "A calmer, more personalised way to understand your health, make better-informed decisions and stay supported over time.", quote: "Preventive Care. Personalised Longevity.", kind: "cover", image: IMG.consult },
-  { eyebrow: "01 — WHY NOW", title: "Most Healthcare Starts Too Late", subtitle: "We often pay attention only when something feels wrong. But many changes happen gradually — long before they become urgent.", body: "Energy changes. Weight shifts. Sleep gets worse. Metabolic markers move. Risk can accumulate quietly. Earlier understanding does not guarantee prevention — but it can give you more informed choices.", kind: "editorial", image: IMG.mature },
-  { eyebrow: "02 — THE DIFFERENCE", title: "A Checkup Gives You Data. Continuity Gives It Meaning.", subtitle: "MMS is designed to connect what you learn today with what you do next — and what changes over time.", bullets: ["Understand your baseline", "Interpret what matters", "Decide appropriate next steps", "Review changes", "Stay connected"], quote: "Your health is not a one-day event.", kind: "journey", image: IMG.doctor },
-  { eyebrow: "03 — THE JOURNEY", title: "Discover → Assess → Review → Personalise → Continue", subtitle: "A simple structure so you always understand what happens next.", bullets: ["Discover — your concerns, goals and history", "Assess — appropriate screening and testing", "Review — qualified professional interpretation", "Personalise — a care direction suited to you", "Continue — monitoring, support and adjustment"], kind: "journey", image: IMG.consult },
-  { eyebrow: "04 — YOUR HEALTH", title: "What Would You Like to Understand Better?", subtitle: "You do not need to arrive knowing which treatment you want. Start with the questions that matter to you.", bullets: ["Healthy ageing", "Metabolic health", "Energy & recovery", "Sleep & stress", "Hormone health", "Cancer screening", "Kidney health", "Executive health"], kind: "network", image: IMG.mature },
-  { eyebrow: "05 — DISCOVER & ASSESS", title: "Build the Baseline First", subtitle: "Before talking about optimisation, MMS wants to understand the person.", body: "Depending on your needs, assessment may include medical history, physical review, laboratory testing, ultrasound or other appropriate screening. Your doctor decides what is relevant.", bullets: ["Executive screening", "Metabolic markers", "Cardiovascular-risk review", "Kidney & liver markers", "Cancer-screening pathways", "Diagnostics / ultrasound where appropriate"], kind: "treatment", image: IMG.lab },
-  { eyebrow: "06 — RESTORE & RECOVER", title: "Support Recovery — Without Miracle Claims", subtitle: "Some patients explore supportive wellness services because they feel depleted, stressed or are looking for a more structured recovery plan.", body: "Where appropriate, MMS may use IV hydration, nutrient support, NAD+ or antioxidant-based programmes. These are not shortcuts or guaranteed outcomes; they are considered within a broader clinical picture.", bullets: ["IV hydration / nutrient support", "NAD+ pathways", "Antioxidant support", "Recovery programmes", "Oxygen / red-light modalities where appropriate"], kind: "treatment", image: IMG.recovery },
-  { eyebrow: "07 — METABOLIC HEALTH", title: "Weight Is Only One Part of the Picture", subtitle: "Metabolic health involves glucose regulation, body composition, cardiovascular risk, sleep, stress and lifestyle.", body: "MMS may use lifestyle support, monitoring and medical options where appropriate. Prescription therapies are only considered after professional assessment and are never automatically included because someone joins a package.", bullets: ["Metabolic assessment", "Weight-management pathways", "Nutrition & lifestyle support", "Monitoring", "Medication only when clinically appropriate"], kind: "treatment", image: IMG.wellness },
-  { eyebrow: "08 — HORMONES, SLEEP & STRESS", title: "How You Feel Is Often Multi-Factorial", subtitle: "Low energy, poor sleep, stress and hormonal symptoms can overlap. That is why assessment matters.", body: "MMS can help patients organise the right questions and, where appropriate, review hormone, sleep and stress factors. Any hormone or peptide-related treatment remains physician-led and suitability-dependent.", kind: "treatment", image: IMG.calm },
-  { eyebrow: "09 — REGENERATIVE", title: "Regenerative Options Require Context", subtitle: "PRP / PRGF and other regenerative procedures may be explored for selected patients and indications.", body: "These are not universal solutions. Evidence differs by condition and procedure, and more advanced products require stricter clinical and regulatory review.", bullets: ["PRP / PRGF", "Musculoskeletal recovery pathways", "Procedure-based care", "Advanced biologic / exosome-related options only where permitted and appropriate"], kind: "treatment", image: IMG.microscope },
-  { eyebrow: "10 — ADVANCED CELLULAR", title: "Advanced Does Not Mean Automatic", subtitle: "Cellular concepts such as MSC or NK-cell services are complex and should never be presented as guaranteed cures or routine wellness add-ons.", body: "Availability, evidence, indication, licensing and regulation all matter. Where MMS develops these capabilities, suitability and specialist review come first.", quote: "If the evidence or regulatory pathway is uncertain, MMS should say so clearly.", kind: "treatment", image: IMG.microscope },
-  { eyebrow: "11 — KIDNEY HEALTH", title: "Kidney Health Needs Continuity", subtitle: "MMS plans a dedicated renal and dialysis centre at SS2, subject to licensing and operational readiness.", body: "Renal care is different from one-off wellness services. It depends on regular monitoring, disciplined clinical processes, family support and long-term medical oversight.", kind: "treatment", image: IMG.doctor },
-  { eyebrow: "12 — MEMBERSHIP", title: "Choose the Level of Support That Fits Your Journey", subtitle: "The four MMS pathways are designed around different levels of continuity, access and coordination — not around selling you every available treatment.", quote: "Membership gives access to MMS. It does not guarantee treatment suitability.", kind: "journey", image: IMG.calm },
-  { eyebrow: "13 — ASCEND", title: "Ascend", packageName: "ASCEND", packagePrice: "RM8,888", packageTag: "Essential preventive-health foundation", body: "A structured starting point for people who want to stop treating health as an occasional checkup and begin understanding their baseline more intentionally.", packagePoints: ["Health Reserve Credits aligned to package value", "Executive-health / assessment pathway", "Doctor-review access according to approved terms", "12-month continuity support", "Founders benefits where applicable"], kind: "package", image: IMG.consult },
-  { eyebrow: "14 — EVOLVE", title: "Evolve", packageName: "EVOLVE", packagePrice: "RM28,888", packageTag: "Advanced wellness & optimisation", body: "For patients who want more active support across metabolic health, recovery, lifestyle and longevity priorities, with a deeper assessment and review relationship.", packagePoints: ["Higher Health Reserve Credit allocation", "Enhanced assessment pathway", "More frequent review according to approved terms", "Priority continuity support", "Founder / privilege benefits where applicable"], kind: "package", image: IMG.wellness },
-  { eyebrow: "15 — ETERNA", title: "Eterna", packageName: "ETERNA", packagePrice: "RM78,888", packageTag: "Comprehensive longevity relationship", body: "For patients looking for a more comprehensive, longer-term relationship that brings together assessment, review, navigation and appropriate services over time.", packagePoints: ["Higher Health Reserve Credit allocation", "Broader assessment & review pathway", "Enhanced concierge continuity", "Family-related privileges where approved", "Priority coordination"], kind: "package", image: IMG.calm },
-  { eyebrow: "16 — PINNACLE", title: "Pinnacle", packageName: "PINNACLE", packagePrice: "RM128,888", packageTag: "Signature personalised health management", body: "MMS's highest-touch relationship for people who value privacy, coordination, executive attention and a more bespoke approach to navigating their health.", packagePoints: ["Signature Health Reserve Credit allocation", "Executive review cadence according to approved terms", "Premium concierge relationship", "Family planning / navigation support where approved", "Priority coordination across MMS capabilities"], kind: "package", image: IMG.executive },
-  { eyebrow: "17 — AFTER YOU JOIN", title: "You Should Always Know What Happens Next", subtitle: "A premium experience is not only about the clinic. It is about clarity.", bullets: ["Consultation scheduling", "Baseline health review", "Appropriate assessments", "Doctor review & suitability", "Personalised direction", "Ongoing coordination", "Review & monitoring"], kind: "journey", image: IMG.consult },
-  { eyebrow: "18 — SUITABILITY", title: "Doctor-Led Review Comes First", subtitle: "Not every service is right for every person — even if it is included in a brochure or available at MMS.", bullets: ["Medical history", "Relevant screening", "Laboratory review", "Medication review", "Risk assessment", "Informed consent", "Monitoring where required"], quote: "A membership gives you access. It does not guarantee every treatment is suitable for you.", kind: "rules", image: IMG.doctor },
-  { eyebrow: "19 — MY SANCTUARY", title: "Your Relationship Should Continue Beyond the Clinic", subtitle: "My Sanctuary is the planned digital continuity layer around your MMS journey.", bullets: ["Appointments", "Membership information", "Health journey", "Reports", "Medication-review support", "Reminders", "Health Passport", "Care coordination"], kind: "network", image: IMG.digital },
-  { eyebrow: "20 — LING", title: "A Digital Guide — Not a Digital Doctor", subtitle: "Ling is designed to help you navigate MMS, understand information and prepare for the next step.", body: "Ling can support education, reminders and navigation. It should not diagnose, prescribe or replace qualified medical judgement.", quote: "Technology supports. MMS coordinates. Qualified professionals decide.", kind: "network", image: IMG.digital },
-  { eyebrow: "21 — HEALTH INTELLIGENCE", title: "Healthcare Is Global. Prices Aren’t.", subtitle: "MMS Health Intelligence is being developed to help patients understand medicines, pricing and regional-care options more clearly.", body: "The aim is better-informed navigation — not automatic switching, importing or self-medication. Product identity, access rules, clinical suitability and local regulation all matter.", kind: "network", image: IMG.digital },
-  { eyebrow: "22 — WHY MMS", title: "More Than a One-Off Checkup. More Serious Than a Wellness Spa.", subtitle: "MMS is designed to sit between fragmented wellness and reactive healthcare — with medical judgement, continuity and a premium patient experience at the centre.", bullets: ["Physician-guided", "Preventive", "Evidence-aware", "Personalised", "Continuity-focused", "Premium & private", "Health-intelligence enabled"], kind: "editorial", image: IMG.clinic },
-  { eyebrow: "23 — TRUST", title: "Safety and Privacy Are Part of the Care", subtitle: "Medical decisions remain with qualified professionals. Personal information should be handled appropriately and advanced services remain subject to medical, regulatory and availability requirements.", bullets: ["Suitability before treatment", "No miracle promises", "Clear consent", "Privacy-minded systems", "Human accountability"], kind: "rules", image: IMG.doctor },
-  { eyebrow: "24 — BEGIN", title: "Start With Understanding Your Health", subtitle: "You do not need to decide everything today. Begin with a conversation. Understand where you are. Then decide what comes next.", quote: "Begin with an MMS Health Review", kind: "closing", image: IMG.consult },
+const partnerScenes: StoryScene[] = [
+  {
+    chapter: "PROLOGUE",
+    title: "Healthcare is changing. Trust will matter even more.",
+    lead: "Patients have more information than ever — and often less clarity than ever.",
+    body: "The next generation of healthcare growth will not come from shouting louder. It will come from helping people navigate better.",
+    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "01 · THE NOISE",
+    title: "Patients are surrounded by claims.",
+    lead: "Clinics. Supplements. Social media. Wellness trends. Treatment marketing. Contradictory advice.",
+    body: "In a noisy market, credibility becomes more valuable than reach. A trusted introduction can matter more than another advertisement.",
+    quote: "Trust becomes the scarce asset.",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "02 · THE ROLE",
+    title: "You do not need to become a doctor.",
+    lead: "You need to become a trusted bridge.",
+    body: "A strong MMS partner helps a client take the next responsible step: from curiosity to assessment, from confusion to professional review, from one-off interaction to continuity.",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "03 · THE PLATFORM",
+    title: "Represent something bigger than a treatment menu.",
+    lead: "MMS is building a connected preventive-health and longevity platform.",
+    body: "Bangsar, SS2 and Johor create physical capability. My Sanctuary, Ling and Health Intelligence create digital continuity. The partner relationship sits around that system — not above it.",
+    beats: ["Bangsar", "SS2", "Johor", "My Sanctuary", "Ling", "Health Intelligence"],
+    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "04 · WHY CLIENTS CARE",
+    title: "People do not want to be sold a procedure.",
+    lead: "They want to feel understood, safe, guided and supported.",
+    body: "That gives partners a better conversation to have. You introduce the MMS health journey, not a miracle claim or a product of the month.",
+    quote: "Medical judgement comes first.",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "05 · WHAT YOU INTRODUCE",
+    title: "Better health decisions — not treatment promises.",
+    lead: "Partners can introduce patients to preventive assessments, memberships, doctor-guided wellness pathways and longer-term care relationships.",
+    treatments: [
+      { name: "Discover", explainer: "Screening, diagnostics and structured health review help patients understand where they are." },
+      { name: "Restore", explainer: "Selected supportive therapies may be considered where clinically appropriate." },
+      { name: "Optimise", explainer: "Metabolic health, sleep, hormones and recovery can be reviewed as interconnected areas." },
+      { name: "Regenerate", explainer: "Regenerative and advanced services require stricter suitability, evidence and regulatory review." }
+    ],
+    image: "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "06 · THE MEMBERSHIP MODEL",
+    title: "Four relationships. Four levels of commitment.",
+    lead: "Ascend, Evolve, Eterna and Pinnacle allow partners to match different clients to different levels of continuity — without pretending everyone needs the same thing.",
+    beats: ["Ascend · RM8,888", "Evolve · RM28,888", "Eterna · RM78,888", "Pinnacle · RM128,888"],
+    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=88",
+    tone: "burgundy"
+  },
+  {
+    chapter: "07 · THE ECONOMICS",
+    title: "Build income around value — not hype.",
+    lead: "Partners may earn through approved introductions, membership conversions, programme enrolments and approved renewal structures.",
+    body: "There are no guaranteed earnings. Results depend on activity, relationship quality, conversion, compliance and long-term performance. The model should reward responsible growth, not aggressive selling.",
+    beats: ["Introduce", "Convert", "Serve", "Renew", "Refer"],
+    image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "08 · THE CLIENT BOOK",
+    title: "Your real asset is the relationship you build.",
+    lead: "A one-time commission is useful. A trusted client book is more valuable.",
+    body: "MMS Partner Hub is intended to help partners register leads, follow commercial progress, understand renewal timing and build continuity around their client relationships — while clinical information remains private.",
+    quote: "Your most valuable asset is not this month’s commission. It is the trust you build over years.",
+    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "09 · THE OPERATING SYSTEM",
+    title: "You are not expected to improvise.",
+    lead: "A professional partner network needs structure.",
+    beats: ["Training", "Approved Materials", "Lead Registration", "Commercial Status", "Commission Visibility", "Renewal Support"],
+    body: "MMS should give partners the tools to operate consistently — and the boundaries to protect patients, doctors and the brand.",
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "10 · THE RULES",
+    title: "Credibility is part of the business model.",
+    lead: "The easiest way to destroy a healthcare brand is to let sales outrun medicine.",
+    beats: ["No cure promises", "No guaranteed outcomes", "No suitability claims", "No unsupported medical claims", "No pressure-selling", "No clinical advice unless qualified"],
+    quote: "Technology supports. MMS coordinates. Qualified professionals decide.",
+    image: "https://images.unsplash.com/photo-1516841273335-e39b37888115?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  },
+  {
+    chapter: "11 · WHO WINS",
+    title: "The best MMS partners will not look like traditional salespeople.",
+    lead: "They will look like trusted advisors.",
+    body: "Professional communication. Credible relationships. Long-term thinking. Strong follow-up. Respect for process. Reputation consciousness. The ability to explain enough — and know when to hand the conversation to a clinician.",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1800&q=88",
+    tone: "warm"
+  },
+  {
+    chapter: "12 · CAREER",
+    title: "Build a business that becomes more valuable over time.",
+    lead: "The opportunity can evolve from individual introductions into a serious client portfolio and channel-development role.",
+    beats: ["Build trust", "Build a book", "Build renewals", "Develop channels", "Mentor responsibly"],
+    body: "The aim is not a recruitment pyramid. It is a professional growth pathway around healthcare relationships and accountable commercial performance.",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1800&q=88",
+    tone: "light"
+  },
+  {
+    chapter: "EPILOGUE",
+    title: "Build a business around something worth protecting.",
+    lead: "People’s health. Their trust. Your reputation.",
+    quote: "Join MMS as a trusted health-growth partner.",
+    cta: "Apply · Train · Become Approved · Introduce · Grow",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=88",
+    tone: "dark"
+  }
 ];
 
-function Picture({ slide }: { slide: Slide }) {
+function Scene({ scene, index, total, onNext, onPrev, onExit, deck }: { scene: StoryScene; index: number; total: number; onNext: () => void; onPrev: () => void; onExit: () => void; deck: DeckKey }) {
   return (
-    <div className="photo-wrap">
-      {slide.image && <img src={slide.image} alt="" style={{ objectPosition: slide.imagePosition || "center" }} />}
-      <div className="photo-shade" />
-      <div className="photo-mark">MMS</div>
-      <div className="photo-caption">MY MEDICAL SANCTUARY</div>
-    </div>
-  );
-}
-
-function PackagePanel({ slide }: { slide: Slide }) {
-  return (
-    <div className="package-panel">
-      <div className="package-meta"><span>{slide.packageName}</span><strong>{slide.packagePrice}</strong></div>
-      <h2>{slide.packageTag}</h2>
-      {slide.body && <p className="package-body">{slide.body}</p>}
-      <div className="package-grid">
-        {(slide.packagePoints || []).map((p, i) => <div key={p}><i>0{i + 1}</i><span>{p}</span></div>)}
-      </div>
-      <small>Package details shown for presentation purposes. Final entitlements remain subject to the approved MMS programme terms.</small>
-    </div>
-  );
-}
-
-function Presentation({ deck, onExit }: { deck: DeckKey; onExit: () => void }) {
-  const slides = deck === "partner" ? partner : patient;
-  const [index, setIndex] = useState(0);
-  const [notes, setNotes] = useState(false);
-  const slide = slides[index];
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (["ArrowRight", "ArrowDown", " "].includes(e.key)) setIndex(i => Math.min(slides.length - 1, i + 1));
-      if (["ArrowLeft", "ArrowUp"].includes(e.key)) setIndex(i => Math.max(0, i - 1));
-      if (e.key === "Escape") onExit();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [slides.length, onExit]);
-
-  const pct = ((index + 1) / slides.length) * 100;
-
-  return (
-    <main className={`mms-stage v2 ${deck}`}>
-      <header className="mms-topbar">
-        <button className="brand" onClick={onExit}><b>MMS</b><span>MY MEDICAL SANCTUARY</span></button>
-        <div className="decklabel">{deck === "partner" ? "PARTNER EXPERIENCE" : "PATIENT EXPERIENCE"}</div>
-        <button className="ghost" onClick={() => setNotes(v => !v)}>{notes ? "Hide notes" : "Presenter notes"}</button>
+    <section className={`story-scene tone-${scene.tone || "dark"}`} style={{ backgroundImage: `linear-gradient(90deg, rgba(2,22,18,.93) 0%, rgba(2,22,18,.72) 42%, rgba(2,22,18,.18) 75%, rgba(2,22,18,.06) 100%), url(${scene.image})` }}>
+      <div className="story-vignette" />
+      <header className="story-topbar">
+        <button className="story-brand" onClick={onExit}><b>MMS</b><span>MY MEDICAL SANCTUARY</span></button>
+        <div className="story-deck-label">{deck === "partner" ? "PARTNER STORY" : "PATIENT STORY"}</div>
+        <div className="story-count">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</div>
       </header>
 
-      <aside className="chapter-rail">
-        {slides.map((s, i) => <button key={`${s.title}-${i}`} className={i === index ? "active" : ""} onClick={() => setIndex(i)} title={s.title}><span>{String(i + 1).padStart(2, "0")}</span></button>)}
-      </aside>
+      <div className="story-copy-wrap">
+        <p className="story-chapter">{scene.chapter}</p>
+        <h1>{scene.title}</h1>
+        <p className="story-lead">{scene.lead}</p>
+        {scene.body && <p className="story-body">{scene.body}</p>}
 
-      <section key={`${deck}-${index}`} className={`editorial-slide kind-${slide.kind || "editorial"}`}>
-        <Picture slide={slide} />
-        <div className="story-panel">
-          <div className="story-inner">
-            <p className="eyebrow">{slide.eyebrow}</p>
-            <h1>{slide.title}</h1>
-            {slide.subtitle && <p className="subtitle">{slide.subtitle}</p>}
-            {slide.body && slide.kind !== "package" && <p className="bodycopy">{slide.body}</p>}
-            {slide.bullets && <div className="story-list">{slide.bullets.map((b, i) => <div key={b}><i>{String(i + 1).padStart(2, "0")}</i><span>{b}</span></div>)}</div>}
-            {slide.kind === "package" && <PackagePanel slide={slide} />}
-            {slide.quote && <blockquote>{slide.quote}</blockquote>}
-            {slide.kind === "closing" && <div className="cta-row"><button>Begin the conversation</button><button className="outline">Speak with MMS</button></div>}
-          </div>
-        </div>
-      </section>
+        {scene.beats && <div className="story-beats">{scene.beats.map((b, i) => <span key={b}><em>{String(i + 1).padStart(2, "0")}</em>{b}</span>)}</div>}
 
-      {notes && <div className="notes"><b>Presenter note</b><p>{slide.kind === "treatment" ? "Explain the clinical context in plain language. Do not imply that every patient needs or qualifies for this service." : slide.kind === "package" ? "Present the package as a level of relationship and continuity. Avoid discount-led selling." : "Use this screen as a conversation prompt. Keep the spoken explanation human and concise."}</p></div>}
+        {scene.treatments && <div className="treatment-grid">{scene.treatments.map((t) => <article key={t.name}><h3>{t.name}</h3><p>{t.explainer}</p></article>)}</div>}
 
-      <footer className="mms-footer">
-        <div className="progress"><span style={{ width: `${pct}%` }} /></div>
-        <div className="counter">{String(index + 1).padStart(2, "0")} <em>/</em> {String(slides.length).padStart(2, "0")}</div>
-        <div className="controls"><button onClick={() => setIndex(i => Math.max(0, i - 1))} disabled={index === 0}>←</button><button onClick={() => setIndex(i => Math.min(slides.length - 1, i + 1))} disabled={index === slides.length - 1}>→</button></div>
+        {scene.package && <div className="package-panel"><div><span>{scene.package.name}</span><strong>{scene.package.price}</strong><p>{scene.package.promise}</p></div><ul>{scene.package.details.map((d) => <li key={d}>{d}</li>)}</ul></div>}
+
+        {scene.quote && <blockquote className="story-quote">{scene.quote}</blockquote>}
+        {scene.cta && <button className="story-cta">{scene.cta} →</button>}
+      </div>
+
+      <footer className="story-footer">
+        <div className="story-progress"><span style={{ width: `${((index + 1) / total) * 100}%` }} /></div>
+        <div className="story-controls"><button onClick={onPrev} disabled={index === 0}>←</button><button onClick={onNext} disabled={index === total - 1}>→</button></div>
       </footer>
-    </main>
+      <div className="story-scroll-hint">SCROLL · ARROWS · SPACE</div>
+    </section>
   );
+}
+
+function Story({ deck, onExit }: { deck: DeckKey; onExit: () => void }) {
+  const scenes = deck === "partner" ? partnerScenes : patientScenes;
+  const [index, setIndex] = useState(0);
+  const [locked, setLocked] = useState(false);
+
+  const go = (direction: 1 | -1) => {
+    if (locked) return;
+    setLocked(true);
+    setIndex((i) => Math.min(scenes.length - 1, Math.max(0, i + direction)));
+    window.setTimeout(() => setLocked(false), 520);
+  };
+
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => {
+      if (["ArrowRight", "ArrowDown", " ", "PageDown"].includes(e.key)) { e.preventDefault(); go(1); }
+      if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(-1); }
+      if (e.key === "Escape") onExit();
+    };
+    const wheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 28) return;
+      go(e.deltaY > 0 ? 1 : -1);
+    };
+    window.addEventListener("keydown", key, { passive: false });
+    window.addEventListener("wheel", wheel, { passive: true });
+    return () => { window.removeEventListener("keydown", key); window.removeEventListener("wheel", wheel); };
+  }, [locked]);
+
+  return <Scene scene={scenes[index]} index={index} total={scenes.length} onNext={() => go(1)} onPrev={() => go(-1)} onExit={onExit} deck={deck} />;
 }
 
 export default function MMSPresentationPreview() {
@@ -180,34 +383,36 @@ export default function MMSPresentationPreview() {
   const [password, setPassword] = useState("");
   const [deck, setDeck] = useState<DeckKey | null>(null);
   const [error, setError] = useState(false);
-  const intro = useMemo(() => ({ title: "Private MMS Presentation", subtitle: "Two rich, cinematic stories. One healthcare platform." }), []);
+  const title = useMemo(() => "MMS Cinematic Story Experience", []);
 
   if (!unlocked) return (
-    <main className="mms-stage gate-v2">
-      <div className="gate-photo"><img src={IMG.consult} alt=""/><div /></div>
-      <section className="gate-card-v2">
-        <p className="eyebrow">PRIVATE PRESENTATION</p><div className="gate-logo">MMS</div><h1>{intro.title}</h1><p>{intro.subtitle}</p>
+    <main className="story-gate">
+      <div className="gate-film" />
+      <section className="story-gate-card">
+        <div className="gate-wordmark">MMS</div>
+        <p>MY MEDICAL SANCTUARY</p>
+        <h1>{title}</h1>
+        <span>Preventive Care. Personalised Longevity.</span>
         <form onSubmit={(e) => { e.preventDefault(); if (password === "MMS2026") { setUnlocked(true); setError(false); } else setError(true); }}>
-          <input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Enter access password" aria-label="Presentation password" />
-          <button>Enter experience →</button>
+          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter access password" aria-label="Presentation password" />
+          <button>Enter →</button>
         </form>
         {error && <small>Incorrect password. Preview password: MMS2026</small>}
-        <div className="disclaimer">Preview access only · replace password before production</div>
       </section>
     </main>
   );
 
-  if (deck) return <Presentation deck={deck} onExit={() => setDeck(null)} />;
+  if (deck) return <Story deck={deck} onExit={() => setDeck(null)} />;
 
   return (
-    <main className="mms-stage selector-v2">
-      <header className="selector-brand"><div className="gate-logo">MMS</div><p>MY MEDICAL SANCTUARY</p><span>Preventive Care. Personalised Longevity.</span></header>
-      <section className="deck-choice partner-choice" onClick={() => setDeck("partner")} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && setDeck("partner") }>
-        <img src={IMG.executive} alt=""/><div className="choice-shade"/><div className="choice-copy"><p>01 / PARTNER EXPERIENCE</p><h2>Build a meaningful business around better health.</h2><span>24 chapters · opportunity · treatments · memberships · income · Partner Hub · trust</span><b>Enter partner story →</b></div>
-      </section>
-      <section className="deck-choice patient-choice" onClick={() => setDeck("patient")} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && setDeck("patient") }>
-        <img src={IMG.consult} alt=""/><div className="choice-shade"/><div className="choice-copy"><p>02 / PATIENT EXPERIENCE</p><h2>A longer, calmer view of your health.</h2><span>24 chapters · prevention · treatments · packages · continuity · safety · digital care</span><b>Enter patient story →</b></div>
-      </section>
+    <main className="story-selector">
+      <div className="selector-brand"><b>MMS</b><span>MY MEDICAL SANCTUARY</span></div>
+      <div className="selector-intro"><p>CHOOSE YOUR STORY</p><h1>Two audiences.<br/>Two journeys.<br/><i>One MMS.</i></h1></div>
+      <div className="selector-cards">
+        <button className="cinema-card partner" onClick={() => setDeck("partner")}><span>PARTNER STORY</span><h2>Build trust.<br/>Build relationships.<br/>Build something meaningful.</h2><b>Enter partner experience →</b></button>
+        <button className="cinema-card patient" onClick={() => setDeck("patient")}><span>PATIENT STORY</span><h2>A longer view<br/>of your health<br/>starts here.</h2><b>Enter patient experience →</b></button>
+      </div>
+      <p className="selector-foot">Private preview · Cinematic web experience · Use arrow keys or scroll</p>
     </main>
   );
 }
