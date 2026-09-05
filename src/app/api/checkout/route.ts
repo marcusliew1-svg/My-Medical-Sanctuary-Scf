@@ -1,7 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
+import { bodyTooLarge, clean, fieldsWithinLimits, hasAllowedPublicOrigin, hasOnlyFields, isEmail, publicRequestClientKey, publicSubmissionErrorStatus, readPublicForm } from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
 import { MMS_PARTNER_REFERRAL_COOKIE } from "@/lib/referralTracking";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
@@ -13,6 +14,8 @@ const priceEnvByMembership = {
 } as const;
 
 type MembershipCode = keyof typeof priceEnvByMembership;
+const checkoutFields = new Set(["membership", "email", "fullName", "website"]);
+const checkoutLimits = { membership: 32, email: 254, fullName: 120, website: 120 };
 
 function isMembershipCode(value: string): value is MembershipCode {
   return value in priceEnvByMembership;
@@ -23,11 +26,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
   }
 
+  if (!hasAllowedPublicOrigin(request)) {
+    return NextResponse.json({ status: "denied", message: "This request could not be accepted." }, { status: 403 });
+  }
+
+  const rateLimit = checkInMemoryRateLimit(`checkout:${publicRequestClientKey(request)}`, { limit: 8, windowMs: 10 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ status: "rate_limited", message: "Too many checkout attempts. Please try again later." }, { status: 429, headers: { "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)) } });
+  }
+
   let form: Record<string, string>;
   try {
     form = await readPublicForm(request);
-  } catch {
-    return NextResponse.json({ status: "invalid", message: "Unsupported request format." }, { status: 415 });
+  } catch (error) {
+    const status = publicSubmissionErrorStatus(error);
+    return NextResponse.json({ status: "invalid", message: status === 413 ? "Request is too large." : "Unsupported or invalid request format." }, { status });
+  }
+
+  if (!hasOnlyFields(form, checkoutFields) || !fieldsWithinLimits(form, checkoutLimits)) {
+    return NextResponse.json({ status: "invalid", message: "One or more checkout fields are invalid or too long." }, { status: 400 });
   }
 
   const membership = clean(form.membership, 32).toUpperCase();

@@ -1,118 +1,34 @@
 import type { Metadata } from "next";
-import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
+import { CTASection, EditorialSplit, JourneyStepRail, PublicHero, SectionHeading } from "@/components/PublicExperience";
+import { ClinicalBoundary, EditorialIndex, ImagePair, PrincipleRow } from "@/components/PublicEditorialModules";
+import { PublicSectionShell } from "@/components/PublicVisualPrimitives";
 import { memberships } from "@/data/memberships";
 
-export const metadata: Metadata = {
-  title: "Memberships | My Medical Sanctuary",
-  description:
-    "Ascend, Evolve, Eterna and Pinnacle are MMS relationship pathways for preventive healthcare and personalised longevity coordination.",
-};
-
-const tierImages = [
-  "/mms-concierge-lounge.png",
-  "/mms-doctor-results-review.png",
-  "/mms-doctor-couple-consult.png",
-  "/mms-diagnostics-screening.png",
-];
-
-const tierDetails = [
-  "Best for people who want a serious starting point: baseline screening, appointment guidance and a practical first roadmap.",
-  "Designed for members who want closer follow-up around energy, weight, lifestyle, metabolic health and review preparation.",
-  "Built for longer-horizon preventive planning where continuity, scheduling and repeated review matter more than one appointment.",
-  "A discreet relationship model for highly coordinated care, subject to invitation, capacity and clinical suitability assessment.",
-];
+export const metadata: Metadata = { title: "Memberships", description: "MMS memberships are relationship levels for preventive health coordination and continuity after professional review." };
+const meanings = ["Clarity", "Progress", "Continuity", "Confidence"];
 
 export default function MembershipsPage() {
-  const cards = memberships.map((membership, index) => ({
-    title: membership.name,
-    eyebrow: membership.accessNote,
-    text: membership.tagline,
-    detail: `${tierDetails[index]} First 30 days may include: ${membership.firstThirtyDays.join(", ")}.`,
-    image: tierImages[index],
-  }));
-
   return (
     <main>
-      <EditorialHero
-        eyebrow="Programmes"
-        title="A continuum of care for every chapter of your life."
-        lead="MMS memberships describe increasing depth of coordination after discovery, screening and professional review. No public pricing pressure. No one-size-fits-all pathway."
-        image="/mms-concierge-lounge.png"
-        imageAlt="MMS concierge welcoming patients into the membership journey."
-        primaryLabel="Discuss membership"
-        secondaryLabel="How it works"
-        secondaryHref="/how-it-works"
-        imagePosition="58% center"
-      />
-
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Membership philosophy</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Choose depth after MMS understands the person.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              Membership is not a public product shelf. It is a relationship structure that can
-              support screening, doctor review, Health Relationship Manager coordination and long-term follow-up.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-doctor-couple-consult.png" alt="Doctor-led private consultation." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Premium patient concierge welcome." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Preventive diagnostics." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-navy px-4 py-20 text-ivory md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">The continuum</p>
-              <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-                Four depths. One standard of discretion.
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover or focus each pathway to see what it is designed to clarify.
-            </p>
-          </div>
-          <RevealCardGrid items={cards} />
-        </div>
-      </section>
-
-      <SplitStory
-        eyebrow="Suitability"
-        title="No membership promises an outcome."
-        lead="The right pathway depends on goals, baseline findings, doctor review and practical follow-through."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor-led review before programme decisions."
-        reverse
-      >
-        <div className="grid gap-5 border-y border-gold/40 py-6">
-          <p className="font-serif text-2xl leading-snug text-navy">
-            Screening before recommendation.
-          </p>
-          <p className="font-serif text-2xl leading-snug text-navy">
-            Suitability before programme selection.
-          </p>
-          <p className="font-serif text-2xl leading-snug text-navy">
-            Continuity before one-off treatment decisions.
-          </p>
-        </div>
-      </SplitStory>
-
-      <CareTeamStrip
-        image="/mms-concierge-lounge.png"
-        eyebrow="Relationship model"
-        title="Membership should feel like continuity, not a price list."
-        text="The commercial value is in coordination, memory, privacy and follow-through after doctor review."
-        points={["No public pricing", "Suitability review", "Long-term relationship"]}
-      />
-
-      <FinalInvitation title="Start with discovery, then decide what depth of support fits." />
+      <PublicHero eyebrow="Programmes" title="A continuum of care for every chapter of life." brandLine="One relationship. Four levels of coordination." lead="MMS memberships begin after discovery and professional review. This is a relationship model, not a price list or public catalogue of inclusions." image="/mms-membership-journey.webp" imageAlt="A visual representation of an ongoing personalised health journey." primaryLabel="Discuss Membership" primaryHref="/contact" secondaryLabel="How MMS Works" secondaryHref="/how-it-works" tone="soft" imagePosition="58% center" />
+      <PublicSectionShell><div className="grid gap-12 lg:grid-cols-[0.65fr_1.35fr]">
+        <div><SectionHeading eyebrow="Relationship levels" title="Choose depth only after MMS understands the person." lead="Each level increases the continuity and coordination around assessment, physician involvement and follow-up." /><div className="mt-8"><ClinicalBoundary>Membership is not a guarantee of treatment access or outcome. Clinical recommendations remain subject to suitability and professional review.</ClinicalBoundary></div></div>
+        <EditorialIndex items={memberships.map((membership, index) => ({ eyebrow: meanings[index], title: membership.name, text: `${membership.whoItSuits} ${membership.coordination}` }))} />
+      </div></PublicSectionShell>
+      <PublicSectionShell tone="stone"><div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center"><ImagePair primary="/mms-concierge-lounge.png" secondary="/mms-doctor-results-review.png" primaryAlt="Private concierge environment for continuity planning." secondaryAlt="Physician reviewing a health roadmap." /><div><SectionHeading eyebrow="What membership changes" title="The relationship remembers what comes next." lead="A Health Relationship Manager can help coordinate appointments, prepare reviews and keep agreed priorities visible while physicians retain responsibility for medical decisions." /><div className="mt-10"><PrincipleRow items={[
+        { title: "Prepared", text: "Appointments begin with better organised context." },
+        { title: "Connected", text: "Screening, review and follow-up belong to one journey." },
+        { title: "Personal", text: "The depth of support reflects goals and suitability." },
+      ]} /></div></div></div></PublicSectionShell>
+      <EditorialSplit eyebrow="Your first 30 days" title="Start by building the right baseline." lead="The opening phase may include discovery, appropriate screening, professional review planning and a personalised roadmap. The exact sequence depends on the individual." image="/mms-doctor-couple-consult.png" imageAlt="Private discovery consultation for a new MMS member." dark reverse>
+        <JourneyStepRail dark steps={[
+          { title: "Discover", text: "Discuss goals, context and expectations." },
+          { title: "Assess", text: "Identify appropriate screening and records." },
+          { title: "Review", text: "Put findings into professional context." },
+          { title: "Plan", text: "Agree priorities and a continuity rhythm." },
+        ]} />
+      </EditorialSplit>
+      <CTASection title="Start with discovery. Choose the relationship later." lead="A private conversation can help determine whether membership is useful and what depth may fit." />
     </main>
   );
 }

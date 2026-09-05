@@ -1,5 +1,10 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { PartnerHubSignOutButton } from "@/components/PartnerHubSignOutButton";
+import { MMS_PARTNER_ACCESS_TOKEN_COOKIE } from "@/lib/partnerIdentity";
+import { authenticatePartnerHubTokens } from "@/lib/partnerHubRequestAuth";
+import { MMS_PARTNER_SESSION_COOKIE } from "@/lib/partnerHubSession";
 
 const links = [
   ["Dashboard", "/partner-hub"],
@@ -11,7 +16,15 @@ const links = [
   ["Referral Tools", "/partner-hub/referral"],
 ] as const;
 
-export default function PartnerHubLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function PartnerHubLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies();
+  const auth = await authenticatePartnerHubTokens(
+    cookieStore.get(MMS_PARTNER_SESSION_COOKIE)?.value || "",
+    cookieStore.get(MMS_PARTNER_ACCESS_TOKEN_COOKIE)?.value || "",
+  );
+  if (auth.status !== "authenticated") {
+    redirect(`/partner-login?next=/partner-hub${auth.status === "unavailable" ? "&error=auth_unavailable" : ""}`);
+  }
   return (
     <div className="bg-stone-50">
       <div className="border-b border-stone-200 bg-white">

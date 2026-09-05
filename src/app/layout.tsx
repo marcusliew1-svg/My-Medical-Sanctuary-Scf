@@ -3,10 +3,12 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { DraftBanner } from "@/components/DraftBanner";
 import { FooterV01 } from "@/components/FooterV01";
 import { Navbar } from "@/components/Navbar";
+import { jsonLdScriptPayload, websiteJsonLd } from "@/lib/schema";
+import { composeMetadataTitle, getCanonicalSiteUrl, siteConfig } from "@/lib/siteConfig";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
-const socialImage = "/mms-about-hero.png";
+const siteUrl = getCanonicalSiteUrl();
+const socialImage = siteConfig.defaultSocialImage;
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,23 +25,25 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "My Medical Sanctuary | Preventive Care • Personalised Longevity",
-    template: "%s | My Medical Sanctuary",
+    default: composeMetadataTitle(),
+    template: "%s",
   },
-  description:
-    "My Medical Sanctuary is a premium preventive care and personalised longevity membership platform with discovery-first wellness coordination.",
+  description: siteConfig.defaultDescription,
+  alternates: {
+    canonical: siteUrl,
+  },
   icons: {
     icon: "/mms-logo-mark.png",
     shortcut: "/mms-logo-mark.png",
     apple: "/mms-logo-mark.png",
   },
   openGraph: {
-    title: "My Medical Sanctuary",
-    description: "Preventive Care • Personalised Longevity",
+    title: siteConfig.name,
+    description: siteConfig.tagline,
     url: siteUrl,
     type: "website",
-    locale: "en_MY",
-    siteName: "My Medical Sanctuary",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
     images: [
       {
         url: socialImage,
@@ -49,8 +53,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "My Medical Sanctuary",
-    description: "Preventive Care • Personalised Longevity",
+    title: siteConfig.name,
+    description: siteConfig.tagline,
     images: [socialImage],
   },
 };
@@ -59,6 +63,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScriptPayload(websiteJsonLd()) }}
+        />
         <DraftBanner />
         <Navbar />
         {children}

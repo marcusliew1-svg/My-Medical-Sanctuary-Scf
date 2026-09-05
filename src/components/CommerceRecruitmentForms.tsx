@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useRef, useState } from "react";
 
 type ApiState = { kind: "idle" | "busy" | "success" | "error"; message?: string };
 
@@ -23,11 +23,13 @@ async function submitForm(endpoint: string, form: HTMLFormElement) {
 
 export function MembershipCheckoutForm({ membership, enabled }: { membership: string; enabled: boolean }) {
   const [state, setState] = useState<ApiState>({ kind: "idle" });
+  const submissionLock = useRef(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    if (!enabled || state.kind === "busy") return;
+    if (!enabled || state.kind === "busy" || submissionLock.current) return;
+    submissionLock.current = true;
     setState({ kind: "busy" });
     try {
       const { response, payload } = await submitForm("/api/checkout", form);
@@ -38,6 +40,8 @@ export function MembershipCheckoutForm({ membership, enabled }: { membership: st
       setState({ kind: "error", message: payload.message || "Checkout could not be started." });
     } catch {
       setState({ kind: "error", message: "Checkout could not be started. Please try again later." });
+    } finally {
+      submissionLock.current = false;
     }
   }
 
@@ -63,11 +67,13 @@ export function MembershipCheckoutForm({ membership, enabled }: { membership: st
 
 export function SalesPartnerApplicationForm({ enabled, initialReferrerCode = "" }: { enabled: boolean; initialReferrerCode?: string }) {
   const [state, setState] = useState<ApiState>({ kind: "idle" });
+  const submissionLock = useRef(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    if (!enabled || state.kind === "busy") return;
+    if (!enabled || state.kind === "busy" || submissionLock.current) return;
+    submissionLock.current = true;
     setState({ kind: "busy" });
     try {
       const { response, payload } = await submitForm("/api/sales-partner-application", form);
@@ -82,6 +88,8 @@ export function SalesPartnerApplicationForm({ enabled, initialReferrerCode = "" 
       });
     } catch {
       setState({ kind: "error", message: "The application could not be submitted. Please try again later." });
+    } finally {
+      submissionLock.current = false;
     }
   }
 
@@ -102,7 +110,6 @@ export function SalesPartnerApplicationForm({ enabled, initialReferrerCode = "" 
         <Field name="mobile" label="Mobile / WhatsApp" required disabled={!enabled} autoComplete="tel" />
         <Field name="country" label="Country" required disabled={!enabled} autoComplete="country-name" />
         <Field name="city" label="City" disabled={!enabled} />
-        <Field name="nationality" label="Nationality" disabled={!enabled} />
         <Field name="occupation" label="Current occupation / company" disabled={!enabled} />
         <label className="block">
           <span className={labelClass}>Preferred market / territory</span>
@@ -152,11 +159,13 @@ export function SalesPartnerApplicationForm({ enabled, initialReferrerCode = "" 
 
 export function CareersApplicationForm({ enabled, roles }: { enabled: boolean; roles: string[] }) {
   const [state, setState] = useState<ApiState>({ kind: "idle" });
+  const submissionLock = useRef(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    if (!enabled || state.kind === "busy") return;
+    if (!enabled || state.kind === "busy" || submissionLock.current) return;
+    submissionLock.current = true;
     setState({ kind: "busy" });
     try {
       const { response, payload } = await submitForm("/api/careers-application", form);
@@ -168,6 +177,8 @@ export function CareersApplicationForm({ enabled, roles }: { enabled: boolean; r
       setState({ kind: "success", message: payload.message || "Application received." });
     } catch {
       setState({ kind: "error", message: "The application could not be submitted. Please try again later." });
+    } finally {
+      submissionLock.current = false;
     }
   }
 
@@ -208,11 +219,11 @@ export function CareersApplicationForm({ enabled, roles }: { enabled: boolean; r
 }
 
 function Field({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
-  return <label className="block"><span className={labelClass}>{label}</span><input {...props} className={fieldClass} /></label>;
+  return <label className="block"><span className={labelClass}>{label}</span><input maxLength={props.maxLength ?? 300} {...props} className={fieldClass} /></label>;
 }
 
 function TextArea({ label, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string }) {
-  return <label className="block"><span className={labelClass}>{label}</span><textarea {...props} rows={4} className={fieldClass} /></label>;
+  return <label className="block"><span className={labelClass}>{label}</span><textarea maxLength={props.maxLength ?? 1500} {...props} rows={4} className={fieldClass} /></label>;
 }
 
 function Check({ name, disabled, children }: { name: string; disabled?: boolean; children: React.ReactNode }) {

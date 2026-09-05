@@ -1,11 +1,6 @@
-export const navigation = [
-  { label: "About MMS", href: "/about-mms" },
-  { label: "Our Approach", href: "/how-it-works" },
-  { label: "Programmes", href: "/memberships" },
-  { label: "Advanced Care", href: "/treatments" },
-  { label: "Health Intelligence", href: "/insights" },
-  { label: "Locations", href: "/clinics" },
-];
+import { navigation as siteNavigation } from "@/lib/siteRoutes";
+
+export const navigation = siteNavigation;
 
 export const legalLinks = [
   { label: "Privacy Policy", href: "/privacy-policy" },

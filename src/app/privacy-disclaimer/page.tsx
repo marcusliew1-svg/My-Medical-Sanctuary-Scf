@@ -24,6 +24,14 @@ const boundaries = [
     title: "Jurisdiction matters",
     text: "Availability of services may depend on Malaysian laws, professional requirements, licensing and clinical governance.",
   },
+  {
+    title: "Planned locations are not operating claims",
+    text: "MMS Bangsar, MMS SS2 and MMS Johor are presented as planned. The website does not represent those centres, dialysis services or laboratory capabilities as open, licensed or accepting appointments.",
+  },
+  {
+    title: "Emergency care",
+    text: "This website and its enquiry tools are not emergency services. Anyone who may need urgent medical attention should contact the appropriate local emergency service without waiting for an MMS response.",
+  },
 ];
 
 export default function PrivacyDisclaimerPage() {
@@ -48,6 +56,9 @@ export default function PrivacyDisclaimerPage() {
             </DisclaimerBox>
           ))}
         </div>
+        <p className="mx-auto mt-10 max-w-5xl border-t border-gold/40 pt-6 text-sm leading-7 text-warm-gray">
+          Publication status: the medical boundaries above are conservative, but final legal-entity details, jurisdictional wording, effective date and dated Medical/Legal approval remain launch blockers.
+        </p>
       </section>
     </main>
   );

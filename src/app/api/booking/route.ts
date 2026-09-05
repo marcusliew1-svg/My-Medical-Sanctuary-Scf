@@ -1,84 +1,102 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { zohoLeadFieldMapping } from "@/lib/content";
-
-type BookingForm = {
-  fullName?: string;
-  mobileNumber?: string;
-  email?: string;
-  country?: string;
-  preferredLanguage?: string;
-  interestedIn?: string;
-  preferredContactMethod?: string;
-  preferredAppointmentDate?: string;
-  message?: string;
-  consentToContact?: string;
-  consentVersion?: string;
-  sourcePath?: string;
-};
-
-async function readBookingForm(request: NextRequest): Promise<BookingForm> {
-  const contentType = request.headers.get("content-type") ?? "";
-
-  if (contentType.includes("application/json")) {
-    return request.json() as Promise<BookingForm>;
-  }
-
-  const formData = await request.formData();
-
-  return {
-    fullName: String(formData.get("fullName") ?? ""),
-    mobileNumber: String(formData.get("mobileNumber") ?? ""),
-    email: String(formData.get("email") ?? ""),
-    country: String(formData.get("country") ?? ""),
-    preferredLanguage: String(formData.get("preferredLanguage") ?? ""),
-    interestedIn: String(formData.get("interestedIn") ?? ""),
-    preferredContactMethod: String(formData.get("preferredContactMethod") ?? ""),
-    preferredAppointmentDate: String(formData.get("preferredAppointmentDate") ?? ""),
-    message: String(formData.get("message") ?? ""),
-    consentToContact: String(formData.get("consentToContact") ?? ""),
-    consentVersion: String(formData.get("consentVersion") ?? ""),
-    sourcePath: String(formData.get("sourcePath") ?? ""),
-  };
-}
+import { bookingPersistenceAvailability, persistBookingToZoho } from "@/lib/bookingPersistence";
+import { validateBookingSubmission } from "@/lib/bookingSubmission";
+import {
+  bodyTooLarge,
+  clean,
+  hasAllowedPublicOrigin,
+  publicRequestClientKey,
+  publicSubmissionErrorStatus,
+  readPublicForm,
+} from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
+import { MMS_PARTNER_REFERRAL_COOKIE, referralPartnerId } from "@/lib/referralTracking";
 
 export async function POST(request: NextRequest) {
-  const form = await readBookingForm(request);
-  const consentGranted = form.consentToContact === "true";
-  const consentVersion = form.consentVersion === "MMS-WEB-2026-08-v1" ? form.consentVersion : null;
-  const zohoLeadPayload = {
-    "Full Name": form.fullName,
-    Mobile: form.mobileNumber,
-    Email: form.email,
-    Country: form.country,
-    "Preferred Language": form.preferredLanguage,
-    "Interested Service": form.interestedIn,
-    "Preferred Contact Method": form.preferredContactMethod,
-    "Next Follow-up / Appointment Preference": form.preferredAppointmentDate,
-    Source: "Website",
-    "Consent to Contact": consentGranted,
-    "Consent Version": consentVersion,
-    "Consent Timestamp": consentGranted ? new Date().toISOString() : null,
-    "Source Path": form.sourcePath,
-    Message: form.message,
-  };
+  if (bodyTooLarge(request)) {
+    return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
+  }
 
-  if (!consentGranted || consentVersion == null) {
+  if (!hasAllowedPublicOrigin(request)) {
+    return NextResponse.json({ status: "denied", message: "This request could not be accepted." }, { status: 403 });
+  }
+
+  const rateLimit = checkInMemoryRateLimit(`booking:${publicRequestClientKey(request)}`, {
+    limit: 6,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!rateLimit.allowed) {
     return NextResponse.json(
+      { status: "rate_limited", message: "Too many enquiry attempts. Please try again later." },
       {
-        status: "invalid",
-        message: "Consent is required before MMS can contact the visitor.",
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": String(rateLimit.limit),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
       },
-      { status: 400 },
     );
   }
 
-  return NextResponse.json({
-    status: "placeholder",
-    message:
-      "Zoho CRM integration-ready route. Add lead creation after Zoho credentials and consent flow are configured.",
-    mapping: zohoLeadFieldMapping,
-    zohoModule: "Leads",
-    acceptedFields: Object.keys(zohoLeadPayload),
-  });
+  let form: Record<string, string>;
+  try {
+    form = await readPublicForm(request);
+  } catch (error) {
+    const status = publicSubmissionErrorStatus(error);
+    return NextResponse.json(
+      { status: "invalid", message: status === 413 ? "Request is too large." : "Unsupported or invalid request format." },
+      { status },
+    );
+  }
+
+  const honeypot = clean(form.website, 120);
+  if (honeypot) {
+    return NextResponse.json({ status: "accepted" }, { status: 202 });
+  }
+
+  const validation = validateBookingSubmission(form);
+  if (!validation.ok) {
+    return NextResponse.json({ status: "invalid", message: validation.message }, { status: 400 });
+  }
+
+  const consentTimestamp = new Date().toISOString();
+  const authoritativePartnerId = referralPartnerId(
+    request.cookies.get(MMS_PARTNER_REFERRAL_COOKIE)?.value,
+  );
+  const persistence = bookingPersistenceAvailability();
+  if (persistence.ready) {
+    try {
+      const result = await persistBookingToZoho(
+        validation.value,
+        validation.campaign,
+        authoritativePartnerId,
+        consentTimestamp,
+        persistence,
+      );
+      return NextResponse.json(
+        {
+          status: "persisted",
+          reference: result.reference,
+          message: `Enquiry received. Your reference is ${result.reference}.`,
+        },
+        { status: 201 },
+      );
+    } catch {
+      console.error("MMS booking persistence failed");
+      return NextResponse.json(
+        { status: "error", message: "Your enquiry could not be saved safely. Please try again later." },
+        { status: 502 },
+      );
+    }
+  }
+
+  return NextResponse.json(
+    {
+      status: "not_persisted",
+      message: "Online enquiry capture is temporarily unavailable. Please try again later.",
+    },
+    { status: 503 },
+  );
 }

@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
-import { EditorialHero, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
+import {
+  CTASection,
+  EditorialSplit,
+  ImageFeature,
+  JourneyStepRail,
+  PublicHero,
+  SectionHeading,
+  TrustBar,
+} from "@/components/PublicExperience";
+import { CareTeamStrip } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
   title: "Health Screening | My Medical Sanctuary",
@@ -50,34 +58,69 @@ const includes = [
 export default function HealthScreeningPage() {
   return (
     <main>
-      <EditorialHero
+      <PublicHero
         eyebrow="Health Screening"
         title="Your health journey starts with understanding."
+        brandLine="Baseline first. Recommendations later."
         lead="A personalised screening helps identify current health status, detect potential risks earlier and provide a doctor-led foundation for your wellness plan."
-        image="/mms-diagnostics-screening.png"
+        image="/mms-health-screening-hero.png"
         imageAlt="Doctor-led health screening consultation."
-        primaryLabel="Book health screening"
+        primaryLabel="Book Health Screening"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="58% center"
+      />
+
+      <TrustBar
+        items={[
+          { title: "Early", text: "Understand risk before concerns become urgent." },
+          { title: "Baseline", text: "Know where your health stands today." },
+          { title: "Personal", text: "Findings make sense only in context." },
+          { title: "Doctor-led", text: "Review comes before recommendations." },
+          { title: "Actionable", text: "Translate findings into next steps." },
+          { title: "Continuity", text: "Membership comes after review." },
+        ]}
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.76fr_1.24fr] lg:items-center">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Why it matters</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Understand before problems become more serious.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              Screening is not about selling treatment. It builds a baseline, gives context and helps you
-              make better decisions with a doctor.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Patient concierge welcome." className="min-h-[250px] rounded-[1.2rem] shadow-premium" />
-            <ImagePanel priority src="/mms-doctor-results-review.png" alt="Private review with a doctor." className="min-h-[250px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Doctor-led screening." className="min-h-[250px] rounded-[1.2rem] shadow-premium" />
-          </div>
+          <SectionHeading
+            eyebrow="Why it matters"
+            title="Understand before problems become more serious."
+            lead="Screening is not about selling treatment. It builds a baseline, gives context and helps you make better decisions with a doctor."
+          />
+          <ImageFeature
+            items={[
+              {
+                title: "Detect early",
+                eyebrow: "Risk",
+                text: "Identify potential health risks before symptoms develop.",
+                detail: "Earlier detection can create time for monitoring, lifestyle change, referral or doctor-led planning.",
+                image: "/mms-diagnostics-screening.png",
+              },
+              {
+                title: "Build your baseline",
+                eyebrow: "Clarity",
+                text: "Know where your health stands today.",
+                detail: "A baseline becomes more useful when repeated over time and interpreted alongside your goals and history.",
+                image: "/mms-doctor-results-review.png",
+              },
+              {
+                title: "Plan ahead",
+                eyebrow: "Next step",
+                text: "Make informed decisions with your doctor.",
+                detail: "The screening discussion can prioritise what deserves follow-up, what can wait and what needs specialist review.",
+                image: "/mms-doctor-couple-consult.png",
+              },
+              {
+                title: "Continue wisely",
+                eyebrow: "Journey",
+                text: "Consider programmes only after review.",
+                detail: "Membership or advanced care should follow suitability assessment, not replace it.",
+                image: "/mms-concierge-lounge.png",
+              },
+            ]}
+          />
         </div>
       </section>
 
@@ -94,11 +137,11 @@ export default function HealthScreeningPage() {
               Hover each area to understand how it supports the patient conversation.
             </p>
           </div>
-          <RevealCardGrid items={includes} />
+          <ImageFeature items={includes} />
         </div>
       </section>
 
-      <SplitStory
+      <EditorialSplit
         eyebrow="Doctor-led next step"
         title="Membership comes after doctor review."
         lead="The screening result should guide the next step. It should not pressure patients into programmes before the findings are understood."
@@ -106,8 +149,8 @@ export default function HealthScreeningPage() {
         imageAlt="Doctor discussing screening next steps."
         reverse
       >
-        <JourneyLine compact steps={pathway} />
-      </SplitStory>
+        <JourneyStepRail steps={pathway} />
+      </EditorialSplit>
 
       <CareTeamStrip
         image="/mms-doctor-couple-consult.png"
@@ -117,7 +160,7 @@ export default function HealthScreeningPage() {
         points={["Interpret", "Prioritise", "Plan"]}
       />
 
-      <FinalInvitation
+      <CTASection
         title="Your future health starts with a clearer baseline."
         lead="Book a screening and begin with understanding, not pressure."
       />

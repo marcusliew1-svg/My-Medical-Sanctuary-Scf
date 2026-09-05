@@ -1,14 +1,22 @@
 import type { MetadataRoute } from "next";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
+import { getCanonicalUrl } from "@/lib/siteConfig";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/"],
+      disallow: [
+        "/api/",
+        "/prototype",
+        "/partner-hub",
+        "/login",
+        "/register",
+        "/onboarding",
+        "/my-sanctuary",
+        "/membership-checkout",
+      ],
     },
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: getCanonicalUrl("/sitemap.xml"),
   };
 }

@@ -1,160 +1,38 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, MarketSignalPanel, RevealCardGrid } from "@/components/ExperienceCards";
+import { CTASection, EditorialSplit, JourneyStepRail, PublicHero, SectionHeading } from "@/components/PublicExperience";
+import { ClinicalBoundary, EditorialIndex, ImagePair, PrincipleRow } from "@/components/PublicEditorialModules";
+import { PublicSectionShell } from "@/components/PublicVisualPrimitives";
 
-export const metadata: Metadata = {
-  title: "Treatments Explained | My Medical Sanctuary",
-  description:
-    "Educational treatment areas at MMS, organised around health purpose and suitability discussion rather than self-selection.",
-};
+export const metadata: Metadata = { title: "Care & Treatments", description: "Treatment education organised around clinical purpose, evidence, uncertainty and professional suitability review." };
 
 const areas = [
-  {
-    title: "Screening & Prevention",
-    eyebrow: "Start here",
-    text: "What should be measured, why it matters, and what deserves follow-up.",
-    detail:
-      "Screening helps MMS understand baseline health before any programme or advanced option is considered.",
-    image: "/mms-diagnostics-screening.png",
-    href: "/health-screening",
-  },
-  {
-    title: "Longevity & Cellular Wellness",
-    eyebrow: "Ageing well",
-    text: "How people discuss vitality and advanced options responsibly.",
-    detail:
-      "MMS frames longevity through evidence, uncertainty and suitability review, not public promises.",
-    image: "/mms-doctor-couple-consult.png",
-    href: "/longevity-medicine",
-  },
-  {
-    title: "Metabolic & Hormonal Health",
-    eyebrow: "Energy context",
-    text: "Energy, weight, glucose, hormones and habits in context.",
-    detail:
-      "The conversation should connect symptoms, lifestyle, screening results and clinical judgement.",
-    image: "/mms-doctor-results-review.png",
-    href: "/weight-management",
-  },
-  {
-    title: "Recovery & Performance",
-    eyebrow: "Resilience",
-    text: "Supportive care questions for stress, travel, fatigue and resilience.",
-    detail:
-      "Supportive care should be positioned around goals, medical history and appropriateness for the individual.",
-    image: "/mms-medicine-access-consult.png",
-  },
-  {
-    title: "Regenerative Support",
-    eyebrow: "Educational only",
-    text: "Advanced discussions remain subject to suitability review.",
-    detail:
-      "MMS should educate patients on boundaries, risks, evidence and professional review before any decision.",
-    image: "/mms-diagnostics-screening.png",
-  },
-  {
-    title: "International Medicine Access",
-    eyebrow: "Access intelligence",
-    text: "Why availability and cost can differ between countries.",
-    detail:
-      "MMS can help frame access questions across Malaysia, Thailand and other markets without acting as a public medicine shop.",
-    image: "/mms-concierge-lounge.png",
-    href: "/international-medicine-access",
-  },
+  { title: "Screening & Prevention", eyebrow: "Start here", text: "Build a useful health baseline and understand what deserves follow-up.", href: "/health-screening" },
+  { title: "Longevity & Cellular Wellness", eyebrow: "Ageing well", text: "Explore vitality, resilience and advanced-care questions with evidence boundaries visible.", href: "/longevity-medicine" },
+  { title: "Metabolic & Hormonal Health", eyebrow: "Clinical context", text: "Connect energy, weight, glucose and hormone symptoms to appropriate assessment.", href: "/weight-management" },
+  { title: "Regenerative Medicine", eyebrow: "Advanced care", text: "Understand indication-specific evidence, uncertainty, product quality and regulation.", href: "/treatments/research" },
+  { title: "Recovery & Performance", eyebrow: "Supportive care", text: "Consider sleep, stress, nutrition and recovery without overlooking medical causes.", href: "/health-concerns/poor-sleep-stress-recovery" },
+  { title: "Medicine Access Intelligence", eyebrow: "Better information", text: "Learn why medicine cost and lawful access differ across countries.", href: "/international-medicine-access" },
 ];
 
 export default function TreatmentsPage() {
   return (
     <main>
-      <EditorialHero
-        eyebrow="Advanced care"
-        title="Beyond today. Prepared for tomorrow."
-        lead="This is an educational gateway, not a treatment shop. MMS begins with baseline understanding, doctor review and suitability before discussing advanced options."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor and patient reviewing health information."
-        primaryLabel="Start with screening"
-        primaryHref="/health-screening"
-        secondaryLabel="Ask Ling"
-        secondaryHref="/ling"
-      />
-
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.78fr_1.22fr]">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Health purpose</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Patients need context before choices.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              A premium clinic should help people understand the question behind the treatment:
-              prevention, longevity, recovery, metabolic health, medicine access or specialist review.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Preventive diagnostics and screening." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-doctor-couple-consult.png" alt="Doctor consultation." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Patient concierge service." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-doctor-results-review.png" alt="Screening review." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-navy px-4 py-20 text-ivory md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">Explore with guidance</p>
-              <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-                Learn what each area is really asking.
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each image to reveal the deeper patient question.
-            </p>
-          </div>
-          <RevealCardGrid items={areas} />
-        </div>
-      </section>
-
-      <SplitStory
-        eyebrow="Medicine access strategy"
-        title="Sometimes the same medicine is expensive in one country and more accessible in another."
-        lead="That does not mean patients should self-source or compare prices alone. It means MMS needs an education and coordination layer that explains country rules, registration, supply, prescription requirements and continuity."
-        image="/mms-medicine-access-consult.png"
-        imageAlt="Patient concierge supporting regional medicine access questions."
-        reverse
-      >
-        <div className="grid gap-4 border-y border-gold/40 py-6">
-          {[
-            "Malaysia and Thailand may differ in registration, supply chains, taxes and licensed access pathways.",
-            "MMS can help patients frame the question before involving appropriate licensed professionals.",
-            "No diagnosis, prescribing, dosage or dispensing is handled through the public website.",
-          ].map((item) => (
-            <p key={item} className="leading-7 text-warm-gray">
-              {item}
-            </p>
-          ))}
-          <Link href="/international-medicine-access" className="inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8">
-            Explore medicine access intelligence
-          </Link>
-        </div>
-      </SplitStory>
-
-      <MarketSignalPanel
-        title="Medicine access is a real patient pain point, not a small footnote."
-        lead="MMS can build a compliant revenue stream by educating patients on country-level cost signals, then offering verified access-intelligence discussions before licensed coordination."
-      />
-
-      <CareTeamStrip
-        image="/mms-doctor-results-review.png"
-        eyebrow="Advanced care boundary"
-        title="Patients should feel guided before they feel sold to."
-        text="Every advanced-care conversation should move through screening, suitability and professional review before programme or access decisions."
-        points={["Purpose first", "Suitability", "Review"]}
-      />
-
-      <FinalInvitation title="Begin with what you want to understand, not what you want to buy." />
+      <PublicHero eyebrow="Treatments" title="Advanced options. Considered individually." brandLine="Understanding before intervention." lead="MMS explains why a treatment may be discussed, what the evidence can support and why personal suitability must be assessed before any decision." image="/mms-doctor-results-review.png" imageAlt="Physician discussing treatment evidence and alternatives with a patient." primaryLabel="Book Assessment" primaryHref="/contact" secondaryLabel="Research Treatments" secondaryHref="/treatments/research" />
+      <PublicSectionShell><div className="mx-auto max-w-5xl"><SectionHeading eyebrow="The MMS position" title="Advanced does not automatically mean better." lead="The right option depends on the health problem, credible evidence, alternatives, product or device quality, personal risk and the professional responsible for care." /><div className="mt-12"><PrincipleRow items={[
+        { title: "Purpose", text: "Be clear about the problem the option is intended to address." },
+        { title: "Evidence", text: "Separate established use from emerging or indication-specific research." },
+        { title: "Suitability", text: "Balance potential benefit, uncertainty, alternatives and individual risk." },
+      ]} /></div></div></PublicSectionShell>
+      <PublicSectionShell tone="stone"><div className="grid gap-12 lg:grid-cols-[0.62fr_1.38fr]"><div><SectionHeading eyebrow="Care areas" title="Find the health purpose before the treatment name." lead="The strongest starting point is the question you want to answer, not a procedure you have already decided to pursue." /><div className="mt-8"><ClinicalBoundary>Information on this website is not a recommendation to undergo treatment. Availability and suitability vary.</ClinicalBoundary></div></div><EditorialIndex items={areas} /></div></PublicSectionShell>
+      <EditorialSplit eyebrow="Physician-guided" title="No advanced-care decision should come straight from a webpage." lead="A responsible pathway moves from informed interest to assessment, evidence review, suitability and monitoring." image="/mms-diagnostics-screening.png" imageAlt="Clinical diagnostics used to support a treatment suitability review." dark reverse><JourneyStepRail dark steps={[
+        { title: "Question", text: "Define the clinical or wellness goal." },
+        { title: "Assess", text: "Understand health context and alternatives." },
+        { title: "Review", text: "Discuss evidence, uncertainty and risk." },
+        { title: "Decide", text: "Proceed only when professionally appropriate." },
+        { title: "Monitor", text: "Agree follow-up and response measures." },
+      ]} /></EditorialSplit>
+      <PublicSectionShell><div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center"><ImagePair primary="/mms-medicine-access-consult.png" secondary="/mms-health-screening-hero.png" primaryAlt="Patient discussing advanced-care questions with a physician." secondaryAlt="Preventive assessment environment." /><SectionHeading eyebrow="Evidence with humanity" title="Patients deserve both candour and care." lead="MMS aims to explain uncertainty without being dismissive, and possibility without overstatement. The result should be a better consultation, not a more persuasive sales page." /></div></PublicSectionShell>
+      <CTASection title="Begin with the health question, not the product." lead="Book an assessment or explore the research library before discussing any advanced option." />
     </main>
   );
 }

@@ -1,135 +1,94 @@
 import type { Metadata } from "next";
-import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
-import { RevealCardGrid } from "@/components/ExperienceCards";
+import { CTASection, EditorialSplit, PublicHero, SectionHeading } from "@/components/PublicExperience";
+import { ClinicalBoundary, EditorialIndex, PrincipleRow } from "@/components/PublicEditorialModules";
 import { LingPanel } from "@/components/LingPanel";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Ling | My Medical Sanctuary",
-  description: "Ling is the MMS AI Health Education Companion for learning, organising questions and preparing for doctor-led care.",
+  title: "Ling",
+  description: "Ling is the MMS digital health guide for general education, question preparation and navigation toward doctor-led care.",
 };
 
-const lingRoles = [
-  {
-    title: "Welcoming guide",
-    eyebrow: "Begin",
-    text: "Helps you name what brought you here.",
-    detail: "Ling can turn a vague worry into a clearer first question for MMS.",
-    image: "/ling-concierge.png",
-  },
-  {
-    title: "Knowledge companion",
-    eyebrow: "Learn",
-    text: "Explains concepts in plain language.",
-    detail: "Ling can explain screening, longevity, metabolic health and medicine access concepts without diagnosing.",
-    image: "/ling-knowledge.png",
-  },
-  {
-    title: "Regional care guide",
-    eyebrow: "Navigate",
-    text: "Helps frame cross-country healthcare questions.",
-    detail: "Ling can explain why systems, prices and access pathways may differ before licensed review.",
-    image: "/ling-regional.png",
-  },
-  {
-    title: "Continuity guide",
-    eyebrow: "Continue",
-    text: "Helps you prepare for follow-up.",
-    detail: "Ling can organise questions for your next MMS conversation and remind you where doctor review is needed.",
-    image: "/ling-continuity.png",
-  },
+const canDo = [
+  { title: "Explain", text: "Describe general health, screening and medicine-access concepts in plain language." },
+  { title: "Organise", text: "Help turn a collection of concerns into clearer questions and useful context." },
+  { title: "Navigate", text: "Point visitors towards relevant MMS education or the appropriate enquiry pathway." },
+  { title: "Prepare", text: "Help patients arrive at a consultation ready to have a better conversation." },
+];
+
+const cannotDo = [
+  { title: "Diagnose or prescribe", text: "Ling cannot identify a condition, issue prescriptions or select treatment." },
+  { title: "Determine suitability", text: "Only an appropriately qualified professional can assess individual suitability." },
+  { title: "Direct medicine changes", text: "Ling cannot advise a patient to start, stop, switch or import a medicine." },
+  { title: "Override judgement", text: "Ling never replaces a clinician, urgent care service or jurisdictional requirement." },
 ];
 
 export default function LingPage() {
   return (
     <main>
-      <EditorialHero
-        eyebrow="Ling"
-        title="Your personal health concierge for better questions."
-        lead="Ask. Understand. Prepare. Ling helps you organise what matters before doctor-led care."
+      <PublicHero
+        eyebrow="Meet Ling"
+        title="You do not need to know where to begin."
+        brandLine="A restrained concierge and education layer."
+        lead="Ling helps organise questions, explain general concepts and guide visitors towards an appropriate next conversation. Personalised medical judgement remains with qualified professionals."
         image="/ling-knowledge.png"
-        imageAlt="Ling, the MMS AI Health Education Companion."
+        imageAlt="Ling, the MMS digital health guide, in a calm professional setting."
         primaryLabel="Ask Ling"
+        primaryHref="#ask-ling"
         secondaryLabel="Speak with MMS"
         secondaryHref="/contact"
-        imagePosition="52% center"
+        imagePosition="52% 22%"
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">What brings you here?</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Start with the question, not the programme.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              Ling is best for orientation. Personal medical advice belongs with an MMS doctor.
-            </p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {lingOptions.slice(0, 6).map((option) => (
-              <div key={option} className="rounded-[1rem] border border-gold-light/45 bg-white/80 p-5 text-lg text-charcoal shadow-[0_18px_44px_rgba(11,26,46,0.06)]">
-                {option}
-              </div>
-            ))}
-          </div>
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr]">
+          <SectionHeading
+            eyebrow="Begin naturally"
+            title="Start with what is on your mind."
+            lead="Ling can help someone who has a clear goal and someone who only knows that something does not feel right."
+          />
+          <EditorialIndex items={lingOptions.slice(0, 6).map((option) => ({ title: option, text: "Use this as a starting point for education and appropriate routing, not a medical conclusion." }))} />
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-20 text-ivory md:py-28">
+      <section className="bg-[#06171d] px-4 py-20 text-ivory md:py-28">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">Ling visual system</p>
-              <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-                One guide, different moments in the journey.
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each role to see how Ling should support patients without replacing care.
-            </p>
-          </div>
-          <RevealCardGrid items={lingRoles} />
+          <SectionHeading
+            eyebrow="A useful boundary"
+            title="Helpful precisely because her role is limited."
+            lead="Ling supports understanding before the consultation. She does not cross into individual clinical decision-making."
+            dark
+          />
+          <div className="mt-12"><PrincipleRow items={canDo.slice(0, 3)} dark /></div>
+          <div className="mt-8"><EditorialIndex items={[canDo[3], ...cannotDo]} dark /></div>
         </div>
       </section>
 
-      <SplitStory
-        eyebrow="Boundary"
-        title="Ling is useful because the boundary is clear."
+      <EditorialSplit
+        eyebrow="Doctor-led care"
+        title="Technology supports care. It does not replace doctors."
         lead={lingDisclaimer}
-        image="/mms-health-screening-hero.png"
-        imageAlt="Doctor-led consultation remains central to MMS care."
-        dark
+        image="/mms-doctor-results-review.png"
+        imageAlt="Doctor-led review remains central to MMS care."
         reverse
       >
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="border-t border-gold/45 pt-5">
-            <h3 className="font-serif text-3xl text-ivory">Ling can</h3>
-            <p className="mt-3 leading-7 text-ivory/70">Explain concepts, organise questions and prepare you for consultation.</p>
-          </div>
-          <div className="border-t border-gold/45 pt-5">
-            <h3 className="font-serif text-3xl text-ivory">Ling cannot</h3>
-            <p className="mt-3 leading-7 text-ivory/70">Diagnose, prescribe, interpret personal results or replace an MMS doctor.</p>
-          </div>
-        </div>
-      </SplitStory>
+        <ClinicalBoundary>
+          If a question may indicate an urgent health concern, Ling should direct the person to appropriate urgent or emergency care rather than continue a routine wellness journey.
+        </ClinicalBoundary>
+      </EditorialSplit>
 
-      <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
-          <ImagePanel src="/ling-concierge.png" alt="Ling welcoming patients." className="min-h-[440px] rounded-[1.5rem] shadow-premium" objectPosition="50% center" />
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Prototype panel</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-5xl">
-              A simple education layer, not a medical decision engine.
-            </h2>
-            <div className="mt-10">
-              <LingPanel />
-            </div>
-          </div>
+      <section id="ask-ling" className="bg-warm-white px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-5xl">
+          <SectionHeading
+            eyebrow="Educational preview"
+            title="Try the guided conversation."
+            lead="This interface demonstrates education and routing only. Production AI remains disabled until it is separately governed, tested and approved."
+          />
+          <div className="mt-10"><LingPanel /></div>
         </div>
       </section>
 
-      <FinalInvitation title="You can begin with a question." lead="Ling can help you prepare, then MMS can guide the next step." />
+      <CTASection title="Begin with a question. Continue with a qualified professional." />
     </main>
   );
 }

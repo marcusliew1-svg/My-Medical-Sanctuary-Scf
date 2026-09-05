@@ -94,13 +94,7 @@ export function postgresPartnerHubSessionProvider(
         const row = result.rows[0];
         if (!row) return { status: "unauthenticated", reason: "Partner session is not active." };
 
-        // Rejected Partners cannot retain Hub access. Suspended and Inactive
-        // Partners may retain an otherwise valid session so the capability
-        // layer can provide read-only commercial visibility (for example,
-        // historical leads and commission statements). Their selling
-        // capabilities remain disabled by partnerHubCapabilities(). Existing
-        // sessions can still be explicitly revoked when policy requires it.
-        if (row.partner_stage === "Rejected") {
+        if (!["Approved", "Agreement Pending", "Training", "Active"].includes(row.partner_stage)) {
           return { status: "unauthenticated", reason: "Partner account is not permitted to use an active session." };
         }
 

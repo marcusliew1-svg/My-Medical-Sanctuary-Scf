@@ -1,22 +1,52 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { isCareerRoleFamily } from "@/lib/careersPolicy";
-import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
+import {
+  bodyTooLarge,
+  clean,
+  fieldsWithinLimits,
+  hasAllowedPublicOrigin,
+  hasOnlyFields,
+  isEmail,
+  isPhone,
+  isSafeHttpUrl,
+  publicRequestClientKey,
+  publicSubmissionErrorStatus,
+  readPublicForm,
+} from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
+
+const careerFields = new Set(["fullName", "email", "mobile", "location", "role", "currentPosition", "yearsExperience", "availability", "expectedSalary", "linkedin", "portfolio", "resumeReference", "privacyConsent", "sourcePath", "website"]);
+const careerLimits = { fullName: 120, email: 254, mobile: 60, location: 120, role: 160, currentPosition: 160, yearsExperience: 40, availability: 120, expectedSalary: 80, linkedin: 300, portfolio: 300, resumeReference: 300, privacyConsent: 10, sourcePath: 160, website: 120 };
 
 export async function POST(request: NextRequest) {
   if (bodyTooLarge(request)) {
     return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
   }
 
+  if (!hasAllowedPublicOrigin(request)) {
+    return NextResponse.json({ status: "denied", message: "This request could not be accepted." }, { status: 403 });
+  }
+
+  const rateLimit = checkInMemoryRateLimit(`careers:${publicRequestClientKey(request)}`, { limit: 4, windowMs: 15 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ status: "rate_limited", message: "Too many application attempts. Please try again later." }, { status: 429, headers: { "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)) } });
+  }
+
   let form: Record<string, string>;
   try {
     form = await readPublicForm(request);
-  } catch {
-    return NextResponse.json({ status: "invalid", message: "Unsupported request format." }, { status: 415 });
+  } catch (error) {
+    const status = publicSubmissionErrorStatus(error);
+    return NextResponse.json({ status: "invalid", message: status === 413 ? "Request is too large." : "Unsupported or invalid request format." }, { status });
   }
 
   if (clean(form.website, 120)) {
     return NextResponse.json({ status: "accepted" }, { status: 202 });
+  }
+
+  if (!hasOnlyFields(form, careerFields) || !fieldsWithinLimits(form, careerLimits)) {
+    return NextResponse.json({ status: "invalid", message: "One or more application fields are invalid or too long." }, { status: 400 });
   }
 
   const payload = {
@@ -39,10 +69,13 @@ export async function POST(request: NextRequest) {
   if (
     payload.fullName.length < 2 ||
     !isEmail(payload.email) ||
-    payload.mobile.length < 6 ||
+    !isPhone(payload.mobile) ||
     !payload.location ||
     !isCareerRoleFamily(payload.role) ||
-    !payload.privacyConsent
+    !payload.privacyConsent ||
+    payload.sourcePath !== "/careers" ||
+    !isSafeHttpUrl(payload.linkedin) ||
+    !isSafeHttpUrl(payload.portfolio)
   ) {
     return NextResponse.json(
       { status: "invalid", message: "Please complete the required applicant, role and consent fields." },

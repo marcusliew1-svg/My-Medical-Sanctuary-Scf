@@ -1,20 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { publicButtonClasses, type PublicButtonVariant } from "@/lib/publicDesign";
 
 type ButtonLinkProps = {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "light" | "outline" | "dark";
+  variant?: Exclude<PublicButtonVariant, "secondary">;
   className?: string;
-};
-
-const variants = {
-  primary:
-    "bg-gold text-navy shadow-[0_14px_34px_rgba(181,111,91,0.22)] hover:bg-gold-light",
-  light: "bg-ivory text-navy hover:bg-white",
-  outline:
-    "border border-gold/70 bg-transparent text-navy hover:bg-gold hover:text-navy",
-  dark: "bg-navy text-ivory hover:bg-deep-green",
 };
 
 export function ButtonLink({
@@ -23,10 +15,11 @@ export function ButtonLink({
   variant = "primary",
   className = "",
 }: ButtonLinkProps) {
+  // Release 1B.2 gold shadow baseline: rgba(169,138,82,0.22).
   return (
     <Link
       href={href}
-      className={`inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-semibold transition duration-300 hover:-translate-y-0.5 ${variants[variant]} ${className}`}
+      className={publicButtonClasses(variant, className)}
     >
       {children}
     </Link>

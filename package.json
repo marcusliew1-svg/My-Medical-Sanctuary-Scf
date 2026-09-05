@@ -3,29 +3,50 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=20.9.0"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test:release1a": "node --test tests/release1a.test.mjs",
+    "test:release1b": "node --test tests/release1b.test.mjs",
+    "test:release1b2": "node --test tests/release1b2.test.mjs",
+    "test:release2a": "node --test tests/release2a.test.mjs",
+    "test:release2b": "node --test tests/release2b.test.mjs",
+    "test:release2c1": "node --test tests/release2c1.test.mjs",
+    "test:release2c2": "node --test tests/release2c2.test.mjs",
+    "test:release2d0": "node --test tests/release2d0.test.mjs",
+    "test:next-major": "node --test tests/next-major-upgrade.test.mjs",
+    "test:operator-security": "node --test tests/operator-security.test.mjs",
+    "test:operations-console": "node --test tests/operations-console-integration.test.mjs",
+    "test:commission-centre": "node --test tests/commission-centre-integration.test.mjs",
+    "test:multilingual": "node --test tests/multilingual-integration.test.mjs",
+    "test:enquiry-hardening": "node --test tests/enquiry-hardening-wave5.test.mjs",
+    "test:partner-auth": "node --test tests/partner-auth-wave6.test.mjs",
+    "test:design-foundation": "node --test tests/design-foundation-wave7.test.mjs",
+    "test:t4": "node --test tests/t4-public-redesign.test.mjs",
+    "test:t5": "node --test tests/t5-production-readiness.test.mjs",
+    "test:t6": "node --test tests/t6-p0-blocker-closure.test.mjs",
+    "test:t6-3": "node --test tests/access-readiness-t63.test.mjs"
   },
   "dependencies": {
-    "next": "14.2.23",
+    "next": "^16.3.4",
     "pg": "8.23.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/node": "^20.17.10",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^14.2.23",
-    "postcss": "^8.4.49",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.4",
+    "postcss": "^8.5.26",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2"
   }

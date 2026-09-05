@@ -1,53 +1,36 @@
 import type { MetadataRoute } from "next";
+import {
+  alternatePaths,
+  parseRegionalPath,
+  regionalSitemapPaths,
+  sectionForEnglishPath,
+  type RegionalSection,
+} from "@/lib/i18nRouting";
+import { getCanonicalUrl } from "@/lib/siteConfig";
+import { publicSitemapRoutes } from "@/lib/siteRoutes";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
+function languageAlternates(section?: RegionalSection) {
+  return Object.fromEntries(
+    Object.entries(alternatePaths(section)).map(([language, pathname]) => [language, getCanonicalUrl(pathname)]),
+  );
+}
 
-const routes = [
-  "",
-  "/about-mms",
-  "/why-mms",
-  "/our-philosophy",
-  "/health-journey",
-  "/health-discovery",
-  "/health-screening",
-  "/treatments",
-  "/preventive-care",
-  "/longevity-medicine",
-  "/weight-management",
-  "/iv-therapy",
-  "/memberships",
-  "/membership",
-  "/how-it-works",
-  "/education",
-  "/knowledge-hub",
-  "/health-articles",
-  "/insights",
-  "/ling",
-  "/clinics",
-  "/international-medicine-access",
-  "/scf-lab-roadmap",
-  "/corporate-executive-wellness",
-  "/corporate-wellness",
-  "/professional-alliance-programme",
-  "/medical-tourism",
-  "/malaysia-thailand-care",
-  "/faq",
-  "/contact",
-  "/book-appointment",
-  "/privacy-disclaimer",
-  "/privacy-pdpa",
-  "/privacy-policy",
-  "/terms",
-  "/terms-of-use",
-];
+function sitemapEntry(pathname: string, now: Date): MetadataRoute.Sitemap[number] {
+  const regional = parseRegionalPath(pathname);
+  const section = regional?.section ?? sectionForEnglishPath(pathname);
+  const supportsRegionalAlternates = pathname === "/" || Boolean(regional) || Boolean(section);
+
+  return {
+    url: getCanonicalUrl(pathname),
+    lastModified: now,
+    changeFrequency: pathname === "/" ? "weekly" : "monthly",
+    priority: pathname === "/" ? 1 : 0.7,
+    ...(supportsRegionalAlternates ? { alternates: { languages: languageAlternates(section) } } : {}),
+  };
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  return routes.map((route) => ({
-    url: `${siteUrl}${route}`,
-    lastModified: now,
-    changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" ? 1 : 0.7,
-  }));
+  return [...publicSitemapRoutes, ...regionalSitemapPaths].map((route) => sitemapEntry(route, now));
 }

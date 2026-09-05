@@ -1,4 +1,5 @@
-import { createRequire } from "node:module";
+import "server-only";
+import pg from "pg";
 import { mmsCommercialDatabaseReadiness } from "@/lib/mmsCommercialDatabaseConfig";
 
 export type MmsCommercialQueryResult<Row extends Record<string, unknown> = Record<string, unknown>> = {
@@ -51,20 +52,8 @@ type PgModule = {
   }) => PgPool;
 };
 
-const nodeRequire = createRequire(`${process.cwd()}/package.json`);
+const PgPool = (pg as unknown as PgModule).Pool;
 let cachedPool: PgPool | null = null;
-let cachedPgModule: PgModule | null | undefined;
-
-function loadPgModule(): PgModule | null {
-  if (cachedPgModule !== undefined) return cachedPgModule;
-  try {
-    const loaded = nodeRequire("pg") as PgModule;
-    cachedPgModule = loaded?.Pool ? loaded : null;
-  } catch {
-    cachedPgModule = null;
-  }
-  return cachedPgModule;
-}
 
 function pool(): PgPool {
   if (cachedPool) return cachedPool;
@@ -73,11 +62,8 @@ function pool(): PgPool {
     throw new Error(readiness.blockers.join(" ") || "MMS commercial database configuration is unavailable.");
   }
 
-  const pg = loadPgModule();
-  if (!pg) throw new Error("MMS commercial PostgreSQL runtime dependency is not installed.");
-
   const connectionString = process.env.MMS_COMMERCIAL_DATABASE_URL?.trim() || "";
-  cachedPool = new pg.Pool({
+  cachedPool = new PgPool({
     connectionString,
     max: 5,
     idleTimeoutMillis: 30_000,
@@ -95,7 +81,7 @@ function normalizedResult<Row extends Record<string, unknown>>(result: PgQueryRe
 }
 
 export function mmsCommercialDatabaseClientAvailable(): boolean {
-  return mmsCommercialDatabaseReadiness().readyForAdapters && Boolean(loadPgModule());
+  return mmsCommercialDatabaseReadiness().readyForAdapters;
 }
 
 /**
@@ -108,7 +94,7 @@ export function mmsCommercialDatabaseClient(): MmsCommercialDatabaseClient {
     const readiness = mmsCommercialDatabaseReadiness();
     const reason = !readiness.readyForAdapters
       ? readiness.blockers.join(" ") || "MMS commercial database is unavailable."
-      : "MMS commercial PostgreSQL runtime dependency is not installed.";
+      : "MMS commercial PostgreSQL runtime dependency is unavailable.";
     const unavailable = async (): Promise<never> => {
       throw new Error(reason);
     };

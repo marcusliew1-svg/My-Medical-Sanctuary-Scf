@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { bodyTooLarge, clean, isEmail, readPublicForm } from "@/lib/publicSubmission";
+import { bodyTooLarge, clean, fieldsWithinLimits, hasAllowedPublicOrigin, hasOnlyFields, isEmail, isPhone, publicRequestClientKey, publicSubmissionErrorStatus, readPublicForm } from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 import { createZohoRecord, findZohoLeadDuplicateMatches, zohoCrmConfigured } from "@/lib/zohoCrm";
 
@@ -25,6 +26,8 @@ const allowedLeadSources = new Set([
   "Twitter",
   "Facebook",
 ]);
+const partnerApplicationFields = new Set(["fullName", "email", "mobile", "country", "city", "occupation", "salesBackground", "relevantExperience", "preferredTerritory", "expectedMonthlyActivity", "referrerCode", "introducer", "complianceDeclaration", "approvedRepresentationsDeclaration", "agreementAcknowledgement", "privacyConsent", "sourcePath", "website"]);
+const partnerApplicationLimits = { fullName: 120, email: 254, mobile: 60, country: 80, city: 80, occupation: 120, salesBackground: 1500, relevantExperience: 1500, preferredTerritory: 120, expectedMonthlyActivity: 80, referrerCode: 40, introducer: 120, complianceDeclaration: 10, approvedRepresentationsDeclaration: 10, agreementAcknowledgement: 10, privacyConsent: 10, sourcePath: 160, website: 120 };
 
 function splitName(fullName: string) {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);
@@ -45,15 +48,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: "invalid", message: "Request is too large." }, { status: 413 });
   }
 
+  if (!hasAllowedPublicOrigin(request)) {
+    return NextResponse.json({ status: "denied", message: "This request could not be accepted." }, { status: 403 });
+  }
+
+  const rateLimit = checkInMemoryRateLimit(`sales-partner:${publicRequestClientKey(request)}`, { limit: 4, windowMs: 15 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ status: "rate_limited", message: "Too many application attempts. Please try again later." }, { status: 429, headers: { "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)) } });
+  }
+
   let form: Record<string, string>;
   try {
     form = await readPublicForm(request);
-  } catch {
-    return NextResponse.json({ status: "invalid", message: "Unsupported request format." }, { status: 415 });
+  } catch (error) {
+    const status = publicSubmissionErrorStatus(error);
+    return NextResponse.json({ status: "invalid", message: status === 413 ? "Request is too large." : "Unsupported or invalid request format." }, { status });
   }
 
   if (clean(form.website, 120)) {
     return NextResponse.json({ status: "accepted" }, { status: 202 });
+  }
+
+  if (!hasOnlyFields(form, partnerApplicationFields) || !fieldsWithinLimits(form, partnerApplicationLimits)) {
+    return NextResponse.json({ status: "invalid", message: "One or more application fields are invalid or too long." }, { status: 400 });
   }
 
   const preferredTerritory = clean(form.preferredTerritory, 120);
@@ -67,7 +84,6 @@ export async function POST(request: NextRequest) {
     mobile: clean(form.mobile, 60),
     country: clean(form.country, 80),
     city: clean(form.city, 80),
-    nationality: clean(form.nationality, 80),
     occupation: clean(form.occupation, 120),
     salesBackground: clean(form.salesBackground, 1_500),
     relevantExperience: clean(form.relevantExperience, 1_500),
@@ -85,7 +101,7 @@ export async function POST(request: NextRequest) {
   if (
     payload.fullName.length < 2 ||
     !isEmail(payload.email) ||
-    payload.mobile.length < 6 ||
+    !isPhone(payload.mobile) ||
     !payload.country ||
     !payload.salesBackground ||
     !allowedTerritories.has(payload.preferredTerritory) ||
@@ -94,7 +110,8 @@ export async function POST(request: NextRequest) {
     !payload.complianceDeclaration ||
     !payload.approvedRepresentationsDeclaration ||
     !payload.agreementAcknowledgement ||
-    !payload.privacyConsent
+    !payload.privacyConsent ||
+    payload.sourcePath !== "/join-mms"
   ) {
     return NextResponse.json(
       { status: "invalid", message: "Please complete the required professional, territory and consent fields." },
@@ -176,7 +193,6 @@ export async function POST(request: NextRequest) {
     "[MMS_PARTNER_APPLICATION]",
     `Application Reference: ${reference}`,
     "Partner Stage: Applicant",
-    `Nationality: ${payload.nationality || "Not supplied"}`,
     `Occupation/Company: ${payload.occupation || "Not supplied"}`,
     `Referrer Partner ID: ${payload.referrerCode || "None"}`,
     "Approved Representations Declaration: accepted",
