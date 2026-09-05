@@ -5,5 +5,46 @@
 .story-body{max-width:800px;line-height:1.72}
 .treatment-grid{max-height:48vh;overflow:auto;padding-right:8px;scrollbar-width:thin;scrollbar-color:rgba(214,177,100,.35) transparent}.treatment-grid article{min-height:190px}.treatment-grid article b{display:block;margin-top:12px;font-size:9px;letter-spacing:.18em;color:#d9b46b}.treatment-grid article p{line-height:1.5}
 .package-panel{max-width:940px}
-@media(max-width:900px){.story-scene:not(.film-title-card) .story-copy-wrap{max-width:calc(100vw - 32px)}.film-title-card .story-copy-wrap{width:calc(100vw - 32px)}.film-title-card .story-copy-wrap h1{font-size:clamp(3rem,15vw,5.5rem)}.treatment-grid{max-height:45vh}}
-@media(prefers-reduced-motion:reduce){.film-reveal-pending,.film-reveal-live{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}}
+
+/* Director hierarchy: one dominant layer per chapter instead of image + graphic + copy fighting for attention. */
+.hierarchy-image .scene-cinema-layer{opacity:.24;filter:saturate(.65)}
+.hierarchy-image .cinema-labels{opacity:.35}
+.hierarchy-image .story-copy-wrap{max-width:min(760px,54vw)}
+.hierarchy-image .story-body,.hierarchy-image .story-beats{max-width:680px}
+
+.hierarchy-graphic .multi-shot-sequence{opacity:.46;filter:saturate(.7) brightness(.82)}
+.hierarchy-graphic .scene-cinema-layer{opacity:.94}
+.hierarchy-graphic .cinema-graphic{opacity:.9}
+.hierarchy-graphic .story-copy-wrap{max-width:min(720px,50vw)}
+
+.hierarchy-copy .multi-shot-sequence{opacity:.34;filter:saturate(.55) brightness(.72)}
+.hierarchy-copy .scene-cinema-layer{opacity:.18}
+.hierarchy-copy .story-copy-wrap{max-width:min(980px,68vw)}
+.hierarchy-copy .story-copy-wrap h1{font-size:clamp(3.2rem,5.8vw,6.2rem)}
+.hierarchy-copy .story-lead{font-size:clamp(1.15rem,1.8vw,1.55rem);max-width:760px}
+
+.hierarchy-quiet .cinema-labels{display:none}
+.hierarchy-quiet .cinema-flare{opacity:.2}
+.hierarchy-quiet .story-beats{opacity:.65}
+.hierarchy-quiet .story-body{max-width:720px}
+
+.hierarchy-premium .scene-cinema-layer{opacity:.32}
+.hierarchy-premium .multi-shot-sequence{filter:saturate(.82) contrast(1.03) brightness(.78)}
+.hierarchy-premium .story-copy-wrap{max-width:min(760px,52vw)}
+.hierarchy-premium .package-panel{background:linear-gradient(135deg,rgba(3,30,24,.62),rgba(34,20,15,.48));border-color:rgba(221,188,118,.32);box-shadow:0 28px 90px rgba(0,0,0,.28),0 0 80px rgba(201,161,90,.07)}
+.hierarchy-premium .package-panel h2,.hierarchy-premium .package-panel strong{letter-spacing:.06em}
+
+.hierarchy-clinical .story-copy-wrap h1{letter-spacing:-.025em}
+.hierarchy-clinical .treatment-grid article{background:rgba(5,31,27,.44);border-color:rgba(226,218,193,.13);box-shadow:0 18px 42px rgba(0,0,0,.18)}
+.hierarchy-clinical .treatment-grid article:nth-child(n+3){opacity:.82}
+
+/* During the opening visual beat, let the photograph/motion carry the frame. */
+body.cinema-visual-hold .hierarchy-image .story-copy-wrap{opacity:.025!important;filter:blur(7px)}
+body.cinema-visual-hold .hierarchy-image .scene-cinema-layer{opacity:.12}
+body.cinema-visual-hold .hierarchy-graphic .story-copy-wrap{opacity:.035!important}
+body.cinema-visual-hold .hierarchy-graphic .scene-cinema-layer{opacity:1}
+body.cinema-visual-hold .hierarchy-copy .story-copy-wrap{opacity:.08!important}
+body.cinema-visual-hold .hierarchy-premium .story-copy-wrap{opacity:.04!important}
+
+@media(max-width:900px){.story-scene:not(.film-title-card) .story-copy-wrap,.hierarchy-image .story-copy-wrap,.hierarchy-graphic .story-copy-wrap,.hierarchy-copy .story-copy-wrap,.hierarchy-premium .story-copy-wrap{max-width:calc(100vw - 32px)}.film-title-card .story-copy-wrap{width:calc(100vw - 32px)}.film-title-card .story-copy-wrap h1{font-size:clamp(3rem,15vw,5.5rem)}.treatment-grid{max-height:45vh}.hierarchy-graphic .scene-cinema-layer{opacity:.62}.hierarchy-image .scene-cinema-layer{opacity:.18}}
+@media(prefers-reduced-motion:reduce){.film-reveal-pending,.film-reveal-live{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}body.cinema-visual-hold .story-copy-wrap{opacity:1!important;filter:none!important}}
