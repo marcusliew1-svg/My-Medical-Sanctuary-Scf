@@ -6,7 +6,8 @@ import "./cinematics.css";
 import "./deepdive.css";
 import "./multishot.css";
 import "./film-polish.css";
+import "./focus.css";
 
 export default function MMSPresentationLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}<Script src="/mms-story-substance.js" strategy="afterInteractive" /><Script src="/mms-story-deepdive.js" strategy="afterInteractive" /><Script src="/mms-story-multishot.js" strategy="afterInteractive" /><Script src="/mms-story-cinematics.js" strategy="afterInteractive" /><Script src="/mms-story-film-polish.js" strategy="afterInteractive" /><Script src="/mms-story-autoplay.js" strategy="afterInteractive" /></>;
+  return <>{children}<Script src="/mms-story-substance.js" strategy="afterInteractive" /><Script src="/mms-story-deepdive.js" strategy="afterInteractive" /><Script src="/mms-story-multishot.js" strategy="afterInteractive" /><Script src="/mms-story-cinematics.js" strategy="afterInteractive" /><Script src="/mms-story-film-polish.js" strategy="afterInteractive" /><Script src="/mms-story-focus.js" strategy="afterInteractive" /><Script src="/mms-story-autoplay.js" strategy="afterInteractive" /></>;
 }
