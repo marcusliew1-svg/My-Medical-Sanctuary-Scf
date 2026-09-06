@@ -12,18 +12,33 @@
   }
 
   function applyHierarchy(scene, chapter) {
-    scene.classList.remove('hierarchy-image','hierarchy-graphic','hierarchy-copy','hierarchy-quiet','hierarchy-premium','hierarchy-clinical','copy-headline','copy-lean','copy-detail','copy-package');
-    if (/PROLOGUE|EPILOGUE|THE QUIET CHANGE|YOUR PATH|CLIENT BOOK|CAREER/.test(chapter)) scene.classList.add('hierarchy-image');
-    if (/DISCOVER|REGENERATE|THE OPERATING SYSTEM|THE PLATFORM|THE ECONOMICS/.test(chapter)) scene.classList.add('hierarchy-graphic');
-    if (/START WITH UNDERSTANDING|CONTINUITY|THE RULES/.test(chapter)) scene.classList.add('hierarchy-copy');
-    if (/REGENERATE|CONTINUITY|THE RULES|EPILOGUE/.test(chapter)) scene.classList.add('hierarchy-quiet');
-    if (/ASCEND|EVOLVE|ETERNA|PINNACLE/.test(chapter)) scene.classList.add('hierarchy-premium');
-    if (/DISCOVER|RESTORE|OPTIMISE|REGENERATE|CONTINUITY/.test(chapter)) scene.classList.add('hierarchy-clinical');
+    scene.classList.remove(
+      'hierarchy-image','hierarchy-graphic','hierarchy-copy','hierarchy-quiet','hierarchy-premium','hierarchy-clinical',
+      'copy-headline','copy-lean','copy-detail','copy-package',
+      'scene-emotional','scene-hybrid','scene-information'
+    );
 
-    if (/PROLOGUE|EPILOGUE|THE QUIET CHANGE|WHAT IF|MEET MMS|YOUR PATH|BEYOND THE CLINIC|THE NOISE|CAREER/.test(chapter)) scene.classList.add('copy-headline');
-    else if (/START WITH UNDERSTANDING|THE ROLE|WHY CLIENTS CARE|WHAT YOU REPRESENT|CLIENT BOOK|WHO WINS|GROWTH/.test(chapter)) scene.classList.add('copy-lean');
-    else if (/ASCEND|EVOLVE|ETERNA|PINNACLE/.test(chapter)) scene.classList.add('copy-package');
-    else scene.classList.add('copy-detail');
+    // Three deliberately different presentation modes.
+    // Emotional = cinematic brand-film scenes with restrained copy.
+    if (/PROLOGUE|EPILOGUE|THE QUIET CHANGE|WHAT IF/.test(chapter)) {
+      scene.classList.add('scene-emotional','hierarchy-image','copy-headline');
+    }
+    // Information-forward = the deck behaves like a premium explanatory presentation.
+    else if (/YOUR PATH|ASCEND|EVOLVE|ETERNA|PINNACLE|THE MEMBERSHIP PATH|THE ECONOMICS|THE CLIENT BOOK|THE OPERATING SYSTEM|THE RULES|CAREER/.test(chapter)) {
+      scene.classList.add('scene-information','hierarchy-graphic');
+      if (/ASCEND|EVOLVE|ETERNA|PINNACLE/.test(chapter)) scene.classList.add('hierarchy-premium','copy-package');
+      else scene.classList.add('copy-detail');
+    }
+    // Hybrid = cinematic medical storytelling plus immediate, readable substance.
+    else {
+      scene.classList.add('scene-hybrid','copy-detail');
+      if (/DISCOVER|REGENERATE|THE PLATFORM/.test(chapter)) scene.classList.add('hierarchy-graphic');
+      else if (/START WITH UNDERSTANDING|CONTINUITY|WHY CLIENTS CARE|WHAT YOU REPRESENT|THE ROLE|WHO WINS/.test(chapter)) scene.classList.add('hierarchy-copy');
+      else scene.classList.add('hierarchy-image');
+    }
+
+    if (/REGENERATE|CONTINUITY|THE RULES|EPILOGUE/.test(chapter)) scene.classList.add('hierarchy-quiet');
+    if (/DISCOVER|RESTORE|OPTIMISE|REGENERATE|CONTINUITY/.test(chapter)) scene.classList.add('hierarchy-clinical');
   }
 
   function stageScene() {
@@ -48,20 +63,18 @@
     const chapterUpper = chapterText(scene);
 
     applyHierarchy(scene, chapterUpper);
-    const imageFirst = scene.classList.contains('hierarchy-image');
-    const graphicFirst = scene.classList.contains('hierarchy-graphic');
+    const emotional = scene.classList.contains('scene-emotional');
+    const information = scene.classList.contains('scene-information');
     const quiet = scene.classList.contains('hierarchy-quiet');
 
-    stage(chapter, imageFirst ? 500 : 220);
-    stage(title, imageFirst ? 1150 : 720);
-    stage(lead, imageFirst ? 2050 : 1450);
-    stage(body, quiet ? 3000 : 2350);
-    stage(beats, graphicFirst ? 2450 : 2900);
-    stage(treatments, graphicFirst ? 2700 : 3150);
-    stage(pack, 2750);
-    stage(reading, 3100);
-    stage(quote, quiet ? 4100 : 3700);
-    stage(cta, 4550);
+    if (emotional) {
+      stage(chapter, 420); stage(title, 900); stage(lead, 1550); stage(body, 2250); stage(quote, 3000); stage(cta, 3800);
+    } else if (information) {
+      // Information is available early; viewers should not wait through a long cinematic reveal.
+      stage(chapter, 150); stage(title, 320); stage(lead, 560); stage(reading, 760); stage(pack, 820); stage(treatments, 900); stage(beats, 980); stage(body, 1100); stage(quote, 1350); stage(cta, 1600);
+    } else {
+      stage(chapter, 180); stage(title, 460); stage(lead, 820); stage(reading, 1150); stage(treatments, 1300); stage(beats, 1450); stage(body, 1580); stage(pack, 1700); stage(quote, quiet ? 2200 : 1950); stage(cta, 2450);
+    }
 
     scene.classList.toggle('film-title-card', /PROLOGUE|EPILOGUE/.test(chapterUpper));
   }
