@@ -1,1 +1,81 @@
-.story-reading-panel{position:fixed;z-index:8;right:4.5vw;top:118px;bottom:92px;width:min(760px,43vw);margin:0;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:12px;overflow:auto;padding:10px 8px 10px 10px;opacity:1!important;transform:none!important;filter:none!important;scrollbar-width:thin;scrollbar-color:rgba(214,177,100,.3) transparent}.story-reading-panel article{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:17px 18px;border-top:1px solid rgba(214,177,100,.42);background:linear-gradient(105deg,rgba(3,26,21,.82),rgba(3,26,21,.52) 72%,rgba(3,26,21,.22));min-height:126px;box-shadow:0 16px 42px rgba(0,0,0,.14)}.tone-light .story-reading-panel article{background:linear-gradient(105deg,rgba(242,236,220,.95),rgba(242,236,220,.78) 72%,rgba(242,236,220,.5));border-top-color:rgba(125,91,45,.34)}.story-reading-panel article>span{font-size:9px;letter-spacing:.18em;color:#d5b36e;padding-top:3px}.story-reading-panel h4{margin:0;font-size:11px;line-height:1.35;letter-spacing:.13em;text-transform:uppercase;color:#ead7aa}.tone-light .story-reading-panel h4{color:#5c4728}.story-reading-panel p{margin:8px 0 0;font-size:13px;line-height:1.55;color:rgba(250,247,238,.86);max-width:none}.tone-light .story-reading-panel p{color:rgba(25,34,30,.86)}.story-scene:has(.story-reading-panel) .story-copy-wrap{left:5.5vw;top:50%;transform:translateY(-47%);width:min(720px,42vw);max-width:42vw;max-height:calc(100vh - 170px);overflow:auto;padding-right:18px;scrollbar-width:thin;scrollbar-color:rgba(214,177,100,.24) transparent}.story-scene:has(.story-reading-panel) .story-copy-wrap h1{font-size:clamp(3rem,4.7vw,5.6rem);line-height:.96;max-width:12ch}.story-scene:has(.story-reading-panel) .story-lead{font-size:clamp(1.1rem,1.6vw,1.45rem);line-height:1.48;max-width:620px}.story-scene:has(.story-reading-panel) .story-body{font-size:14px;line-height:1.62;max-width:620px}.story-scene:has(.story-reading-panel) .story-beats{max-width:620px}.story-scene:has(.story-reading-panel) .treatment-grid,.story-scene:has(.story-reading-panel) .package-panel{max-width:620px}.copy-headline .story-reading-panel,.copy-lean .story-reading-panel,.copy-package .story-reading-panel,.copy-detail .story-reading-panel{display:grid!important;opacity:1!important}.film-reveal-pending.story-reading-panel,.film-reveal-live.story-reading-panel{opacity:1!important;transform:none!important;filter:none!important}body.cinema-visual-hold .story-reading-panel{opacity:1!important;filter:none!important}.story-reading-panel::-webkit-scrollbar{width:4px}.story-reading-panel::-webkit-scrollbar-thumb{background:rgba(214,177,100,.32);border-radius:999px}@media(max-width:1100px){.story-reading-panel{right:24px;width:46vw;grid-template-columns:1fr;align-content:start}.story-scene:has(.story-reading-panel) .story-copy-wrap{left:28px;width:45vw;max-width:45vw}.story-reading-panel article{min-height:auto}}@media(max-width:820px){.story-reading-panel{position:relative;right:auto;top:auto;bottom:auto;width:100%;max-width:none;margin-top:20px;grid-template-columns:1fr;overflow:visible;padding:0}.story-scene:has(.story-reading-panel) .story-copy-wrap{left:24px;top:50%;transform:translateY(-48%);width:calc(100vw - 48px);max-width:none;max-height:calc(100vh - 140px)}.story-scene:has(.story-reading-panel) .story-copy-wrap h1{font-size:clamp(2.7rem,11vw,4.8rem);max-width:13ch}.story-reading-panel article{padding:13px 14px}.story-reading-panel p{font-size:12px;line-height:1.48}}
+/* MMS 3-mode presentation system: emotional film / hybrid story / information-forward deck. */
+.story-reading-panel{margin-top:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:none;opacity:1!important;filter:none!important}
+.story-reading-panel article{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:16px 17px;border-top:1px solid rgba(214,177,100,.38);background:linear-gradient(110deg,rgba(3,26,21,.72),rgba(3,26,21,.34) 72%,rgba(3,26,21,.1));min-height:112px;box-shadow:0 14px 34px rgba(0,0,0,.08)}
+.tone-light .story-reading-panel article{background:linear-gradient(110deg,rgba(242,236,220,.94),rgba(242,236,220,.7) 72%,rgba(242,236,220,.28));border-top-color:rgba(125,91,45,.3)}
+.story-reading-panel article>span{font-size:9px;letter-spacing:.18em;color:#d5b36e;padding-top:3px}
+.story-reading-panel h4{margin:0;font-size:10px;line-height:1.35;letter-spacing:.14em;text-transform:uppercase;color:#ead7aa}
+.tone-light .story-reading-panel h4{color:#5c4728}
+.story-reading-panel p{margin:7px 0 0;font-size:12.5px;line-height:1.55;color:rgba(250,247,238,.84);max-width:48ch}
+.tone-light .story-reading-panel p{color:rgba(25,34,30,.82)}
+
+/* Emotional chapters: preserve room for motion/storytelling and keep copy intentional. */
+.scene-emotional .story-reading-panel{display:none!important}
+.scene-emotional .story-copy-wrap{left:8vw!important;right:auto!important;top:52%!important;width:min(760px,48vw)!important;max-width:min(760px,48vw)!important;transform:translateY(-50%)!important;overflow:visible!important}
+.scene-emotional .story-copy-wrap h1{font-size:clamp(3.8rem,6.3vw,7.2rem)!important;line-height:.93!important;max-width:12ch!important}
+.scene-emotional .story-lead{font-size:clamp(1.15rem,1.8vw,1.55rem)!important;max-width:620px!important}
+.scene-emotional .story-body{max-width:620px!important}
+
+/* Hybrid chapters: story on left, substance clearly visible on right. */
+.scene-hybrid .story-copy-wrap{left:5.5vw!important;right:5vw!important;top:50%!important;width:auto!important;max-width:none!important;transform:translateY(-48%)!important;display:grid!important;grid-template-columns:minmax(0,.86fr) minmax(430px,1.14fr)!important;grid-template-rows:auto!important;column-gap:4.2vw!important;align-items:start!important;max-height:calc(100vh - 166px)!important;overflow:auto!important;padding:10px 8px 24px 0!important}
+.scene-hybrid .story-chapter,.scene-hybrid .story-copy-wrap>h1,.scene-hybrid .story-lead,.scene-hybrid .story-body,.scene-hybrid .story-beats,.scene-hybrid .story-quote,.scene-hybrid .story-cta{grid-column:1!important}
+.scene-hybrid .story-reading-panel{grid-column:2!important;grid-row:1 / span 8!important;align-self:center!important;display:grid!important;position:static!important;width:auto!important;max-width:none!important;overflow:visible!important;padding:0!important}
+.scene-hybrid .treatment-grid,.scene-hybrid .package-panel{grid-column:2!important;align-self:start!important;max-width:none!important;margin-top:12px!important}
+.scene-hybrid .story-copy-wrap>h1{font-size:clamp(2.8rem,4.5vw,5.2rem)!important;line-height:.96!important;max-width:12ch!important}
+.scene-hybrid .story-lead{font-size:clamp(1.02rem,1.35vw,1.28rem)!important;line-height:1.48!important;max-width:610px!important;margin-top:20px!important}
+.scene-hybrid .story-body{font-size:14px!important;line-height:1.62!important;max-width:610px!important;margin-top:15px!important}
+.scene-hybrid .story-beats{margin-top:18px!important}
+.scene-hybrid .story-quote{font-size:clamp(1.1rem,1.5vw,1.35rem)!important;margin-top:20px!important}
+.scene-hybrid .treatment-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;max-height:62vh!important}
+.scene-hybrid .treatment-grid article{min-height:148px!important;padding:15px!important;background:rgba(3,26,22,.74)!important;backdrop-filter:none!important}
+.scene-hybrid .treatment-grid h3{font-size:19px!important}
+.scene-hybrid .treatment-grid p{font-size:12px!important}
+
+/* Information-forward chapters: behave like a premium deck, not a giant hero card. */
+.scene-information::before{background:linear-gradient(90deg,rgba(2,22,18,.94),rgba(2,22,18,.84) 52%,rgba(2,22,18,.68))!important}
+.scene-information .multi-shot-sequence{opacity:.24!important}
+.scene-information .story-copy-wrap{left:4.8vw!important;right:4.5vw!important;top:50%!important;width:auto!important;max-width:none!important;transform:translateY(-48%)!important;display:grid!important;grid-template-columns:minmax(300px,.68fr) minmax(560px,1.32fr)!important;column-gap:4vw!important;align-items:start!important;max-height:calc(100vh - 162px)!important;overflow:auto!important;padding:10px 8px 24px 0!important}
+.scene-information .story-chapter,.scene-information .story-copy-wrap>h1,.scene-information .story-lead,.scene-information .story-body,.scene-information .story-beats,.scene-information .story-quote,.scene-information .story-cta{grid-column:1!important}
+.scene-information .story-reading-panel{grid-column:2!important;grid-row:1 / span 8!important;align-self:start!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;position:static!important;width:auto!important;max-width:none!important;overflow:visible!important;padding:0!important}
+.scene-information .package-panel,.scene-information .treatment-grid{grid-column:2!important;align-self:start!important;max-width:none!important}
+.scene-information .story-copy-wrap>h1{font-size:clamp(2.5rem,3.8vw,4.7rem)!important;line-height:.98!important;max-width:10.5ch!important}
+.scene-information .story-lead{font-size:clamp(1rem,1.22vw,1.2rem)!important;line-height:1.46!important;margin-top:18px!important;max-width:540px!important}
+.scene-information .story-body{font-size:13.5px!important;line-height:1.58!important;max-width:540px!important;margin-top:14px!important}
+.scene-information .story-beats{margin-top:18px!important}
+.scene-information .story-reading-panel article{min-height:126px!important;padding:17px 18px!important;background:linear-gradient(120deg,rgba(4,32,26,.88),rgba(4,32,26,.52))!important}
+.scene-information .story-reading-panel h4{font-size:10px!important}
+.scene-information .story-reading-panel p{font-size:12.6px!important;line-height:1.55!important}
+.scene-information .package-panel{grid-template-columns:.7fr 1.3fr!important;margin-top:0!important;padding:23px!important;background:linear-gradient(135deg,rgba(4,32,26,.9),rgba(67,38,20,.54))!important;backdrop-filter:none!important}
+.scene-information .package-panel>div strong{font-size:clamp(2.1rem,3.6vw,4.4rem)!important}
+
+/* Membership scenes: package + reading content are both important. */
+.scene-information.hierarchy-premium .story-copy-wrap{grid-template-columns:minmax(300px,.62fr) minmax(600px,1.38fr)!important}
+.scene-information.hierarchy-premium .story-reading-panel{grid-row:auto!important;margin-top:14px!important}
+.scene-information.hierarchy-premium .package-panel{grid-row:auto!important}
+
+/* Content remains readable from the opening beat; do not hide the information users came to read. */
+body.cinema-visual-hold .scene-hybrid .story-reading-panel,
+body.cinema-visual-hold .scene-information .story-reading-panel,
+body.cinema-visual-hold .scene-information .package-panel,
+body.cinema-visual-hold .scene-hybrid .treatment-grid{opacity:.9!important;transform:none!important}
+.film-reveal-pending.story-reading-panel,.film-reveal-pending.package-panel,.film-reveal-pending.treatment-grid{opacity:.35!important;transform:translateY(5px)!important}
+.film-reveal-live.story-reading-panel,.film-reveal-live.package-panel,.film-reveal-live.treatment-grid{opacity:1!important;transform:translateY(0)!important}
+
+.story-scene:has(.story-reading-panel) .story-copy-wrap{scrollbar-width:thin;scrollbar-color:rgba(214,177,100,.3) transparent}
+.story-scene:has(.story-reading-panel) .story-copy-wrap::-webkit-scrollbar{width:4px}
+.story-scene:has(.story-reading-panel) .story-copy-wrap::-webkit-scrollbar-thumb{background:rgba(214,177,100,.34);border-radius:999px}
+
+@media(max-width:1180px){
+  .scene-hybrid .story-copy-wrap,.scene-information .story-copy-wrap{left:4vw!important;right:3.5vw!important;column-gap:2.8vw!important}
+  .scene-hybrid .story-copy-wrap{grid-template-columns:minmax(0,.9fr) minmax(390px,1.1fr)!important}
+  .scene-information .story-copy-wrap{grid-template-columns:minmax(280px,.72fr) minmax(480px,1.28fr)!important}
+  .scene-hybrid .story-copy-wrap>h1{font-size:clamp(2.5rem,4.1vw,4.5rem)!important}
+}
+
+@media(max-width:900px){
+  .scene-emotional .story-copy-wrap,.scene-hybrid .story-copy-wrap,.scene-information .story-copy-wrap{left:24px!important;right:24px!important;top:84px!important;width:auto!important;max-width:none!important;transform:none!important;display:block!important;max-height:calc(100vh - 158px)!important;overflow:auto!important;padding-bottom:30px!important}
+  .scene-emotional .story-copy-wrap h1,.scene-hybrid .story-copy-wrap>h1,.scene-information .story-copy-wrap>h1{font-size:clamp(2.5rem,10.5vw,4.4rem)!important;max-width:12ch!important}
+  .scene-hybrid .story-reading-panel,.scene-information .story-reading-panel{display:grid!important;grid-template-columns:1fr!important;margin-top:20px!important}
+  .scene-hybrid .treatment-grid,.scene-information .treatment-grid{grid-template-columns:1fr!important;max-height:none!important;overflow:visible!important}
+  .scene-information .package-panel,.scene-hybrid .package-panel{grid-template-columns:1fr!important;margin-top:20px!important}
+  .story-reading-panel article{min-height:auto!important}
+}
