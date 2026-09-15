@@ -32,7 +32,8 @@
     "test:t5": "node --test tests/t5-production-readiness.test.mjs",
     "test:t6": "node --test tests/t6-p0-blocker-closure.test.mjs",
     "test:t6-3": "node --test tests/access-readiness-t63.test.mjs",
-    "test:t6-6": "node --test tests/t6-6-p0-remediation.test.mjs"
+    "test:t6-6": "node --test tests/t6-6-p0-remediation.test.mjs",
+    "test:t6-7": "node --test tests/t6-7-production-approval.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
