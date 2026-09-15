@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Privacy / PDPA | My Medical Sanctuary",
   description:
     "How My Medical Sanctuary handles website enquiries, appointment requests and patient communication data.",
+  robots: { index: false, follow: false },
 };
 
 const currentPractices = [

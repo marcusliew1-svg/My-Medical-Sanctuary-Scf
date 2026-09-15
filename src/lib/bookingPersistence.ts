@@ -17,10 +17,10 @@ function splitName(fullName: string) {
 export function bookingPersistenceAvailability(
   env: NodeJS.ProcessEnv = process.env,
 ): BookingPersistenceAvailability {
-  if (
-    env.VERCEL_ENV === "production" ||
-    (env.NODE_ENV === "production" && env.VERCEL_ENV !== "preview")
-  ) return { ready: false, reason: "production_refused" };
+  if (env.VERCEL_ENV === "production" && env.MMS_BOOKING_PRODUCTION_APPROVED !== "true")
+    return { ready: false, reason: "production_refused" };
+  if (env.NODE_ENV === "production" && !env.VERCEL_ENV)
+    return { ready: false, reason: "production_refused" };
   if (env.MMS_BOOKING_PERSISTENCE_ENABLED !== "true") return { ready: false, reason: "disabled" };
   if (env.MMS_CRM_DEBUG === "true") return { ready: false, reason: "debug" };
   if (!zohoCrmConfigured(env)) return { ready: false, reason: "unconfigured" };

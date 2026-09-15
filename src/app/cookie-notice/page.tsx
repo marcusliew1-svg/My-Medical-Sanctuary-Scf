@@ -4,6 +4,7 @@ import { EditorialHero } from "@/components/Editorial";
 export const metadata: Metadata = {
   title: "Cookie Notice | My Medical Sanctuary",
   description: "Current first-party cookie and attribution behavior on the My Medical Sanctuary website.",
+  robots: { index: false, follow: false },
 };
 
 const sections = [

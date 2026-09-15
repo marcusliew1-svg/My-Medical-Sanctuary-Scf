@@ -1,1 +1,1 @@
-export { default } from "@/app/privacy-pdpa/page";
+export { default, metadata } from "@/app/privacy-pdpa/page";

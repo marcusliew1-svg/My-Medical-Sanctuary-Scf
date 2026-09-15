@@ -145,7 +145,7 @@ export function LingResearchGuide() {
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/ling" className="rounded-full bg-ivory px-6 py-3 text-sm font-bold text-navy transition hover:-translate-y-0.5">Explore Ling →</Link>
-              <Link href="/online-doctor" className="rounded-full border border-white/20 px-6 py-3 text-sm font-bold text-ivory transition hover:border-gold-light/50">Speak with a doctor</Link>
+              <Link href="/online-doctor" className="rounded-full border border-white/20 px-6 py-3 text-sm font-bold text-ivory transition hover:border-gold-light/50">Online doctor status</Link>
             </div>
           </div>
         </div>

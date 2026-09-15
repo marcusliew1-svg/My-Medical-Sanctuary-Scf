@@ -2,5 +2,44 @@ import type { Metadata } from "next";
 import { CTAButton } from "@/components/CTAButton";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
-export const metadata: Metadata = { title: "Online Doctor Session", description: "Request a secure online MMS doctor session with preparation from Ling." };
-export default function OnlineDoctorPage(){return <main><PageHero eyebrow="Online Doctor Session" title="Meet an MMS doctor from wherever you are." lead="Ling prepares the questions. A qualified doctor leads the medical discussion." primaryHref="/contact?interest=online-doctor" primaryLabel="Request a session" /><Section eyebrow="Your virtual consultation" title="Prepared. Private. Human-led."><div className="grid gap-5 md:grid-cols-3">{[["01","Ling prepares","Goals and questions are organised before the call."],["02","Doctor consults","The medical discussion takes place on Google Meet."],["03","MMS follows up","Next steps and coordination are recorded in your journey."]].map(([n,t,x])=><article key={n} className="rounded-2xl border border-gold-light/40 bg-white p-7 shadow-soft"><span className="grid size-11 place-items-center rounded-full bg-deep-green text-sm font-bold text-white">{n}</span><h2 className="mt-5 font-serif text-2xl text-navy">{t}</h2><p className="mt-3 leading-7 text-warm-gray">{x}</p></article>)}</div><div className="mt-8 rounded-2xl bg-ivory p-6 text-sm leading-7 text-warm-gray"><strong className="text-navy">Recording:</strong> A Google Meet session may be recorded only with explicit patient and doctor consent, suitable privacy notices, secure storage and an eligible Google Workspace account. Recording is not automatic.</div><div className="mt-8"><CTAButton href="/contact?interest=online-doctor">Request Online Doctor Session</CTAButton></div></Section></main>}
+
+export const metadata: Metadata = {
+  title: "Online Doctor Pathway Status",
+  description: "Status and safety boundaries for the planned MMS online consultation pathway.",
+  robots: { index: false, follow: false },
+};
+
+const requirements = [
+  ["01", "Licensed providers", "The operating entity, clinician eligibility and permitted jurisdictions must be verified and approved."],
+  ["02", "Approved clinical workflow", "Triage, consent, emergencies, records, prescribing, follow-up and escalation need documented clinical ownership."],
+  ["03", "Approved technology", "The consultation platform, privacy terms, access controls, retention and incident process must pass security and privacy review."],
+];
+
+export default function OnlineDoctorPage() {
+  return (
+    <main>
+      <PageHero
+        eyebrow="Planned online consultation pathway"
+        title="Online doctor consultations are not currently available through MMS."
+        lead="This page records a future service concept only. MMS is not accepting online-doctor bookings and does not represent that a provider, platform or licensed operating workflow has been approved."
+        primaryHref="/contact"
+        primaryLabel="Ask about future availability"
+      />
+      <Section eyebrow="Launch requirements" title="No clinical service until every control is approved.">
+        <div className="grid gap-5 md:grid-cols-3">
+          {requirements.map(([number, title, text]) => (
+            <article key={number} className="rounded-2xl border border-gold-light/40 bg-white p-7 shadow-soft">
+              <span className="grid size-11 place-items-center rounded-full bg-deep-green text-sm font-bold text-white">{number}</span>
+              <h2 className="mt-5 font-serif text-2xl text-navy">{title}</h2>
+              <p className="mt-3 leading-7 text-warm-gray">{text}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-8 rounded-2xl bg-ivory p-6 text-sm leading-7 text-warm-gray">
+          <strong className="text-navy">Safety boundary:</strong> This website is not an emergency service and this planned pathway must not be used for urgent symptoms, diagnosis, prescriptions or treatment decisions.
+        </div>
+        <div className="mt-8"><CTAButton href="/contact">Contact MMS</CTAButton></div>
+      </Section>
+    </main>
+  );
+}

@@ -5,6 +5,7 @@ import { EditorialHero } from "@/components/Editorial";
 export const metadata: Metadata = {
   title: "Privacy / Disclaimer | My Medical Sanctuary",
   description: "Privacy and medical disclaimer information for My Medical Sanctuary.",
+  robots: { index: false, follow: false },
 };
 
 const boundaries = [

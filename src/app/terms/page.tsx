@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Terms of Use | My Medical Sanctuary",
   description:
     "Terms of use for My Medical Sanctuary website content, education, enquiries, Ling and professional review boundaries.",
+  robots: { index: false, follow: false },
 };
 
 const terms = [
