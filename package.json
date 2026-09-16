@@ -35,7 +35,8 @@
     "test:t6-6": "node --test tests/t6-6-p0-remediation.test.mjs",
     "test:t6-7": "node --test tests/t6-7-production-approval.test.mjs",
     "test:t6-8": "node --test tests/t6-8-approved-business-inputs.test.mjs",
-    "test:t6-9": "node --test tests/t6-9-approval-closure-pack.test.mjs"
+    "test:t6-9": "node --test tests/t6-9-approval-closure-pack.test.mjs",
+    "test:t6-10": "node --test tests/t6-10-controlled-public-launch.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",

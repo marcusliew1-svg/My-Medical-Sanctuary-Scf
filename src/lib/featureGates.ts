@@ -7,6 +7,9 @@ export type MmsFeature =
   | "partnerHub"
   | "patientPortal"
   | "membershipCheckout"
+  | "bookingPersistence"
+  | "salesPartnerApplications"
+  | "careersApplications"
   | "productionLingAi"
   | "operatorAccess"
   | "healthIntelligenceInternal";
@@ -37,6 +40,21 @@ export const mmsFeatureRules: Record<MmsFeature, FeatureRule> = {
     envVar: "MMS_MEMBERSHIP_CHECKOUT_ENABLED",
     enabledOutsideProduction: true,
     description: "Unfinished membership checkout page surface.",
+  },
+  bookingPersistence: {
+    envVar: "MMS_BOOKING_PERSISTENCE_ENABLED",
+    enabledOutsideProduction: true,
+    description: "Booking persistence API; informational pages remain separate.",
+  },
+  salesPartnerApplications: {
+    envVar: "MMS_SALES_PARTNER_APPLICATIONS_ENABLED",
+    enabledOutsideProduction: true,
+    description: "Sales Partner application submission API.",
+  },
+  careersApplications: {
+    envVar: "MMS_CAREERS_APPLICATIONS_ENABLED",
+    enabledOutsideProduction: true,
+    description: "Careers application submission API.",
   },
   productionLingAi: {
     envVar: "MMS_PRODUCTION_LING_AI_ENABLED",
@@ -95,6 +113,11 @@ export const gatedRoutePrefixes: ReadonlyArray<{ prefix: string; feature: MmsFea
   { prefix: "/api/patient-auth", feature: "patientPortal" },
   { prefix: "/api/my-sanctuary", feature: "patientPortal" },
   { prefix: "/membership-checkout", feature: "membershipCheckout" },
+  { prefix: "/api/checkout", feature: "membershipCheckout" },
+  { prefix: "/api/stripe/webhook", feature: "membershipCheckout" },
+  { prefix: "/api/booking", feature: "bookingPersistence" },
+  { prefix: "/api/sales-partner-application", feature: "salesPartnerApplications" },
+  { prefix: "/api/careers-application", feature: "careersApplications" },
   { prefix: "/operations", feature: "operatorAccess" },
   { prefix: "/api/operations", feature: "operatorAccess" },
   { prefix: "/internal/health-intelligence", feature: "healthIntelligenceInternal" },
