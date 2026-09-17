@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/ButtonLink";
+import { ControlledInterimLegalPage } from "@/components/ControlledInterimLegalPage";
 import { EditorialHero } from "@/components/Editorial";
 import { lingDisclaimer } from "@/lib/content";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 
 export const metadata: Metadata = {
   title: "Terms of Use | My Medical Sanctuary",
@@ -28,6 +30,17 @@ const launchBlockers = [
 ];
 
 export default function TermsPage() {
+  if (isControlledPublicLaunch()) {
+    return (
+      <ControlledInterimLegalPage
+        eyebrow="Terms of use"
+        title="These terms are an interim publication boundary, not a final contract."
+        summary="This limited website provides general information only. It does not offer accounts, bookings, clinical services, memberships, payments or applications."
+        unresolved={launchBlockers}
+      />
+    );
+  }
+
   return (
     <main>
       <EditorialHero
@@ -36,7 +49,7 @@ export default function TermsPage() {
         lead="Use this website for education and enquiry. Personalised healthcare decisions should be made through consultation, screening, doctor assessment and professional review."
         image="/mms-health-screening-hero.png"
         imageAlt="Doctor-led review supporting clear terms of use."
-        primaryLabel="Book health screening"
+        primaryLabel="Website availability"
         primaryHref="/contact"
         secondaryLabel="Privacy / PDPA"
         secondaryHref="/privacy-pdpa"
@@ -80,9 +93,9 @@ export default function TermsPage() {
       <section className="bg-navy px-4 py-16 text-ivory">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 border-y border-gold-light/30 py-10 md:flex-row md:items-center">
           <h2 className="max-w-2xl text-balance font-serif text-4xl leading-tight md:text-5xl">
-            Start with doctor-led screening.
+            Services and bookings are not currently available through this website.
           </h2>
-          <ButtonLink href="/contact">Book Health Screening</ButtonLink>
+          <ButtonLink href="/contact">Read website availability</ButtonLink>
         </div>
       </section>
     </main>

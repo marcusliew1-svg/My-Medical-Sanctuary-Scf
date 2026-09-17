@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { controlledPublicRouteUnavailable } from "@/lib/controlledPublicLaunch";
 import { unavailableFeatureForPath } from "@/lib/featureGates";
 import { MMS_PARTNER_REFERRAL_COOKIE } from "@/lib/referralTracking";
 import { normalisePartnerId } from "@/lib/salesPartnerPolicy";
 
 export function proxy(request: NextRequest) {
+  if (controlledPublicRouteUnavailable(request.nextUrl.pathname)) {
+    return new NextResponse("Not Found", {
+      status: 404,
+      headers: {
+        "Cache-Control": "no-store, max-age=0",
+        "X-Robots-Tag": "noindex, nofollow",
+        "X-MMS-Launch-Mode": "informational",
+      },
+    });
+  }
+
   const unavailableFeature = unavailableFeatureForPath(request.nextUrl.pathname);
   if (unavailableFeature) {
     return new NextResponse("Not Found", {

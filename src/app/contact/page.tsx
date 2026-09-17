@@ -8,12 +8,21 @@ import {
   SectionHeading,
   TrustBar,
 } from "@/components/PublicExperience";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 
-export const metadata: Metadata = {
-  title: "Contact / Discovery Form | My Medical Sanctuary",
-  description:
-    "Start a discovery discussion with My Medical Sanctuary for health screening, membership, wellness coordination or corporate executive wellness.",
-};
+const controlledPublicLaunch = isControlledPublicLaunch();
+
+export const metadata: Metadata = controlledPublicLaunch
+  ? {
+      title: "Contact and Booking Availability | My Medical Sanctuary",
+      description: "MMS contact, enquiry and booking submissions are not currently available through this interim informational website.",
+      robots: { index: false, follow: false },
+    }
+  : {
+      title: "Contact / Discovery Form | My Medical Sanctuary",
+      description:
+        "Start a discovery discussion with My Medical Sanctuary for health screening, membership, wellness coordination or corporate executive wellness.",
+    };
 
 const contactPath = [
   {
@@ -39,6 +48,26 @@ const contactPath = [
 ];
 
 export default function ContactPage() {
+  if (controlledPublicLaunch) {
+    return (
+      <main className="bg-ivory px-4 pb-24 pt-40 text-charcoal md:pb-32 md:pt-48">
+        <div className="mx-auto max-w-4xl">
+          <p className="editorial-kicker text-deep-green">Contact and booking status</p>
+          <h1 className="mt-5 text-balance font-serif text-5xl leading-tight text-navy md:text-7xl">
+            MMS is not currently accepting website enquiries or bookings.
+          </h1>
+          <p className="mt-7 max-w-3xl text-lg leading-8 text-warm-gray">
+            No form submission, booking persistence, CRM handoff or monitored patient-support channel is active for this controlled informational launch. This page will be updated only after an approved contact workflow and accountable owner are in place.
+          </p>
+          <div className="mt-10 border-y border-gold/35 py-7 text-sm leading-7 text-warm-gray">
+            <p><strong className="text-navy">Please do not send medical or personal information.</strong> No email address or alternate response channel is represented as operational here.</p>
+            <p className="mt-4"><strong className="text-navy">Urgent issues:</strong> this website is not an emergency or clinical-support service. Use the locally approved emergency or clinical pathway available to you.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main>
       <PublicHero

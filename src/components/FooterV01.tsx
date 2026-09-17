@@ -1,23 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
-import { legalNavigation, primaryNavigation, utilityNavigation } from "@/lib/siteRoutes";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
+import {
+  controlledPublicPrimaryNavigation,
+  controlledPublicUtilityNavigation,
+  legalNavigation,
+  primaryNavigation,
+  utilityNavigation,
+} from "@/lib/siteRoutes";
 
 export function FooterV01() {
+  const controlled = isControlledPublicLaunch();
+  const visiblePrimaryNavigation = controlled ? controlledPublicPrimaryNavigation : primaryNavigation;
+  const visibleUtilityNavigation = controlled ? controlledPublicUtilityNavigation : utilityNavigation;
+
   return (
     <footer data-public-chrome className="border-t border-champagne/15 bg-[#07151d] px-4 py-16 text-ivory md:py-20">
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.35fr_0.9fr_0.9fr_1fr]">
         <div>
-          <div className="mb-7 max-w-64 rounded-sm bg-ivory p-4">
-            <Image src="/mms-logo-lockup.png" alt="My Medical Sanctuary" width={1180} height={575} className="h-auto w-full" />
-          </div>
+          {controlled ? (
+            <div className="mb-7 max-w-64 border border-gold-light/40 px-5 py-4 font-serif text-2xl text-ivory">My Medical Sanctuary</div>
+          ) : (
+            <div className="mb-7 max-w-64 rounded-sm bg-ivory p-4">
+              <Image src="/mms-logo-lockup.png" alt="My Medical Sanctuary" width={1180} height={575} className="h-auto w-full" />
+            </div>
+          )}
           <p className="max-w-md leading-7 text-ivory/70">
-            Preventive Care • Personalised Longevity. A private health journey supported by discovery, professional review and continuity.
+            {controlled
+              ? "Interim public information only. MMS clinical services, bookings, accounts and consultations are not currently available through this website."
+              : "Preventive Care • Personalised Longevity. A private health journey supported by discovery, professional review and continuity."}
           </p>
         </div>
         <div>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Explore</h2>
           <div className="grid gap-2 text-sm text-ivory/72">
-            {primaryNavigation.map(({ label, href }) => (
+            {visiblePrimaryNavigation.map(({ label, href }) => (
               <Link key={href} href={href} className="inline-flex min-h-8 items-center transition hover:text-gold-light">
                 {label}
               </Link>
@@ -27,12 +44,12 @@ export function FooterV01() {
         <div>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-gold-light">Connect</h2>
           <div className="grid gap-1 text-sm text-ivory/72">
-            {utilityNavigation.map((item) => (
+            {visibleUtilityNavigation.map((item) => (
               <Link key={item.href} href={item.href} prefetch={"prefetch" in item ? item.prefetch : undefined} className="inline-flex min-h-8 items-center transition hover:text-gold-light">
                 {item.label}
               </Link>
             ))}
-            <Link href="/ling" className="inline-flex min-h-8 items-center transition hover:text-gold-light">Ling</Link>
+            {!controlled ? <Link href="/ling" className="inline-flex min-h-8 items-center transition hover:text-gold-light">Ling</Link> : null}
           </div>
         </div>
         <div>

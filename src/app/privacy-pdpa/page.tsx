@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/ButtonLink";
+import { ControlledInterimLegalPage } from "@/components/ControlledInterimLegalPage";
 import { EditorialHero } from "@/components/Editorial";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 
 export const metadata: Metadata = {
   title: "Privacy / PDPA | My Medical Sanctuary",
@@ -26,15 +28,26 @@ const launchBlockers = [
 ];
 
 export default function PrivacyPdpaPage() {
+  if (isControlledPublicLaunch()) {
+    return (
+      <ControlledInterimLegalPage
+        eyebrow="Privacy / PDPA"
+        title="Privacy information is interim and awaiting formal approval."
+        summary="The controlled public website does not accept enquiry, booking, account or application submissions. This draft records unresolved privacy requirements without inventing a controller or legal entity."
+        unresolved={launchBlockers}
+      />
+    );
+  }
+
   return (
     <main>
       <EditorialHero
         eyebrow="Privacy / PDPA"
         title="Respect for privacy is part of care."
-        lead="MMS collects only the information needed to respond professionally, coordinate requested next steps and maintain appropriate patient communication."
+        lead="This interim page records privacy requirements and current website boundaries. The controlled public website does not accept enquiry or booking submissions."
         image="/mms-about-hero.png"
         imageAlt="Private healthcare consultation with patient confidentiality."
-        primaryLabel="Contact MMS"
+        primaryLabel="Website availability"
         primaryHref="/contact"
         secondaryLabel="Read terms"
         secondaryHref="/terms"
@@ -78,9 +91,9 @@ export default function PrivacyPdpaPage() {
       <section className="bg-navy px-4 py-16 text-ivory">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 border-y border-gold-light/30 py-10 md:flex-row md:items-center">
           <h2 className="max-w-2xl text-balance font-serif text-4xl leading-tight md:text-5xl">
-            Questions about your information?
+            Contact and privacy workflows are not yet operational.
           </h2>
-          <ButtonLink href="/contact">Contact MMS</ButtonLink>
+          <ButtonLink href="/contact">Read website availability</ButtonLink>
         </div>
       </section>
     </main>

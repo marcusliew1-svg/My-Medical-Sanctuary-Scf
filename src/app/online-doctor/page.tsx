@@ -23,7 +23,7 @@ export default function OnlineDoctorPage() {
         title="Online doctor consultations are not currently available through MMS."
         lead="This page records a future service concept only. MMS is not accepting online-doctor bookings and does not represent that a provider, platform or licensed operating workflow has been approved."
         primaryHref="/contact"
-        primaryLabel="Ask about future availability"
+        primaryLabel="Read website availability"
       />
       <Section eyebrow="Launch requirements" title="No clinical service until every control is approved.">
         <div className="grid gap-5 md:grid-cols-3">
@@ -38,7 +38,7 @@ export default function OnlineDoctorPage() {
         <div className="mt-8 rounded-2xl bg-ivory p-6 text-sm leading-7 text-warm-gray">
           <strong className="text-navy">Safety boundary:</strong> This website is not an emergency service and this planned pathway must not be used for urgent symptoms, diagnosis, prescriptions or treatment decisions.
         </div>
-        <div className="mt-8"><CTAButton href="/contact">Contact MMS</CTAButton></div>
+        <div className="mt-8"><CTAButton href="/contact">Read contact and booking status</CTAButton></div>
       </Section>
     </main>
   );

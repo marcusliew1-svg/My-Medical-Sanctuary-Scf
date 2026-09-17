@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { ControlledInterimLegalPage } from "@/components/ControlledInterimLegalPage";
 import { DisclaimerBox } from "@/components/DisclaimerBox";
 import { EditorialHero } from "@/components/Editorial";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 
 export const metadata: Metadata = {
   title: "Privacy / Disclaimer | My Medical Sanctuary",
@@ -36,18 +38,34 @@ const boundaries = [
 ];
 
 export default function PrivacyDisclaimerPage() {
+  if (isControlledPublicLaunch()) {
+    return (
+      <ControlledInterimLegalPage
+        eyebrow="Medical and website disclaimer"
+        title="This website is informational and does not provide clinical care."
+        summary="No page on the controlled public surface is an emergency service, medical consultation, diagnosis, prescription, treatment recommendation, booking pathway or representation that an MMS clinical service is available."
+        unresolved={[
+          "Operating entity and jurisdiction",
+          "Medical, Legal and Regulatory route approval",
+          "Final emergency and complaints wording",
+          "Effective date and accountable publication owner",
+        ]}
+      />
+    );
+  }
+
   return (
     <main>
       <EditorialHero
         eyebrow="Privacy / Disclaimer"
         title="Trust begins with clear boundaries."
-        lead="MMS provides education, discovery support and coordinated health journeys. Personalised decisions require appropriate professional review."
+        lead="This interim website provides general information about a planned concept. It does not provide clinical services, diagnosis, booking or personalised recommendations."
         image="/mms-about-hero.png"
         imageAlt="Private healthcare consultation with clear patient boundaries."
-        primaryLabel="Contact MMS"
+        primaryLabel="Website availability"
         primaryHref="/contact"
-        secondaryLabel="Ask Ling"
-        secondaryHref="/ling"
+        secondaryLabel="Interim terms"
+        secondaryHref="/terms"
       />
       <section className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto grid max-w-5xl gap-5">

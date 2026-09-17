@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ControlledInterimLegalPage } from "@/components/ControlledInterimLegalPage";
 import { EditorialHero } from "@/components/Editorial";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 
 export const metadata: Metadata = {
   title: "Cookie Notice | My Medical Sanctuary",
@@ -27,6 +29,22 @@ const sections = [
 ];
 
 export default function CookieNoticePage() {
+  if (isControlledPublicLaunch()) {
+    return (
+      <ControlledInterimLegalPage
+        eyebrow="Cookie notice"
+        title="Cookie information is interim and awaiting a final consent decision."
+        summary="No analytics, advertising or operational submission workflow is authorized for the controlled public launch. This page does not claim a final cookie classification or consent policy."
+        unresolved={[
+          "Verified legal entity and privacy contact",
+          "Final cookie and storage inventory",
+          "Jurisdiction-specific consent requirements",
+          "Retention, withdrawal and effective-date approval",
+        ]}
+      />
+    );
+  }
+
   return (
     <main>
       <EditorialHero
@@ -37,7 +55,7 @@ export default function CookieNoticePage() {
         imageAlt="Private consultation environment representing careful information handling."
         primaryLabel="Privacy / PDPA"
         primaryHref="/privacy-pdpa"
-        secondaryLabel="Contact MMS"
+        secondaryLabel="Website availability"
         secondaryHref="/contact"
       />
       <section className="bg-ivory px-4 py-20 md:py-28">

@@ -4,11 +4,19 @@ import { CTASection, EditorialSplit, HealthIntelligenceFeature, ImageFeature, Jo
 import { EditorialIndex, ImagePair, PrincipleRow } from "@/components/PublicEditorialModules";
 import { PublicSectionShell, ResponsiveEditorialImage } from "@/components/PublicVisualPrimitives";
 import { mmsLocations } from "@/data/locations";
+import { isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 
-export const metadata: Metadata = {
-  title: "Preventive Care • Personalised Longevity",
-  description: "My Medical Sanctuary is a physician-guided preventive healthcare and personalised longevity platform built around understanding, assessment and continuity.",
-};
+const controlledPublicLaunch = isControlledPublicLaunch();
+
+export const metadata: Metadata = controlledPublicLaunch
+  ? {
+      title: "My Medical Sanctuary | Interim Public Information",
+      description: "Interim public information about the planned My Medical Sanctuary concept. Clinical services, bookings and accounts are not currently available through this website.",
+    }
+  : {
+      title: "Preventive Care • Personalised Longevity",
+      description: "My Medical Sanctuary is a physician-guided preventive healthcare and personalised longevity platform built around understanding, assessment and continuity.",
+    };
 
 const trustItems = [
   { title: "Physician-guided", text: "Medical judgement before personalised recommendations." },
@@ -38,7 +46,68 @@ const method = [
   { title: "Continue", text: "Keep follow-up and long-term priorities visible." },
 ];
 
+function ControlledPublicHome() {
+  const unavailable = [
+    "Patient registration and My Sanctuary",
+    "Partner Hub and commercial workflows",
+    "Booking, enquiry and CRM submissions",
+    "Checkout and payment",
+    "Live online-doctor consultations",
+    "Ling AI and patient Health Intelligence data",
+    "Careers and Sales Partner applications",
+  ];
+
+  return (
+    <main className="bg-ivory text-charcoal">
+      <section className="bg-[#07151d] px-4 pb-24 pt-40 text-ivory md:pb-32 md:pt-48">
+        <div className="mx-auto max-w-5xl">
+          <p className="editorial-kicker text-gold-light">Interim public information</p>
+          <h1 className="mt-5 max-w-4xl text-balance font-serif text-5xl leading-[1.03] md:text-7xl">
+            My Medical Sanctuary is being prepared. Services are not currently available through this website.
+          </h1>
+          <p className="mt-7 max-w-3xl text-lg leading-8 text-ivory/78 md:text-xl">
+            This limited website explains the planned MMS concept and its current launch boundaries. It does not accept bookings, create accounts, process payments or provide clinical consultations.
+          </p>
+          <div className="mt-9 flex flex-wrap gap-4">
+            <ButtonLink href="/online-doctor" variant="light">Online doctor status</ButtonLink>
+            <ButtonLink href="/contact" variant="outline">Website availability</ButtonLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="editorial-kicker text-deep-green">Controlled public launch</p>
+            <h2 className="mt-4 font-serif text-4xl leading-tight text-navy md:text-5xl">Information first. Operations remain off.</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {unavailable.map((item) => (
+              <div key={item} className="border-t border-gold/40 py-5">
+                <p className="font-semibold text-navy">Not currently available</p>
+                <p className="mt-2 leading-7 text-warm-gray">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-warm-white px-4 py-20 md:py-24">
+        <div className="mx-auto max-w-5xl border-y border-gold/35 py-10">
+          <p className="editorial-kicker text-deep-green">Publication boundary</p>
+          <h2 className="mt-4 font-serif text-4xl text-navy md:text-5xl">No availability, licensing or treatment claim is made here.</h2>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-warm-gray">
+            Additional education, programme, treatment, location and multilingual pages remain held until their wording, evidence, licensing context, translations and visual rights are approved. Interim privacy and terms pages describe unresolved requirements and are not final legal notices.
+          </p>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 export default function HomePage() {
+  if (controlledPublicLaunch) return <ControlledPublicHome />;
+
   return (
     <main data-public-home-shell>
       <PublicHero eyebrow="My Medical Sanctuary" title="Your health deserves a longer view." brandLine="Preventive Care. Personalised Longevity. Physician-guided." lead="Understand your health earlier, make better-informed decisions and build a relationship designed to continue over time." image="/mms-doctor-couple-consult.png" imageAlt="Physician and patient discussing a long-term preventive health plan." imagePosition="62% center" primaryLabel="Begin Your Health Journey" secondaryLabel="How MMS Works" secondaryHref="/how-it-works" />

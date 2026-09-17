@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { controlledPublicIndexableRoutes, isControlledPublicLaunch } from "@/lib/controlledPublicLaunch";
 import {
   alternatePaths,
   parseRegionalPath,
@@ -15,10 +16,10 @@ function languageAlternates(section?: RegionalSection) {
   );
 }
 
-function sitemapEntry(pathname: string, now: Date): MetadataRoute.Sitemap[number] {
+function sitemapEntry(pathname: string, now: Date, includeAlternates = true): MetadataRoute.Sitemap[number] {
   const regional = parseRegionalPath(pathname);
   const section = regional?.section ?? sectionForEnglishPath(pathname);
-  const supportsRegionalAlternates = pathname === "/" || Boolean(regional) || Boolean(section);
+  const supportsRegionalAlternates = includeAlternates && (pathname === "/" || Boolean(regional) || Boolean(section));
 
   return {
     url: getCanonicalUrl(pathname),
@@ -31,6 +32,10 @@ function sitemapEntry(pathname: string, now: Date): MetadataRoute.Sitemap[number
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
+  if (isControlledPublicLaunch()) {
+    return controlledPublicIndexableRoutes.map((route) => sitemapEntry(route, now, false));
+  }
 
   return [...publicSitemapRoutes, ...regionalSitemapPaths].map((route) => sitemapEntry(route, now));
 }

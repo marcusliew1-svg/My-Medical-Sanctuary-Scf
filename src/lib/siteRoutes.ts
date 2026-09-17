@@ -73,6 +73,17 @@ export const utilityNavigation = [
   { label: "Partner Login", href: "/partner-login", prefetch: false },
 ] as const;
 
+export const controlledPublicPrimaryNavigation = [
+  { label: "Home", href: routes.home },
+  { label: "Online doctor status", href: routes.onlineDoctor },
+  { label: "Website availability", href: routes.contact },
+] as const;
+
+export const controlledPublicUtilityNavigation = [
+  { label: "Interim privacy", href: routes.privacyPdpa },
+  { label: "Interim terms", href: routes.terms },
+] as const;
+
 export const moreNavigation = utilityNavigation;
 
 export const legalNavigation = [

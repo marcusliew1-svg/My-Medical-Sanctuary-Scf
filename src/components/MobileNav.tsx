@@ -4,9 +4,18 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { primaryNavigation, utilityNavigation } from "@/lib/siteRoutes";
 
-export function MobileNav() {
+type NavigationItem = { label: string; href: string; prefetch?: boolean };
+
+export function MobileNav({
+  primaryItems,
+  utilityNavigation,
+  controlled = false,
+}: {
+  primaryItems: ReadonlyArray<NavigationItem>;
+  utilityNavigation: ReadonlyArray<NavigationItem>;
+  controlled?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerButtonRef = useRef<HTMLButtonElement>(null);
@@ -93,7 +102,7 @@ export function MobileNav() {
           </div>
           <nav aria-label="Mobile navigation" className="mx-auto mt-8 grid max-w-md gap-1">
             <p className="editorial-kicker mb-2 text-champagne">Explore MMS</p>
-            {primaryNavigation.map((item) => (
+            {primaryItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -121,21 +130,21 @@ export function MobileNav() {
             </div>
           </div>
           <div className="mx-auto mt-8 grid max-w-md gap-3 border-t border-champagne/20 pt-6">
-            <LanguageSwitcher variant="mobile" onNavigate={() => setOpen(false)} />
+            {!controlled ? <LanguageSwitcher variant="mobile" onNavigate={() => setOpen(false)} /> : null}
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
               className="inline-flex min-h-11 items-center justify-center rounded-md bg-gold px-5 text-sm font-semibold text-navy"
             >
-              Book Consultation
+              {controlled ? "Website availability" : "Book Consultation"}
             </Link>
-            <Link
+            {!controlled ? <Link
               href="/ling"
               onClick={() => setOpen(false)}
               className="inline-flex min-h-11 items-center justify-center rounded-md border border-champagne/45 px-5 text-sm font-semibold text-ivory"
             >
               Meet Ling
-            </Link>
+            </Link> : null}
           </div>
         </div>,
         document.body,
