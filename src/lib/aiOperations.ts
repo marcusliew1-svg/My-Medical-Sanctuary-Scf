@@ -21,8 +21,9 @@ const emergencyPatterns = [
 ];
 
 const clinicalDecisionPatterns = [
-  /\b(diagnos|prescri|dose|medication|lab result|blood result|medical history|doctor note)\b/i,
+  /\b(diagnos\w*|prescri\w*|dose|medication|lab results?|blood results?|medical history|doctor notes?)\b/i,
   /\b(suitable|eligib(?:le|ility)|recommend).{0,40}\b(treatment|therapy|programme|medicine|drug)\b/i,
+  /\b(treatment|therapy|programme|medicine|drug)\b.{0,40}\b(suitable|eligib(?:le|ility)|recommend)/i,
   /\bwhich (treatment|medicine|drug|therapy)\b/i,
 ];
 
