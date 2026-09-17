@@ -12,11 +12,17 @@ export type MmsFeature =
   | "careersApplications"
   | "productionLingAi"
   | "operatorAccess"
-  | "healthIntelligenceInternal";
+  | "healthIntelligenceInternal"
+  | "crmPersistence"
+  | "clinicManagerQueue"
+  | "aiOperationsAssistant"
+  | "lingPublicConcierge"
+  | "managementIntelligence";
 
 type FeatureRule = {
   envVar: string;
   enabledOutsideProduction: boolean;
+  requiresSyntheticPreview?: boolean;
   description: string;
 };
 
@@ -71,6 +77,36 @@ export const mmsFeatureRules: Record<MmsFeature, FeatureRule> = {
     enabledOutsideProduction: false,
     description: "Authenticated internal Health Intelligence reviewer console and APIs.",
   },
+  crmPersistence: {
+    envVar: "MMS_CRM_PERSISTENCE_ENABLED",
+    enabledOutsideProduction: false,
+    requiresSyntheticPreview: true,
+    description: "Administrative CRM lead persistence and Zoho adapter.",
+  },
+  clinicManagerQueue: {
+    envVar: "MMS_CLINIC_MANAGER_QUEUE_ENABLED",
+    enabledOutsideProduction: false,
+    requiresSyntheticPreview: true,
+    description: "Clinic Manager administrative enquiry queue.",
+  },
+  aiOperationsAssistant: {
+    envVar: "MMS_AI_OPERATIONS_ASSISTANT_ENABLED",
+    enabledOutsideProduction: false,
+    requiresSyntheticPreview: true,
+    description: "Advisory non-clinical AI assistance for authorised staff.",
+  },
+  lingPublicConcierge: {
+    envVar: "MMS_LING_PUBLIC_CONCIERGE_ENABLED",
+    enabledOutsideProduction: false,
+    requiresSyntheticPreview: true,
+    description: "Approved-content-only public Ling concierge.",
+  },
+  managementIntelligence: {
+    envVar: "MMS_MANAGEMENT_INTELLIGENCE_ENABLED",
+    enabledOutsideProduction: false,
+    requiresSyntheticPreview: true,
+    description: "Non-clinical operational pipeline dashboard and daily brief.",
+  },
 };
 
 export function getDeploymentEnvironment(env: NodeJS.ProcessEnv = process.env): DeploymentEnvironment {
@@ -91,7 +127,12 @@ export function isMmsFeatureEnabled(feature: MmsFeature, env: NodeJS.ProcessEnv 
   if (isProductionDeployment(env)) return featureFlagValue(feature, env);
   const explicit = env[mmsFeatureRules[feature].envVar]?.trim().toLowerCase();
   if (explicit === "false") return false;
-  if (explicit === "true") return true;
+  if (explicit === "true") {
+    if (getDeploymentEnvironment(env) === "preview" && mmsFeatureRules[feature].requiresSyntheticPreview) {
+      return env.MMS_SYNTHETIC_DATA_ONLY?.trim().toLowerCase() === "true";
+    }
+    return true;
+  }
   return mmsFeatureRules[feature].enabledOutsideProduction;
 }
 
