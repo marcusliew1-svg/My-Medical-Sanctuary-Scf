@@ -11,6 +11,51 @@ export type ZohoDuplicateMatch = {
   matchedByPhone: boolean;
 };
 
+export type ZohoFailureKind = "transient" | "permanent";
+
+export class ZohoCrmError extends Error {
+  constructor(
+    message: string,
+    readonly kind: ZohoFailureKind,
+    readonly status: number | null,
+    readonly code: string | null,
+  ) {
+    super(message);
+    this.name = "ZohoCrmError";
+  }
+}
+
+const transientZohoCodes = new Set([
+  "INTERNAL_ERROR", "SERVICE_UNAVAILABLE", "TOO_MANY_REQUESTS", "SERVER_ERROR", "LOCKED_FOR_PROCESSING",
+]);
+
+export function classifyZohoFailure(status: number | null, code?: string | null): ZohoFailureKind {
+  if (status === 408 || status === 409 || status === 425 || status === 429 || (status != null && status >= 500)) return "transient";
+  return code && transientZohoCodes.has(code.toUpperCase()) ? "transient" : "permanent";
+}
+
+function zohoFailure(message: string, response: Response, code?: string | null): ZohoCrmError {
+  return new ZohoCrmError(message, classifyZohoFailure(response.status, code), response.status, code || null);
+}
+
+export async function withZohoRetry<T>(
+  operation: () => Promise<T>,
+  options: { attempts?: number; baseDelayMs?: number; sleep?: (milliseconds: number) => Promise<void> } = {},
+): Promise<T> {
+  const attempts = Math.min(Math.max(options.attempts || 3, 1), 5);
+  const baseDelayMs = Math.min(Math.max(options.baseDelayMs ?? 100, 0), 5_000);
+  const sleep = options.sleep || ((milliseconds: number) => new Promise((resolve) => setTimeout(resolve, milliseconds)));
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      if (!(error instanceof ZohoCrmError) || error.kind === "permanent" || attempt === attempts) throw error;
+      await sleep(baseDelayMs * 2 ** (attempt - 1));
+    }
+  }
+  throw new Error("Zoho retry policy exhausted.");
+}
+
 const dcAccountsDomains: Record<string, string> = {
   com: "https://accounts.zoho.com",
   us: "https://accounts.zoho.com",
@@ -83,7 +128,7 @@ async function getZohoAccessToken(): Promise<ZohoAccessToken> {
   };
 
   if (!response.ok || !payload.access_token || !payload.api_domain) {
-    throw new Error(`Zoho OAuth refresh failed${payload.error ? `: ${payload.error}` : "."}`);
+    throw zohoFailure(`Zoho OAuth refresh failed${payload.error ? `: ${payload.error}` : "."}`, response, payload.error);
   }
 
   return { accessToken: payload.access_token, apiDomain: payload.api_domain.replace(/\/$/, "") };
@@ -115,7 +160,7 @@ async function searchZohoRecords(
 
   if (!response.ok) {
     const code = payload.code ? ` (${payload.code})` : "";
-    throw new Error(`Zoho CRM duplicate search failed${code}.`);
+    throw zohoFailure(`Zoho CRM duplicate search failed${code}.`, response, payload.code);
   }
 
   return Array.isArray(payload.data) ? payload.data : [];
@@ -177,12 +222,16 @@ export async function getZohoRecord(moduleApiName: string, recordId: string): Pr
   const record = payload.data?.[0];
   if (!response.ok || !record) {
     const code = payload.code ? ` (${payload.code})` : "";
-    throw new Error(`Zoho CRM record read failed${code}.`);
+    throw zohoFailure(`Zoho CRM record read failed${code}.`, response, payload.code);
   }
   return record;
 }
 
-export async function createZohoRecord(moduleApiName: string, record: ZohoRecord): Promise<string> {
+export async function createZohoRecord(
+  moduleApiName: string,
+  record: ZohoRecord,
+  options: { duplicateCheckFields?: readonly string[] } = {},
+): Promise<string> {
   const moduleName = validModuleApiName(moduleApiName);
   const { accessToken, apiDomain } = await getZohoAccessToken();
   const response = await fetch(`${apiDomain}/crm/v8/${moduleName}`, {
@@ -191,7 +240,10 @@ export async function createZohoRecord(moduleApiName: string, record: ZohoRecord
       Authorization: `Zoho-oauthtoken ${accessToken}`,
       "content-type": "application/json",
     },
-    body: JSON.stringify({ data: [record] }),
+    body: JSON.stringify({
+      data: [record],
+      ...(options.duplicateCheckFields?.length ? { duplicate_check_fields: [...options.duplicateCheckFields] } : {}),
+    }),
     cache: "no-store",
   });
 
@@ -207,7 +259,7 @@ export async function createZohoRecord(moduleApiName: string, record: ZohoRecord
 
   if (!response.ok || result?.status !== "success" || !result.details?.id) {
     const code = result?.code ? ` (${result.code})` : "";
-    throw new Error(`Zoho CRM record creation failed${code}.`);
+    throw zohoFailure(`Zoho CRM record creation failed${code}.`, response, result?.code);
   }
 
   return result.details.id;
@@ -241,7 +293,7 @@ export async function updateZohoRecord(
   const result = payload.data?.[0];
   if (!response.ok || result?.status !== "success") {
     const code = result?.code ? ` (${result.code})` : "";
-    throw new Error(`Zoho CRM record update failed${code}.`);
+    throw zohoFailure(`Zoho CRM record update failed${code}.`, response, result?.code);
   }
 }
 
