@@ -45,6 +45,7 @@ type EditorialHeroProps = {
   secondaryHref?: string;
   imagePosition?: string;
   trustItems?: Array<{ title: string; text: string }>;
+  showHealthSignals?: boolean;
 };
 
 export function EditorialHero({
@@ -58,6 +59,7 @@ export function EditorialHero({
   secondaryLabel = "How MMS works",
   secondaryHref = "/how-it-works",
   imagePosition = "60% center",
+  showHealthSignals = false,
   trustItems = [
     { title: "Physician-led care", text: "Professional review before recommendations." },
     { title: "Personalised to you", text: "No one-size-fits-all health pathway." },
@@ -95,6 +97,30 @@ export function EditorialHero({
             </ButtonLink>
           </div>
         </div>
+
+        {showHealthSignals ? (
+          <div className="pointer-events-none absolute bottom-32 right-0 hidden w-[310px] lg:block">
+            <div className="rounded-[1.6rem] border border-white/15 bg-[#07151d]/72 p-4 shadow-[0_30px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Health intelligence</p>
+                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_18px_rgba(212,175,55,0.75)]" />
+              </div>
+              <div className="mt-3 grid gap-2">
+                {[
+                  ["Cardiovascular", "Review trend"],
+                  ["Metabolic", "In range"],
+                  ["Recovery", "Watch"],
+                ].map(([label, state]) => (
+                  <div key={label} className="flex items-center justify-between rounded-xl bg-white/[0.055] px-3 py-3">
+                    <span className="text-xs text-ivory/72">{label}</span>
+                    <span className="text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-gold-light">{state}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[0.62rem] leading-4 text-ivory/42">Illustrative member view • doctor review remains central</p>
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className="relative z-10 mx-auto max-w-6xl border-t border-gold-light/25 bg-navy/80 shadow-[0_-18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md">
         <div className="grid gap-px md:grid-cols-4">
