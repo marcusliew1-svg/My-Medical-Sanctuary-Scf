@@ -4,7 +4,7 @@ import { CareTeamStrip } from "@/components/ExperienceCards";
 import { MembershipComparison } from "@/components/MembershipComparison";
 
 export const metadata: Metadata = {
-  title: "Memberships | My Medical Sanctuary",
+  title: "Memberships",
   description:
     "Ascend, Evolve, Eterna and Pinnacle are MMS relationship pathways for preventive healthcare and personalised longevity coordination.",
 };
@@ -13,7 +13,7 @@ export default function MembershipsPage() {
   return (
     <main>
       <EditorialHero
-        eyebrow="Programmes"
+        eyebrow="Memberships"
         title="A continuum of care for every chapter of your life."
         lead="MMS memberships describe increasing depth of coordination after discovery, screening and professional review. No public pricing pressure. No one-size-fits-all pathway."
         image="/ling-concierge.png"
@@ -71,7 +71,7 @@ export default function MembershipsPage() {
         image="/mms-concierge-lounge.png"
         eyebrow="Relationship model"
         title="Membership should feel like continuity, not a price list."
-        text="The commercial value is in coordination, memory, privacy and follow-through after doctor review."
+        text="The value is in coordination, continuity, privacy and follow-through after doctor review."
         points={["No public pricing", "Suitability review", "Long-term relationship"]}
       />
 
