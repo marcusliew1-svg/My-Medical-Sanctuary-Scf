@@ -48,7 +48,7 @@ export default function LingPage() {
         title="Meet Ling. Your MMS virtual health spokesperson."
         lead="Ling introduces the MMS journey, explains health concepts in plain language and helps you prepare for doctor-led care."
         image="/ling-mms-guide.png"
-        imageAlt="Ling, the MMS virtual health spokesperson and virtual health spokesperson and education guide."
+        imageAlt="Ling, the MMS virtual health spokesperson and education guide."
         primaryLabel="Ask Ling"
         secondaryLabel="Speak with MMS"
         secondaryHref="/contact"
@@ -88,7 +88,7 @@ export default function LingPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each role to see how Ling should support patients without replacing care.
+              Each role shows how Ling supports patients without replacing professional care.
             </p>
           </div>
           <RevealCardGrid items={lingRoles} />
@@ -120,9 +120,9 @@ export default function LingPage() {
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
           <ImagePanel src="/ling-concierge.png" alt="Ling welcoming patients." className="min-h-[440px] rounded-[1.5rem] shadow-premium" objectPosition="50% center" />
           <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Prototype panel</p>
+            <p className="editorial-kicker mb-4 text-deep-green">Ask Ling</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-5xl">
-              A simple education layer, not a medical decision engine.
+              A useful first conversation, with clear medical boundaries.
             </h2>
             <div className="mt-10">
               <LingPanel />
