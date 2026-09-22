@@ -1,7 +1,7 @@
 export const navigation = [
   { label: "About MMS", href: "/about-mms" },
   { label: "Our Approach", href: "/how-it-works" },
-  { label: "Programmes", href: "/memberships" },
+  { label: "Memberships", href: "/memberships" },
   { label: "Advanced Care", href: "/treatments" },
   { label: "Health Intelligence", href: "/insights" },
   { label: "Locations", href: "/clinics" },
@@ -21,7 +21,7 @@ export const platformLinks = [
 ];
 
 export const lingDisclaimer =
-  "Ling is an AI Health Education Companion. Ling provides educational information only and does not diagnose, prescribe, or replace an MMS doctor.";
+  "Ling is the MMS virtual health spokesperson and education guide. Ling can explain, organise and prepare, but does not diagnose, prescribe, interpret personal results or replace an MMS doctor.";
 
 export const journeyCards = [
   {
@@ -129,7 +129,7 @@ export const membershipTiers = [
     text: "For long-term health planning focused on resilience, ageing well, and continuity of care.",
   },
   {
-    name: "Pinnacle Signature",
+    name: "Pinnacle",
     promise: "By Invitation & Clinical Suitability",
     text: "A highly personalised journey for complex goals, advanced diagnostics, and close clinical oversight.",
   },
@@ -148,7 +148,6 @@ export const lingOptions = [
   "I want to manage my weight",
   "I want to learn about longevity",
   "I want to understand medicine access",
-  "I want to understand the SCF lab roadmap",
   "I'm looking for regenerative medicine",
   "I'm not sure where to start",
 ];
