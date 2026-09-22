@@ -134,29 +134,8 @@ export default function HomePage() {
         </div>
       </SplitStory>
 
-      <section className="bg-[#07151d] px-4 py-20 text-ivory md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">Memberships</p>
-              <h2 className="text-balance font-serif text-4xl leading-tight md:text-6xl">
-                Four levels of one health relationship.
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-ivory/70">
-                Ascend, Evolve, Eterna and Pinnacle represent increasing depth of assessment, continuity and coordination —
-                not simply larger bundles of tests.
-              </p>
-              <Link
-                href="/memberships"
-                className="mt-8 inline-flex text-sm font-semibold text-gold-light underline decoration-gold/50 underline-offset-8"
-              >
-                Compare memberships
-              </Link>
-            </div>
-            <RevealCardGrid items={programmes} />
-          </div>
-        </div>
-      </section>
+      <MembershipDepth />
+
       <LingHealthPreview />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
