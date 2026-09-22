@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { EditorialHero, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
@@ -28,6 +29,7 @@ export type PatientEditorialPageProps = {
   finalLead?: string;
   spokespersonName?: string;
   spokespersonMessage?: string;
+  insertAfterIntro?: ReactNode;
 };
 
 export function metadataFor(title: string, description: string): Metadata {
@@ -55,6 +57,7 @@ export function PatientEditorialPage({
   finalLead,
   spokespersonName = "Ling",
   spokespersonMessage,
+  insertAfterIntro,
 }: PatientEditorialPageProps) {
   const pointImages = [
     "/mms-doctor-couple-consult.png",
@@ -101,6 +104,8 @@ export function PatientEditorialPage({
           />
         </div>
       </section>
+
+      {insertAfterIntro ?? null}
 
       <SplitStory
         eyebrow="Professional review"
