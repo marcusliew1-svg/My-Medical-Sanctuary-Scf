@@ -20,7 +20,7 @@ export function LingDock() {
   }
 
   return (
-    <div className="fixed bottom-3 right-3 z-40 sm:bottom-4 sm:right-4">
+    <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] right-3 z-40 sm:bottom-4 sm:right-4">
       <Link
         href="/ling"
         aria-label="Meet Ling, your MMS virtual health spokesperson"
