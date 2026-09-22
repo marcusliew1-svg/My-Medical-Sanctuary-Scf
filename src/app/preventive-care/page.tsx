@@ -11,6 +11,8 @@ export default function PreventiveCarePage() {
       eyebrow="Preventive Care"
       title="Act before small risks become larger concerns."
       lead="Preventive care at MMS begins with a baseline, a doctor-led review and practical planning."
+      image="/ling-mms-guide.png"
+      spokespersonMessage="I’ll help you understand what preventive care is trying to answer, what may deserve screening and where your MMS doctor needs to interpret the findings."
       introEyebrow="Earlier care"
       introTitle="Prevention is not a package. It is a way of thinking."
       introLead="The goal is to reduce uncertainty and help people make calm decisions before pressure arrives."
