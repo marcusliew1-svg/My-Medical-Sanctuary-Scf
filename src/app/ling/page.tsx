@@ -6,7 +6,7 @@ import { lingDisclaimer, lingOptions } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Ling | My Medical Sanctuary",
-  description: "Ling is the MMS AI Health Education Companion for learning, organising questions and preparing for doctor-led care.",
+  description: "Ling is the MMS virtual health spokesperson and education guide for learning, organising questions and preparing for doctor-led care.",
 };
 
 const lingRoles = [
@@ -48,7 +48,7 @@ export default function LingPage() {
         title="Meet Ling. Your MMS virtual health spokesperson."
         lead="Ling introduces the MMS journey, explains health concepts in plain language and helps you prepare for doctor-led care."
         image="/ling-mms-guide.png"
-        imageAlt="Ling, the MMS virtual health spokesperson and AI Health Education Companion."
+        imageAlt="Ling, the MMS virtual health spokesperson and virtual health spokesperson and education guide."
         primaryLabel="Ask Ling"
         secondaryLabel="Speak with MMS"
         secondaryHref="/contact"
