@@ -72,7 +72,7 @@ export default function HowItWorksPage() {
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
               A premium health journey should not ask patients to choose treatments first.
-              It should help them understand, assess, review, personalise and continue.
+              It should help them discover, measure, understand, optimise and monitor.
             </p>
           </div>
           <ImagePanel priority src="/mms-service-collage.webp" alt="The connected MMS care journey across discovery, diagnostics, physician review and continuity." className="min-h-[420px] rounded-[1.6rem] shadow-premium" objectPosition="50% center" />
@@ -101,7 +101,7 @@ export default function HowItWorksPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-warm-gray">
-              Hover each image to see how the role supports the patient journey.
+              Each role supports a different part of the patient journey, from orientation through clinical review and continuity.
             </p>
           </div>
           <RevealCardGrid items={roles} />
