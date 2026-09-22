@@ -7,6 +7,7 @@ import { LongevityIntelligence } from "@/components/LongevityIntelligence";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
 import { MembershipDepth } from "@/components/MembershipDepth";
 import { SanctuaryExperience } from "@/components/SanctuaryExperience";
+import { IntelligenceEditorial } from "@/components/IntelligenceEditorial";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -106,73 +107,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-14 max-w-3xl">
-            <p className="editorial-kicker mb-4 text-deep-green">The MMS journey</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Discover. Measure. Understand. Optimise. Monitor.
-            </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-warm-gray">
-              One connected health relationship, designed to become more useful as your history and trends become clearer.
-            </p>
-          </div>
-          <JourneyLine steps={method} />
-        </div>
-      </section>
-
-      <SplitStory
-        eyebrow="Medicine before marketing"
-        title="Technology can reveal more. Doctors decide what matters."
-        lead="MMS uses technology to organise information, improve continuity and help patients understand their health. Diagnosis, suitability and clinical decisions remain with qualified professionals."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor and patient discussing screening information."
-        dark
-        imagePosition="62% center"
-      >
-        <div className="grid max-w-xl gap-4 border-l border-gold/40 pl-6 text-ivory/74">
-          <p>Evidence before recommendation.</p>
-          <p>Suitability before intervention.</p>
-          <p>Longitudinal context before isolated conclusions.</p>
-        </div>
-      </SplitStory>
-
-      <MembershipDepth />
-
-      <LingHealthPreview />
-
-      <SanctuaryExperience />
-
-      <section className="bg-warm-white px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Health intelligence</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Understand the signal, the uncertainty and the next question.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              MMS health content is designed to help patients become better prepared for clinical conversations — without
-              pretending education is diagnosis.
-            </p>
-            <Link
-              href="/insights"
-              className="mt-8 inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8"
-            >
-              Explore Health Intelligence
-            </Link>
-          </div>
-          <div className="grid gap-6 border-l border-gold/40 pl-6">
-            {["Preventive Health", "Longevity Science", "Treatments Explained", "Metabolic Health"].map((topic) => (
-              <div key={topic}>
-                <h3 className="font-serif text-3xl text-navy">{topic}</h3>
-                <p className="mt-2 leading-7 text-warm-gray">
-                  Plain-language education with evidence boundaries, context and room for clinical judgement.
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IntelligenceEditorial />
 
       <section className="relative overflow-hidden bg-navy px-4 py-20 text-ivory md:py-28">
         <Image src="/mms-medicine-access-consult.png" alt="" fill className="-z-0 object-cover opacity-20" sizes="100vw" />
