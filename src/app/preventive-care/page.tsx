@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { ScreeningEvidence } from "@/components/ScreeningEvidence";
 
 export const metadata = metadataFor(
   "Preventive Care",
@@ -11,6 +12,8 @@ export default function PreventiveCarePage() {
       eyebrow="Preventive Care"
       title="Act before small risks become larger concerns."
       lead="Preventive care at MMS begins with a baseline, a doctor-led review and practical planning."
+      image="/ling-mms-guide.png"
+      spokespersonMessage="I’ll help you understand what preventive care is trying to answer, what may deserve screening and where your MMS doctor needs to interpret the findings."
       introEyebrow="Earlier care"
       introTitle="Prevention is not a package. It is a way of thinking."
       introLead="The goal is to reduce uncertainty and help people make calm decisions before pressure arrives."
@@ -22,6 +25,7 @@ export default function PreventiveCarePage() {
       trustTitle="The first recommendation is often patience and clarity."
       trustLead="MMS does not need to rush visitors into programmes. The safer first step is understanding what matters."
       finalTitle="Preventive care begins with a better first conversation."
+      insertAfterIntro={<ScreeningEvidence />}
     />
   );
 }

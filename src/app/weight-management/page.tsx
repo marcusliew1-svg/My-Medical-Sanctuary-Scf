@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { MetabolicSignals } from "@/components/MetabolicSignals";
 
 export const metadata = metadataFor(
   "Weight Management",
@@ -11,7 +12,8 @@ export default function WeightManagementPage() {
       eyebrow="Weight Management"
       title="Weight change deserves context, not judgement."
       lead="MMS approaches weight through body composition, metabolic health, lifestyle patterns and professional review."
-      image="/mms-health-screening-hero.png"
+      image="/ling-knowledge.png"
+      spokespersonMessage="Weight is only one signal. I’ll help you organise questions around body composition, metabolism, sleep, lifestyle and what needs medical review."
       introEyebrow="Metabolic health"
       introTitle="The better question is what is driving the change."
       introLead="Weight can reflect sleep, stress, hormones, glucose, habits, medication, travel and life stage."
@@ -23,6 +25,7 @@ export default function WeightManagementPage() {
       trustTitle="Weight management should not feel like a cosmetic shortcut."
       trustLead="MMS keeps the conversation clinical, respectful and personalised."
       finalTitle="Start with the factors behind the change."
+      insertAfterIntro={<MetabolicSignals />}
     />
   );
 }

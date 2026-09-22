@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { SupportiveTherapyBoundary } from "@/components/SupportiveTherapyBoundary";
 
 export const metadata = metadataFor(
   "IV Therapy",
@@ -11,7 +12,8 @@ export default function IvTherapyPage() {
       eyebrow="IV Wellness Support"
       title="Supportive therapy should be reviewed responsibly."
       lead="MMS presents IV therapy as a possible wellness support option, not a promised solution."
-      image="/mms-about-hero.png"
+      image="/ling-knowledge.png"
+      spokespersonMessage="I’ll help you understand what IV wellness support is meant to do, what evidence and limitations matter, and when doctor suitability review is required."
       introEyebrow="Suitability first"
       introTitle="A responsible conversation begins before the drip."
       introLead="The question is not only what is available. It is whether it makes sense for the person in front of the doctor."
@@ -23,6 +25,7 @@ export default function IvTherapyPage() {
       trustTitle="No one-size-fits-all wellness treatment belongs on a premium medical site."
       trustLead="Subject to doctor assessment. Suitable candidates only. Individual outcomes vary."
       finalTitle="Ask whether supportive therapy is suitable, not whether it is trendy."
+      insertAfterIntro={<SupportiveTherapyBoundary />}
     />
   );
 }

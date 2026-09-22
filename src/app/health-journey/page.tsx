@@ -7,11 +7,11 @@ export const metadata = metadataFor(
 );
 
 const path = [
-  { title: "Understand", text: "Begin with what you want to know about your health." },
-  { title: "Screen", text: "Build a baseline that gives the conversation substance." },
-  { title: "Assess", text: "Doctors review results and clinical context." },
-  { title: "Roadmap", text: "Translate priorities into a practical health plan." },
-  { title: "For life", text: "Continue with the right depth of relationship." },
+  { title: "Discover", text: "Begin with what changed, what matters and what you want to understand." },
+  { title: "Measure", text: "Use selected screening and diagnostics to build a useful baseline." },
+  { title: "Understand", text: "Doctors interpret results, history and risk in clinical context." },
+  { title: "Optimise", text: "Translate what matters into practical, proportionate next steps." },
+  { title: "Monitor", text: "Follow relevant trends over time and adjust when the evidence changes." },
 ];
 
 export default function HealthJourneyPage() {
@@ -21,12 +21,15 @@ export default function HealthJourneyPage() {
         eyebrow="Your health journey"
         title="The next step is not treatment. It is understanding."
         lead="MMS guides patients from health questions to screening, doctor assessment, personalised planning and long-term care."
-        image="/mms-about-hero.png"
-        imageAlt="Doctor and patient planning a health journey."
-        primaryLabel="Book screening"
-        primaryHref="/health-screening"
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, guiding the MMS health journey."
+        primaryLabel="Start discovery"
+        primaryHref="/health-discovery"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand where you are in the journey and what question should come before the next test or appointment."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -45,8 +48,8 @@ export default function HealthJourneyPage() {
         eyebrow="Care coordination"
         title="Good systems should make care feel human."
         lead="Ling supports learning. HRM coordination supports continuity. Doctors retain clinical judgement."
-        image="/ling-guide.png"
-        imageAlt="Ling as a health education guide."
+        image="/ling-continuity.png"
+        imageAlt="Ling supporting continuity between education and doctor-led care."
         dark
         imagePosition="82% center"
       />

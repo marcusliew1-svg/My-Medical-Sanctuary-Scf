@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { EditorialHero, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
@@ -26,6 +27,9 @@ export type PatientEditorialPageProps = {
   trustImage?: string;
   finalTitle?: string;
   finalLead?: string;
+  spokespersonName?: string;
+  spokespersonMessage?: string;
+  insertAfterIntro?: ReactNode;
 };
 
 export function metadataFor(title: string, description: string): Metadata {
@@ -51,6 +55,9 @@ export function PatientEditorialPage({
   trustImage = "/mms-health-screening-hero.png",
   finalTitle,
   finalLead,
+  spokespersonName = "Ling",
+  spokespersonMessage,
+  insertAfterIntro,
 }: PatientEditorialPageProps) {
   const pointImages = [
     "/mms-doctor-couple-consult.png",
@@ -71,6 +78,9 @@ export function PatientEditorialPage({
         primaryHref={primaryHref}
         secondaryLabel={secondaryLabel}
         secondaryHref={secondaryHref}
+        imagePosition="70% center"
+        spokespersonName={spokespersonName}
+        spokespersonMessage={spokespersonMessage}
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -94,6 +104,8 @@ export function PatientEditorialPage({
           />
         </div>
       </section>
+
+      {insertAfterIntro ?? null}
 
       <SplitStory
         eyebrow="Professional review"

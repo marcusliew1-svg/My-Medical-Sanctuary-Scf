@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
+import { DiscoverySignalMap } from "@/components/DiscoverySignalMap";
 
 export const metadata: Metadata = {
   title: "Health Discovery",
@@ -20,13 +21,18 @@ export default function HealthDiscoveryPage() {
       <EditorialHero
         eyebrow="Health Discovery"
         title="When you are not sure where to start, start with clarity."
-        lead="Discovery reduces anxiety by turning vague concerns into better questions for screening and professional review."
-        image="/mms-about-hero.png"
-        imageAlt="Private consultation for health discovery."
+        lead="Discovery turns vague concerns into a structured starting picture: what changed, what shaped your risk, what may deserve measurement and what needs professional review."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, helping patients begin with health discovery."
         primaryLabel="Start discovery"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="Tell me what has changed or what you are concerned about. I’ll help organise the right questions before your MMS clinical review."
       />
+
+      <DiscoverySignalMap />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
@@ -42,8 +48,8 @@ export default function HealthDiscoveryPage() {
 
       <SplitStory
         eyebrow="Patient psychology"
-        title="Good care helps people feel informed rather than sold to."
-        lead="MMS discovery is designed to surface what deserves attention and what can wait for doctor review."
+        title="Good care should reduce uncertainty before it increases intervention."
+        lead="MMS discovery is designed to surface what deserves attention, what may need measurement and what can reasonably wait for clinical review."
         image="/mms-health-screening-hero.png"
         imageAlt="Doctor-led discussion of health priorities."
         dark

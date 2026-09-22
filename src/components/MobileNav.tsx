@@ -1,11 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navigation } from "@/lib/content";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <div className="xl:hidden">
@@ -13,46 +24,57 @@ export function MobileNav() {
         type="button"
         aria-label={open ? "Close navigation" : "Open navigation"}
         aria-expanded={open}
+        aria-controls="mms-mobile-navigation"
         onClick={() => setOpen((value) => !value)}
-        className="grid size-11 place-items-center rounded-full border border-white/30 bg-white/[0.14] backdrop-blur-md"
+        className="grid size-10 place-items-center rounded-full border border-white/18 bg-white/[0.08] backdrop-blur-md"
       >
         <span className="grid gap-1.5">
-          <span className={`block h-0.5 w-5 bg-white transition ${open ? "translate-y-2 rotate-45" : ""}`} />
-          <span className={`block h-0.5 w-5 bg-white transition ${open ? "opacity-0" : ""}`} />
-          <span className={`block h-0.5 w-5 bg-white transition ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+          <span className={`block h-px w-5 bg-white transition ${open ? "translate-y-[7px] rotate-45" : ""}`} />
+          <span className={`block h-px w-5 bg-white transition ${open ? "opacity-0" : ""}`} />
+          <span className={`block h-px w-5 bg-white transition ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
         </span>
       </button>
 
       {open ? (
-        <div className="absolute inset-x-4 top-20 rounded-[1.25rem] border border-white/20 bg-[#07151d]/98 p-5 text-white shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-          <nav aria-label="Mobile navigation" className="grid gap-1">
-            {navigation.map((item) => (
+        <div id="mms-mobile-navigation" className="absolute inset-x-3 top-[4.8rem] max-h-[calc(100vh-6rem)] overflow-y-auto rounded-[1.75rem] border border-white/12 bg-[#07151d]/[0.985] text-white shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
+          <div className="border-b border-white/10 px-5 py-5">
+            <p className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-light">My Medical Sanctuary</p>
+            <p className="mt-2 max-w-xs font-serif text-2xl leading-tight">Know earlier. Live better.</p>
+            <div className="mt-3 flex flex-wrap gap-2 text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-ivory/50">
+              <span>Physician-led</span><span>•</span><span>Evidence-aware</span><span>•</span><span>Ling-guided</span>
+            </div>
+          </div>
+
+          <nav aria-label="Mobile navigation" className="grid px-3 py-3">
+            {navigation.map((item, index) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-3 text-sm font-semibold text-white/[0.84] transition hover:bg-white/[0.08] hover:text-white"
+                className="flex items-center justify-between rounded-xl px-3 py-3.5 text-sm font-medium text-white/[0.82] transition hover:bg-white/[0.06] hover:text-white"
               >
-                {item.label}
+                <span>{item.label}</span>
+                <span className="text-[0.62rem] tracking-[0.16em] text-gold-light/65">0{index + 1}</span>
               </Link>
             ))}
           </nav>
-        <div className="mt-4 grid gap-2 border-t border-white/10 pt-4">
-          <Link
-            href="/ling"
-            onClick={() => setOpen(false)}
-            className="rounded-md bg-white px-3 py-3 text-sm font-semibold text-stone-950"
-          >
-            Start with Ling
-          </Link>
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
-            className="rounded-md bg-gold px-3 py-3 text-sm font-semibold text-navy"
-          >
-            Speak with MMS
-          </Link>
-        </div>
+
+          <div className="grid gap-2 border-t border-white/10 p-4">
+            <Link
+              href="/health-discovery"
+              onClick={() => setOpen(false)}
+              className="rounded-full bg-gold px-4 py-3.5 text-center text-sm font-semibold text-navy"
+            >
+              Start my health assessment
+            </Link>
+            <Link
+              href="/ling"
+              onClick={() => setOpen(false)}
+              className="rounded-full border border-white/15 bg-white/[0.05] px-4 py-3.5 text-center text-sm font-semibold text-white"
+            >
+              Meet Ling
+            </Link>
+          </div>
         </div>
       ) : null}
     </div>

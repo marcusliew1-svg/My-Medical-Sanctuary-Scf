@@ -23,10 +23,10 @@ export default function MembershipCheckoutPage() {
 
   return (
     <main>
-      <section className="bg-navy px-4 pb-16 pt-32 text-ivory md:pb-20 md:pt-40">
+      <section className="relative overflow-hidden bg-[#07151d] px-4 pb-20 pt-32 text-ivory md:pb-24 md:pt-40">
         <div className="mx-auto max-w-6xl">
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Secure membership payment</p>
-          <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-tight md:text-7xl">Complete your MMS membership when you are ready.</h1>
+          <p className="editorial-kicker text-gold-light">Secure membership payment</p>
+          <h1 className="mt-4 max-w-4xl text-balance font-serif text-5xl leading-[1.02] md:text-7xl">Complete membership only after the right pathway is clear.</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-ivory/72">Payment is the final commercial step after you have understood the membership and any required suitability or professional review has been completed.</p>
         </div>
       </section>
@@ -35,7 +35,7 @@ export default function MembershipCheckoutPage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {memberships.map((membership) => (
-              <article key={membership.name} className="rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-soft">
+              <article key={membership.name} className="rounded-[1.75rem] border border-gold/18 bg-white/92 p-6 shadow-[0_20px_60px_rgba(11,26,46,0.06)]">
                 <p className="text-[10px] font-bold uppercase tracking-[.18em] text-gold">{membershipPositioning[membership.name]}</p>
                 <h2 className="mt-3 font-serif text-3xl text-navy">{membership.name}</h2>
                 <p className="mt-2 text-sm font-semibold text-deep-green">{membership.tagline}</p>
@@ -51,8 +51,8 @@ export default function MembershipCheckoutPage() {
             <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[.18em] text-gold-light">Not sure which membership?</p>
-                <h2 className="mt-2 font-serif text-3xl md:text-4xl">Start with your goals, not a payment button.</h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-ivory/70">Ling can explain the four pathways, and the MMS team can help you confirm the appropriate next step before payment.</p>
+                <h2 className="mt-2 font-serif text-3xl md:text-4xl">Start with suitability, not a payment button.</h2>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-ivory/70">Ling can explain the four pathways, and the MMS team can help confirm that the membership depth fits your needs before payment.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Link href="/ling" className="rounded-full bg-gold-light px-5 py-3 text-sm font-semibold text-navy">Ask Ling</Link>

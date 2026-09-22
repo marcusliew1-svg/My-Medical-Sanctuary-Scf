@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { EvidenceLadder } from "@/components/EvidenceLadder";
 
 export const metadata = metadataFor(
   "Longevity Medicine",
@@ -11,7 +12,7 @@ export default function LongevityMedicinePage() {
       eyebrow="Longevity Medicine"
       title="Ageing well deserves medical judgement, not hype."
       lead="MMS approaches longevity through baseline understanding, evidence-informed discussion and professional review."
-      image="/mms-health-screening-hero.png"
+      image="/ling-knowledge.png"
       introEyebrow="Healthy ageing"
       introTitle="Longevity is most credible when it is personal and measured."
       introLead="The right questions are usually about resilience, energy, metabolic health, recovery and long-term independence."
@@ -23,6 +24,8 @@ export default function LongevityMedicinePage() {
       trustTitle="Advanced longevity discussions require careful boundaries."
       trustLead="Suitability, uncertainty and individual variation should remain visible before any programme is considered."
       finalTitle="Build longevity on clarity, not promises."
+      spokespersonMessage="Longevity is not one treatment. I’ll help you understand the measurements, questions and evidence before your MMS doctor personalises the next step."
+      insertAfterIntro={<EvidenceLadder />}
     />
   );
 }

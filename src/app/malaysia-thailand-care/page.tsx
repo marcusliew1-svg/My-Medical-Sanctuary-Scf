@@ -19,12 +19,15 @@ export default function MalaysiaThailandCarePage() {
       <EditorialHero
         eyebrow="Regional care"
         title="Your care can travel with you."
-        lead="Malaysia and Thailand should not feel like generic medical tourism. MMS frames regional care around clarity, suitability and coordination."
-        image="/mms-health-screening-hero.png"
-        imageAlt="Doctor-led care coordination conversation."
+        lead="MMS frames regional care around clinical context, suitability, licensed local care and continuity across borders."
+        image="/ling-regional.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing regional care across Malaysia and Thailand."
         primaryLabel="Discuss regional care"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand how regional care can stay connected across countries, and when local licensed professionals need to take over."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -32,7 +35,7 @@ export default function MalaysiaThailandCarePage() {
           <div>
             <p className="editorial-kicker mb-4 text-deep-green">Care continuity</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Regional access needs a human coordinator.
+              Regional access needs clinical context, not just logistics.
             </h2>
           </div>
           <div className="grid gap-8">

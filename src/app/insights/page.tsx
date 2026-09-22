@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { EditorialHero, FinalInvitation, ImagePanel } from "@/components/Editorial";
-import { CareTeamStrip, MarketSignalPanel, RevealCardGrid } from "@/components/ExperienceCards";
+import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
-  title: "Health Intelligence | My Medical Sanctuary",
+  title: "Health Intelligence",
   description:
     "MMS Health Intelligence helps patients understand preventive health, longevity science, screening and treatment questions with clear evidence boundaries.",
 };
@@ -61,14 +61,16 @@ export default function InsightsPage() {
     <main>
       <EditorialHero
         eyebrow="Health Intelligence"
-        title="Knowledge to empower your healthiest decisions."
-        lead="MMS Health Intelligence is designed for patients who want clarity, not noise: evidence, uncertainty, suitability and the right next question."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor-led health intelligence briefing."
+        title="See the evidence. See the uncertainty. Ask a better question."
+        lead="MMS Health Intelligence turns complex health information into four things that matter: what the evidence supports, what remains uncertain, who needs professional review and what question comes next."
+        image="/ling-knowledge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing Health Intelligence."
         primaryLabel="Start discovery"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
-        imagePosition="52% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you separate signal from noise—what the evidence says, what remains uncertain and what question to bring to your doctor."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -86,14 +88,8 @@ export default function InsightsPage() {
               Read the screening guide
             </Link>
           </div>
-          <div className="relative overflow-hidden rounded-[1.25rem] bg-navy p-4 shadow-premium">
-            <div className="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
-              <ImagePanel src="/mms-doctor-couple-consult.png" alt="Doctor-led learning discussion." className="min-h-[360px] rounded-[0.9rem]" objectPosition="50% center" />
-              <div className="grid gap-4">
-                <ImagePanel src="/mms-concierge-lounge.png" alt="Patient concierge guiding visitors." className="min-h-[170px] rounded-[0.9rem]" objectPosition="50% center" />
-                <ImagePanel src="/mms-diagnostics-screening.png" alt="Screening insight review." className="min-h-[170px] rounded-[0.9rem]" objectPosition="50% center" />
-              </div>
-            </div>
+          <div className="relative overflow-hidden rounded-[1.5rem] bg-navy p-4 shadow-premium">
+            <ImagePanel src="/mms-medicine-intelligence.webp" alt="MMS health intelligence visual connecting medical context, evidence and patient understanding." className="min-h-[520px] rounded-[1rem]" objectPosition="50% center" />
           </div>
         </div>
       </section>
@@ -108,7 +104,7 @@ export default function InsightsPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each briefing to reveal what the patient should understand next.
+              Each briefing is structured around evidence, uncertainty, suitability and the next useful clinical question.
             </p>
           </div>
           <RevealCardGrid items={featured} />
@@ -121,22 +117,20 @@ export default function InsightsPage() {
             <Image src="/mms-medicine-access-consult.png" alt="Doctor and concierge helping visitors understand regional medicine access." fill className="object-cover" sizes="(min-width: 1024px) 45vw, 100vw" />
           </div>
           <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Medicine price intelligence</p>
+            <p className="editorial-kicker mb-4 text-deep-green">Cross-border care context</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              If one country is expensive and another is cheaper, the answer is not just price.
+              Access can change across countries. Clinical responsibility should not.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
-              MMS can educate patients on why access differs across the US, Gulf markets, Australia,
-              Singapore, Indonesia, Malaysia and Thailand: registration status, supply chains, taxes,
-              exchange rates, manufacturer pathways, prescription rules and local professional requirements.
-              This can become a verified access-intelligence pathway before licensed coordination.
+              Registration status, supply pathways, prescription rules, licensed providers and continuity requirements can differ across jurisdictions.
+              MMS should help patients understand those differences without turning access into a price-shopping exercise.
             </p>
             <div className="mt-7 grid gap-3 border-y border-gold/40 py-5 text-sm leading-6 text-warm-gray">
-              <p><strong className="text-navy">High-cost markets:</strong> United States, Gulf private-pay markets, Australia, Singapore and selected Indonesian private pathways.</p>
-              <p><strong className="text-navy">Potential value corridor:</strong> Malaysia and Thailand, subject to registration, prescription, licensed access and continuity review.</p>
+              <p><strong className="text-navy">Before access:</strong> confirm indication, regulatory status and whether licensed professional review is required.</p>
+              <p><strong className="text-navy">After access:</strong> continuity, monitoring and follow-up still need to be organised responsibly.</p>
             </div>
             <Link href="/international-medicine-access" className="mt-8 inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8">
-              Explore medicine access intelligence
+              Explore regional medicine access context
             </Link>
           </div>
         </div>
@@ -146,7 +140,7 @@ export default function InsightsPage() {
         <div className="mx-auto max-w-6xl">
           <p className="editorial-kicker mb-4 text-deep-green">Reading standard</p>
           <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-            Responsibility should be visible in every health article.
+            Every health briefing should reveal how strong the idea really is.
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-4">
             {readingStandard.map(([title, text]) => (
@@ -158,11 +152,6 @@ export default function InsightsPage() {
           </div>
         </div>
       </section>
-
-      <MarketSignalPanel
-        title="Patients notice price gaps. MMS should own the explanation."
-        lead="The public site should make the regional access strategy visible enough to generate qualified enquiries, while keeping patient-specific access inside verified review."
-      />
 
       <CareTeamStrip
         image="/mms-concierge-lounge.png"

@@ -24,6 +24,8 @@ body {
   font-size: 16px;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
 }
 
 a {
@@ -38,12 +40,12 @@ textarea {
 }
 
 :focus-visible {
-  outline: 3px solid #d4af37;
+  outline: 3px solid #C7A76A;
   outline-offset: 3px;
 }
 
 ::selection {
-  background: #d4af37;
+  background: #C7A76A;
   color: #0b1a2e;
 }
 
@@ -52,7 +54,7 @@ textarea {
 }
 
 .premium-card {
-  border: 1px solid rgba(212, 175, 55, 0.28);
+  border: 1px solid rgba(199, 167, 106, 0.24);
   background: rgba(253, 251, 247, 0.86);
   box-shadow: 0 18px 50px rgba(11, 26, 46, 0.08);
 }
@@ -82,8 +84,178 @@ textarea {
 }
 
 .editorial-kicker {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.21em;
+  line-height: 1.4;
   text-transform: uppercase;
+}
+
+.mms-data {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.mms-science-grid {
+  background-image:
+    linear-gradient(rgba(199, 167, 106, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(199, 167, 106, 0.055) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+
+/* MMS V2 editorial atmosphere */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(11, 26, 46, 0.34) 0 0.6px, transparent 0.7px),
+    radial-gradient(circle at 80% 60%, rgba(199, 167, 106, 0.16) 0 0.6px, transparent 0.7px);
+  background-size: 11px 11px, 13px 13px;
+  mix-blend-mode: multiply;
+}
+
+section {
+  position: relative;
+}
+
+@keyframes ambientFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+.mms-ambient {
+  animation: ambientFloat 8s ease-in-out infinite;
+}
+
+.mms-hairline {
+  background: linear-gradient(90deg, transparent, rgba(199, 167, 106, 0.42), transparent);
+  height: 1px;
+}
+
+@media (max-width: 767px) {
+  body::before {
+    opacity: 0.018;
+  }
+}
+
+
+@keyframes mmsTrendDraw {
+  from { stroke-dashoffset: 420; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes mmsSignalPulse {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 1; }
+}
+
+.mms-trend-line {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: mmsTrendDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.mms-trend-point {
+  animation: mmsSignalPulse 3.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mms-trend-line {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .mms-trend-point {
+    animation: none;
+  }
+}
+
+
+@keyframes mmsRiskOrbit {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.025); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes mmsSignalPulseSoft {
+  0%, 100% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 0 rgba(199, 167, 106, 0.10);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 8px rgba(199, 167, 106, 0);
+  }
+}
+
+.mms-risk-orbit {
+  animation: mmsRiskOrbit 22s linear infinite;
+  transform-origin: center;
+}
+
+.mms-signal-pulse {
+  animation: mmsSignalPulseSoft 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mms-risk-orbit,
+  .mms-signal-pulse {
+    animation: none;
+  }
+}
+
+
+/* Cinematic MMS visual storytelling */
+.mms-cinematic-frame {
+  isolation: isolate;
+  background: #07151d;
+}
+
+.mms-cinematic-image {
+  transform: scale(1.015);
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1), filter 1.2s ease;
+  will-change: transform;
+}
+
+.mms-cinematic-frame:hover .mms-cinematic-image {
+  transform: scale(1.045);
+  filter: saturate(1.03) contrast(1.015);
+}
+
+@keyframes mmsGlowDrift {
+  0%, 100% { transform: translate3d(-8px, 0, 0) scale(0.94); opacity: 0.45; }
+  50% { transform: translate3d(10px, -6px, 0) scale(1.08); opacity: 0.8; }
+}
+
+@keyframes mmsPathSweep {
+  0%, 100% { opacity: 0.18; transform: scaleX(0.72); }
+  50% { opacity: 0.9; transform: scaleX(1); }
+}
+
+.mms-visual-glow {
+  animation: mmsGlowDrift 7s ease-in-out infinite;
+}
+
+.mms-path-light {
+  transform-origin: center;
+  animation: mmsPathSweep 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mms-cinematic-image,
+  .mms-cinematic-frame:hover .mms-cinematic-image {
+    transform: none;
+    transition: none;
+    filter: none;
+  }
+
+  .mms-visual-glow,
+  .mms-path-light {
+    animation: none;
+  }
 }

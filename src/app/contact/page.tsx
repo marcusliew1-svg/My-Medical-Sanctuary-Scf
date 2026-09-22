@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { EditorialHero, ImagePanel, JourneyLine } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Contact / Discovery Form | My Medical Sanctuary",
+  title: "Contact / Discovery Form",
   description:
     "Start a discovery discussion with My Medical Sanctuary for health screening, membership, wellness coordination or corporate executive wellness.",
 };
@@ -38,18 +38,20 @@ export default function ContactPage() {
         eyebrow="Contact MMS"
         title="Start with a private discovery discussion."
         lead="Share your context once. MMS can help you understand the right next step before any programme or recommendation is considered."
-        image="/mms-concierge-lounge.png"
-        imageAlt="Private doctor-led consultation at My Medical Sanctuary."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, welcoming patients into a private discovery discussion."
         primaryLabel="Send enquiry"
         primaryHref="#discovery-form"
         secondaryLabel="Ask Ling first"
         secondaryHref="/ling"
-        imagePosition="50% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="Start with me if you are unsure where to begin. I’ll help organise your question before an MMS team member or doctor takes over."
         trustItems={[
           { title: "Private intake", text: "A calm first discussion before recommendations." },
-          { title: "Careful routing", text: "Screening, membership, corporate or education pathways." },
-          { title: "Professional review", text: "Medical decisions remain doctor-led." },
-          { title: "Clear follow-up", text: "MMS helps organise the next step." },
+          { title: "Question-led", text: "Testing should answer a health question, not fill a package." },
+          { title: "Professional review", text: "Medical interpretation and suitability remain doctor-led." },
+          { title: "Clear follow-up", text: "MMS helps organise what happens next." },
         ]}
       />
 
@@ -58,11 +60,11 @@ export default function ContactPage() {
           <aside className="lg:sticky lg:top-28">
             <p className="editorial-kicker mb-4 text-deep-green">Concierge intake</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              A calm first step, not a sales counter.
+              A calm first step, designed around your question.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
-              The discovery form helps MMS understand whether you are looking for screening, continuity,
-              education, executive wellness or a broader preventive health journey.
+              The discovery form helps MMS understand the question behind the enquiry before deciding whether screening,
+              education, physician review, membership or another pathway is the appropriate next step.
             </p>
             <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-gold-light/60 bg-white shadow-premium">
               <ImagePanel

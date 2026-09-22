@@ -5,11 +5,11 @@ module.exports = {
     extend: {
       colors: {
         navy: "#0B1A2E",
-        gold: "#B56F5B",
-        "gold-light": "#D9B8AA",
+        gold: "#C7A76A",
+        "gold-light": "#E2CEA0",
         ivory: "#FDFBF7",
         "warm-white": "#F7F5F2",
-        "deep-green": "#315B4C",
+        "deep-green": "#2F5147",
         charcoal: "#2A2A2E",
         "warm-gray": "#6B6B72",
       },

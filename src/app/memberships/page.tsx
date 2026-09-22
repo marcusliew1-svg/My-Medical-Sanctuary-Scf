@@ -1,49 +1,29 @@
 import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
-import { memberships } from "@/data/memberships";
+import { CareTeamStrip } from "@/components/ExperienceCards";
+import { MembershipComparison } from "@/components/MembershipComparison";
 
 export const metadata: Metadata = {
-  title: "Memberships | My Medical Sanctuary",
+  title: "Memberships",
   description:
     "Ascend, Evolve, Eterna and Pinnacle are MMS relationship pathways for preventive healthcare and personalised longevity coordination.",
 };
 
-const tierImages = [
-  "/mms-concierge-lounge.png",
-  "/mms-doctor-results-review.png",
-  "/mms-doctor-couple-consult.png",
-  "/mms-diagnostics-screening.png",
-];
-
-const tierDetails = [
-  "Best for people who want a serious starting point: baseline screening, appointment guidance and a practical first roadmap.",
-  "Designed for members who want closer follow-up around energy, weight, lifestyle, metabolic health and review preparation.",
-  "Built for longer-horizon preventive planning where continuity, scheduling and repeated review matter more than one appointment.",
-  "A discreet relationship model for highly coordinated care, subject to invitation, capacity and clinical suitability assessment.",
-];
-
 export default function MembershipsPage() {
-  const cards = memberships.map((membership, index) => ({
-    title: membership.name,
-    eyebrow: membership.accessNote,
-    text: membership.tagline,
-    detail: `${tierDetails[index]} First 30 days may include: ${membership.firstThirtyDays.join(", ")}.`,
-    image: tierImages[index],
-  }));
-
   return (
     <main>
       <EditorialHero
-        eyebrow="Programmes"
+        eyebrow="Memberships"
         title="A continuum of care for every chapter of your life."
         lead="MMS memberships describe increasing depth of coordination after discovery, screening and professional review. No public pricing pressure. No one-size-fits-all pathway."
-        image="/mms-concierge-lounge.png"
-        imageAlt="MMS concierge welcoming patients into the membership journey."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing membership pathways."
         primaryLabel="Discuss membership"
         secondaryLabel="How it works"
         secondaryHref="/how-it-works"
-        imagePosition="58% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand the difference between Ascend, Evolve, Eterna and Pinnacle before you discuss suitability with the MMS team."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -59,29 +39,12 @@ export default function MembershipsPage() {
             </p>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-doctor-couple-consult.png" alt="Doctor-led private consultation." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Premium patient concierge welcome." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Preventive diagnostics." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
+            <ImagePanel priority src="/mms-membership-journey.webp" alt="MMS membership journey from baseline understanding to long-term health continuity." className="col-span-3 min-h-[320px] rounded-[1.6rem] shadow-premium" objectPosition="50% center" />
           </div>
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-20 text-ivory md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">The continuum</p>
-              <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-                Four depths. One standard of discretion.
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover or focus each pathway to see what it is designed to clarify.
-            </p>
-          </div>
-          <RevealCardGrid items={cards} />
-        </div>
-      </section>
+      <MembershipComparison />
 
       <SplitStory
         eyebrow="Suitability"
@@ -108,7 +71,7 @@ export default function MembershipsPage() {
         image="/mms-concierge-lounge.png"
         eyebrow="Relationship model"
         title="Membership should feel like continuity, not a price list."
-        text="The commercial value is in coordination, memory, privacy and follow-through after doctor review."
+        text="The value is in coordination, continuity, privacy and follow-through after doctor review."
         points={["No public pricing", "Suitability review", "Long-term relationship"]}
       />
 

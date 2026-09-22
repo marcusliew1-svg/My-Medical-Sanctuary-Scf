@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { EditorialHero, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Corporate Executive Wellness | My Medical Sanctuary",
+  title: "Corporate Executive Wellness",
   description:
     "Corporate executive wellness programmes with discovery, health screening, HRM coordination and professional review pathways.",
 };
@@ -36,15 +36,17 @@ export default function CorporateExecutiveWellnessPage() {
     <main>
       <EditorialHero
         eyebrow="Corporate Executive Wellness"
-        title="Preventive health for people who carry responsibility."
-        lead="MMS supports companies, owners and leadership teams with structured discovery, screening pathways, professional review and discreet coordination."
-        image="/mms-health-screening-hero.png"
-        imageAlt="Doctor-led executive health screening discussion."
+        title="Executive health deserves the same discipline as business risk."
+        lead="MMS supports companies, owners and leadership teams with structured discovery, evidence-aware screening, professional review and discreet continuity."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing executive preventive health programmes."
         primaryLabel="Discuss a programme"
         primaryHref="#corporate-enquiry"
         secondaryLabel="How MMS works"
         secondaryHref="/how-it-works"
-        imagePosition="60% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help organisations understand the MMS pathway, prepare the right questions and route clinical matters to qualified professionals."
       />
 
       <SplitStory
@@ -73,7 +75,7 @@ export default function CorporateExecutiveWellnessPage() {
         <div className="mx-auto max-w-6xl">
           <p className="editorial-kicker mb-5 text-gold-light">Programme architecture</p>
           <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-            Designed around governance, privacy and continuity.
+            Designed around evidence, governance, privacy and continuity.
           </h2>
           <div className="mt-12">
             <JourneyLine dark steps={executivePath} />

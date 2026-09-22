@@ -15,19 +15,18 @@ export function RevealCardGrid({ items }: { items: RevealCardItem[] }) {
     <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
       {items.map((item) => {
         const content = (
-          <article className="group relative min-h-[340px] overflow-hidden rounded-[2rem] border border-gold-light/25 bg-navy text-ivory shadow-[0_28px_76px_rgba(11,26,46,0.18)] outline-none transition duration-500 hover:-translate-y-1 hover:shadow-[0_34px_90px_rgba(11,26,46,0.26)] focus-visible:ring-2 focus-visible:ring-gold">
+          <article className="group relative min-h-[320px] overflow-hidden rounded-[1.75rem] border border-gold-light/22 bg-navy text-ivory shadow-[0_24px_64px_rgba(11,26,46,0.16)] outline-none transition duration-500 hover:-translate-y-1 hover:border-gold-light/40 hover:shadow-[0_34px_90px_rgba(11,26,46,0.24)] focus-visible:ring-2 focus-visible:ring-gold">
             {item.image ? (
               <Image
                 src={item.image}
                 alt=""
                 fill
-                priority
                 className="object-cover opacity-72 transition duration-700 group-hover:scale-105 group-hover:opacity-52"
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
               />
             ) : null}
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,21,29,0.08),rgba(7,21,29,0.76)_62%,rgba(7,21,29,0.96))]" />
-            <div className="relative flex h-full min-h-[340px] flex-col justify-end p-6 md:p-7">
+            <div className="relative flex h-full min-h-[320px] flex-col justify-end p-5 sm:p-6 md:p-7">
               {item.eyebrow ? (
                 <p className="mb-3 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-gold-light">
                   {item.eyebrow}
@@ -35,8 +34,8 @@ export function RevealCardGrid({ items }: { items: RevealCardItem[] }) {
               ) : null}
               <h3 className="font-serif text-3xl leading-tight">{item.title}</h3>
               <p className="mt-3 text-sm leading-6 text-ivory/76">{item.text}</p>
-              <div className="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr] group-focus-visible:grid-rows-[1fr]">
-                <p className="overflow-hidden pt-0 text-sm leading-6 text-ivory/82 opacity-0 transition duration-500 group-hover:pt-4 group-hover:opacity-100 group-focus-visible:pt-4 group-focus-visible:opacity-100">
+              <div className="grid grid-rows-[1fr] transition-all duration-500 md:grid-rows-[0fr] md:group-hover:grid-rows-[1fr] md:group-focus-visible:grid-rows-[1fr]">
+                <p className="overflow-hidden pt-4 text-sm leading-6 text-ivory/76 opacity-100 transition duration-500 md:pt-0 md:opacity-0 md:group-hover:pt-4 md:group-hover:opacity-100 md:group-focus-visible:pt-4 md:group-focus-visible:opacity-100">
                   {item.detail}
                 </p>
               </div>
@@ -154,7 +153,7 @@ export function LingGuideStrip({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(212,175,55,0.16),transparent_35%)]" />
       <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-[0.56fr_1fr] md:items-center">
         <div className="relative min-h-[330px] overflow-hidden rounded-[1.25rem] border border-gold-light/25">
-          <Image src={image} alt="Ling, MMS AI Health Education Companion." fill priority className="object-cover" sizes="(min-width: 768px) 40vw, 100vw" />
+          <Image src={image} alt="Ling, MMS virtual health spokesperson and education guide." fill priority className="object-cover" sizes="(min-width: 768px) 40vw, 100vw" />
         </div>
         <div>
           <p className="editorial-kicker mb-4 text-gold-light">Ling beside you</p>

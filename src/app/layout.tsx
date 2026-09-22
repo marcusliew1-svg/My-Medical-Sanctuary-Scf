@@ -3,10 +3,12 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { DraftBanner } from "@/components/DraftBanner";
 import { FooterV01 } from "@/components/FooterV01";
 import { Navbar } from "@/components/Navbar";
+import { LingDock } from "@/components/LingDock";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
-const socialImage = "/mms-about-hero.png";
+const socialImage = "/ling-mms-guide.png";
+const isProduction = process.env.VERCEL_ENV === "production";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +29,11 @@ export const metadata: Metadata = {
     template: "%s | My Medical Sanctuary",
   },
   description:
-    "My Medical Sanctuary is a premium preventive care and personalised longevity membership platform with discovery-first wellness coordination.",
+    "My Medical Sanctuary combines physician-led preventive care, advanced diagnostics, personalised longevity planning and continuous health guidance.",
+  robots: {
+    index: isProduction,
+    follow: isProduction,
+  },
   icons: {
     icon: "/mms-logo-mark.png",
     shortcut: "/mms-logo-mark.png",
@@ -62,6 +68,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <DraftBanner />
         <Navbar />
         {children}
+        <LingDock />
         <FooterV01 />
       </body>
     </html>

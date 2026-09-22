@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EditorialHero, EditorialStatement, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
+import { ClinicalGovernance } from "@/components/ClinicalGovernance";
 
 export const metadata: Metadata = {
   title: "About MMS",
@@ -21,12 +22,15 @@ export default function AboutMMSPage() {
       <EditorialHero
         eyebrow="About MMS"
         title="A private institution for the health journey before illness."
-        lead="MMS exists to move people from random health purchases into structured understanding, professional review and long-term continuity."
-        image="/mms-about-hero.png"
-        imageAlt="Doctor and patient in a private consultation."
+        lead="MMS exists to move people from fragmented health decisions into structured understanding, professional review and long-term continuity."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing the My Medical Sanctuary philosophy."
         primaryLabel="Begin with discovery"
         secondaryLabel="Our method"
         secondaryHref="/how-it-works"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="MMS is built around one idea: understand earlier, decide with medical guidance and stay connected to your health over time."
       />
 
       <EditorialStatement
@@ -46,6 +50,8 @@ export default function AboutMMSPage() {
       >
         <JourneyLine compact steps={thinking} />
       </SplitStory>
+
+      <ClinicalGovernance />
 
       <section className="bg-navy px-4 py-20 text-ivory md:py-28">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">

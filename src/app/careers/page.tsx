@@ -15,11 +15,11 @@ export default function CareersPage() {
 
   return (
     <main>
-      <section className="bg-deep-green px-4 pb-16 pt-32 text-ivory md:pb-24 md:pt-40">
+      <section className="relative overflow-hidden bg-[#07151d] px-4 pb-20 pt-32 text-ivory md:pb-28 md:pt-40">
         <div className="mx-auto max-w-6xl">
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">Careers at MMS</p>
-          <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-tight md:text-7xl">Help us build a more connected health experience.</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-ivory/72">MMS brings together preventive health, personalised longevity, care coordination and digital intelligence. We are building teams that combine professionalism, empathy and operational discipline.</p>
+          <p className="editorial-kicker text-gold-light">Careers at MMS</p>
+          <h1 className="mt-4 max-w-4xl text-balance font-serif text-5xl leading-[1.02] md:text-7xl">Help build a health institution where evidence and hospitality can coexist.</h1>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-ivory/72">MMS brings together preventive health, personalised longevity, care coordination and digital intelligence. We are building teams that combine professionalism, empathy, evidence discipline and operational excellence.</p>
         </div>
       </section>
 
@@ -35,7 +35,7 @@ export default function CareersPage() {
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {CAREER_ROLE_FAMILIES.map(({ name, description }) => (
-              <article key={name} className="rounded-[1.5rem] border border-black/5 bg-white p-6 shadow-soft">
+              <article key={name} className="rounded-[1.5rem] border border-gold/18 bg-white/92 p-6 shadow-[0_20px_60px_rgba(11,26,46,0.06)]">
                 <p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">MMS team</p>
                 <h3 className="mt-2 font-serif text-2xl text-navy">{name}</h3>
                 <p className="mt-3 text-sm leading-6 text-warm-gray">{description}</p>
