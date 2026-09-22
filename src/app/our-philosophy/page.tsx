@@ -20,9 +20,9 @@ export default function OurPhilosophyPage() {
       <EditorialHero
         eyebrow="Our Philosophy"
         title="Clearer, earlier and more personal healthcare."
-        lead="MMS believes better decisions begin with understanding, screening, doctor review and a roadmap that evolves with the patient."
-        image="/mms-health-screening-hero.png"
-        imageAlt="Doctor-led preventive health review."
+        lead="MMS believes better decisions begin with understanding, proportionate measurement, physician judgement and continuity that evolves with the patient."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing the MMS care philosophy."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
