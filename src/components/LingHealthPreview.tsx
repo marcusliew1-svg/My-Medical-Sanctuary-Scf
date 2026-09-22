@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const signals = [
@@ -40,8 +41,14 @@ export function LingHealthPreview() {
                 <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">MMS health view</p>
                 <p className="mt-1 font-serif text-xl">Good morning.</p>
               </div>
-              <div className="grid h-10 w-10 place-items-center rounded-full border border-gold/35 bg-gold/10 text-sm font-semibold text-gold-light">
-                L
+              <div className="relative h-11 w-11 overflow-hidden rounded-full border border-gold/35 bg-ivory">
+                <Image
+                  src="/ling-mms-guide.png"
+                  alt="Ling, the MMS virtual health spokesperson"
+                  fill
+                  className="object-cover object-top"
+                  sizes="44px"
+                />
               </div>
             </div>
 
