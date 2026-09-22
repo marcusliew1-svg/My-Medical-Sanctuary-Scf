@@ -2,7 +2,7 @@ export const navigation = [
   { label: "About MMS", href: "/about-mms" },
   { label: "Our Approach", href: "/how-it-works" },
   { label: "Memberships", href: "/memberships" },
-  { label: "Advanced Care", href: "/treatments" },
+  { label: "Science & Evidence", href: "/science-evidence" },
   { label: "Health Intelligence", href: "/insights" },
   { label: "Locations", href: "/clinics" },
 ];
