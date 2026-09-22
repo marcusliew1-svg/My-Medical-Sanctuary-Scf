@@ -3,6 +3,7 @@ import { EditorialHero, FinalInvitation } from "@/components/Editorial";
 import { EvidenceStandard } from "@/components/EvidenceStandard";
 import { ScreeningEvidence } from "@/components/ScreeningEvidence";
 import { EvidenceLadder } from "@/components/EvidenceLadder";
+import { ClinicalGovernance } from "@/components/ClinicalGovernance";
 
 export const metadata: Metadata = {
   title: "Science & Evidence",
@@ -97,6 +98,8 @@ export default function ScienceEvidencePage() {
       </section>
 
       <ScreeningEvidence />
+
+      <ClinicalGovernance />
 
       <EvidenceLadder />
 
