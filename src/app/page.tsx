@@ -63,14 +63,16 @@ export default function HomePage() {
         eyebrow="Preventive care • Personalised longevity"
         title="Know earlier. Live better."
         lead="Advanced diagnostics, physician-guided prevention and personalised longevity care — built around you."
-        image="/mms-doctor-couple-consult.png"
-        imageAlt="Doctor reviewing health information with a patient in a calm private consultation room."
-        imagePosition="62% center"
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing the preventive health journey."
+        imagePosition="72% center"
         primaryLabel="Start my health assessment"
         primaryHref="/health-discovery"
         secondaryLabel="Explore MMS"
         secondaryHref="/how-it-works"
         showHealthSignals
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand where to begin, what your results mean in plain language, and when it is time to speak with your MMS doctor."
         trustItems={[
           { title: "Discover earlier", text: "Build a clearer picture before symptoms define the story." },
           { title: "Doctors interpret", text: "Clinical judgement remains at the centre of every decision." },
