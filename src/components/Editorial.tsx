@@ -46,6 +46,8 @@ type EditorialHeroProps = {
   imagePosition?: string;
   trustItems?: Array<{ title: string; text: string }>;
   showHealthSignals?: boolean;
+  spokespersonName?: string;
+  spokespersonMessage?: string;
 };
 
 export function EditorialHero({
@@ -60,6 +62,8 @@ export function EditorialHero({
   secondaryHref = "/how-it-works",
   imagePosition = "60% center",
   showHealthSignals = false,
+  spokespersonName,
+  spokespersonMessage,
   trustItems = [
     { title: "Physician-led care", text: "Professional review before recommendations." },
     { title: "Personalised to you", text: "No one-size-fits-all health pathway." },
@@ -98,8 +102,29 @@ export function EditorialHero({
           </div>
         </div>
 
+        {spokespersonName && spokespersonMessage ? (
+          <div className="absolute bottom-32 right-0 hidden w-[330px] lg:block">
+            <div className="rounded-[1.7rem] border border-white/15 bg-[#07151d]/78 p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] backdrop-blur-xl">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Your MMS guide</p>
+                  <p className="mt-1 font-serif text-2xl">{spokespersonName}</p>
+                </div>
+                <div className="grid h-11 w-11 place-items-center rounded-full border border-gold/35 bg-gold/10 text-sm font-semibold text-gold-light">
+                  {spokespersonName.slice(0, 1)}
+                </div>
+              </div>
+              <p className="mt-4 text-sm leading-6 text-ivory/76">{spokespersonMessage}</p>
+              <div className="mt-4 flex items-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-gold-light/80">
+                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_14px_rgba(212,175,55,0.75)]" />
+                Virtual health spokesperson
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         {showHealthSignals ? (
-          <div className="pointer-events-none absolute bottom-32 right-0 hidden w-[310px] lg:block">
+          <div className={`pointer-events-none absolute right-0 hidden w-[310px] lg:block ${spokespersonName ? "bottom-[25rem]" : "bottom-32"}`}>
             <div className="rounded-[1.6rem] border border-white/15 bg-[#07151d]/72 p-4 shadow-[0_30px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Health intelligence</p>
