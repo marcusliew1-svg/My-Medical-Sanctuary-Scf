@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
+import { ScreeningEvidence } from "@/components/ScreeningEvidence";
 
 export const metadata: Metadata = {
   title: "Health Screening | My Medical Sanctuary",
@@ -84,6 +85,8 @@ export default function HealthScreeningPage() {
           />
         </div>
       </section>
+
+      <ScreeningEvidence />
 
       <section className="bg-navy px-4 py-20 text-ivory md:py-28">
         <div className="mx-auto max-w-6xl">
