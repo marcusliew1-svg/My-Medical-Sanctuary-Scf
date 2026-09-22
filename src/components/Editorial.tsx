@@ -100,6 +100,21 @@ export function EditorialHero({
               {secondaryLabel}
             </ButtonLink>
           </div>
+
+          {spokespersonName && spokespersonMessage ? (
+            <div className="mt-7 rounded-[1.35rem] border border-white/14 bg-[#07151d]/72 p-4 backdrop-blur-xl lg:hidden">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-gold-light">Your MMS guide</p>
+                  <p className="mt-1 font-serif text-xl">{spokespersonName}</p>
+                </div>
+                <span className="grid h-9 w-9 place-items-center rounded-full border border-gold/35 bg-gold/10 text-xs font-semibold text-gold-light">
+                  {spokespersonName.slice(0, 1)}
+                </span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-ivory/72">{spokespersonMessage}</p>
+            </div>
+          ) : null}
         </div>
 
         {spokespersonName && spokespersonMessage ? (
