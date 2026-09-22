@@ -4,7 +4,7 @@ import { EditorialHero, FinalInvitation, ImagePanel, JourneyLine, SplitStory } f
 import { medicineAccessFactors } from "@/data/platformModules";
 
 export const metadata: Metadata = {
-  title: "International Medicine Access Intelligence | My Medical Sanctuary",
+  title: "International Medicine Access Intelligence",
   description:
     "Understand why medicine availability and costs can differ between countries, with MMS positioned as an education and coordination layer.",
 };
@@ -35,33 +35,33 @@ const pathway = [
 const comparisonMarkets = [
   {
     market: "United States",
-    signal: "Very high patient cost signal",
-    reason: "Insurance design, brand pricing, distribution and pharmacy benefit structures can strongly affect final patient cost.",
+    signal: "Insurance & access complexity",
+    reason: "Coverage design, formulary rules, pharmacy benefit structures and prescribing pathways can affect patient access.",
   },
   {
-    market: "Gulf / Arab markets",
-    signal: "Premium private access signal",
-    reason: "Private-pay pathways, import structures and availability timing can vary widely by country and product.",
+    market: "Gulf markets",
+    signal: "Jurisdiction-specific access",
+    reason: "Registration, import arrangements, private-pay pathways and local prescribing requirements can vary by country.",
   },
   {
     market: "Australia",
-    signal: "Subsidy-dependent signal",
-    reason: "Public subsidy status, private prescription rules and registration determine whether the same medicine is affordable or costly.",
+    signal: "Registration & subsidy context",
+    reason: "Public subsidy status, private prescribing and registration influence how medicines are accessed.",
   },
   {
     market: "Singapore",
-    signal: "High private cost signal",
-    reason: "Specialist care, private pharmacy pricing and supply availability can create a premium access environment.",
+    signal: "Specialist & private access",
+    reason: "Specialist pathways, registration and private dispensing structures shape access and continuity.",
   },
   {
     market: "Indonesia",
-    signal: "Variable access signal",
-    reason: "Registration, city-level availability, local distribution and private access pathways can differ substantially.",
+    signal: "Distribution variability",
+    reason: "Registration, local distribution, city-level availability and licensed-provider pathways may differ substantially.",
   },
   {
     market: "Malaysia / Thailand",
-    signal: "Potential value corridor",
-    reason: "Selected medicines or pathways may be more accessible, but only after regulatory, prescription and licensed-provider review.",
+    signal: "Regional licensed pathways",
+    reason: "Selected medicines or services may be available through local licensed pathways, subject to registration, prescribing and continuity review.",
   },
 ];
 
@@ -110,14 +110,14 @@ export default function InternationalMedicineAccessPage() {
           <div>
             <p className="editorial-kicker mb-4 text-gold-light">Access context</p>
             <h2 className="text-balance font-serif text-4xl leading-tight md:text-6xl">
-              The same active ingredient can sit behind very different patient bills.
+              The same medicine can sit inside very different regulatory and care systems.
             </h2>
             <p className="mt-6 text-lg leading-8 text-ivory/72">
-              MMS helps patients compare access more intelligently by understanding country rules, registration,
-              prescription requirements, supply pathways and continuity before licensed coordination.
+              MMS helps patients understand access more intelligently by considering country rules, registration,
+              prescription requirements, licensed providers, supply pathways and continuity before any next step.
             </p>
             <div className="mt-8 rounded-[1.5rem] border border-gold-light/25 bg-ivory/10 p-5 text-sm leading-7 text-ivory/70">
-              A patient may ask why a medicine is costly in one country and whether another market offers a lawful,
+              A patient may ask why access differs between countries or whether another jurisdiction offers a lawful,
               professionally reviewed pathway. MMS helps frame that question without turning the website into a medicine marketplace.
             </div>
           </div>
