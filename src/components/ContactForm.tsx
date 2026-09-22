@@ -11,14 +11,13 @@ const interests = [
   "Personalised longevity",
   "Corporate executive wellness",
   "International medicine access intelligence",
-  "SCF lab roadmap",
   "Education with Ling",
 ];
 
 const enquiringFor = ["Myself", "Family member", "Company", "Executive team", "Other"];
 
 const fieldClass =
-  "min-h-12 rounded-md border border-gold-light/50 bg-ivory/45 px-4 font-normal text-charcoal transition focus:border-gold focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-light/45";
+  "min-h-12 rounded-[0.9rem] border border-gold-light/45 bg-[#fbf8f2] px-4 font-normal text-charcoal transition placeholder:text-warm-gray/55 hover:border-gold/55 focus:border-gold focus:bg-white focus:outline-none focus:ring-2 focus:ring-gold-light/35";
 
 const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
 
@@ -43,7 +42,11 @@ export function ContactForm() {
       interestedIn: String(formData.get("mainInterest") ?? ""),
       preferredContactMethod: "Not specified",
       preferredAppointmentDate: String(formData.get("preferredContactTime") ?? ""),
-      message: String(formData.get("message") ?? ""),
+      message: [
+        String(formData.get("message") ?? ""),
+        `Enquiring for: ${String(formData.get("enquiringFor") ?? "Not specified")}`,
+        `Preferred membership: ${String(formData.get("preferredMembership") ?? "Not sure yet")}`,
+      ].filter(Boolean).join("\n"),
       consentToContact: formData.get("consent") === "on" ? "true" : "false",
       consentVersion: "MMS-WEB-2026-08-v1",
       sourcePath: window.location.pathname,
@@ -85,10 +88,13 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[1.5rem] border border-gold-light/50 bg-white/[0.94] p-6 shadow-premium md:grid-cols-2 md:p-8">
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[2rem] border border-gold-light/45 bg-white/[0.96] p-6 shadow-[0_30px_90px_rgba(11,26,46,0.10)] md:grid-cols-2 md:p-9">
       <div className="md:col-span-2">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Discovery Enquiry</p>
-        <h3 className="mt-2 font-serif text-3xl text-navy">Tell us where to begin.</h3>
+        <div className="flex items-center gap-3">
+          <span className="grid h-8 w-8 place-items-center rounded-full border border-gold/35 bg-gold/10 text-[0.65rem] font-bold text-deep-green">01</span>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-deep-green">Private discovery enquiry</p>
+        </div>
+        <h3 className="mt-4 font-serif text-3xl text-navy md:text-4xl">Tell us where to begin.</h3>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-warm-gray">
           This is not a medical consultation. It helps MMS understand who should contact you and what pathway may be relevant.
         </p>
@@ -98,8 +104,8 @@ export function ContactForm() {
         <input name="fullName" required className={fieldClass} />
       </label>
       <label className={labelClass}>
-        Phone
-        <input name="phone" required className={fieldClass} />
+        Phone / WhatsApp
+        <input name="phone" required className={fieldClass} placeholder="+60 / +65 / +66 ..." />
       </label>
       <label className={labelClass}>
         Email
@@ -107,7 +113,7 @@ export function ContactForm() {
       </label>
       <label className={labelClass}>
         Country / City
-        <input name="countryCity" required className={fieldClass} />
+        <input name="countryCity" required className={fieldClass} placeholder="e.g. Kuala Lumpur" />
       </label>
       <label className={labelClass}>
         Main interest
@@ -118,8 +124,8 @@ export function ContactForm() {
         </select>
       </label>
       <label className={labelClass}>
-        Preferred membership
-        <select name="preferredMembership" required className={fieldClass}>
+        Preferred support level
+        <select name="preferredMembership" className={fieldClass}>
           <option>Not sure yet</option>
           {memberships.map((membership) => (
             <option key={membership.name}>{membership.name}</option>
@@ -136,13 +142,13 @@ export function ContactForm() {
       </label>
       <label className={labelClass}>
         Preferred contact time
-        <input name="preferredContactTime" required className={fieldClass} />
+        <input name="preferredContactTime" required className={fieldClass} placeholder="e.g. Weekday mornings" />
       </label>
       <label className={`${labelClass} md:col-span-2`}>
-        Message
-        <textarea name="message" rows={5} className={`${fieldClass} py-3`} />
+        What would you like MMS to help you understand?
+        <textarea name="message" rows={5} className={`${fieldClass} py-3`} placeholder="Share the concern, goal or question that brought you here." />
       </label>
-      <label className="flex gap-3 rounded-md border border-gold-light/40 bg-ivory p-4 text-sm leading-6 text-charcoal md:col-span-2">
+      <label className="flex gap-3 rounded-[1rem] border border-gold-light/35 bg-[#faf7f1] p-4 text-sm leading-6 text-charcoal md:col-span-2">
         <input name="consent" type="checkbox" required className="mt-1 size-4 accent-gold" />
         <span>
           I consent to My Medical Sanctuary contacting me about my enquiry. I understand this form does not create a medical relationship.
@@ -155,7 +161,7 @@ export function ContactForm() {
       ) : null}
       <div className="md:col-span-2">
         <CTAButton type="submit" className={isSubmitting ? "pointer-events-none opacity-70" : ""}>
-          {isSubmitting ? "Submitting..." : "Submit Discovery Enquiry"}
+          {isSubmitting ? "Submitting..." : "Send private enquiry"}
         </CTAButton>
       </div>
     </form>
