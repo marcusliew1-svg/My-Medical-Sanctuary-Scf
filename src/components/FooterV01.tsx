@@ -5,6 +5,7 @@ import { navigation } from "@/lib/content";
 const links = [
   ...navigation.map((item) => [item.label, item.href] as const),
   ["Ling", "/ling"] as const,
+  ["Science & Evidence", "/science-evidence"] as const,
   ["Contact", "/contact"] as const,
 ];
 
