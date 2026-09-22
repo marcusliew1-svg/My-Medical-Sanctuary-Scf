@@ -95,10 +95,10 @@ export default function TreatmentsPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Preventive diagnostics and screening." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-doctor-couple-consult.png" alt="Doctor consultation." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Patient concierge service." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-doctor-results-review.png" alt="Screening review." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
+            <ImagePanel src="/mms-diagnostics-screening.png" alt="Preventive diagnostics and screening." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
+            <ImagePanel src="/mms-doctor-couple-consult.png" alt="Doctor consultation." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
+            <ImagePanel src="/mms-concierge-lounge.png" alt="Patient concierge service." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
+            <ImagePanel src="/mms-doctor-results-review.png" alt="Screening review." className="min-h-[230px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
           </div>
         </div>
       </section>
