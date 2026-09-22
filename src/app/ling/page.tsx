@@ -45,14 +45,16 @@ export default function LingPage() {
     <main>
       <EditorialHero
         eyebrow="Ling"
-        title="Your personal health concierge for better questions."
-        lead="Ask. Understand. Prepare. Ling helps you organise what matters before doctor-led care."
-        image="/ling-knowledge.png"
-        imageAlt="Ling, the MMS AI Health Education Companion."
+        title="Meet Ling. Your MMS virtual health spokesperson."
+        lead="Ling introduces the MMS journey, explains health concepts in plain language and helps you prepare for doctor-led care."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson and AI Health Education Companion."
         primaryLabel="Ask Ling"
         secondaryLabel="Speak with MMS"
         secondaryHref="/contact"
-        imagePosition="52% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="You can start with me. I’ll help you make sense of the journey, organise your questions and show you when your MMS doctor needs to take over."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
