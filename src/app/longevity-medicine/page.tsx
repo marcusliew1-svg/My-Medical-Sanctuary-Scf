@@ -23,6 +23,7 @@ export default function LongevityMedicinePage() {
       trustTitle="Advanced longevity discussions require careful boundaries."
       trustLead="Suitability, uncertainty and individual variation should remain visible before any programme is considered."
       finalTitle="Build longevity on clarity, not promises."
+      spokespersonMessage="Longevity is not one treatment. I’ll help you understand the measurements, questions and evidence before your MMS doctor personalises the next step."
     />
   );
 }
