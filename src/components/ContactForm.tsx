@@ -166,7 +166,7 @@ export function ContactForm() {
         </p>
       ) : null}
       <div className="md:col-span-2">
-        <CTAButton type="submit" className={isSubmitting ? "pointer-events-none opacity-70" : ""}>
+        <CTAButton type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Send private enquiry"}
         </CTAButton>
       </div>
