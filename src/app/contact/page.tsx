@@ -38,13 +38,15 @@ export default function ContactPage() {
         eyebrow="Contact MMS"
         title="Start with a private discovery discussion."
         lead="Share your context once. MMS can help you understand the right next step before any programme or recommendation is considered."
-        image="/mms-concierge-lounge.png"
-        imageAlt="Private doctor-led consultation at My Medical Sanctuary."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, welcoming patients into a private discovery discussion."
         primaryLabel="Send enquiry"
         primaryHref="#discovery-form"
         secondaryLabel="Ask Ling first"
         secondaryHref="/ling"
-        imagePosition="50% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="Start with me if you are unsure where to begin. I’ll help organise your question before an MMS team member or doctor takes over."
         trustItems={[
           { title: "Private intake", text: "A calm first discussion before recommendations." },
           { title: "Careful routing", text: "Screening, membership, corporate or education pathways." },
