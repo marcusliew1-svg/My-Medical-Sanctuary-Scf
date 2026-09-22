@@ -22,11 +22,14 @@ export default function AboutMMSPage() {
         eyebrow="About MMS"
         title="A private institution for the health journey before illness."
         lead="MMS exists to move people from random health purchases into structured understanding, professional review and long-term continuity."
-        image="/mms-about-hero.png"
-        imageAlt="Doctor and patient in a private consultation."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing the My Medical Sanctuary philosophy."
         primaryLabel="Begin with discovery"
         secondaryLabel="Our method"
         secondaryHref="/how-it-works"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="MMS is built around one idea: understand earlier, decide with medical guidance and stay connected to your health over time."
       />
 
       <EditorialStatement
