@@ -1,5 +1,6 @@
 import { EditorialHero, EditorialStatement, FinalInvitation, SplitStory } from "@/components/Editorial";
 import { metadataFor } from "@/components/PatientEditorialPage";
+import { EvidenceStandard } from "@/components/EvidenceStandard";
 
 export const metadata = metadataFor(
   "Why MMS",
@@ -12,7 +13,7 @@ export default function WhyMmsPage() {
       <EditorialHero
         eyebrow="Why MMS"
         title="Trust is built before a recommendation is made."
-        lead="MMS exists for patients who want serious preventive health guidance without hard-sell wellness noise."
+        lead="MMS is designed for patients who want serious preventive health guidance with clearer evidence boundaries, physician judgement and continuity."
         image="/ling-mms-guide.png"
         imageAlt="Ling, the MMS virtual health spokesperson, introducing why MMS exists."
         primaryLabel="Start with clarity"
@@ -43,6 +44,8 @@ export default function WhyMmsPage() {
           <p>Membership follows understanding, not pressure.</p>
         </div>
       </SplitStory>
+
+      <EvidenceStandard />
 
       <FinalInvitation title="Start with understanding. Trust can grow from there." />
     </main>
