@@ -11,7 +11,7 @@ export default function LongevityMedicinePage() {
       eyebrow="Longevity Medicine"
       title="Ageing well deserves medical judgement, not hype."
       lead="MMS approaches longevity through baseline understanding, evidence-informed discussion and professional review."
-      image="/mms-health-screening-hero.png"
+      image="/ling-knowledge.png"
       introEyebrow="Healthy ageing"
       introTitle="Longevity is most credible when it is personal and measured."
       introLead="The right questions are usually about resilience, energy, metabolic health, recovery and long-term independence."
