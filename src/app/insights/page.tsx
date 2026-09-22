@@ -5,7 +5,7 @@ import { EditorialHero, FinalInvitation, ImagePanel } from "@/components/Editori
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
-  title: "Health Intelligence | My Medical Sanctuary",
+  title: "Health Intelligence",
   description:
     "MMS Health Intelligence helps patients understand preventive health, longevity science, screening and treatment questions with clear evidence boundaries.",
 };
@@ -104,7 +104,7 @@ export default function InsightsPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each briefing to reveal what the patient should understand next.
+              Each briefing is structured around evidence, uncertainty, suitability and the next useful clinical question.
             </p>
           </div>
           <RevealCardGrid items={featured} />
@@ -117,22 +117,20 @@ export default function InsightsPage() {
             <Image src="/mms-medicine-access-consult.png" alt="Doctor and concierge helping visitors understand regional medicine access." fill className="object-cover" sizes="(min-width: 1024px) 45vw, 100vw" />
           </div>
           <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Medicine price intelligence</p>
+            <p className="editorial-kicker mb-4 text-deep-green">Cross-border care context</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              If one country is expensive and another is cheaper, the answer is not just price.
+              Access can change across countries. Clinical responsibility should not.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
-              MMS can educate patients on why access differs across the US, Gulf markets, Australia,
-              Singapore, Indonesia, Malaysia and Thailand: registration status, supply chains, taxes,
-              exchange rates, manufacturer pathways, prescription rules and local professional requirements.
-              The goal is to help patients understand the context before licensed professional review or coordination.
+              Registration status, supply pathways, prescription rules, licensed providers and continuity requirements can differ across jurisdictions.
+              MMS should help patients understand those differences without turning access into a price-shopping exercise.
             </p>
             <div className="mt-7 grid gap-3 border-y border-gold/40 py-5 text-sm leading-6 text-warm-gray">
-              <p><strong className="text-navy">High-cost markets:</strong> United States, Gulf private-pay markets, Australia, Singapore and selected Indonesian private pathways.</p>
-              <p><strong className="text-navy">Potential value corridor:</strong> Malaysia and Thailand, subject to registration, prescription, licensed access and continuity review.</p>
+              <p><strong className="text-navy">Before access:</strong> confirm indication, regulatory status and whether licensed professional review is required.</p>
+              <p><strong className="text-navy">After access:</strong> continuity, monitoring and follow-up still need to be organised responsibly.</p>
             </div>
             <Link href="/international-medicine-access" className="mt-8 inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8">
-              Explore medicine access intelligence
+              Explore regional medicine access context
             </Link>
           </div>
         </div>
