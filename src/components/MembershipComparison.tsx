@@ -14,7 +14,7 @@ export function MembershipComparison() {
           </div>
           <p className="max-w-2xl text-lg leading-8 text-ivory/66">
             Every level begins with understanding. What changes is the intensity of follow-through, longitudinal planning and
-            support around your health decisions.
+            coordination—not an automatic increase in tests or interventions.
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export function MembershipComparison() {
 
         <div className="mt-8 flex flex-col gap-5 border-t border-white/10 pt-7 md:flex-row md:items-center md:justify-between">
           <p className="max-w-2xl text-sm leading-6 text-ivory/48">
-            Membership suitability and inclusions are confirmed through MMS. Clinical services remain subject to doctor assessment and individual appropriateness.
+            Membership suitability and inclusions are confirmed through MMS. Greater membership depth does not imply more testing; clinical services remain subject to indication, doctor assessment and individual appropriateness.
           </p>
           <Link href="/health-discovery" className="inline-flex rounded-full bg-gold px-5 py-3 text-sm font-semibold text-navy transition hover:-translate-y-0.5 hover:bg-gold-light">
             Start with discovery
