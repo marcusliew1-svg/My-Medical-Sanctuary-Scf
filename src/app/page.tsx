@@ -104,6 +104,7 @@ export default function HomePage() {
         primaryHref="/health-discovery"
         secondaryLabel="Explore MMS"
         secondaryHref="/how-it-works"
+        showHealthSignals
         trustItems={[
           { title: "Discover earlier", text: "Build a clearer picture before symptoms define the story." },
           { title: "Doctors interpret", text: "Clinical judgement remains at the centre of every decision." },
