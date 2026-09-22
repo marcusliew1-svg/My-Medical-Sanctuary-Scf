@@ -32,14 +32,9 @@ const guidance: Record<string, { text: string; href: string; label: string }> = 
     label: "View Longevity Medicine",
   },
   "I want to understand medicine access": {
-    text: "Medicine access can vary between countries because of registration, supply, currency, tax and pharmacy rules. MMS can help frame the access discussion safely.",
+    text: "Medicine access can vary between countries because of registration, prescribing, licensed-provider and supply requirements. MMS can help frame the access discussion safely.",
     href: "/international-medicine-access",
     label: "View Medicine Access",
-  },
-  "I want to understand the SCF lab roadmap": {
-    text: "SCF is best understood as a future capability roadmap. Public information should stay careful until regulatory, licensing and professional requirements are confirmed.",
-    href: "/scf-lab-roadmap",
-    label: "View Lab Roadmap",
   },
   "I'm looking for regenerative medicine": {
     text: "Regenerative medicine is not one treatment. The exact problem, product, procedure, evidence and regulatory status matter, so Ling can help you understand the options before a qualified professional assesses suitability.",
