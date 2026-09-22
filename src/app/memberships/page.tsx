@@ -16,12 +16,14 @@ export default function MembershipsPage() {
         eyebrow="Programmes"
         title="A continuum of care for every chapter of your life."
         lead="MMS memberships describe increasing depth of coordination after discovery, screening and professional review. No public pricing pressure. No one-size-fits-all pathway."
-        image="/mms-concierge-lounge.png"
-        imageAlt="MMS concierge welcoming patients into the membership journey."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing membership pathways."
         primaryLabel="Discuss membership"
         secondaryLabel="How it works"
         secondaryHref="/how-it-works"
-        imagePosition="58% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand the difference between Ascend, Evolve, Eterna and Pinnacle before you discuss suitability with the MMS team."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
