@@ -103,12 +103,17 @@ export default function ScienceEvidencePage() {
       <section className="bg-[#f7f3eb] px-4 py-20 md:py-28">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <p className="editorial-kicker mb-4 text-deep-green">Reference organisations</p>
+            <div className="mb-4 flex flex-wrap items-center gap-3">
+              <p className="editorial-kicker text-deep-green">Reference organisations</p>
+              <span className="rounded-full border border-gold/25 bg-white/70 px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-deep-green/70">
+                Framework reviewed Sep 2026
+              </span>
+            </div>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
               Sources patients can inspect for themselves.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
-              References are not endorsements of every MMS service. They show the type of recognised guidance and evidence framework MMS should use when communicating preventive health.
+              References are not endorsements of MMS or of every MMS service. They show the type of recognised guidance and evidence framework MMS should use when communicating preventive health.
             </p>
           </div>
 
