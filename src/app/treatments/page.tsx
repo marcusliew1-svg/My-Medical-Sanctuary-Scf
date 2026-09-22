@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, MarketSignalPanel, RevealCardGrid } from "@/components/ExperienceCards";
+import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
   title: "Treatments Explained | My Medical Sanctuary",
@@ -143,11 +143,6 @@ export default function TreatmentsPage() {
           </Link>
         </div>
       </SplitStory>
-
-      <MarketSignalPanel
-        title="Medicine access is a real patient pain point, not a small footnote."
-        lead="MMS can build a compliant revenue stream by educating patients on country-level cost signals, then offering verified access-intelligence discussions before licensed coordination."
-      />
 
       <CareTeamStrip
         image="/mms-doctor-results-review.png"
