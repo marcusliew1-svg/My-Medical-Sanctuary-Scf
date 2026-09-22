@@ -6,6 +6,7 @@ import { RevealCardGrid } from "@/components/ExperienceCards";
 import { LongevityIntelligence } from "@/components/LongevityIntelligence";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
 import { MembershipDepth } from "@/components/MembershipDepth";
+import { SanctuaryExperience } from "@/components/SanctuaryExperience";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -140,36 +141,7 @@ export default function HomePage() {
 
       <LingHealthPreview />
 
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <ImagePanel
-            src="/mms-concierge-lounge.png"
-            alt="Private consultation room designed for calm preventive care."
-            className="min-h-[460px] rounded-[2rem] shadow-premium"
-            objectPosition="42% center"
-          />
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">The sanctuary</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Serious medicine can still feel calm, private and considered.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              The MMS experience is designed around privacy, continuity and hospitality — so preventive care feels easier to
-              return to, not something you postpone until something feels wrong.
-            </p>
-            <div className="mt-8 grid gap-6 border-l border-gold/40 pl-6">
-              <div>
-                <h3 className="font-serif text-2xl text-navy">Bangsar</h3>
-                <p className="mt-2 leading-7 text-warm-gray">Preventive health, personalised longevity and physician-led coordination.</p>
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl text-navy">SS2</h3>
-                <p className="mt-2 leading-7 text-warm-gray">Specialised clinical care designed around reliability, dignity and continuity.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <SanctuaryExperience />
 
       <section className="bg-warm-white px-4 py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
