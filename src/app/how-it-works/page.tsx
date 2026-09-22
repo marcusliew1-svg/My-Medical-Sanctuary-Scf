@@ -75,11 +75,7 @@ export default function HowItWorksPage() {
               It should help them understand, assess, review, personalise and continue.
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Doctor-led assessment." className="min-h-[260px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-doctor-results-review.png" alt="Doctor reviewing results." className="min-h-[260px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-doctor-couple-consult.png" alt="Private doctor consultation." className="min-h-[260px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-          </div>
+          <ImagePanel priority src="/mms-service-collage.webp" alt="The connected MMS care journey across discovery, diagnostics, physician review and continuity." className="min-h-[420px] rounded-[1.6rem] shadow-premium" objectPosition="50% center" />
         </div>
       </section>
 
