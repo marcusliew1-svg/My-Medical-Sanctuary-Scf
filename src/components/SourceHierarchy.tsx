@@ -47,24 +47,27 @@ export function SourceHierarchy() {
           </div>
 
           <div className="grid gap-3">
-            {hierarchy.map((item, index) => (
-              <article
-                key={item.rank}
-                className={\`\${item.width} rounded-[1.35rem] border p-5 transition md:p-6 \${
-                  index === 0
-                    ? "border-deep-green/18 bg-[#e8efeb] shadow-[0_20px_64px_rgba(11,26,46,0.06)]"
-                    : index === hierarchy.length - 1
-                      ? "border-[#b97868]/20 bg-[#f7eee9]"
-                      : "border-gold/20 bg-white/80"
-                }\`}
-              >
-                <div className="grid gap-3 sm:grid-cols-[0.16fr_0.7fr_1.14fr] sm:items-start">
-                  <span className="text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-deep-green/55">{item.rank}</span>
-                  <h3 className="font-serif text-2xl leading-tight text-navy">{item.title}</h3>
-                  <p className="text-sm leading-6 text-warm-gray">{item.text}</p>
-                </div>
-              </article>
-            ))}
+            {hierarchy.map((item, index) => {
+              const tone =
+                index === 0
+                  ? "border-deep-green/18 bg-[#e8efeb] shadow-[0_20px_64px_rgba(11,26,46,0.06)]"
+                  : index === hierarchy.length - 1
+                    ? "border-[#b97868]/20 bg-[#f7eee9]"
+                    : "border-gold/20 bg-white/80";
+
+              return (
+                <article
+                  key={item.rank}
+                  className={[item.width, "rounded-[1.35rem] border p-5 transition md:p-6", tone].join(" ")}
+                >
+                  <div className="grid gap-3 sm:grid-cols-[0.16fr_0.7fr_1.14fr] sm:items-start">
+                    <span className="text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-deep-green/55">{item.rank}</span>
+                    <h3 className="font-serif text-2xl leading-tight text-navy">{item.title}</h3>
+                    <p className="text-sm leading-6 text-warm-gray">{item.text}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
 
