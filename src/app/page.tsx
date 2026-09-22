@@ -4,6 +4,7 @@ import Link from "next/link";
 import { EditorialHero, EditorialStatement, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 import { LongevityIntelligence } from "@/components/LongevityIntelligence";
+import { LingHealthPreview } from "@/components/LingHealthPreview";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -189,14 +190,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      <CareTeamStrip
-        image="/mms-doctor-couple-consult.png"
-        eyebrow="Ling + your care team"
-        title="Digital guidance without losing the human relationship."
-        text="Ling helps you prepare, understand and stay organised. MMS doctors and Health Relationship Managers remain responsible for the real care relationship."
-        points={["Ling explains", "Doctors decide", "MMS follows through"]}
-      />
+      <LingHealthPreview />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
