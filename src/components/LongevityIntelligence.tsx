@@ -30,7 +30,7 @@ export function LongevityIntelligence() {
             See your health as one connected system.
           </h2>
           <p className="mt-7 max-w-xl text-lg leading-8 text-ivory/68">
-            Screening is only the beginning. MMS brings together relevant signals, physician interpretation and longitudinal follow-through so different health domains can be considered in context.
+            One health picture. Eight connected domains. One doctor-led interpretation layer.
           </p>
 
           <div className="mt-9 grid grid-cols-2 gap-5 border-t border-gold/25 pt-7 text-sm text-ivory/62">
@@ -53,9 +53,6 @@ export function LongevityIntelligence() {
                 </span>
               ))}
             </div>
-            <p className="mt-4 max-w-lg text-xs leading-5 text-ivory/40">
-              These labels describe how MMS should frame the domain, not the evidence grade of every possible test or intervention within it.
-            </p>
           </div>
         </div>
 
@@ -75,7 +72,6 @@ export function LongevityIntelligence() {
                     </span>
                   </div>
                   <h3 className="mt-3 font-serif text-2xl leading-tight">{system.name}</h3>
-                  <p className="mt-2 text-xs leading-5 text-ivory/48 transition group-hover:text-ivory/68">{system.detail}</p>
                 </article>
               ))}
             </div>
@@ -114,7 +110,6 @@ export function LongevityIntelligence() {
                     </span>
                   </div>
                   <h3 className="mt-3 font-serif text-2xl leading-tight">{system.name}</h3>
-                  <p className="mt-2 text-xs leading-5 text-ivory/48 transition group-hover:text-ivory/68">{system.detail}</p>
                 </article>
               ))}
             </div>
@@ -123,7 +118,7 @@ export function LongevityIntelligence() {
           <div className="relative mt-4 grid gap-3 rounded-[1.25rem] border border-gold/18 bg-gold/[0.06] p-4 text-sm sm:grid-cols-[0.42fr_1.58fr] sm:items-center">
             <p className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-gold-light">Interpretation rule</p>
             <p className="leading-6 text-ivory/58">
-              A signal is not a diagnosis. MMS should connect measurement quality, personal history, symptoms, risk and trend before deciding whether a finding matters.
+              A signal is not a diagnosis. Context and trend determine what deserves attention.
             </p>
           </div>
         </div>
