@@ -2,6 +2,7 @@ const examples = [
   {
     title: "Blood pressure",
     signal: "Established screening",
+    grade: "USPSTF Grade A",
     text: "Recognised preventive guidance supports screening adults for hypertension, with confirmation outside the clinic before treatment when appropriate.",
     source: "USPSTF",
     href: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hypertension-in-adults-screening",
@@ -9,6 +10,7 @@ const examples = [
   {
     title: "Glucose risk",
     signal: "Risk-led screening",
+    grade: "USPSTF Grade B",
     text: "Screening for prediabetes and type 2 diabetes is recommended for selected asymptomatic adults based on age and weight-related risk.",
     source: "USPSTF",
     href: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/screening-for-prediabetes-and-type-2-diabetes",
@@ -16,6 +18,7 @@ const examples = [
   {
     title: "Colorectal cancer",
     signal: "Age + risk context",
+    grade: "USPSTF A / B",
     text: "Average-risk colorectal cancer screening is recommended from age 45 through 75 in current USPSTF guidance, with later decisions individualised.",
     source: "USPSTF",
     href: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/colorectal-cancer-screening",
@@ -56,7 +59,12 @@ export function ScreeningEvidence() {
               >
                 <span className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-deep-green/55">0{index + 1}</span>
                 <div>
-                  <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-deep-green">{item.signal}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-deep-green">{item.signal}</p>
+                    <span className="rounded-full border border-gold/25 bg-[#f7f1e6] px-2.5 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.12em] text-deep-green/70">
+                      {item.grade}
+                    </span>
+                  </div>
                   <h3 className="mt-2 font-serif text-2xl text-navy">{item.title}</h3>
                 </div>
                 <div>
@@ -69,8 +77,8 @@ export function ScreeningEvidence() {
         </div>
 
         <p className="mt-8 border-t border-gold/25 pt-5 text-xs leading-5 text-warm-gray/80">
-          These examples illustrate recognised preventive guidance, not a universal MMS screening schedule. Malaysian guidance,
-          personal and family history, symptoms, sex, age, prior results and physician judgement may change what is appropriate.
+          These examples illustrate U.S. preventive guidance and its evidence grading, not a universal MMS screening schedule.
+          Malaysian guidance, personal and family history, symptoms, sex, age, prior results and physician judgement may change what is appropriate.
         </p>
       </div>
     </section>
