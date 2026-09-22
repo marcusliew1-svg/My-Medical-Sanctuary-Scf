@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 };
 
 const journey = [
-  { title: "Discover", text: "We listen to your story and health goals." },
-  { title: "Assess", text: "Advanced diagnostics and screening create a useful baseline." },
-  { title: "Review", text: "Your physician reviews findings and explains your insights." },
-  { title: "Personalise", text: "We design a plan unique to your context and suitability." },
-  { title: "Continue", text: "Ongoing support helps the journey stay understandable." },
+  { title: "Discover", text: "We listen to your story, concerns and health goals." },
+  { title: "Measure", text: "Screening and diagnostics create a useful baseline." },
+  { title: "Understand", text: "Your physician interprets findings and explains what matters." },
+  { title: "Optimise", text: "A personalised plan is shaped around context and suitability." },
+  { title: "Monitor", text: "Ongoing support follows trends and keeps the journey connected." },
 ];
 
 const roles = [
@@ -53,12 +53,14 @@ export default function HowItWorksPage() {
         eyebrow="Our approach"
         title="A thoughtful journey. Designed around you."
         lead="MMS helps you move from uncertainty to discovery, assessment, doctor review, personalised planning and continuity."
-        image="/mms-concierge-lounge.png"
-        imageAlt="MMS care team welcoming patients into the health journey."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing the MMS health journey."
         primaryLabel="Begin your journey"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
-        imagePosition="56% center"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll guide you through each step—discover, measure, understand, optimise and monitor—while your doctor remains responsible for clinical decisions."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -85,7 +87,7 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-6xl">
           <p className="editorial-kicker mb-5 text-gold-light">Journey sequence</p>
           <h2 className="max-w-4xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-            Discover, assess, review, personalise, continue.
+            Discover, measure, understand, optimise, monitor.
           </h2>
           <div className="mt-12">
             <JourneyLine dark steps={journey} />
