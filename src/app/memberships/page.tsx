@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip } from "@/components/ExperienceCards";
 import { MembershipComparison } from "@/components/MembershipComparison";
-import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
   title: "Memberships | My Medical Sanctuary",
