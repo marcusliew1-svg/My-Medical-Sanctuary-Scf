@@ -4,7 +4,7 @@ import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/compon
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
-  title: "Treatments Explained | My Medical Sanctuary",
+  title: "Treatments Explained",
   description:
     "Educational treatment areas at MMS, organised around health purpose and suitability discussion rather than self-selection.",
 };
@@ -113,7 +113,7 @@ export default function TreatmentsPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each image to reveal the deeper patient question.
+              Each area is framed around the deeper patient question, not a treatment-first decision.
             </p>
           </div>
           <RevealCardGrid items={areas} />
@@ -121,7 +121,7 @@ export default function TreatmentsPage() {
       </section>
 
       <SplitStory
-        eyebrow="Medicine access strategy"
+        eyebrow="Medicine access context"
         title="Sometimes the same medicine is expensive in one country and more accessible in another."
         lead="That does not mean patients should self-source or compare prices alone. It means MMS needs an education and coordination layer that explains country rules, registration, supply, prescription requirements and continuity."
         image="/mms-medicine-access-consult.png"
@@ -147,7 +147,7 @@ export default function TreatmentsPage() {
       <CareTeamStrip
         image="/mms-doctor-results-review.png"
         eyebrow="Advanced care boundary"
-        title="Patients should feel guided before they feel sold to."
+        title="Patients should feel guided before they make advanced-care decisions."
         text="Every advanced-care conversation should move through screening, suitability and professional review before programme or access decisions."
         points={["Purpose first", "Suitability", "Review"]}
       />
