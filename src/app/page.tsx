@@ -7,6 +7,7 @@ import { LingHealthPreview } from "@/components/LingHealthPreview";
 import { MembershipDepth } from "@/components/MembershipDepth";
 import { SanctuaryExperience } from "@/components/SanctuaryExperience";
 import { IntelligenceEditorial } from "@/components/IntelligenceEditorial";
+import { EvidenceStandard } from "@/components/EvidenceStandard";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -89,6 +90,8 @@ export default function HomePage() {
       />
 
       <LongevityIntelligence />
+
+      <EvidenceStandard />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
