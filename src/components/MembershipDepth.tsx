@@ -6,28 +6,28 @@ const tiers = [
     number: "01",
     promise: "Know where you stand.",
     depth: "Foundation",
-    description: "A structured starting point for preventive screening, baseline clarity and physician review.",
+    description: "Baseline clarity and physician review.",
   },
   {
     name: "Evolve",
     number: "02",
     promise: "Understand what is changing.",
     depth: "Optimisation",
-    description: "Closer coordination around metabolic health, lifestyle, vitality and ongoing optimisation.",
+    description: "Closer coordination and optimisation.",
   },
   {
     name: "Eterna",
     number: "03",
     promise: "Take control of long-term health.",
     depth: "Continuity",
-    description: "Deeper preventive planning, repeated review and continuity across a longer health horizon.",
+    description: "Longer-term preventive continuity.",
   },
   {
     name: "Pinnacle",
     number: "04",
     promise: "The highest level of health oversight.",
     depth: "Private",
-    description: "Highly coordinated private care and continuity, subject to capacity and clinical suitability.",
+    description: "Highly coordinated private continuity.",
   },
 ];
 
@@ -42,7 +42,7 @@ export function MembershipDepth() {
               Four levels of one health relationship.
             </h2>
             <p className="mt-6 max-w-md text-lg leading-8 text-ivory/68">
-              The difference is not simply more tests. It is increasing depth of assessment, continuity and coordination.
+              More continuity and coordination—not simply more tests.
             </p>
             <Link
               href="/memberships"
