@@ -109,10 +109,10 @@ export function EvidenceStandard() {
             risk, symptoms, local regulation and professional judgement.
           </p>
           <Link
-            href="/insights"
+            href="/science-evidence"
             className="inline-flex text-sm font-semibold text-gold-light underline decoration-gold/45 underline-offset-8"
           >
-            Explore Health Intelligence
+            Explore Science & Evidence
           </Link>
         </div>
       </div>
