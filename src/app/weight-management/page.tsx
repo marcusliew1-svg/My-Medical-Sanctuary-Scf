@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { MetabolicSignals } from "@/components/MetabolicSignals";
 
 export const metadata = metadataFor(
   "Weight Management",
@@ -24,6 +25,7 @@ export default function WeightManagementPage() {
       trustTitle="Weight management should not feel like a cosmetic shortcut."
       trustLead="MMS keeps the conversation clinical, respectful and personalised."
       finalTitle="Start with the factors behind the change."
+      insertAfterIntro={<MetabolicSignals />}
     />
   );
 }
