@@ -54,11 +54,14 @@ export default function HealthScreeningPage() {
         eyebrow="Health Screening"
         title="Your health journey starts with understanding."
         lead="A personalised screening helps identify current health status, detect potential risks earlier and provide a doctor-led foundation for your wellness plan."
-        image="/mms-diagnostics-screening.png"
-        imageAlt="Doctor-led health screening consultation."
+        image="/ling-knowledge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, guiding a preventive screening journey."
         primaryLabel="Book health screening"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I can help you understand what screening is for, what questions to prepare and when your results need doctor review."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
