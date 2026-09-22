@@ -13,11 +13,14 @@ export default function WhyMmsPage() {
         eyebrow="Why MMS"
         title="Trust is built before a recommendation is made."
         lead="MMS exists for patients who want serious preventive health guidance without hard-sell wellness noise."
-        image="/mms-about-hero.png"
-        imageAlt="Private doctor-led consultation."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing why MMS exists."
         primaryLabel="Start with clarity"
         secondaryLabel="How MMS works"
         secondaryHref="/how-it-works"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand how MMS is different: earlier insight, physician judgement and continuity rather than one-off health purchases."
       />
 
       <EditorialStatement
