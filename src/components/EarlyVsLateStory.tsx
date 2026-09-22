@@ -18,7 +18,7 @@ export function EarlyVsLateStory() {
 
         <div className="mms-cinematic-frame relative mt-12 aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_42px_120px_rgba(0,0,0,0.30)] md:aspect-[16/9]">
           <Image
-            src="/mms-early-vs-late.webp"
+            src="/mms-early-vs-late-v2.webp"
             alt="Asian woman shown in a calm preventive monitoring setting contrasted with a more urgent hospital setting."
             fill
             className="mms-cinematic-image object-cover object-center"
