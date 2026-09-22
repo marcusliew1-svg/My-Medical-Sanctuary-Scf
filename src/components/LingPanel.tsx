@@ -161,6 +161,13 @@ export function LingPanel() {
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">Ling · Your MMS health guide</p>
           <h3 className="mt-2 font-serif text-3xl text-navy md:text-4xl">Tell me what is bothering you.</h3>
           <p className="mt-3 text-sm leading-6 text-warm-gray">Use normal words. I’ll help organise what you tell me, explain what may be worth checking and show when a clinician should take over.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {["Evidence-aware", "Education first", "Doctor handoff"].map((item) => (
+              <span key={item} className="rounded-full border border-deep-green/12 bg-[#f4f7f5] px-3 py-1.5 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-deep-green/72">
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
         <span className="relative size-16 shrink-0 overflow-hidden rounded-full border-2 border-gold-light bg-ivory shadow-soft md:size-20">
           <Image src="/ling-mms-guide.png" alt="Ling, the MMS virtual health spokesperson" fill className="object-cover object-[50%_24%]" sizes="80px" />
