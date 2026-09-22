@@ -5,7 +5,7 @@ import { LingPanel } from "@/components/LingPanel";
 import { lingDisclaimer, lingOptions } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Ling | My Medical Sanctuary",
+  title: "Ling",
   description: "Ling is the MMS virtual health spokesperson and education guide for learning, organising questions and preparing for doctor-led care.",
 };
 
