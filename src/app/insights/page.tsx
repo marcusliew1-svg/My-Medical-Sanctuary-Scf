@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { EditorialHero, FinalInvitation, ImagePanel } from "@/components/Editorial";
-import { CareTeamStrip, MarketSignalPanel, RevealCardGrid } from "@/components/ExperienceCards";
+import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
   title: "Health Intelligence | My Medical Sanctuary",
@@ -63,12 +63,14 @@ export default function InsightsPage() {
         eyebrow="Health Intelligence"
         title="Knowledge to empower your healthiest decisions."
         lead="MMS Health Intelligence is designed for patients who want clarity, not noise: evidence, uncertainty, suitability and the right next question."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor-led health intelligence briefing."
+        image="/ling-knowledge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing Health Intelligence."
         primaryLabel="Start discovery"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
-        imagePosition="52% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you separate signal from noise—what the evidence says, what remains uncertain and what question to bring to your doctor."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -129,7 +131,7 @@ export default function InsightsPage() {
               MMS can educate patients on why access differs across the US, Gulf markets, Australia,
               Singapore, Indonesia, Malaysia and Thailand: registration status, supply chains, taxes,
               exchange rates, manufacturer pathways, prescription rules and local professional requirements.
-              This can become a verified access-intelligence pathway before licensed coordination.
+              The goal is to help patients understand the context before licensed professional review or coordination.
             </p>
             <div className="mt-7 grid gap-3 border-y border-gold/40 py-5 text-sm leading-6 text-warm-gray">
               <p><strong className="text-navy">High-cost markets:</strong> United States, Gulf private-pay markets, Australia, Singapore and selected Indonesian private pathways.</p>
@@ -158,11 +160,6 @@ export default function InsightsPage() {
           </div>
         </div>
       </section>
-
-      <MarketSignalPanel
-        title="Patients notice price gaps. MMS should own the explanation."
-        lead="The public site should make the regional access strategy visible enough to generate qualified enquiries, while keeping patient-specific access inside verified review."
-      />
 
       <CareTeamStrip
         image="/mms-concierge-lounge.png"
