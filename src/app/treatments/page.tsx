@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
+import { EvidenceLadder } from "@/components/EvidenceLadder";
 
 export const metadata: Metadata = {
   title: "Treatments Explained",
@@ -102,6 +103,8 @@ export default function TreatmentsPage() {
           </div>
         </div>
       </section>
+
+      <EvidenceLadder />
 
       <section className="bg-navy px-4 py-20 text-ivory md:py-28">
         <div className="mx-auto max-w-6xl">
