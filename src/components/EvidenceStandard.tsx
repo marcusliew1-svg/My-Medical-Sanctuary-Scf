@@ -23,29 +23,6 @@ const standards = [
   },
 ];
 
-const sources = [
-  {
-    label: "Malaysia MOH",
-    title: "Clinical Practice Guidelines",
-    href: "https://www.moh.gov.my/penerbitan-dan-laporan/dasar-akta-polisi-garis-panduan/penerbitan-klinikal/senarai-penerbitan-klinikal/panduan-amalan-klinikal-cpg",
-  },
-  {
-    label: "WHO",
-    title: "Noncommunicable disease prevention",
-    href: "https://www.who.int/news-room/fact-sheets/detail/noncommunicable-diseases",
-  },
-  {
-    label: "USPSTF",
-    title: "Preventive screening recommendations",
-    href: "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation-topics/uspstf-a-and-b-recommendations",
-  },
-  {
-    label: "AHA",
-    title: "Life's Essential 8",
-    href: "https://www.heart.org/en/healthy-living/healthy-lifestyle/lifes-essential-8",
-  },
-];
-
 export function EvidenceStandard() {
   return (
     <section className="mms-science-grid relative overflow-hidden bg-[#06151d] px-4 py-24 text-ivory md:py-32">
