@@ -73,12 +73,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({
-    status: "placeholder",
-    message:
-      "Zoho CRM integration-ready route. Add lead creation after Zoho credentials and consent flow are configured.",
-    mapping: zohoLeadFieldMapping,
-    zohoModule: "Leads",
-    acceptedFields: Object.keys(zohoLeadPayload),
-  });
+  return NextResponse.json(
+    {
+      status: "unavailable",
+      message:
+        "Online enquiry routing is not yet connected. Please contact MMS directly until the CRM handoff is activated.",
+      mapping: zohoLeadFieldMapping,
+      zohoModule: "Leads",
+      acceptedFields: Object.keys(zohoLeadPayload),
+    },
+    { status: 503 },
+  );
 }
