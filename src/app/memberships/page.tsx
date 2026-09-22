@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
+import { CareTeamStrip } from "@/components/ExperienceCards";
+import { MembershipComparison } from "@/components/MembershipComparison";
 import { memberships } from "@/data/memberships";
 
 export const metadata: Metadata = {
@@ -9,29 +10,7 @@ export const metadata: Metadata = {
     "Ascend, Evolve, Eterna and Pinnacle are MMS relationship pathways for preventive healthcare and personalised longevity coordination.",
 };
 
-const tierImages = [
-  "/mms-concierge-lounge.png",
-  "/mms-doctor-results-review.png",
-  "/mms-doctor-couple-consult.png",
-  "/mms-diagnostics-screening.png",
-];
-
-const tierDetails = [
-  "Best for people who want a serious starting point: baseline screening, appointment guidance and a practical first roadmap.",
-  "Designed for members who want closer follow-up around energy, weight, lifestyle, metabolic health and review preparation.",
-  "Built for longer-horizon preventive planning where continuity, scheduling and repeated review matter more than one appointment.",
-  "A discreet relationship model for highly coordinated care, subject to invitation, capacity and clinical suitability assessment.",
-];
-
 export default function MembershipsPage() {
-  const cards = memberships.map((membership, index) => ({
-    title: membership.name,
-    eyebrow: membership.accessNote,
-    text: membership.tagline,
-    detail: `${tierDetails[index]} First 30 days may include: ${membership.firstThirtyDays.join(", ")}.`,
-    image: tierImages[index],
-  }));
-
   return (
     <main>
       <EditorialHero
@@ -66,22 +45,7 @@ export default function MembershipsPage() {
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-20 text-ivory md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="editorial-kicker mb-4 text-gold-light">The continuum</p>
-              <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-                Four depths. One standard of discretion.
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover or focus each pathway to see what it is designed to clarify.
-            </p>
-          </div>
-          <RevealCardGrid items={cards} />
-        </div>
-      </section>
+      <MembershipComparison />
 
       <SplitStory
         eyebrow="Suitability"
