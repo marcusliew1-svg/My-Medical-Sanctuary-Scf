@@ -78,10 +78,10 @@ export default function HomePage() {
         spokespersonName="Ling"
         spokespersonMessage="I’ll help you understand where to begin, what your results mean in plain language, and when it is time to speak with your MMS doctor."
         trustItems={[
-          { title: "Discover earlier", text: "Build a clearer picture before symptoms define the story." },
-          { title: "Doctors interpret", text: "Clinical judgement remains at the centre of every decision." },
-          { title: "Personalised care", text: "Your risks, priorities and goals shape the pathway." },
-          { title: "Follow the trend", text: "Longitudinal monitoring adds context that one-off tests cannot." },
+          { title: "Guideline-led", text: "Recognised clinical guidance provides the starting framework." },
+          { title: "Physician interpreted", text: "Clinical judgement remains at the centre of every decision." },
+          { title: "Evidence levels visible", text: "Established care and emerging science are not presented as equal." },
+          { title: "Longitudinal context", text: "Trends over time can add meaning beyond a single result." },
         ]}
       />
 
