@@ -61,8 +61,8 @@ export default function InsightsPage() {
     <main>
       <EditorialHero
         eyebrow="Health Intelligence"
-        title="Knowledge to empower your healthiest decisions."
-        lead="MMS Health Intelligence is designed for patients who want clarity, not noise: evidence, uncertainty, suitability and the right next question."
+        title="See the evidence. See the uncertainty. Ask a better question."
+        lead="MMS Health Intelligence turns complex health information into four things that matter: what the evidence supports, what remains uncertain, who needs professional review and what question comes next."
         image="/ling-knowledge.png"
         imageAlt="Ling, the MMS virtual health spokesperson, introducing Health Intelligence."
         primaryLabel="Start discovery"
@@ -140,7 +140,7 @@ export default function InsightsPage() {
         <div className="mx-auto max-w-6xl">
           <p className="editorial-kicker mb-4 text-deep-green">Reading standard</p>
           <h2 className="max-w-3xl text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-            Responsibility should be visible in every health article.
+            Every health briefing should reveal how strong the idea really is.
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-4">
             {readingStandard.map(([title, text]) => (
