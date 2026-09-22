@@ -18,7 +18,7 @@ export function JourneyVisual() {
 
         <div className="mms-cinematic-frame relative mt-12 aspect-[16/10] overflow-hidden rounded-[2rem] border border-gold/20 shadow-[0_34px_100px_rgba(11,26,46,0.12)] md:aspect-[16/9]">
           <Image
-            src="/mms-five-step-journey.webp"
+            src="/mms-five-step-journey-v2.webp"
             alt="Asian woman moving through the MMS five-step health journey: Discover, Measure, Understand, Optimise and Monitor."
             fill
             className="mms-cinematic-image object-cover object-center"
@@ -56,7 +56,7 @@ export function HealthTrendsVisual() {
 
           <div className="mms-cinematic-frame relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_42px_120px_rgba(0,0,0,0.28)] md:aspect-[16/9]">
             <Image
-              src="/mms-health-trends.webp"
+              src="/mms-health-trends-v2.webp"
               alt="Asian couple reviewing longitudinal health trends with a doctor using a visual monitoring dashboard."
               fill
               className="mms-cinematic-image object-cover object-center"
