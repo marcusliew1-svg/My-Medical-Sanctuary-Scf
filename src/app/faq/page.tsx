@@ -9,8 +9,9 @@ export const metadata = metadataFor(
 
 const faqs = [
   ["What is MMS?", "A private preventive healthcare and personalised longevity institution focused on earlier understanding, doctor review and continuity."],
-  ["Should I start with treatment?", "No. The recommended first step is to understand your health through screening and professional review."],
+  ["Should I start with treatment?", "Usually no. MMS starts by clarifying the question, using appropriate screening where indicated and keeping personal recommendations under professional review."],
   ["Does Ling replace a doctor?", lingDisclaimer],
+  ["How does MMS treat evidence?", "MMS distinguishes established care from evidence-supported, emerging and investigational ideas. The strength of evidence and individual suitability should remain visible before decisions are made."],
   ["Are outcomes promised?", "No. Programmes are subject to doctor assessment. Suitable candidates only. Individual outcomes vary."],
   ["Can MMS support regional care?", "MMS can help frame regional access questions and coordination. Suitability and availability must be confirmed case by case."],
   ["What if I am not sure where to begin?", "Start with a discovery conversation or ask Ling to help organise your questions."],
@@ -23,11 +24,14 @@ export default function FaqPage() {
         eyebrow="FAQ"
         title="Clear answers before you book."
         lead="A good healthcare site should reduce uncertainty before asking for commitment."
-        image="/mms-about-hero.png"
-        imageAlt="Calm private healthcare consultation."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, helping visitors understand MMS before booking."
         primaryLabel="Speak with MMS"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="Ask me the basic questions first. I’ll explain the MMS model, evidence boundaries and when a doctor needs to take over."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
