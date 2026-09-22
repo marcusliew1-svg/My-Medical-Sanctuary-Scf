@@ -23,7 +23,7 @@ export function SilentRiskStory() {
 
         <div className="mms-cinematic-frame relative aspect-[16/10] overflow-hidden rounded-[2rem] shadow-[0_36px_110px_rgba(11,26,46,0.18)] md:aspect-[16/9]">
           <Image
-            src="/mms-silent-risk.webp"
+            src="/mms-silent-risk-v2.webp"
             alt="Asian woman appearing well while subtle health signals and monitoring data surround her."
             fill
             className="mms-cinematic-image object-cover object-center"
