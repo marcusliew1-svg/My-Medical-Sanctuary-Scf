@@ -59,14 +59,20 @@ export function ContactForm() {
         body: JSON.stringify(payload),
       });
 
+      const result = await response.json().catch(() => null);
+
       if (!response.ok) {
-        throw new Error("Submission failed");
+        throw new Error(result?.message || "We could not submit the enquiry. Please contact MMS directly.");
       }
 
       setSubmitted(true);
       form.reset();
-    } catch {
-      setError("We could not submit the enquiry. Please contact MMS directly.");
+    } catch (submissionError) {
+      setError(
+        submissionError instanceof Error
+          ? submissionError.message
+          : "We could not submit the enquiry. Please contact MMS directly.",
+      );
     } finally {
       setIsSubmitting(false);
     }
