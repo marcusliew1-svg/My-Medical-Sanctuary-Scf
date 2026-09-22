@@ -24,10 +24,13 @@ export function MobileNav() {
       </button>
 
       {open ? (
-        <div className="absolute inset-x-3 top-[4.8rem] overflow-hidden rounded-[1.75rem] border border-white/12 bg-[#07151d]/[0.985] text-white shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
+        <div className="absolute inset-x-3 top-[4.8rem] max-h-[calc(100vh-6rem)] overflow-y-auto rounded-[1.75rem] border border-white/12 bg-[#07151d]/[0.985] text-white shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
           <div className="border-b border-white/10 px-5 py-5">
             <p className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-light">My Medical Sanctuary</p>
             <p className="mt-2 max-w-xs font-serif text-2xl leading-tight">Know earlier. Live better.</p>
+            <div className="mt-3 flex flex-wrap gap-2 text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-ivory/50">
+              <span>Physician-led</span><span>•</span><span>Evidence-aware</span><span>•</span><span>Ling-guided</span>
+            </div>
           </div>
 
           <nav aria-label="Mobile navigation" className="grid px-3 py-3">
