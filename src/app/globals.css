@@ -38,12 +38,12 @@ textarea {
 }
 
 :focus-visible {
-  outline: 3px solid #d4af37;
+  outline: 3px solid #C7A76A;
   outline-offset: 3px;
 }
 
 ::selection {
-  background: #d4af37;
+  background: #C7A76A;
   color: #0b1a2e;
 }
 
@@ -99,7 +99,7 @@ body::before {
   opacity: 0.025;
   background-image:
     radial-gradient(circle at 20% 20%, rgba(11, 26, 46, 0.34) 0 0.6px, transparent 0.7px),
-    radial-gradient(circle at 80% 60%, rgba(181, 111, 91, 0.22) 0 0.6px, transparent 0.7px);
+    radial-gradient(circle at 80% 60%, rgba(199, 167, 106, 0.16) 0 0.6px, transparent 0.7px);
   background-size: 11px 11px, 13px 13px;
   mix-blend-mode: multiply;
 }
