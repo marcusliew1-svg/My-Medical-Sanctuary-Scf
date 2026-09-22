@@ -9,25 +9,25 @@ const hierarchy = [
     rank: "02",
     title: "Systematic reviews & high-quality trials",
     text: "Useful for understanding treatment effects, limitations and where evidence is consistent or mixed.",
-    width: "w-[92%]",
+    width: "w-full md:w-[92%]",
   },
   {
     rank: "03",
     title: "Well-designed observational evidence",
     text: "Can reveal associations and long-term patterns, but usually carries more uncertainty about cause and effect.",
-    width: "w-[84%]",
+    width: "w-full md:w-[84%]",
   },
   {
     rank: "04",
     title: "Early clinical & mechanistic evidence",
     text: "Helpful for generating hypotheses and understanding plausibility, but not enough on its own to promise outcomes.",
-    width: "w-[76%]",
+    width: "w-full md:w-[76%]",
   },
   {
     rank: "05",
     title: "Testimonials, influencer claims & vendor marketing",
     text: "May be useful for understanding interest or experience, but should not be treated as clinical proof.",
-    width: "w-[68%]",
+    width: "w-full md:w-[68%]",
   },
 ];
 
