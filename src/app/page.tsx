@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { EditorialHero, EditorialStatement, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
+import { EditorialHero, EditorialStatement, FinalInvitation, JourneyLine } from "@/components/Editorial";
 import { RevealCardGrid } from "@/components/ExperienceCards";
 import { LongevityIntelligence } from "@/components/LongevityIntelligence";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
@@ -105,6 +104,27 @@ export default function HomePage() {
           <RevealCardGrid items={goals} />
         </div>
       </section>
+
+      <section className="bg-warm-white px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-14 max-w-3xl">
+            <p className="editorial-kicker mb-4 text-deep-green">The MMS journey</p>
+            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
+              Discover. Measure. Understand. Optimise. Monitor.
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-warm-gray">
+              One connected health relationship designed to become more useful as your history, results and trends become clearer.
+            </p>
+          </div>
+          <JourneyLine steps={method} />
+        </div>
+      </section>
+
+      <MembershipDepth />
+
+      <LingHealthPreview />
+
+      <SanctuaryExperience />
 
       <IntelligenceEditorial />
 
