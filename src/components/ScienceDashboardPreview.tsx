@@ -9,7 +9,7 @@ const metrics = [
 
 export function ScienceDashboardPreview() {
   return (
-    <section className="overflow-hidden bg-[#f1ece2] px-4 py-24 md:py-32">
+    <section className="mms-science-grid overflow-hidden bg-[#f1ece2] px-4 py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
         <div>
           <p className="editorial-kicker mb-5 text-deep-green">Longitudinal health intelligence</p>
@@ -88,7 +88,7 @@ export function ScienceDashboardPreview() {
                   <div key={name} className="rounded-[1.15rem] border border-white/10 bg-white/[0.035] p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="font-serif text-xl">{name}</p>
+                        <p className="mms-data font-serif text-xl">{name}</p>
                         <p className="mt-2 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-gold-light">{state}</p>
                       </div>
                       <span className="rounded-full border border-white/10 px-2.5 py-1 text-[0.52rem] uppercase tracking-[0.12em] text-ivory/42">
