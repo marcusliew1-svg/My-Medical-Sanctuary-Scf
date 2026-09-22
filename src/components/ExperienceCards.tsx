@@ -153,7 +153,7 @@ export function LingGuideStrip({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(212,175,55,0.16),transparent_35%)]" />
       <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-[0.56fr_1fr] md:items-center">
         <div className="relative min-h-[330px] overflow-hidden rounded-[1.25rem] border border-gold-light/25">
-          <Image src={image} alt="Ling, MMS AI Health Education Companion." fill priority className="object-cover" sizes="(min-width: 768px) 40vw, 100vw" />
+          <Image src={image} alt="Ling, MMS virtual health spokesperson and education guide." fill priority className="object-cover" sizes="(min-width: 768px) 40vw, 100vw" />
         </div>
         <div>
           <p className="editorial-kicker mb-4 text-gold-light">Ling beside you</p>
