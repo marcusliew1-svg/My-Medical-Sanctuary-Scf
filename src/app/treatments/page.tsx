@@ -71,12 +71,15 @@ export default function TreatmentsPage() {
         eyebrow="Advanced care"
         title="Beyond today. Prepared for tomorrow."
         lead="This is an educational gateway, not a treatment shop. MMS begins with baseline understanding, doctor review and suitability before discussing advanced options."
-        image="/mms-doctor-results-review.png"
-        imageAlt="Doctor and patient reviewing health information."
+        image="/ling-knowledge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, explaining advanced care and treatment questions."
         primaryLabel="Start with screening"
         primaryHref="/health-screening"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="Tell me what you are trying to understand. I’ll explain the category, the questions to ask and where doctor suitability review begins."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
