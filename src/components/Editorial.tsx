@@ -72,7 +72,7 @@ export function EditorialHero({
   ],
 }: EditorialHeroProps) {
   return (
-    <section className="relative isolate overflow-hidden bg-[#07151d] px-4 pt-36 text-ivory md:pt-44">
+    <section className="relative isolate overflow-hidden bg-[#07151d] px-4 pt-32 text-ivory md:pt-40">
       <div className="absolute inset-0 -z-20">
         <Image
           src={image}
@@ -85,16 +85,16 @@ export function EditorialHero({
         />
       </div>
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(7,21,29,0.98),rgba(7,21,29,0.84)_46%,rgba(7,21,29,0.42)_78%),linear-gradient(0deg,rgba(7,21,29,0.9),rgba(7,21,29,0.22)_62%)]" />
-      <div className="mx-auto grid min-h-[78vh] max-w-6xl items-end pb-16">
-        <div className="max-w-3xl">
+      <div className="relative mx-auto grid min-h-[76vh] max-w-7xl items-end pb-14 md:pb-16">
+        <div className={`max-w-3xl ${spokespersonName || showHealthSignals ? "lg:pr-10 xl:max-w-[760px]" : ""}`}>
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-gold-light">
             {eyebrow}
           </p>
-          <h1 className="text-balance font-serif text-5xl leading-[0.98] md:text-7xl lg:text-8xl">
+          <h1 className="text-balance font-serif text-[3.2rem] leading-[0.96] sm:text-6xl md:text-7xl lg:text-[5.25rem] xl:text-[5.8rem]">
             {title}
           </h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-ivory/78 md:text-xl">{lead}</p>
-          <div className="mt-9 flex flex-wrap gap-3">
+          <p className="mt-6 max-w-2xl text-base leading-7 text-ivory/78 sm:text-lg sm:leading-8 md:text-xl">{lead}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href={primaryHref}>{primaryLabel}</ButtonLink>
             <ButtonLink href={secondaryHref} variant="light">
               {secondaryLabel}
@@ -118,7 +118,7 @@ export function EditorialHero({
         </div>
 
         {spokespersonName && spokespersonMessage ? (
-          <div className="absolute bottom-32 right-0 hidden w-[330px] lg:block">
+          <div className="absolute bottom-24 right-0 hidden w-[330px] lg:block xl:bottom-28">
             <div className="rounded-[1.7rem] border border-white/15 bg-[#07151d]/78 p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] backdrop-blur-xl">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -139,7 +139,7 @@ export function EditorialHero({
         ) : null}
 
         {showHealthSignals ? (
-          <div className={`pointer-events-none absolute right-0 hidden w-[310px] lg:block ${spokespersonName ? "bottom-[25rem]" : "bottom-32"}`}>
+          <div className={`pointer-events-none absolute right-0 hidden w-[310px] xl:block ${spokespersonName ? "bottom-[24rem]" : "bottom-28"}`}>
             <div className="rounded-[1.6rem] border border-white/15 bg-[#07151d]/72 p-4 shadow-[0_30px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Health intelligence</p>
@@ -162,10 +162,10 @@ export function EditorialHero({
           </div>
         ) : null}
       </div>
-      <div className="relative z-10 mx-auto max-w-6xl border-t border-gold-light/25 bg-navy/80 shadow-[0_-18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md">
+      <div className="relative z-10 mx-auto max-w-7xl border-t border-gold-light/25 bg-navy/80 shadow-[0_-18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md">
         <div className="grid gap-px md:grid-cols-4">
           {trustItems.map((item) => (
-            <div key={item.title} className="border-b border-ivory/10 px-5 py-5 md:border-b-0 md:border-r md:border-ivory/10">
+            <div key={item.title} className="border-b border-ivory/10 px-4 py-4 sm:px-5 sm:py-5 md:border-b-0 md:border-r md:border-ivory/10">
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold-light">
                 {item.title}
               </p>
