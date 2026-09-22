@@ -26,6 +26,8 @@ export type PatientEditorialPageProps = {
   trustImage?: string;
   finalTitle?: string;
   finalLead?: string;
+  spokespersonName?: string;
+  spokespersonMessage?: string;
 };
 
 export function metadataFor(title: string, description: string): Metadata {
@@ -51,6 +53,8 @@ export function PatientEditorialPage({
   trustImage = "/mms-health-screening-hero.png",
   finalTitle,
   finalLead,
+  spokespersonName = "Ling",
+  spokespersonMessage,
 }: PatientEditorialPageProps) {
   const pointImages = [
     "/mms-doctor-couple-consult.png",
@@ -71,6 +75,9 @@ export function PatientEditorialPage({
         primaryHref={primaryHref}
         secondaryLabel={secondaryLabel}
         secondaryHref={secondaryHref}
+        imagePosition="70% center"
+        spokespersonName={spokespersonName}
+        spokespersonMessage={spokespersonMessage}
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
