@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 };
 
 const pathway = [
-  { title: "Book", text: "Choose a suitable screening conversation and appointment window." },
-  { title: "Assess", text: "Complete selected checks that may fit your context." },
-  { title: "Review", text: "Discuss results with a doctor, not a generic report." },
-  { title: "Plan", text: "Translate findings into priorities and next steps." },
-  { title: "Continue", text: "Consider membership only after doctor review." },
+  { title: "Discover", text: "Clarify your goals, history and what you want to understand." },
+  { title: "Measure", text: "Complete selected screening and diagnostics appropriate to your context." },
+  { title: "Understand", text: "Review findings with a doctor, not just a generic report." },
+  { title: "Optimise", text: "Translate findings into priorities and practical next steps." },
+  { title: "Monitor", text: "Follow what changes over time and decide whether ongoing membership is useful." },
 ];
 
 const includes = [
@@ -76,11 +76,12 @@ export default function HealthScreeningPage() {
               make better decisions with a doctor.
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Patient concierge welcome." className="min-h-[250px] rounded-[1.2rem] shadow-premium" />
-            <ImagePanel priority src="/mms-doctor-results-review.png" alt="Private review with a doctor." className="min-h-[250px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Doctor-led screening." className="min-h-[250px] rounded-[1.2rem] shadow-premium" />
-          </div>
+          <ImagePanel
+            src="/mms-service-collage.webp"
+            alt="The MMS screening journey across diagnostics, doctor review and follow-up."
+            className="min-h-[420px] rounded-[1.75rem] shadow-premium"
+            objectPosition="50% center"
+          />
         </div>
       </section>
 
@@ -94,7 +95,7 @@ export default function HealthScreeningPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-ivory/66">
-              Hover each area to understand how it supports the patient conversation.
+              Each area supports a different part of the screening conversation and remains subject to individual suitability.
             </p>
           </div>
           <RevealCardGrid items={includes} />
