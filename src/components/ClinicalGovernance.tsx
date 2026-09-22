@@ -23,7 +23,7 @@ const layers = [
 
 export function ClinicalGovernance() {
   return (
-    <section className="bg-ivory px-4 py-24 md:py-32">
+    <section className="mms-science-grid bg-ivory px-4 py-24 md:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
           <div>
