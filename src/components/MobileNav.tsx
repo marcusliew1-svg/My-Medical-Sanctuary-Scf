@@ -1,11 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navigation } from "@/lib/content";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <div className="xl:hidden">
@@ -13,6 +24,7 @@ export function MobileNav() {
         type="button"
         aria-label={open ? "Close navigation" : "Open navigation"}
         aria-expanded={open}
+        aria-controls="mms-mobile-navigation"
         onClick={() => setOpen((value) => !value)}
         className="grid size-10 place-items-center rounded-full border border-white/18 bg-white/[0.08] backdrop-blur-md"
       >
@@ -24,7 +36,7 @@ export function MobileNav() {
       </button>
 
       {open ? (
-        <div className="absolute inset-x-3 top-[4.8rem] max-h-[calc(100vh-6rem)] overflow-y-auto rounded-[1.75rem] border border-white/12 bg-[#07151d]/[0.985] text-white shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
+        <div id="mms-mobile-navigation" className="absolute inset-x-3 top-[4.8rem] max-h-[calc(100vh-6rem)] overflow-y-auto rounded-[1.75rem] border border-white/12 bg-[#07151d]/[0.985] text-white shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
           <div className="border-b border-white/10 px-5 py-5">
             <p className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-light">My Medical Sanctuary</p>
             <p className="mt-2 max-w-xs font-serif text-2xl leading-tight">Know earlier. Live better.</p>
