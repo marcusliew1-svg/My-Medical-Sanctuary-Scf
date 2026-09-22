@@ -131,7 +131,7 @@ export function EditorialHero({
               </div>
               <p className="mt-4 text-sm leading-6 text-ivory/76">{spokespersonMessage}</p>
               <div className="mt-4 flex items-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-gold-light/80">
-                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_14px_rgba(212,175,55,0.75)]" />
+                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_14px_rgba(199,167,106,0.68)]" />
                 Virtual health spokesperson
               </div>
             </div>
@@ -143,7 +143,7 @@ export function EditorialHero({
             <div className="rounded-[1.6rem] border border-white/15 bg-[#07151d]/72 p-4 shadow-[0_30px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Health intelligence</p>
-                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_18px_rgba(212,175,55,0.75)]" />
+                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_18px_rgba(199,167,106,0.68)]" />
               </div>
               <div className="mt-3 grid gap-2">
                 {[
@@ -312,7 +312,7 @@ export function FinalInvitation({
 }) {
   return (
     <section className="relative overflow-hidden bg-navy px-4 py-20 text-ivory md:py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_30%,rgba(212,175,55,0.18),transparent_32%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_30%,rgba(199,167,106,0.16),transparent_32%)]" />
       <div className="relative mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-gold-light">Begin</p>
