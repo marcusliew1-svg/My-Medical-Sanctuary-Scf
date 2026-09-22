@@ -61,14 +61,22 @@ export function FooterV01() {
           </div>
 
           <div>
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Medical boundary</p>
-            <p className="mt-6 text-sm leading-7 text-ivory/60">
-              Website information is educational. Personalised recommendations, diagnosis, prescribing and suitability decisions require qualified professional review.
+            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Your MMS guide</p>
+            <div className="mt-6 flex items-center gap-4">
+              <span className="relative h-14 w-14 overflow-hidden rounded-full border border-gold/30 bg-ivory">
+                <Image src="/ling-mms-guide.png" alt="" fill className="object-cover object-top" sizes="56px" />
+              </span>
+              <div>
+                <p className="font-serif text-2xl">Ling</p>
+                <p className="mt-1 text-xs text-ivory/52">Virtual health spokesperson</p>
+              </div>
+            </div>
+            <p className="mt-5 text-sm leading-7 text-ivory/60">
+              Ling helps explain, organise and prepare. Diagnosis, prescribing, interpretation and suitability decisions remain with qualified professionals.
             </p>
-            <p className="mt-6 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-gold-light">Ling</p>
-            <p className="mt-3 text-sm leading-7 text-ivory/55">
-              Your MMS virtual health spokesperson. Ling explains and prepares; doctors interpret and decide.
-            </p>
+            <Link href="/ling" className="mt-5 inline-flex text-xs font-semibold uppercase tracking-[0.15em] text-gold-light">
+              Meet Ling →
+            </Link>
           </div>
         </div>
 
