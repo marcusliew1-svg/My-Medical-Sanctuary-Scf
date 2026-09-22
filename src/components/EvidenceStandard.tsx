@@ -58,8 +58,7 @@ export function EvidenceStandard() {
               Science before spectacle.
             </h2>
             <p className="mt-7 max-w-xl text-lg leading-8 text-ivory/68">
-              Premium medicine is not about offering the most tests or the newest therapy. It is about knowing what is established,
-              what is uncertain, what is relevant to the person in front of you, and when a doctor needs to decide.
+              Know what is established. Know what is uncertain. Know when a doctor needs to decide.
             </p>
           </div>
 
@@ -76,37 +75,9 @@ export function EvidenceStandard() {
           </div>
         </div>
 
-        <div className="mt-14 grid gap-5 border-t border-white/10 pt-8 md:grid-cols-[0.55fr_1.45fr]">
-          <div>
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-gold-light">Reference framework</p>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-ivory/50">
-              MMS can draw on recognised Malaysian and international guidance while keeping patient-specific decisions under professional review.
-            </p>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {sources.map((source) => (
-              <a
-                key={source.label}
-                href={source.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center justify-between gap-5 rounded-[1.15rem] border border-white/10 bg-white/[0.035] px-4 py-4 transition hover:border-gold/35 hover:bg-white/[0.055]"
-              >
-                <div>
-                  <p className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-gold-light/72">{source.label}</p>
-                  <p className="mt-1 text-sm text-ivory/74">{source.title}</p>
-                </div>
-                <span className="text-gold-light/60 transition group-hover:translate-x-0.5 group-hover:text-gold-light">↗</span>
-              </a>
-            ))}
-          </div>
-        </div>
-
         <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-7 md:flex-row md:items-center md:justify-between">
           <p className="max-w-3xl text-xs leading-5 text-ivory/42">
-            Clinical guidance evolves. Screening intervals, tests and interventions should be selected according to age, sex, history,
-            risk, symptoms, local regulation and professional judgement.
+            Evidence changes. Personal decisions still require context and professional judgement.
           </p>
           <Link
             href="/science-evidence"
