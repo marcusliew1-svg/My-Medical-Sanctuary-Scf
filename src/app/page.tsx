@@ -1,26 +1,18 @@
 import type { Metadata } from "next";
-import { EditorialHero, FinalInvitation, JourneyLine } from "@/components/Editorial";
+import { EditorialHero, FinalInvitation } from "@/components/Editorial";
 import { SilentRiskStory } from "@/components/SilentRiskStory";
 import { EarlyVsLateStory } from "@/components/EarlyVsLateStory";
-import { LongevityIntelligence } from "@/components/LongevityIntelligence";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
 import { MembershipDepth } from "@/components/MembershipDepth";
 import { SanctuaryExperience } from "@/components/SanctuaryExperience";
 import { EvidenceStandard } from "@/components/EvidenceStandard";
+import { JourneyVisual, HealthTrendsVisual } from "@/components/CinematicHealthStories";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
   description:
     "My Medical Sanctuary helps people understand and monitor their health earlier through physician-led prevention, appropriate diagnostics and personalised longevity care.",
 };
-
-const method = [
-  { title: "Discover", text: "What changed? What matters?" },
-  { title: "Measure", text: "Check the right signals." },
-  { title: "Understand", text: "Doctor-led interpretation." },
-  { title: "Optimise", text: "Act where it makes sense." },
-  { title: "Monitor", text: "Follow what changes." },
-];
 
 export default function HomePage() {
   return (
@@ -51,19 +43,9 @@ export default function HomePage() {
 
       <EarlyVsLateStory />
 
-      <section className="bg-ivory px-4 py-20 md:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 max-w-3xl">
-            <p className="editorial-kicker mb-4 text-deep-green">Your MMS plan</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Five steps. One health relationship.
-            </h2>
-          </div>
-          <JourneyLine steps={method} />
-        </div>
-      </section>
+      <JourneyVisual />
 
-      <LongevityIntelligence />
+      <HealthTrendsVisual />
 
       <LingHealthPreview />
 
