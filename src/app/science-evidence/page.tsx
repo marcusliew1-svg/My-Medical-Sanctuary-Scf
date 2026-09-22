@@ -4,6 +4,7 @@ import { EvidenceStandard } from "@/components/EvidenceStandard";
 import { ScreeningEvidence } from "@/components/ScreeningEvidence";
 import { EvidenceLadder } from "@/components/EvidenceLadder";
 import { ClinicalGovernance } from "@/components/ClinicalGovernance";
+import { SourceHierarchy } from "@/components/SourceHierarchy";
 
 export const metadata: Metadata = {
   title: "Science & Evidence",
@@ -100,6 +101,8 @@ export default function ScienceEvidencePage() {
       <ScreeningEvidence />
 
       <ClinicalGovernance />
+
+      <SourceHierarchy />
 
       <EvidenceLadder />
 
