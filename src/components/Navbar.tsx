@@ -7,7 +7,7 @@ export function Navbar() {
   const topClass = process.env.VERCEL_ENV === "production" ? "top-0" : "top-9";
 
   return (
-    <header className={`fixed inset-x-0 z-40 px-3 py-3 md:px-4 ${topClass}`}>
+    <header className={`fixed inset-x-0 z-[45] px-3 py-3 md:px-4 ${topClass}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 rounded-full border border-ivory/12 bg-[#07151d]/88 px-3 py-2.5 text-ivory shadow-[0_18px_46px_rgba(0,0,0,0.2)] backdrop-blur-xl md:px-4">
         <Link href="/" className="flex min-w-0 items-center gap-3">
           <span className="grid h-10 w-12 shrink-0 place-items-center rounded-full bg-ivory p-1.5 shadow-[inset_0_0_0_1px_rgba(199,167,106,0.22)]">
