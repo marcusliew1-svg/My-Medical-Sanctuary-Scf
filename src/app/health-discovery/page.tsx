@@ -21,11 +21,14 @@ export default function HealthDiscoveryPage() {
         eyebrow="Health Discovery"
         title="When you are not sure where to start, start with clarity."
         lead="Discovery reduces anxiety by turning vague concerns into better questions for screening and professional review."
-        image="/mms-about-hero.png"
-        imageAlt="Private consultation for health discovery."
+        image="/ling-mms-guide.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, helping patients begin with health discovery."
         primaryLabel="Start discovery"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="72% center"
+        spokespersonName="Ling"
+        spokespersonMessage="Tell me what has changed or what you are concerned about. I’ll help organise the right questions before your MMS clinical review."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
