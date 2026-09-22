@@ -163,7 +163,7 @@ export function LingPanel() {
           <p className="mt-3 text-sm leading-6 text-warm-gray">Use normal words. I’ll help organise what you tell me, explain what may be worth checking and show when a clinician should take over.</p>
         </div>
         <span className="relative size-16 shrink-0 overflow-hidden rounded-full border-2 border-gold-light bg-ivory shadow-soft md:size-20">
-          <Image src="/ling-mms-guide.png" alt="Ling, the MMS intelligent health guide" fill className="object-cover object-[50%_24%]" sizes="80px" />
+          <Image src="/ling-mms-guide.png" alt="Ling, the MMS virtual health spokesperson" fill className="object-cover object-[50%_24%]" sizes="80px" />
         </span>
       </div>
 
