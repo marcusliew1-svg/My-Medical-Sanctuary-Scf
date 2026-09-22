@@ -72,13 +72,15 @@ export default function InternationalMedicineAccessPage() {
         eyebrow="Medicine Access Intelligence"
         title="Different countries. Different systems. Better questions first."
         lead="MMS helps patients and families understand why medicine access, availability and cost can vary before any professional or licensed-party next step."
-        image="/mms-medicine-access-consult.png"
-        imageAlt="Private consultation discussing international healthcare access."
+        image="/ling-regional.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, explaining international medicine access questions."
         primaryLabel="Request discussion"
         primaryHref="/contact"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
-        imagePosition="62% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand why access and cost differ across countries, what questions to ask and where licensed professional review begins."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
@@ -106,20 +108,17 @@ export default function InternationalMedicineAccessPage() {
       <section className="bg-navy px-4 py-20 text-ivory md:py-28">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr]">
           <div>
-            <p className="editorial-kicker mb-4 text-gold-light">Price difference strategy</p>
+            <p className="editorial-kicker mb-4 text-gold-light">Access context</p>
             <h2 className="text-balance font-serif text-4xl leading-tight md:text-6xl">
               The same active ingredient can sit behind very different patient bills.
             </h2>
             <p className="mt-6 text-lg leading-8 text-ivory/72">
-              MMS can turn this into a qualified revenue stream by helping patients compare access
-              intelligently: country rules, registration, prescription requirements, supply route,
-              continuity and verified quotations before licensed coordination.
+              MMS helps patients compare access more intelligently by understanding country rules, registration,
+              prescription requirements, supply pathways and continuity before licensed coordination.
             </p>
             <div className="mt-8 rounded-[1.5rem] border border-gold-light/25 bg-ivory/10 p-5 text-sm leading-7 text-ivory/70">
-              Public example: a patient asks why a medicine is costly in the US, Gulf, Australia,
-              Singapore or Indonesia, and whether Malaysia or Thailand may offer a lawful,
-              professionally reviewed pathway. MMS sells the verified intelligence and coordination,
-              not an online medicine promise.
+              A patient may ask why a medicine is costly in one country and whether another market offers a lawful,
+              professionally reviewed pathway. MMS helps frame that question without turning the website into a medicine marketplace.
             </div>
           </div>
           <div className="grid gap-3">
@@ -146,15 +145,15 @@ export default function InternationalMedicineAccessPage() {
             objectPosition="50% center"
           />
           <div>
-            <p className="editorial-kicker mb-4 text-deep-green">Commercial pathway</p>
+            <p className="editorial-kicker mb-4 text-deep-green">A responsible pathway</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              From curiosity to a paid, verified access discussion.
+              From a question to a properly reviewed access discussion.
             </h2>
             <div className="mt-8 grid gap-5 border-y border-gold/40 py-6">
               {[
                 "Free education: public pages explain why country-level price differences happen.",
-                "Qualified enquiry: patient names the active ingredient, country concern and desired access question.",
-                "Paid access intelligence: MMS prepares a verified discussion pathway with country, registration and continuity factors.",
+                "Focused enquiry: the patient identifies the medicine, country concern and access question.",
+                "Verified access discussion: MMS helps organise country, registration and continuity factors before licensed review.",
                 "Licensed next step: any prescription, dispensing, dosage, quotation or supply conversation stays with appropriate licensed parties.",
               ].map((item) => (
                 <p key={item} className="leading-7 text-warm-gray">{item}</p>
