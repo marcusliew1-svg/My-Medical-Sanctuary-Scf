@@ -14,11 +14,10 @@ export function LingHealthPreview() {
         <div>
           <p className="editorial-kicker mb-4 text-deep-green">Ling • Your virtual health guide</p>
           <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-            Your health information should become easier to understand over time.
+            Understand what changed. Know what to ask next.
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-8 text-warm-gray">
-            Ling helps organise results, explain terminology and prepare better questions for your care team.
-            Personal interpretation and clinical decisions stay with your doctor.
+            Ling organises the signals. Your doctor decides what matters.
           </p>
           <div className="mt-8 flex flex-wrap gap-6 border-t border-gold/35 pt-6 text-sm text-deep-green">
             <span>Explain plainly</span>
@@ -55,8 +54,7 @@ export function LingHealthPreview() {
             <div className="p-5 md:p-7">
               <div className="rounded-[1.4rem] border border-gold/20 bg-white/[0.045] p-5">
                 <p className="text-sm leading-6 text-ivory/82">
-                  Three health areas have new information since your previous review. I can help you understand
-                  the terminology before you speak with your doctor.
+                  Three areas changed since your last review. I can help you understand them before you speak with your doctor.
                 </p>
               </div>
 
