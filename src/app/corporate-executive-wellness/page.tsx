@@ -38,13 +38,15 @@ export default function CorporateExecutiveWellnessPage() {
         eyebrow="Corporate Executive Wellness"
         title="Preventive health for people who carry responsibility."
         lead="MMS supports companies, owners and leadership teams with structured discovery, screening pathways, professional review and discreet coordination."
-        image="/mms-health-screening-hero.png"
-        imageAlt="Doctor-led executive health screening discussion."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing executive preventive health programmes."
         primaryLabel="Discuss a programme"
         primaryHref="#corporate-enquiry"
         secondaryLabel="How MMS works"
         secondaryHref="/how-it-works"
-        imagePosition="60% center"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help organisations understand the MMS pathway, prepare the right questions and route clinical matters to qualified professionals."
       />
 
       <SplitStory
