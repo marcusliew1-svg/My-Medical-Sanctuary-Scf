@@ -71,6 +71,7 @@ export default function HomePage() {
         primaryHref="/health-discovery"
         secondaryLabel="Explore MMS"
         secondaryHref="/how-it-works"
+        showHealthSignals
         spokespersonName="Ling"
         spokespersonMessage="I’ll help you understand where to begin, what your results mean in plain language, and when it is time to speak with your MMS doctor."
         trustItems={[
