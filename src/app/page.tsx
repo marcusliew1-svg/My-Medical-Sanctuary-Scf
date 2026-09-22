@@ -5,6 +5,7 @@ import { EditorialHero, EditorialStatement, FinalInvitation, ImagePanel, Journey
 import { RevealCardGrid } from "@/components/ExperienceCards";
 import { LongevityIntelligence } from "@/components/LongevityIntelligence";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
+import { MembershipDepth } from "@/components/MembershipDepth";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -53,41 +54,6 @@ const method = [
   { title: "Understand", text: "Doctors interpret the signals, context and what deserves attention." },
   { title: "Optimise", text: "A personalised plan turns findings into practical next steps." },
   { title: "Monitor", text: "Longitudinal review helps you see what is changing over time." },
-];
-
-const programmes = [
-  {
-    title: "Ascend",
-    eyebrow: "Know",
-    text: "Know where you stand.",
-    detail: "A structured starting point for preventive screening, baseline clarity and physician review.",
-    image: "/mms-concierge-lounge.png",
-    href: "/memberships",
-  },
-  {
-    title: "Evolve",
-    eyebrow: "Improve",
-    text: "Understand what is changing.",
-    detail: "Closer coordination around metabolic health, lifestyle, vitality and ongoing optimisation.",
-    image: "/mms-doctor-results-review.png",
-    href: "/memberships",
-  },
-  {
-    title: "Eterna",
-    eyebrow: "Protect",
-    text: "Take control of long-term health.",
-    detail: "Deeper preventive planning, repeated review and continuity across a longer health horizon.",
-    image: "/mms-doctor-couple-consult.png",
-    href: "/memberships",
-  },
-  {
-    title: "Pinnacle",
-    eyebrow: "Private",
-    text: "The highest level of health oversight.",
-    detail: "Highly coordinated private care and continuity, subject to capacity and clinical suitability.",
-    image: "/mms-diagnostics-screening.png",
-    href: "/memberships",
-  },
 ];
 
 export default function HomePage() {
