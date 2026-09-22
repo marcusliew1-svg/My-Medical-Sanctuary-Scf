@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { SupportiveTherapyBoundary } from "@/components/SupportiveTherapyBoundary";
 
 export const metadata = metadataFor(
   "IV Therapy",
@@ -24,6 +25,7 @@ export default function IvTherapyPage() {
       trustTitle="No one-size-fits-all wellness treatment belongs on a premium medical site."
       trustLead="Subject to doctor assessment. Suitable candidates only. Individual outcomes vary."
       finalTitle="Ask whether supportive therapy is suitable, not whether it is trendy."
+      insertAfterIntro={<SupportiveTherapyBoundary />}
     />
   );
 }
