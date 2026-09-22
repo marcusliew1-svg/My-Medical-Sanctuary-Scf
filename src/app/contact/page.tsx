@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { EditorialHero, ImagePanel, JourneyLine } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Contact / Discovery Form | My Medical Sanctuary",
+  title: "Contact / Discovery Form",
   description:
     "Start a discovery discussion with My Medical Sanctuary for health screening, membership, wellness coordination or corporate executive wellness.",
 };
@@ -49,9 +49,9 @@ export default function ContactPage() {
         spokespersonMessage="Start with me if you are unsure where to begin. I’ll help organise your question before an MMS team member or doctor takes over."
         trustItems={[
           { title: "Private intake", text: "A calm first discussion before recommendations." },
-          { title: "Careful routing", text: "Screening, membership, corporate or education pathways." },
-          { title: "Professional review", text: "Medical decisions remain doctor-led." },
-          { title: "Clear follow-up", text: "MMS helps organise the next step." },
+          { title: "Question-led", text: "Testing should answer a health question, not fill a package." },
+          { title: "Professional review", text: "Medical interpretation and suitability remain doctor-led." },
+          { title: "Clear follow-up", text: "MMS helps organise what happens next." },
         ]}
       />
 
@@ -63,8 +63,8 @@ export default function ContactPage() {
               A calm first step, designed around your question.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
-              The discovery form helps MMS understand whether you are looking for screening, continuity,
-              education, executive wellness or a broader preventive health journey.
+              The discovery form helps MMS understand the question behind the enquiry before deciding whether screening,
+              education, physician review, membership or another pathway is the appropriate next step.
             </p>
             <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-gold-light/60 bg-white shadow-premium">
               <ImagePanel
