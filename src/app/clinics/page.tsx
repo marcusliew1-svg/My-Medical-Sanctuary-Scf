@@ -13,11 +13,14 @@ export default function ClinicsPage() {
         eyebrow="Locations"
         title="Each care setting should have a clear personality."
         lead="MMS is designed to feel warm, medically reliable and coordinated across the patient journey."
-        image="/mms-about-hero.png"
-        imageAlt="Private preventive healthcare setting."
+        image="/ling-concierge.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, welcoming patients to the MMS care environment."
         primaryLabel="Speak with MMS"
         secondaryLabel="Care travel"
         secondaryHref="/malaysia-thailand-care"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand which MMS setting fits the next step in your care journey and what to expect before you arrive."
       />
 
       <SplitStory
