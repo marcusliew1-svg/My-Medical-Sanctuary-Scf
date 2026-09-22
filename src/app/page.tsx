@@ -127,9 +127,9 @@ export default function HomePage() {
 
       <EvidenceStandard />
 
-      <MembershipDepth />
-
       <LingHealthPreview />
+
+      <MembershipDepth />
 
       <SanctuaryExperience />
 
