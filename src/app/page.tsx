@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { EditorialHero, EditorialStatement, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
-import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
+import { RevealCardGrid } from "@/components/ExperienceCards";
 import { LongevityIntelligence } from "@/components/LongevityIntelligence";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
 
