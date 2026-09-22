@@ -65,7 +65,7 @@ export default function HomePage() {
       <EditorialHero
         eyebrow="Preventive care • Personalised longevity"
         title="Know earlier. Live better."
-        lead="Advanced diagnostics, physician-guided prevention and personalised longevity care — built around you."
+        lead="Diagnostics, physician-guided prevention and personalised longevity care — built around you."
         image="/ling-mms-guide.png"
         imageAlt="Ling, the MMS virtual health spokesperson, introducing the preventive health journey."
         imagePosition="72% center"
@@ -86,8 +86,8 @@ export default function HomePage() {
 
       <EditorialStatement
         eyebrow="Why earlier matters"
-        title="Most healthcare starts when something goes wrong. MMS starts before that."
-        lead="Risk can develop quietly for years. MMS is designed to help you understand more of the picture, identify what deserves attention and make better-informed health decisions with your doctor."
+        title="Healthcare often becomes most visible when something goes wrong. MMS is designed to begin earlier."
+        lead="Some health risks develop before they cause obvious symptoms. MMS is designed to help you understand more of the picture, identify what deserves attention and make better-informed decisions with your doctor."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
