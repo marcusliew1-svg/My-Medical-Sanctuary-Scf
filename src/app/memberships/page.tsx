@@ -39,9 +39,7 @@ export default function MembershipsPage() {
             </p>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-doctor-couple-consult.png" alt="Doctor-led private consultation." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-concierge-lounge.png" alt="Premium patient concierge welcome." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
-            <ImagePanel priority src="/mms-diagnostics-screening.png" alt="Preventive diagnostics." className="min-h-[240px] rounded-[1.2rem] shadow-premium" objectPosition="50% center" />
+            <ImagePanel priority src="/mms-membership-journey.webp" alt="MMS membership journey from baseline understanding to long-term health continuity." className="col-span-3 min-h-[320px] rounded-[1.6rem] shadow-premium" objectPosition="50% center" />
           </div>
         </div>
       </section>
