@@ -88,14 +88,8 @@ export default function InsightsPage() {
               Read the screening guide
             </Link>
           </div>
-          <div className="relative overflow-hidden rounded-[1.25rem] bg-navy p-4 shadow-premium">
-            <div className="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
-              <ImagePanel src="/mms-doctor-couple-consult.png" alt="Doctor-led learning discussion." className="min-h-[360px] rounded-[0.9rem]" objectPosition="50% center" />
-              <div className="grid gap-4">
-                <ImagePanel src="/mms-concierge-lounge.png" alt="Patient concierge guiding visitors." className="min-h-[170px] rounded-[0.9rem]" objectPosition="50% center" />
-                <ImagePanel src="/mms-diagnostics-screening.png" alt="Screening insight review." className="min-h-[170px] rounded-[0.9rem]" objectPosition="50% center" />
-              </div>
-            </div>
+          <div className="relative overflow-hidden rounded-[1.5rem] bg-navy p-4 shadow-premium">
+            <ImagePanel src="/mms-medicine-intelligence.webp" alt="MMS health intelligence visual connecting medical context, evidence and patient understanding." className="min-h-[520px] rounded-[1rem]" objectPosition="50% center" />
           </div>
         </div>
       </section>
