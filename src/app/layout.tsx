@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { DraftBanner } from "@/components/DraftBanner";
 import { FooterV01 } from "@/components/FooterV01";
 import { Navbar } from "@/components/Navbar";
+import { LingDock } from "@/components/LingDock";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://my-medical-sanctuary-scf.vercel.app";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <DraftBanner />
         <Navbar />
         {children}
+        <LingDock />
         <FooterV01 />
       </body>
     </html>
