@@ -1,74 +1,130 @@
 const systems = [
-  { name: "Cardiovascular", detail: "Heart, vessels, lipid and blood-pressure context" },
-  { name: "Metabolic", detail: "Glucose, insulin, weight and energy regulation" },
-  { name: "Cancer risk", detail: "Age-, history- and suitability-led screening pathways" },
-  { name: "Brain & cognition", detail: "Cognitive health, sleep and neurological risk context" },
-  { name: "Hormonal", detail: "Hormonal patterns interpreted in clinical context" },
-  { name: "Inflammation", detail: "Signals that may deserve deeper medical review" },
-  { name: "Musculoskeletal", detail: "Strength, mobility, body composition and resilience" },
-  { name: "Biological ageing", detail: "Longitudinal markers viewed as trends, not a single score" },
+  { name: "Cardiovascular", mode: "Core", detail: "Blood pressure, lipids and cardiovascular risk interpreted in context." },
+  { name: "Metabolic", mode: "Core", detail: "Glucose, weight, body composition and metabolic risk patterns." },
+  { name: "Cancer risk", mode: "Risk-led", detail: "Screening choices shaped by age, history, sex and individual risk." },
+  { name: "Brain & cognition", mode: "Context-led", detail: "Sleep, cognitive concerns and neurological risk reviewed in context." },
+  { name: "Hormonal", mode: "Context-led", detail: "Hormonal testing guided by symptoms, history and clinical indication." },
+  { name: "Inflammation", mode: "Context-led", detail: "Non-specific signals interpreted carefully rather than treated as diagnoses." },
+  { name: "Musculoskeletal", mode: "Core", detail: "Strength, mobility and body composition as part of healthy ageing." },
+  { name: "Biological ageing", mode: "Emerging", detail: "Exploratory markers viewed cautiously and never as a single definitive score." },
 ];
 
+const modeStyle: Record<string, string> = {
+  Core: "border-emerald-200/20 bg-emerald-100/[0.06] text-emerald-100/75",
+  "Risk-led": "border-gold/25 bg-gold/10 text-gold-light",
+  "Context-led": "border-white/12 bg-white/[0.045] text-ivory/58",
+  Emerging: "border-[#9fb8c5]/20 bg-[#9fb8c5]/[0.07] text-[#c4d4dc]",
+};
+
 export function LongevityIntelligence() {
+  const left = systems.slice(0, 4);
+  const right = systems.slice(4);
+
   return (
-    <section className="relative overflow-hidden bg-[#06151d] px-4 py-20 text-[#f7f2e8] md:py-28">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_34%_45%,rgba(212,175,55,0.13),transparent_28%),radial-gradient(circle_at_70%_22%,rgba(64,112,103,0.16),transparent_30%)]" />
-      <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+    <section className="relative overflow-hidden bg-[#06151d] px-4 py-24 text-ivory md:py-32">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_35%,rgba(199,167,106,0.12),transparent_28%),radial-gradient(circle_at_78%_68%,rgba(47,81,71,0.2),transparent_32%)]" />
+      <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
         <div>
-          <p className="editorial-kicker mb-5 text-[#dfc66b]">MMS Longevity Intelligence</p>
-          <h2 className="text-balance font-serif text-4xl leading-[1.04] md:text-6xl">
+          <p className="editorial-kicker mb-5 text-gold-light">MMS Longevity Intelligence</p>
+          <h2 className="text-balance font-serif text-5xl leading-[1.02] md:text-7xl">
             See your health as one connected system.
           </h2>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-[#f7f2e8]/70">
-            Screening is only the beginning. MMS brings together the signals that matter, physician interpretation
-            and longitudinal follow-through so your health story becomes clearer over time.
+          <p className="mt-7 max-w-xl text-lg leading-8 text-ivory/68">
+            Screening is only the beginning. MMS brings together relevant signals, physician interpretation and longitudinal follow-through so different health domains can be considered in context.
           </p>
-          <div className="mt-9 grid grid-cols-2 gap-5 border-t border-[#dfc66b]/25 pt-7 text-sm text-[#f7f2e8]/70">
+
+          <div className="mt-9 grid grid-cols-2 gap-5 border-t border-gold/25 pt-7 text-sm text-ivory/62">
             <div>
-              <p className="text-2xl font-serif text-[#f7f2e8]">8</p>
+              <p className="font-serif text-3xl text-ivory">8</p>
               <p className="mt-1">health domains viewed together</p>
             </div>
             <div>
-              <p className="text-2xl font-serif text-[#f7f2e8]">1</p>
-              <p className="mt-1">physician-led picture of you</p>
+              <p className="font-serif text-3xl text-ivory">1</p>
+              <p className="mt-1">physician-led interpretation layer</p>
             </div>
+          </div>
+
+          <div className="mt-8 border-t border-white/10 pt-6">
+            <p className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-gold-light/72">Domain key</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Core", "Risk-led", "Context-led", "Emerging"].map((mode) => (
+                <span key={mode} className={`rounded-full border px-3 py-1.5 text-[0.58rem] font-semibold uppercase tracking-[0.14em] ${modeStyle[mode]}`}>
+                  {mode}
+                </span>
+              ))}
+            </div>
+            <p className="mt-4 max-w-lg text-xs leading-5 text-ivory/40">
+              These labels describe how MMS should frame the domain, not the evidence grade of every possible test or intervention within it.
+            </p>
           </div>
         </div>
 
-        <div className="relative min-h-[620px] overflow-hidden rounded-[2.2rem] border border-[#dfc66b]/20 bg-white/[0.035] p-5 shadow-[0_36px_120px_rgba(0,0,0,0.28)] backdrop-blur-sm md:p-8">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#dfc66b]/15" />
-            <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#dfc66b]/20" />
-            <div className="absolute left-1/2 top-1/2 h-[185px] w-[185px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#dfc66b]/30" />
-            <div className="absolute left-1/2 top-1/2 h-[86px] w-[86px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dfc66b]/10 shadow-[0_0_70px_rgba(212,175,55,0.16)]" />
-          </div>
+        <div className="relative overflow-hidden rounded-[2.2rem] border border-gold/18 bg-white/[0.03] p-4 shadow-[0_40px_130px_rgba(0,0,0,0.3)] backdrop-blur-sm md:p-6">
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.018),transparent)]" />
+          <div className="relative grid gap-4 lg:grid-cols-[1fr_170px_1fr] lg:items-stretch">
+            <div className="grid gap-3">
+              {left.map((system, index) => (
+                <article
+                  key={system.name}
+                  className="group rounded-[1.25rem] border border-white/10 bg-[#081b24]/88 p-4 transition duration-500 hover:-translate-y-0.5 hover:border-gold/32 hover:bg-[#0a222c]"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-gold-light/55">0{index + 1}</span>
+                    <span className={`rounded-full border px-2.5 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.12em] ${modeStyle[system.mode]}`}>
+                      {system.mode}
+                    </span>
+                  </div>
+                  <h3 className="mt-3 font-serif text-2xl leading-tight">{system.name}</h3>
+                  <p className="mt-2 text-xs leading-5 text-ivory/48 transition group-hover:text-ivory/68">{system.detail}</p>
+                </article>
+              ))}
+            </div>
 
-          <div className="relative z-10 grid min-h-[560px] grid-cols-2 content-between gap-4">
-            {systems.map((system, index) => (
-              <div
-                key={system.name}
-                className={`group max-w-[250px] rounded-2xl border border-white/10 bg-[#071b24]/80 p-4 transition duration-500 hover:-translate-y-1 hover:border-[#dfc66b]/45 hover:bg-[#0a222c] ${
-                  index % 2 ? "justify-self-end text-right" : ""
-                }`}
-              >
-                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#dfc66b]">
-                  0{index + 1}
-                </span>
-                <h3 className="mt-2 font-serif text-xl leading-tight">{system.name}</h3>
-                <p className="mt-2 text-xs leading-5 text-[#f7f2e8]/55 transition group-hover:text-[#f7f2e8]/75">
-                  {system.detail}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-            <div className="mx-auto grid h-24 w-24 place-items-center rounded-full border border-[#dfc66b]/35 bg-[#07151d]/95 shadow-[0_0_90px_rgba(212,175,55,0.18)]">
-              <div>
-                <p className="text-[0.58rem] font-semibold uppercase tracking-[0.22em] text-[#dfc66b]">Your</p>
-                <p className="mt-1 font-serif text-lg">Health</p>
+            <div className="relative hidden overflow-hidden rounded-[1.4rem] border border-white/10 bg-[#071820] lg:block">
+              <div className="absolute inset-x-1/2 top-12 bottom-12 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gold/40 to-transparent" />
+              <div className="relative flex h-full min-h-[610px] flex-col items-center justify-between py-10">
+                {[
+                  ["Measure", "Signals"],
+                  ["Context", "History"],
+                  ["Trend", "Change"],
+                  ["Review", "Doctor"],
+                ].map(([title, text], index) => (
+                  <div key={title} className="relative z-10 text-center">
+                    <div className={`mx-auto grid rounded-full border bg-[#071820] shadow-[0_0_38px_rgba(199,167,106,0.10)] ${index === 1 ? "h-24 w-24 border-gold/45" : "h-14 w-14 border-gold/25"}`}>
+                      <div className="self-center">
+                        <p className="text-[0.52rem] font-semibold uppercase tracking-[0.16em] text-gold-light">{title}</p>
+                        <p className="mt-1 text-[0.58rem] text-ivory/40">{text}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
+
+            <div className="grid gap-3">
+              {right.map((system, index) => (
+                <article
+                  key={system.name}
+                  className="group rounded-[1.25rem] border border-white/10 bg-[#081b24]/88 p-4 transition duration-500 hover:-translate-y-0.5 hover:border-gold/32 hover:bg-[#0a222c]"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-gold-light/55">0{index + 5}</span>
+                    <span className={`rounded-full border px-2.5 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.12em] ${modeStyle[system.mode]}`}>
+                      {system.mode}
+                    </span>
+                  </div>
+                  <h3 className="mt-3 font-serif text-2xl leading-tight">{system.name}</h3>
+                  <p className="mt-2 text-xs leading-5 text-ivory/48 transition group-hover:text-ivory/68">{system.detail}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative mt-4 grid gap-3 rounded-[1.25rem] border border-gold/18 bg-gold/[0.06] p-4 text-sm sm:grid-cols-[0.42fr_1.58fr] sm:items-center">
+            <p className="text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-gold-light">Interpretation rule</p>
+            <p className="leading-6 text-ivory/58">
+              A signal is not a diagnosis. MMS should connect measurement quality, personal history, symptoms, risk and trend before deciding whether a finding matters.
+            </p>
           </div>
         </div>
       </div>
