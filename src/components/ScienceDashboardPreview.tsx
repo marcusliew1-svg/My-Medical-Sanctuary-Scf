@@ -68,9 +68,9 @@ export function ScienceDashboardPreview() {
                       <line key={y} x1="4" x2="244" y1={y} y2={y} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
                     ))}
                     <path d={trendPath + " L244 88 L4 88 Z"} fill="url(#trendFill)" />
-                    <path d={trendPath} fill="none" stroke="#E2CEA0" strokeWidth="2.2" strokeLinecap="round" />
+                    <path d={trendPath} fill="none" stroke="#E2CEA0" strokeWidth="2.2" strokeLinecap="round" className="mms-trend-line" />
                     {[["4","74"],["86","50"],["166","35"],["244","18"]].map(([x,y]) => (
-                      <circle key={x} cx={x} cy={y} r="3.2" fill="#E2CEA0" />
+                      <circle key={x} cx={x} cy={y} r="3.2" fill="#E2CEA0" className="mms-trend-point" />
                     ))}
                   </svg>
                   <div className="flex justify-between text-[0.56rem] uppercase tracking-[0.14em] text-ivory/30">
