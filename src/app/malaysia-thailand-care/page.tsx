@@ -20,11 +20,14 @@ export default function MalaysiaThailandCarePage() {
         eyebrow="Regional care"
         title="Your care can travel with you."
         lead="Malaysia and Thailand should not feel like generic medical tourism. MMS frames regional care around clarity, suitability and coordination."
-        image="/mms-health-screening-hero.png"
-        imageAlt="Doctor-led care coordination conversation."
+        image="/ling-regional.png"
+        imageAlt="Ling, the MMS virtual health spokesperson, introducing regional care across Malaysia and Thailand."
         primaryLabel="Discuss regional care"
         secondaryLabel="Ask Ling"
         secondaryHref="/ling"
+        imagePosition="70% center"
+        spokespersonName="Ling"
+        spokespersonMessage="I’ll help you understand how regional care can stay connected across countries, and when local licensed professionals need to take over."
       />
 
       <section className="bg-ivory px-4 py-20 md:py-28">
