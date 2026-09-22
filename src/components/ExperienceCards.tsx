@@ -35,8 +35,8 @@ export function RevealCardGrid({ items }: { items: RevealCardItem[] }) {
               ) : null}
               <h3 className="font-serif text-3xl leading-tight">{item.title}</h3>
               <p className="mt-3 text-sm leading-6 text-ivory/76">{item.text}</p>
-              <div className="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr] group-focus-visible:grid-rows-[1fr]">
-                <p className="overflow-hidden pt-0 text-sm leading-6 text-ivory/82 opacity-0 transition duration-500 group-hover:pt-4 group-hover:opacity-100 group-focus-visible:pt-4 group-focus-visible:opacity-100">
+              <div className="grid grid-rows-[1fr] transition-all duration-500 md:grid-rows-[0fr] md:group-hover:grid-rows-[1fr] md:group-focus-visible:grid-rows-[1fr]">
+                <p className="overflow-hidden pt-4 text-sm leading-6 text-ivory/76 opacity-100 transition duration-500 md:pt-0 md:opacity-0 md:group-hover:pt-4 md:group-hover:opacity-100 md:group-focus-visible:pt-4 md:group-focus-visible:opacity-100">
                   {item.detail}
                 </p>
               </div>
