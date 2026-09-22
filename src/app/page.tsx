@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation } from "@/components/Editorial";
 import { SilentRiskStory } from "@/components/SilentRiskStory";
 import { EarlyVsLateStory } from "@/components/EarlyVsLateStory";
+import { PatientFirstFilm } from "@/components/PatientFirstFilm";
 import { LingHealthPreview } from "@/components/LingHealthPreview";
 import { MembershipDepth } from "@/components/MembershipDepth";
 import { SanctuaryExperience } from "@/components/SanctuaryExperience";
@@ -42,6 +43,8 @@ export default function HomePage() {
       <SilentRiskStory />
 
       <EarlyVsLateStory />
+
+      <PatientFirstFilm />
 
       <JourneyVisual />
 
