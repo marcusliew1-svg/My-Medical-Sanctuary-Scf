@@ -1,4 +1,5 @@
 import { PatientEditorialPage, metadataFor } from "@/components/PatientEditorialPage";
+import { ScreeningEvidence } from "@/components/ScreeningEvidence";
 
 export const metadata = metadataFor(
   "Preventive Care",
@@ -24,6 +25,7 @@ export default function PreventiveCarePage() {
       trustTitle="The first recommendation is often patience and clarity."
       trustLead="MMS does not need to rush visitors into programmes. The safer first step is understanding what matters."
       finalTitle="Preventive care begins with a better first conversation."
+      insertAfterIntro={<ScreeningEvidence />}
     />
   );
 }
