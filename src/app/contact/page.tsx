@@ -60,7 +60,7 @@ export default function ContactPage() {
           <aside className="lg:sticky lg:top-28">
             <p className="editorial-kicker mb-4 text-deep-green">Concierge intake</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              A calm first step, not a sales counter.
+              A calm first step, designed around your question.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
               The discovery form helps MMS understand whether you are looking for screening, continuity,
