@@ -41,11 +41,11 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
 
   return (
     <main>
-      <section className="bg-navy px-4 pb-16 pt-32 text-ivory md:pb-24 md:pt-40">
+      <section className="relative overflow-hidden bg-[#07151d] px-4 pb-20 pt-32 text-ivory md:pb-28 md:pt-40">
         <div className="mx-auto max-w-6xl">
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-gold-light">MMS Sales Partner Programme</p>
-          <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-tight md:text-7xl">Build a professional business around better health conversations.</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-ivory/72">Represent a premium preventive-health and personalised-longevity platform supported by structured education, Ling-assisted discovery and human clinical boundaries.</p>
+          <p className="editorial-kicker text-gold-light">MMS Sales Partner Programme</p>
+          <h1 className="mt-4 max-w-4xl text-balance font-serif text-5xl leading-[1.02] md:text-7xl">Represent MMS with discipline, clarity and professional boundaries.</h1>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-ivory/72">Represent a premium preventive-health and personalised-longevity platform supported by structured education, evidence-aware communication, Ling-assisted discovery and clear clinical boundaries.</p>
         </div>
       </section>
 
@@ -64,7 +64,7 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
               </div>
             </div>
 
-            <div className="rounded-[2rem] bg-white p-8 shadow-soft">
+            <div className="rounded-[2rem] border border-gold/18 bg-white/92 p-8 shadow-[0_20px_60px_rgba(11,26,46,0.06)]">
               <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">Commission framework</p>
               <h2 className="mt-3 font-serif text-4xl text-navy">Performance-based and rule-controlled.</h2>
               <p className="mt-5 text-sm leading-6 text-warm-gray">Commission eligibility and rates are determined under the current approved MMS commission rule. Each eligible sale retains the exact rule version used, so later policy changes do not silently rewrite historical transactions.</p>
@@ -79,7 +79,7 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
 
           <div className="mt-10 grid gap-4 md:grid-cols-4">
             {tiers.map(([name, target]) => (
-              <div key={name} className="rounded-2xl border border-black/5 bg-white p-5 shadow-soft">
+              <div key={name} className="rounded-[1.35rem] border border-gold/18 bg-white/92 p-5 shadow-[0_20px_60px_rgba(11,26,46,0.06)]">
                 <p className="text-[10px] font-bold uppercase tracking-[.16em] text-gold">Partner level</p>
                 <h3 className="mt-2 font-serif text-2xl text-navy">{name}</h3>
                 <p className="mt-2 text-sm text-warm-gray">{target}</p>
@@ -88,7 +88,7 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
           </div>
           <p className="mt-3 text-xs leading-5 text-warm-gray">Level progression is calculated from verified completed commercial activity under the applicable approved level rule. Qualification thresholds are not self-declared.</p>
 
-          <section className="mt-10 rounded-[2rem] bg-white p-8 shadow-soft" aria-labelledby="activation-heading">
+          <section className="mt-10 rounded-[2rem] bg-white p-8 shadow-[0_20px_60px_rgba(11,26,46,0.06)]" aria-labelledby="activation-heading">
             <p className="text-xs font-bold uppercase tracking-[.18em] text-deep-green">From approval to activation</p>
             <h2 id="activation-heading" className="mt-2 font-serif text-4xl text-navy">Approval alone does not make someone an active MMS representative.</h2>
             <div className="mt-7 grid gap-4 md:grid-cols-4">
@@ -110,7 +110,7 @@ export default function JoinMMSPage({ searchParams }: JoinMMSPageProps) {
             </div>
             <div className="grid gap-3">
               {referralSteps.map(([title, text]) => (
-                <div key={title} className="rounded-2xl border border-black/5 bg-white p-5 shadow-soft">
+                <div key={title} className="rounded-[1.35rem] border border-gold/18 bg-white/92 p-5 shadow-[0_20px_60px_rgba(11,26,46,0.06)]">
                   <p className="text-sm font-semibold text-deep-green">{title}</p>
                   <p className="mt-1 text-sm leading-6 text-warm-gray">{text}</p>
                 </div>
