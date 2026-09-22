@@ -48,7 +48,7 @@ const sources = [
 
 export function EvidenceStandard() {
   return (
-    <section className="relative overflow-hidden bg-[#06151d] px-4 py-24 text-ivory md:py-32">
+    <section className="mms-science-grid relative overflow-hidden bg-[#06151d] px-4 py-24 text-ivory md:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_15%,rgba(199,167,106,0.13),transparent_26%),radial-gradient(circle_at_88%_74%,rgba(47,81,71,0.22),transparent_30%)]" />
       <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
