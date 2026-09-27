@@ -15,7 +15,7 @@ export const legalLinks = [
 ];
 
 export const platformLinks = [
-  { label: "SCF Lab Roadmap", href: "/scf-lab-roadmap" },
+  { label: "Science & Evidence", href: "/science-evidence" },
   { label: "Medicine Access Intelligence", href: "/international-medicine-access" },
   { label: "Ling", href: "/ling" },
 ];
@@ -38,7 +38,7 @@ export const journeyCards = [
   },
   {
     title: "Support Healthy Ageing",
-    text: "Identify risks earlier and plan long-term strategies for strength, resilience, and independence.",
+    text: "Understand health risks in context and plan long-term strategies for strength, resilience, and independence.",
   },
   {
     title: "Improve Gut Health",
@@ -54,12 +54,12 @@ export const primaryServices = [
   {
     title: "Health Screening",
     href: "/health-screening",
-    text: "Comprehensive screening to understand current health status and identify potential risks earlier.",
+    text: "Comprehensive screening to understand current health status and identify signals that may need follow-up.",
   },
   {
     title: "Preventive Care",
     href: "/preventive-care",
-    text: "Doctor-led planning focused on early detection, risk awareness, and long-term follow-up.",
+    text: "Doctor-led planning focused on risk awareness, appropriate screening and long-term follow-up.",
   },
   {
     title: "Longevity Medicine",
