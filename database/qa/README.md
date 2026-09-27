@@ -27,3 +27,5 @@ After migrations through `0019_mms_finance_temporal_evidence_hardening.sql` are 
 After migrations through `0020_mms_commission_hold_release_evidence_hardening.sql` are applied, run `011_commission_hold_release_evidence_transactional.sql`. It verifies that a Finance hold persists its reason, release clears the hold reason, exact hold/release retries do not duplicate immutable events, and conflicting release replay evidence is rejected. The script ends with `ROLLBACK`.
 
 Never apply persistent QA fixtures to production. The transactional control tests are also intended for non-production validation only. All QA files create or exercise synthetic commercial Partner/lead data and must never be used in a patient/clinical database or any iPivot database.
+
+After migration `0025_mms_crm_operations_preview_pilot.sql` and runtime grant script `006_mms_crm_operations_preview_grants.sql`, run `015_crm_operations_preview_transactional.sql` only against the dedicated MMS Preview commercial database. It verifies synthetic-only classification, atomic idempotency, queue creation and immutable audit enforcement, then rolls back.

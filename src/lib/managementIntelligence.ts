@@ -14,7 +14,7 @@ export type ManagementPipelineSnapshot = OperationalFailureCounts & {
   bySource: Record<string, number>;
   byChannel: Record<string, number>;
   partnerReferrals: number;
-  averageResponseMinutes: number | null;
+  medianResponseMinutes: number | null;
   overdueEnquiries: number;
   consultationRequests: number;
   scheduledConsultations: number;
@@ -38,6 +38,7 @@ export type ManagementBrief = {
   whatChanged: string;
   requiresAttention: string[];
   sourcePerformance: string[];
+  channelPerformance: string[];
   operationalFailures: string[];
   suggestedAdministrativePriorities: string[];
 };
@@ -45,6 +46,14 @@ export type ManagementBrief = {
 function increment(target: Record<string, number>, key: string | undefined): void {
   const normalized = key?.trim() || "Not specified";
   target[normalized] = (target[normalized] || 0) + 1;
+}
+
+function median(values: readonly number[]): number | null {
+  if (!values.length) return null;
+  const sorted = [...values].sort((left, right) => left - right);
+  const middle = Math.floor(sorted.length / 2);
+  const value = sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+  return Math.round(value);
 }
 
 export function buildManagementPipelineSnapshot(input: {
@@ -99,7 +108,7 @@ export function buildManagementPipelineSnapshot(input: {
     bySource,
     byChannel,
     partnerReferrals,
-    averageResponseMinutes: responseMinutes.length ? Math.round(responseMinutes.reduce((sum, value) => sum + value, 0) / responseMinutes.length) : null,
+    medianResponseMinutes: median(responseMinutes),
     overdueEnquiries,
     consultationRequests,
     scheduledConsultations,
@@ -122,6 +131,9 @@ export function generateManagementBrief(snapshot: ManagementPipelineSnapshot): M
   const sources = Object.entries(snapshot.bySource)
     .sort((left, right) => right[1] - left[1])
     .map(([source, count]) => `${source}: ${count} enquiry/enquiries`);
+  const channels = Object.entries(snapshot.byChannel)
+    .sort((left, right) => right[1] - left[1])
+    .map(([channel, count]) => `${channel}: ${count} enquiry/enquiries`);
   const attention: string[] = [];
   if (snapshot.overdueEnquiries) attention.push(`${snapshot.overdueEnquiries} overdue administrative follow-up(s).`);
   if (failures.length) attention.push("Operational failures require owner review.");
@@ -134,6 +146,7 @@ export function generateManagementBrief(snapshot: ManagementPipelineSnapshot): M
     whatChanged: `${snapshot.enquiriesToday} enquiry/enquiries today; ${snapshot.enquiriesWeek} in the last 7 days; ${snapshot.conversions} conversion(s).`,
     requiresAttention: attention,
     sourcePerformance: sources,
+    channelPerformance: channels,
     operationalFailures: failures.length ? failures : ["No recorded CRM, booking or email failures."],
     suggestedAdministrativePriorities: [
       "Review overdue follow-ups in SLA order.",

@@ -29,11 +29,13 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0022_mms_health_intelligence_foundation.sql",
   "0023_mms_health_intelligence_data_operations.sql",
   "0024_mms_health_intelligence_assisted_ingestion.sql",
+  "0025_mms_crm_operations_preview_pilot.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
   "partners","partner_audit_events","partner_training_evidence","partner_assessment_attempts","partner_certifications","partner_sessions","partner_csrf_tokens","leads","lead_duplicate_decisions","lead_ownership_events","lead_lifecycle_events","applications","payments","payment_verifications","memberships","commercial_workflow_events","commission_rules","commission_transactions","commission_events","presentation_assets","schema_migrations",
   "health_intelligence_markets","active_ingredients","brands","manufacturers","dosage_forms","routes_of_administration","release_types","medicine_products","medicine_product_ingredients","price_sources","market_registrations","price_observations","fx_rates","generic_relationships","match_reviews","regulatory_notes","verification_events","health_intelligence_audit_events","medicine_search_events","generic_search_events","cost_review_events","source_trust_reviews","product_creation_candidates","operational_price_observations","observation_evidence","freshness_policies","observation_import_batches","observation_import_rows","source_connectors",
+  "crm_idempotency_reservations","crm_enquiries","crm_sync_state","crm_queue_state","crm_audit_events",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([

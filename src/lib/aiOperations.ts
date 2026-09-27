@@ -69,7 +69,7 @@ export function refuseUnsafeAiOperationsRequest(request: string, now?: string): 
   );
 }
 
-function missingContactDetails(lead: CrmAdministrativeLead): string[] {
+export function missingAdministrativeDetails(lead: CrmAdministrativeLead): string[] {
   const missing: string[] = [];
   if (!lead.email) missing.push("email");
   if (!lead.mobile) missing.push("mobile");
@@ -78,8 +78,14 @@ function missingContactDetails(lead: CrmAdministrativeLead): string[] {
   return missing;
 }
 
+export function overdueAdministrativeWarning(lead: CrmAdministrativeLead, now = new Date().toISOString()): AiOperationsOutput | null {
+  if (!lead.nextActionDue || Number.isNaN(Date.parse(lead.nextActionDue)) || Date.parse(lead.nextActionDue) >= Date.parse(now)) return null;
+  if (["Converted", "Not Proceeding", "Do Not Contact", "Spam", "Duplicate"].includes(lead.leadStatus)) return null;
+  return output("next_action", "Administrative follow-up is overdue. Review the record and escalate under the approved SLA process.", "administrative", now);
+}
+
 export function summarizeAdministrativeEnquiry(lead: CrmAdministrativeLead, now?: string): AiOperationsOutput {
-  const missing = missingContactDetails(lead);
+  const missing = missingAdministrativeDetails(lead);
   const attribution = lead.partnerId ? `Partner referral ${lead.partnerId}` : lead.source;
   const interest = lead.programmeInterest || lead.broadInterestCategory || lead.treatmentInformationInterest || "not specified";
   return output(

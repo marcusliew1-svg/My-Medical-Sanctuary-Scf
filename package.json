@@ -38,7 +38,8 @@
     "test:t6-9": "node --test tests/t6-9-approval-closure-pack.test.mjs",
     "test:t6-10": "node --test tests/t6-10-controlled-public-launch.test.mjs",
     "test:t6-11": "node --test tests/t6-11-controlled-public-finalization.test.mjs",
-    "test:t6-12": "node --test tests/t6-12-crm-ai-operations.test.mjs tests/t6-12-ai-safety.test.mjs"
+    "test:t6-12": "node --test tests/t6-12-crm-ai-operations.test.mjs tests/t6-12-ai-safety.test.mjs",
+    "test:t6-13": "node --test tests/t6-13-crm-ai-preview-pilot.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
