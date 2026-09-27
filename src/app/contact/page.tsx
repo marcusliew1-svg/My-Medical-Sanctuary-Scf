@@ -31,7 +31,13 @@ const contactPath = [
   },
 ];
 
-export default function ContactPage() {
+type ContactPageProps = {
+  searchParams?: { interest?: string | string[] };
+};
+
+export default function ContactPage({ searchParams }: ContactPageProps) {
+  const interest = Array.isArray(searchParams?.interest) ? searchParams?.interest[0] : searchParams?.interest;
+  const defaultInterest = interest === "online-doctor" ? "Online doctor session" : undefined;
   return (
     <main>
       <EditorialHero
@@ -75,7 +81,7 @@ export default function ContactPage() {
               />
             </div>
           </aside>
-          <ContactForm />
+          <ContactForm defaultInterest={defaultInterest} />
         </div>
       </section>
 
