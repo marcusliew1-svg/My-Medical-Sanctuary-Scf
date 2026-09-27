@@ -29,3 +29,5 @@ After migrations through `0020_mms_commission_hold_release_evidence_hardening.sq
 Never apply persistent QA fixtures to production. The transactional control tests are also intended for non-production validation only. All QA files create or exercise synthetic commercial Partner/lead data and must never be used in a patient/clinical database or any iPivot database.
 
 After migration `0025_mms_crm_operations_preview_pilot.sql` and runtime grant script `006_mms_crm_operations_preview_grants.sql`, run `015_crm_operations_preview_transactional.sql` only against the dedicated MMS Preview commercial database. It verifies synthetic-only classification, atomic idempotency, queue creation and immutable audit enforcement, then rolls back.
+
+For the approved T6.14 live Preview pilot only, `016_crm_live_preview_e2e.sql` creates and retains one clearly labelled synthetic enquiry plus immutable audit evidence after exercising idempotent replay, assignment, next action, contact, escalation and closure. Never run it on Production or any iPivot database.
