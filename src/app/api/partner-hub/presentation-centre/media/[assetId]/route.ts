@@ -7,7 +7,7 @@ import { createPartnerMediaSignedUrl, parsePartnerMediaReference } from "@/lib/p
 export const dynamic = "force-dynamic";
 
 type RouteContext = {
-  params: Promise<{ assetId: string }>;
+  params: { assetId: string };
 };
 
 export async function GET(request: NextRequest, context: RouteContext) {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ status: "hub_unavailable", message: "Partner Presentation Centre store is not configured." }, { status: 503 });
   }
 
-  const { assetId } = await context.params;
+  const { assetId } = context.params;
   if (!/^[0-9a-f-]{36}$/i.test(assetId)) {
     return NextResponse.json({ status: "not_found", message: "Partner material was not found." }, { status: 404 });
   }
