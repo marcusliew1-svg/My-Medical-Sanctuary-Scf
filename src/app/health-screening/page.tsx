@@ -4,9 +4,9 @@ import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 import { ScreeningEvidence } from "@/components/ScreeningEvidence";
 
 export const metadata: Metadata = {
-  title: "Health Screening | My Medical Sanctuary",
+  title: "Health Screening",
   description:
-    "Comprehensive health screening in Malaysia to understand your baseline, detect risks earlier and support doctor-led planning.",
+    "Comprehensive health screening in Malaysia to understand your baseline, identify signals that may need follow-up and support doctor-led planning.",
 };
 
 const pathway = [
@@ -54,7 +54,7 @@ export default function HealthScreeningPage() {
       <EditorialHero
         eyebrow="Health Screening"
         title="Your health journey starts with understanding."
-        lead="A personalised screening helps identify current health status, detect potential risks earlier and provide a doctor-led foundation for your wellness plan."
+        lead="A personalised screening helps build a clearer baseline, identify signals that may need follow-up and provide a doctor-led foundation for your health plan."
         image="/ling-knowledge.png"
         imageAlt="Ling, the MMS virtual health spokesperson, guiding a preventive screening journey."
         primaryLabel="Book health screening"
@@ -70,7 +70,7 @@ export default function HealthScreeningPage() {
           <div>
             <p className="editorial-kicker mb-4 text-deep-green">Why it matters</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Understand before problems become more serious.
+              Build context before decisions become urgent.
             </h2>
             <p className="mt-6 text-lg leading-8 text-warm-gray">
               Screening is not about selling treatment. It builds a baseline, gives context and helps you

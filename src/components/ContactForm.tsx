@@ -8,6 +8,7 @@ const interests = [
   "Discovery discussion",
   "Membership",
   "Health screening",
+  "Online doctor session",
   "Personalised longevity",
   "Corporate executive wellness",
   "International medicine access intelligence",
@@ -21,7 +22,11 @@ const fieldClass =
 
 const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
 
-export function ContactForm() {
+type ContactFormProps = {
+  defaultInterest?: string;
+};
+
+export function ContactForm({ defaultInterest = interests[0] }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -123,7 +128,7 @@ export function ContactForm() {
       </label>
       <label className={labelClass}>
         Main interest
-        <select name="mainInterest" required className={fieldClass}>
+        <select name="mainInterest" required defaultValue={defaultInterest} className={fieldClass}>
           {interests.map((interest) => (
             <option key={interest}>{interest}</option>
           ))}
