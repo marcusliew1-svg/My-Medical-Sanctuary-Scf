@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { memberships } from "@/data/memberships";
 import { CTAButton } from "@/components/CTAButton";
 
@@ -23,11 +22,11 @@ const fieldClass =
 
 const labelClass = "grid gap-2 text-sm font-semibold text-charcoal";
 
-export function ContactForm() {
-  const searchParams = useSearchParams();
-  const requestedInterest = searchParams.get("interest");
-  const defaultInterest = requestedInterest === "online-doctor" ? "Online doctor session" : interests[0];
+type ContactFormProps = {
+  defaultInterest?: string;
+};
 
+export function ContactForm({ defaultInterest = interests[0] }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
