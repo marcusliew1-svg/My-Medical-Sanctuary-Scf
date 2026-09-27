@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { authorizePartnerHubCapability } from "@/lib/partnerHubAuthorization";
 import { partnerHubStore, partnerHubStoreAvailable } from "@/lib/partnerHubStore";
+import { partnerPresentationContentUrl } from "@/lib/partnerMediaStorage";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +29,13 @@ export async function GET(request: NextRequest) {
     return Number.isFinite(effective) && effective <= now && expiry > now;
   });
 
+  const safeAssets = assets.map((asset) => ({
+    ...asset,
+    contentUrl: partnerPresentationContentUrl(asset.assetId, asset.contentUrl),
+  }));
+
   return NextResponse.json(
-    { status: "ok", assets },
+    { status: "ok", assets: safeAssets },
     { headers: { "Cache-Control": "private, no-store, max-age=0", Pragma: "no-cache" } },
   );
 }
