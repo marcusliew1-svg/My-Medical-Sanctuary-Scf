@@ -44,7 +44,17 @@ test("T6.6 enabled identity surfaces require isolated wiring, database and SMTP 
 
 test("T6.6 booking uses independent Production approval and remains configuration-bound", () => {
   const persistence = load("src/lib/bookingPersistence.ts");
-  const configured = { VERCEL_ENV: "production", MMS_BOOKING_PERSISTENCE_ENABLED: "true", MMS_CRM_DEBUG: "false", ZOHO_CLIENT_ID: "id", ZOHO_CLIENT_SECRET: "secret", ZOHO_REFRESH_TOKEN: "refresh" };
+  const configuration = load("src/lib/zohoCommercialConfiguration.ts");
+  const mapping = Object.fromEntries(configuration.zohoCommercialCanonicalFields.map((field) => [field, `Tenant_${field}`]));
+  const configured = {
+    VERCEL_ENV: "production", MMS_BOOKING_PERSISTENCE_ENABLED: "true", MMS_CRM_DEBUG: "false",
+    ZOHO_CLIENT_ID: "id", ZOHO_CLIENT_SECRET: "secret", ZOHO_REFRESH_TOKEN: "refresh", ZOHO_DC: "com",
+    ZOHO_LEADS_MODULE_API_NAME: "Tenant_Leads", ZOHO_ORGANIZATION_ID: "1000000001", ZOHO_CRM_OWNER_ID: "2000000001",
+    ZOHO_DAY_ONE_COMMERCIAL_CRM_APPROVED: "true", ZOHO_LEADS_FIELD_MAPPING_APPROVED: "true",
+    ZOHO_LEADS_FIELD_MAPPING_JSON: JSON.stringify(mapping), ZOHO_LEAD_SOURCE_TAXONOMY_JSON: '["Website Discovery Form"]',
+    ZOHO_LEAD_STATUS_PICKLIST_JSON: '["New Enquiry"]', ZOHO_LOSS_REASON_PICKLIST_JSON: '["Synthetic test complete"]',
+    ZOHO_DEDUPE_FIELDS_JSON: '["Tenant_idempotencyKey","Tenant_email","Tenant_mobile"]',
+  };
   assert.equal(persistence.bookingPersistenceAvailability(configured).reason, "production_refused");
   assert.equal(persistence.bookingPersistenceAvailability({ ...configured, MMS_BOOKING_PRODUCTION_APPROVED: "true" }).ready, true);
 });

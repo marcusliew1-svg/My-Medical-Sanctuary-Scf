@@ -30,6 +30,8 @@ function loadTsModule(relativePath, cache = new Map()) {
 
 const persistence = loadTsModule("src/lib/bookingPersistence.ts");
 const booking = loadTsModule("src/lib/bookingSubmission.ts");
+const zohoConfiguration = loadTsModule("src/lib/zohoCommercialConfiguration.ts");
+const tenantFieldMapping = Object.fromEntries(zohoConfiguration.zohoCommercialCanonicalFields.map((field) => [field, `Tenant_${field}`]));
 
 const configuredEnv = {
   VERCEL_ENV: "preview",
@@ -38,7 +40,17 @@ const configuredEnv = {
   ZOHO_CLIENT_ID: "test-client",
   ZOHO_CLIENT_SECRET: "test-secret",
   ZOHO_REFRESH_TOKEN: "test-refresh",
-  ZOHO_LEADS_MODULE_API_NAME: "Leads",
+  ZOHO_DC: "com",
+  ZOHO_LEADS_MODULE_API_NAME: "Tenant_Leads",
+  ZOHO_ORGANIZATION_ID: "1000000001",
+  ZOHO_CRM_OWNER_ID: "2000000001",
+  ZOHO_DAY_ONE_COMMERCIAL_CRM_APPROVED: "true",
+  ZOHO_LEADS_FIELD_MAPPING_APPROVED: "true",
+  ZOHO_LEADS_FIELD_MAPPING_JSON: JSON.stringify(tenantFieldMapping),
+  ZOHO_LEAD_SOURCE_TAXONOMY_JSON: '["Website Discovery Form"]',
+  ZOHO_LEAD_STATUS_PICKLIST_JSON: '["New Enquiry"]',
+  ZOHO_LOSS_REASON_PICKLIST_JSON: '["Synthetic test complete"]',
+  ZOHO_DEDUPE_FIELDS_JSON: '["Tenant_idempotencyKey","Tenant_email","Tenant_mobile"]',
   MMS_DEFAULT_LEAD_SOURCE: "Website Discovery Form",
 };
 
@@ -91,9 +103,11 @@ test("T6 Preview adapter persists only the validated non-clinical contract", asy
     },
   );
   assert.match(result.reference, /^MMS-ENQ-20260905-/);
-  assert.equal(captured.moduleApiName, "Leads");
-  assert.equal(captured.record.Email, validSubmission.email);
-  assert.match(captured.record.Description, /Consent timestamp: 2026-09-05/);
+  assert.equal(captured.moduleApiName, "Tenant_Leads");
+  assert.equal(captured.record.Tenant_email, validSubmission.email);
+  assert.equal(captured.record.Tenant_contactConsentTimestamp, "2026-09-05T00:00:00.000Z");
+  assert.equal(captured.record.Tenant_assignedOwner.id, "2000000001");
+  assert.doesNotMatch(JSON.stringify(captured.record), /Please contact me about the discovery pathway/);
   for (const prohibited of ["Diagnosis", "Prescription", "Lab_Results", "Medical_History", "Upload"])
     assert.equal(Object.hasOwn(captured.record, prohibited), false);
 });

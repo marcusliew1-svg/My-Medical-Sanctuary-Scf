@@ -1,9 +1,13 @@
 import { randomUUID } from "node:crypto";
 import type { BookingSubmission } from "@/lib/bookingSubmission";
-import { createZohoRecord, type ZohoRecord, zohoCrmConfigured } from "@/lib/zohoCrm";
+import { createZohoRecord, type ZohoRecord } from "@/lib/zohoCrm";
+import {
+  zohoDayOneCommercialReadiness,
+  type ZohoCommercialFieldMapping,
+} from "@/lib/zohoCommercialConfiguration";
 
 export type BookingPersistenceAvailability =
-  | { ready: true; moduleApiName: string; leadSource: string }
+  | { ready: true; moduleApiName: string; leadSource: string; ownerId: string; fieldMapping: ZohoCommercialFieldMapping }
   | { ready: false; reason: "production_refused" | "disabled" | "debug" | "unconfigured" };
 
 type RecordWriter = (moduleApiName: string, record: ZohoRecord) => Promise<string>;
@@ -23,12 +27,15 @@ export function bookingPersistenceAvailability(
     return { ready: false, reason: "production_refused" };
   if (env.MMS_BOOKING_PERSISTENCE_ENABLED !== "true") return { ready: false, reason: "disabled" };
   if (env.MMS_CRM_DEBUG === "true") return { ready: false, reason: "debug" };
-  if (!zohoCrmConfigured(env)) return { ready: false, reason: "unconfigured" };
+  const zoho = zohoDayOneCommercialReadiness(env);
+  if (!zoho.ready || !zoho.fieldMapping) return { ready: false, reason: "unconfigured" };
 
   return {
     ready: true,
-    moduleApiName: env.ZOHO_LEADS_MODULE_API_NAME?.trim() || "Leads",
+    moduleApiName: env.ZOHO_LEADS_MODULE_API_NAME!.trim(),
     leadSource: env.MMS_DEFAULT_LEAD_SOURCE?.trim() || "Website Discovery Form",
+    ownerId: env.ZOHO_CRM_OWNER_ID!.trim(),
+    fieldMapping: zoho.fieldMapping,
   };
 }
 
@@ -42,33 +49,33 @@ export async function persistBookingToZoho(
 ): Promise<{ reference: string }> {
   const reference = `MMS-ENQ-${new Date(consentTimestamp).toISOString().slice(0, 10).replaceAll("-", "")}-${randomUUID().slice(0, 8).toUpperCase()}`;
   const { firstName, lastName } = splitName(submission.fullName);
-  const description = [
-    `MMS discovery enquiry: ${reference}`,
-    `Main interest: ${submission.interestedIn}`,
-    `Preferred membership: ${submission.preferredMembership}`,
-    `Enquiring for: ${submission.enquiringFor}`,
-    `Preferred language: ${submission.preferredLanguage}`,
-    `Preferred contact method: ${submission.preferredContactMethod}`,
-    `Preferred contact time: ${submission.preferredAppointmentDate}`,
-    `Source path: ${submission.sourcePath}`,
-    `Campaign attribution: ${JSON.stringify(campaign)}`,
-    `Authoritative Partner ID: ${partnerId || "None"}`,
-    `Consent version: ${submission.consentVersion}`,
-    `Consent timestamp: ${consentTimestamp}`,
-    `Enquiry message: ${submission.message || "None supplied"}`,
-  ].join("\n");
+  const fields = availability.fieldMapping;
+  const record: ZohoRecord = {
+    [fields.firstName]: firstName || undefined,
+    [fields.lastName]: lastName,
+    [fields.email]: submission.email,
+    [fields.mobile]: submission.mobileNumber.slice(0, 30),
+    [fields.country]: submission.country,
+    [fields.preferredLanguage]: submission.preferredLanguage,
+    [fields.source]: availability.leadSource,
+    [fields.utmSource]: campaign.utm_source || undefined,
+    [fields.utmMedium]: campaign.utm_medium || undefined,
+    [fields.utmCampaign]: campaign.utm_campaign || undefined,
+    [fields.partnerId]: partnerId || undefined,
+    [fields.landingPage]: submission.sourcePath,
+    [fields.broadInterestCategory]: submission.interestedIn,
+    [fields.programmeInterest]: submission.preferredMembership,
+    [fields.preferredContactChannel]: submission.preferredContactMethod,
+    [fields.assignedOwner]: { id: availability.ownerId },
+    [fields.nextAction]: "Clinic Manager administrative review",
+    [fields.leadStatus]: "New Enquiry",
+    [fields.contactConsentTimestamp]: consentTimestamp,
+    [fields.contactConsentVersion]: submission.consentVersion,
+    [fields.doNotContact]: false,
+    [fields.idempotencyKey]: reference,
+  };
 
-  await writer(availability.moduleApiName, {
-    First_Name: firstName || undefined,
-    Last_Name: lastName,
-    Email: submission.email,
-    Phone: submission.mobileNumber.slice(0, 30),
-    Mobile: submission.mobileNumber.slice(0, 30),
-    Country: submission.country,
-    Lead_Source: availability.leadSource,
-    Data_Source: "API",
-    Description: description.slice(0, 32_000),
-  });
+  await writer(availability.moduleApiName, record);
 
   return { reference };
 }

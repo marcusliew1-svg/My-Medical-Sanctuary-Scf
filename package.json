@@ -40,7 +40,8 @@
     "test:t6-11": "node --test tests/t6-11-controlled-public-finalization.test.mjs",
     "test:t6-12": "node --test tests/t6-12-crm-ai-operations.test.mjs tests/t6-12-ai-safety.test.mjs",
     "test:t6-13": "node --test tests/t6-13-crm-ai-preview-pilot.test.mjs",
-    "test:t6-14": "node --test tests/t6-14-live-preview-operator-pilot.test.mjs"
+    "test:t6-14": "node --test tests/t6-14-live-preview-operator-pilot.test.mjs",
+    "test:t6-15": "node --test tests/t6-15-operator-zoho-live-preview-closure.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",

@@ -35,11 +35,15 @@ const moduleCache = new Map();
 const domain = loadTsModule("src/lib/crmDomain.ts");
 const idempotency = loadTsModule("src/lib/crmIdempotency.ts");
 const adapterModule = loadTsModule("src/lib/crmZohoAdapter.ts");
+const zohoConfiguration = loadTsModule("src/lib/zohoCommercialConfiguration.ts");
 const zoho = loadTsModule("src/lib/zohoCrm.ts");
 const queue = loadTsModule("src/lib/clinicManagerQueue.ts");
 const ai = loadTsModule("src/lib/aiOperations.ts");
 const management = loadTsModule("src/lib/managementIntelligence.ts");
 const features = loadTsModule("src/lib/featureGates.ts");
+const syntheticFieldMapping = Object.fromEntries(
+  zohoConfiguration.zohoCommercialCanonicalFields.map((field) => [field, `T6_${field}`]),
+);
 
 function lead(overrides = {}) {
   return {
@@ -98,19 +102,19 @@ test("T6.12 canonical CRM lifecycle and prohibited clinical fields are explicit"
 
 test("Preview E2E 1/3 creates a new synthetic CRM enquiry", async () => {
   const fake = transport();
-  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, retryBaseDelayMs: 0, sleep: async () => {} });
+  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, fieldMapping: syntheticFieldMapping, retryBaseDelayMs: 0, sleep: async () => {} });
   const result = await adapter.upsert({ lead: lead(), sourceRequestId: "synthetic-request-1", assignedOwnerId: "7001", nextAction: "Acknowledge" });
   assert.equal(result.action, "created");
   assert.equal(fake.calls.create, 1);
-  assert.equal(fake.calls.records[0].Owner.id, "7001");
-  assert.equal(fake.calls.records[0].MMS_Next_Action, "Acknowledge");
+  assert.equal(fake.calls.records[0].T6_assignedOwner.id, "7001");
+  assert.equal(fake.calls.records[0].T6_nextAction, "Acknowledge");
 });
 
 test("Preview E2E 2/4 dedupes and updates an existing CRM enquiry", async () => {
   const fake = transport({
     async findDuplicates() { return { recordIds: ["9000000000009"], matchedByEmail: true, matchedByPhone: false }; },
   });
-  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, retryBaseDelayMs: 0, sleep: async () => {} });
+  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, fieldMapping: syntheticFieldMapping, retryBaseDelayMs: 0, sleep: async () => {} });
   const result = await adapter.upsert({ lead: lead(), sourceRequestId: "synthetic-request-2" });
   assert.equal(result.action, "updated");
   assert.equal(fake.calls.create, 0);
@@ -121,17 +125,17 @@ test("Preview E2E 5/6 maps assignment, referral attribution and next action", ()
   const key = idempotency.crmIdempotencyKey({ source: "Preview", sourceRequestId: "map-1", email: lead().email });
   const record = adapterModule.mapAdministrativeLeadToZoho({
     lead: lead(), sourceRequestId: "map-1", assignedOwnerId: "7001", nextAction: "Contact", nextActionDue: "2026-09-17T02:00:00.000Z",
-  }, key);
-  assert.equal(record.Owner.id, "7001");
-  assert.equal(record.MMS_Partner_ID, "SYNTH-PARTNER-001");
-  assert.equal(record.MMS_Referral_Code, "SYNTH-REF");
-  assert.equal(record.MMS_Next_Action, "Contact");
+  }, key, syntheticFieldMapping);
+  assert.equal(record.T6_assignedOwner.id, "7001");
+  assert.equal(record.T6_partnerId, "SYNTH-PARTNER-001");
+  assert.equal(record.T6_referralCode, "SYNTH-REF");
+  assert.equal(record.T6_nextAction, "Contact");
 });
 
 test("replayed requests do not create duplicate leads", async () => {
   const fake = transport();
   const store = new idempotency.SyntheticCrmIdempotencyStore();
-  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, idempotencyStore: store, retryBaseDelayMs: 0, sleep: async () => {} });
+  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, fieldMapping: syntheticFieldMapping, idempotencyStore: store, retryBaseDelayMs: 0, sleep: async () => {} });
   await adapter.upsert({ lead: lead(), sourceRequestId: "same-request" });
   const replay = await adapter.upsert({ lead: lead(), sourceRequestId: "same-request" });
   assert.equal(replay.action, "replayed");
@@ -156,7 +160,7 @@ test("Preview E2E 8 classifies a permanent CRM failure without retry", async () 
   const fake = transport({
     async create() { attempts += 1; throw new zoho.ZohoCrmError("bad mapping", "permanent", 400, "INVALID_DATA"); },
   });
-  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, retryBaseDelayMs: 0, sleep: async () => {} });
+  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, fieldMapping: syntheticFieldMapping, retryBaseDelayMs: 0, sleep: async () => {} });
   await assert.rejects(() => adapter.upsert({ lead: lead(), sourceRequestId: "permanent" }), /bad mapping/);
   assert.equal(attempts, 1);
 });
@@ -170,7 +174,7 @@ test("Preview E2E 9 retries a transient CRM failure and succeeds", async () => {
       return "9000000000010";
     },
   });
-  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, retryBaseDelayMs: 0, sleep: async () => {} });
+  const adapter = new adapterModule.CrmZohoAdapter({ transport: fake.value, fieldMapping: syntheticFieldMapping, retryBaseDelayMs: 0, sleep: async () => {} });
   const result = await adapter.upsert({ lead: lead(), sourceRequestId: "transient" });
   assert.equal(result.crmLeadId, "9000000000010");
   assert.equal(attempts, 3);
