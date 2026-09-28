@@ -9,20 +9,13 @@ export function PartnerHubSignOutButton() {
     if (busy) return;
     setBusy(true);
     try {
-      const csrfRequest = await fetch("/api/partner-hub/csrf", { cache: "no-store", credentials: "include" });
-      if (!csrfRequest.ok) throw new Error("csrf_unavailable");
-      const csrf = (await csrfRequest.json()) as { csrfToken?: string; headerName?: string };
-      if (!csrf.csrfToken) throw new Error("csrf_missing");
-
-      const logoutRequest = await fetch("/api/partner-hub/logout", {
+      const logoutRequest = await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
-        headers: {
-          [csrf.headerName || "x-mms-csrf-token"]: csrf.csrfToken,
-        },
+        redirect: "follow",
       });
       if (!logoutRequest.ok) throw new Error("logout_failed");
-      window.location.assign("/partner-hub");
+      window.location.assign("/partner-login");
     } catch {
       setBusy(false);
     }

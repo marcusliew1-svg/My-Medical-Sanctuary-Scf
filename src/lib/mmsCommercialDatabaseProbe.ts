@@ -25,14 +25,15 @@ export const MMS_COMMERCIAL_REQUIRED_MIGRATIONS = Object.freeze([
   "0018_mms_partner_application_evidence_hardening.sql",
   "0019_mms_finance_temporal_evidence_hardening.sql",
   "0020_mms_commission_hold_release_evidence_hardening.sql",
+  "0021_mms_database_post_provision_hardening.sql",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_TABLES = Object.freeze([
-  "partners","partner_audit_events","partner_training_evidence","partner_assessment_attempts","partner_certifications","partner_sessions","partner_csrf_tokens","leads","lead_duplicate_decisions","lead_ownership_events","lead_lifecycle_events","applications","payments","payment_verifications","memberships","commercial_workflow_events","commission_rules","commission_transactions","commission_events","presentation_assets","schema_migrations",
+  "partners","partner_audit_events","partner_training_evidence","partner_assessment_attempts","partner_certifications","partner_sessions","partner_csrf_tokens","idempotency_keys","leads","lead_duplicate_decisions","lead_ownership_events","lead_lifecycle_events","applications","payments","payment_verifications","memberships","commercial_workflow_events","commission_rules","commission_transactions","commission_events","presentation_assets","schema_migrations",
 ]);
 
 export const MMS_COMMERCIAL_REQUIRED_FUNCTIONS = Object.freeze([
-  "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","transfer_lead_ownership","review_lead_duplicate_status","transition_partner_lead_stage","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","create_eligible_commission","cancel_membership_and_reverse_commission","transition_commission",
+  "allocate_partner_code","issue_partner_code_for_crm_record","register_partner_lead","transfer_lead_ownership","review_lead_duplicate_status","transition_partner_lead_stage","submit_partner_application","transition_application","record_payment_submission","finance_verify_payment","prepare_membership","activate_membership","create_eligible_commission","cancel_membership_and_reverse_commission","transition_commission","reject_immutable_mutation","touch_updated_at",
 ]);
 
 export type MmsCommercialDatabaseProbe = {
