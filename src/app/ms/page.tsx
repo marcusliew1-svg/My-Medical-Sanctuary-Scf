@@ -1,3 +1,5 @@
-import Link from "next/link";
-import { LingPanel } from "@/components/LingPanel";
-export default function MalayHome(){return <main className="min-h-screen bg-ivory px-4 pb-20 pt-36"><div className="mx-auto max-w-6xl"><p className="text-xs font-bold uppercase tracking-[.18em] text-gold">My Medical Sanctuary · Bahasa Malaysia</p><h1 className="mt-5 max-w-4xl font-serif text-5xl leading-tight text-navy md:text-7xl">Penjagaan pencegahan. Jangka hayat yang diperibadikan.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-warm-gray">Perjalanan kesihatan yang tersusun merentasi Malaysia dan Thailand, dengan setiap keputusan perubatan dipimpin oleh doktor bertauliah.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/ling" className="rounded-full bg-deep-green px-6 py-3 font-semibold text-white">Mulakan dengan Ling</Link><Link href="/online-doctor" className="rounded-full border border-gold px-6 py-3 font-semibold text-navy">Sesi doktor dalam talian</Link></div><div className="mt-16"><LingPanel /></div></div></main>}
+import { LocalizedRegionalHome } from "@/components/LocalizedRegionalExperience";
+
+export default function MalayHome() {
+  return <LocalizedRegionalHome locale="ms" />;
+}
