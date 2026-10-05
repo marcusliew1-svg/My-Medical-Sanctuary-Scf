@@ -33,10 +33,10 @@ export function WholeBodyConnectedView() {
               and body composition. The value is in understanding the pattern, not chasing a single number.
             </p>
             <Link
-              href="/health-discovery"
+              href="/whole-body-health"
               className="mt-8 inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8"
             >
-              Explore your health discovery
+              Explore the whole-body health view
             </Link>
           </div>
 
@@ -154,10 +154,18 @@ export function PreventionInvestmentStory() {
           </div>
         </div>
 
-        <p className="mx-auto mt-6 max-w-4xl text-center text-xs leading-6 text-warm-gray/75">
-          Screening and monitoring should be selected according to age, history, symptoms, risk profile
-          and professional medical advice. They do not guarantee prevention or early detection of every condition.
-        </p>
+        <div className="mx-auto mt-8 flex max-w-4xl flex-col items-center gap-5 text-center">
+          <p className="text-xs leading-6 text-warm-gray/75">
+            Screening and monitoring should be selected according to age, history, symptoms, risk profile
+            and professional medical advice. They do not guarantee prevention or early detection of every condition.
+          </p>
+          <Link
+            href="/preventive-health"
+            className="inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8"
+          >
+            Read the MMS preventive health approach
+          </Link>
+        </div>
       </div>
     </section>
   );
