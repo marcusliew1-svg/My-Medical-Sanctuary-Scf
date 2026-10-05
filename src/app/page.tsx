@@ -7,6 +7,7 @@ import { MembershipDepth } from "@/components/MembershipDepth";
 import { SanctuaryExperience } from "@/components/SanctuaryExperience";
 import { EvidenceStandard } from "@/components/EvidenceStandard";
 import { JourneyVisual, HealthTrendsVisual } from "@/components/CinematicHealthStories";
+import { WholeBodyConnectedView, HealthierTomorrowStory, PreventionInvestmentStory, ContinuityOfCareStory } from "@/components/PreventiveJourneyExpanded";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -47,7 +48,15 @@ export default function HomePage() {
 
       <HealthTrendsVisual />
 
+      <WholeBodyConnectedView />
+
       <LingHealthPreview />
+
+      <HealthierTomorrowStory />
+
+      <PreventionInvestmentStory />
+
+      <ContinuityOfCareStory />
 
       <MembershipDepth />
 
