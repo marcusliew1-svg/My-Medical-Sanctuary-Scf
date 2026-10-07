@@ -1,6 +1,6 @@
 # T6.29 — Audit, Control Testing & Assurance Evidence Controls
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -52,3 +52,28 @@ T6.29 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- T6.29 audit/control-assurance tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 controls: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+A first validation attempt correctly failed typecheck because the audit-lifecycle mapping was inferred too narrowly. The typing was corrected without changing lifecycle semantics, and the complete pipeline was rerun successfully.
+
+Assurance boundaries remain intact:
+- no audit was completed;
+- no control was marked EFFECTIVE;
+- no CAPA was closed;
+- no external certification/compliance conclusion was asserted;
+- no Production audit was performed;
+- Production/main remain untouched;
+- no clinical capability was activated.
