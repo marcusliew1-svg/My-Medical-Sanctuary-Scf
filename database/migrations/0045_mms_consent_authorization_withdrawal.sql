@@ -114,7 +114,7 @@ create table if not exists mms_governance.consent_events (
   notes text,
   created_at timestamptz not null default now(),
   check (
-    event_type not in ('PRESENTED','SCOPE_REVIEWED','OTHER')
+    event_type in ('PRESENTED','SCOPE_REVIEWED','OTHER')
     or evidence_id is not null
   )
 );
