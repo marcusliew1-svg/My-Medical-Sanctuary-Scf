@@ -1,6 +1,6 @@
 # T6.40 — Privacy Rights Requests & Human Review
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -59,4 +59,33 @@ T6.40 does **not**:
 - dev/build baseline remains bounded;
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
+- Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 030: PASS / rolled back;
+- retained synthetic privacy-rights requests: **0**;
+- identity/applicability gate rejection: PASS;
+- deletion fulfilment without clear legal hold/retention assessment rejection: PASS;
+- immutable action-history mutation rejection: PASS;
+- T6.40 privacy-rights tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Privacy-rights boundaries remain intact:
+- no real privacy request was created;
+- no universal legal right was asserted;
+- no statutory response deadline was invented;
+- no controller/DPO identity was fabricated;
+- no Production self-service, disclosure, export, correction or deletion automation was enabled;
+- no clinical-record modification was enabled;
 - Production/main remain untouched.
