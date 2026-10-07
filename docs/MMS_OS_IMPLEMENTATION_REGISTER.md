@@ -77,3 +77,34 @@ Until those checks are complete, status remains **IMPLEMENTED IN CODE / NOT OPER
 - Security advisor reports RLS enabled with no policies on governance tables. This is intentional fail-closed behavior at this stage because direct `public`, `anon`, and `authenticated` grants are revoked. Operator access must be added later through an explicitly approved server-side access path.
 - Existing Preview Auth leaked-password-protection warning remains unresolved and is outside this migration.
 - No Production project, iPivot project, Production deployment, Production gate or Production credential was changed.
+
+## OS completion checkpoint — 2026-10-07
+
+Implemented in Preview:
+
+- baseline enterprise Risk Register: 12 risks across all seven risk domains;
+- Control Library: 20 preventive/detective/corrective controls;
+- risk-to-control mapping: 23 links;
+- AI Use Case Register baseline: AI Operations and Ling, both non-Active;
+- controlled document catalogue: 31 Working Draft documents plus the master framework;
+- clinical service dependency engine with fail-closed ACTIVE-state guard;
+- proposed Malaysia service catalogue: 7 services, all PROPOSED / INTERNAL_ONLY / all downstream exposure disabled;
+- planned SS2 facility record: PROPOSED / emergency readiness RED;
+- explicit dependency matrix for regulatory, protocol, facility, credential, privilege, competency, staffing, emergency, consent, insurance, product/diagnostics as applicable;
+- internal Governance Console UI and operator-authenticated API;
+- step-up required for governance mutations;
+- mutations create immutable governance audit evidence;
+- Production gate activation is not possible from the governance console;
+- clinical-service ACTIVE / PUBLIC_AVAILABLE transitions are not possible from the governance console.
+
+Validation:
+
+- QA 017 governance foundation: PASS.
+- QA 018 dependency/catalogue checks: PASS.
+- Supabase migrations 0026–0031 applied successfully to `mms-preview-auth`.
+- Vercel Preview build for branch `mms/os-v1-foundation` reached READY at commit `7ef6697764332f964b85ada92e507e9c9a0c3186`.
+- The branch Preview still returns controlled 404 for `/operations/*` because `MMS_OPERATOR_ACCESS_ENABLED` is not available to this new branch scope. This is a configuration blocker, not a code/build failure.
+- The connected Vercel account used here returns 403 for environment-variable list/create operations, so branch-scoped Preview variables cannot be completed from this session.
+- Supabase Auth currently has 0 users with trusted `operator_id` app metadata. A synthetic operator must be created through supported Supabase Auth admin tooling; direct SQL mutation of `auth.users` is prohibited.
+
+Status: **OS CODE + PREVIEW DATABASE FOUNDATION COMPLETE; LIVE OPERATOR PILOT BLOCKED ONLY BY AUTH/ENVIRONMENT CONFIGURATION AND EXTERNAL APPROVALS.**
