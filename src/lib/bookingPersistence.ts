@@ -74,9 +74,12 @@ export async function persistBookingToZoho(
     [fields.doNotContact, false],
     [fields.idempotencyKey, reference],
   ];
-  const record: ZohoRecord = Object.fromEntries(
-    values.filter(([fieldApiName, fieldValue]): fieldApiName is string => Boolean(fieldApiName) && fieldValue !== undefined),
-  );
+  const record: ZohoRecord = {};
+  for (const [fieldApiName, fieldValue] of values) {
+    if (typeof fieldApiName === "string" && fieldApiName && fieldValue !== undefined) {
+      record[fieldApiName] = fieldValue;
+    }
+  }
 
   await writer(availability.moduleApiName, record);
 
