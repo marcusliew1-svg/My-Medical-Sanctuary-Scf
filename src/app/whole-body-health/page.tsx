@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Whole-Body Health | My Medical Sanctuary",
+  title: "Whole-Body Health",
   description:
     "Explore the MMS whole-body view across brain, heart, metabolic, hormonal, musculoskeletal, respiratory, digestive and immune health.",
 };
