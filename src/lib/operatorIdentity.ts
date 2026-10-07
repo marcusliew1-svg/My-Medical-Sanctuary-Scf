@@ -2,6 +2,7 @@ import "server-only";
 
 import { createHmac, randomBytes } from "node:crypto";
 import type { OperatorRole, OperatorSessionClaims } from "@/lib/operatorSecurity";
+import { assertOperatorRoleCombination } from "@/lib/accessGovernancePolicy";
 
 export const MMS_OPERATOR_ACCESS_TOKEN_COOKIE = "mms_operator_access_token";
 
@@ -88,6 +89,11 @@ export function operatorMetadataFromUser(user: OperatorIdentityUser) {
 
   if (!/^[A-Za-z0-9._@:+-]{2,160}$/.test(operatorId)) return null;
   if (!uniqueRoles.length) return null;
+  try {
+    assertOperatorRoleCombination(uniqueRoles);
+  } catch {
+    return null;
+  }
   return { operatorId, roles: uniqueRoles };
 }
 
