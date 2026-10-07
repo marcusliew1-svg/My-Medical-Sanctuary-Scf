@@ -120,6 +120,9 @@ jobs:
       - name: T6.36 metrics control performance tests
         run: npm run test:t6-36
 
+      - name: T6.37 data quality reconciliation tests
+        run: npm run test:t6-37
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
