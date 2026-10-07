@@ -1,6 +1,6 @@
 # T6.39 — CAPA, Remediation & Effectiveness Assurance
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -65,3 +65,33 @@ T6.39 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 029: PASS / rolled back;
+- retained synthetic CAPA rows: **0**;
+- implementation without evidence rejection: PASS;
+- closure without verified effectiveness rejection: PASS;
+- immutable effectiveness-review mutation rejection: PASS;
+- existing CAPA-T618-ZOHO-TENANT remains IN_PROGRESS and unchanged;
+- T6.39 CAPA-effectiveness tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+CAPA boundaries remain intact:
+- no real CAPA was closed;
+- no real effectiveness conclusion was created;
+- no existing CAPA was reclassified;
+- no source incident/complaint/audit/risk/supplier finding was closed;
+- no Production remediation automation was configured;
+- Production/main remain untouched;
+- no clinical capability was activated.
