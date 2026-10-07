@@ -1,6 +1,6 @@
 # T6.30 — Training, Competency & Policy Attestation Controls
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -69,3 +69,32 @@ T6.30 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview migration `mms_training_competency_attestation`: PASS;
+- transactional QA 020: PASS / rolled back;
+- retained synthetic training rows: **0**;
+- T6.30 training/competency tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+A first validation attempt correctly failed strict TypeScript checking because the lifecycle mapping was inferred too narrowly. The type annotation was corrected without changing lifecycle semantics, and the entire pipeline was rerun successfully.
+
+Training/competency boundaries remain intact:
+- no real person was marked competent;
+- no named assessor was appointed;
+- no workforce training completion was fabricated;
+- no clinical privilege/licence/Medical Director approval was granted;
+- no operator identity or Production access changed;
+- Sales Partner training controls remain separate and unchanged;
+- Production/main remain untouched;
+- no clinical capability was activated.
