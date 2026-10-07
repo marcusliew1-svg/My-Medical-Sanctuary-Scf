@@ -1,6 +1,6 @@
 # T6.21 — Dev / Build Toolchain Hardening
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED / 5 TRACKED UPSTREAM DEV FINDINGS REMAIN  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -57,3 +57,25 @@ These residual findings remain visible and bounded by CI. They are not reclassif
 - confirm Vercel Preview READY;
 - inspect key public pages for obvious styling regressions;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final cleaned branch evidence:
+
+- regenerated dependency lockfile: PASS;
+- Production dependency audit: **0 vulnerabilities**;
+- dev/build audit: **5 high findings**, exactly the tracked Next.js ESLint-chain residual and no unexpected packages;
+- T6.20 regression suite: PASS;
+- T6.21 regression suite: PASS;
+- Next 16 baseline suite: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub CI build: PASS;
+- matching Vercel Preview: **READY**;
+- temporary lockfile workflow removed before merge;
+- compiled CSS contains MMS theme output, including core navy/gold/custom-style values after the Tailwind 4 migration.
+
+The protected Preview URL could not be fetched through the available external page-inspection path, so no claim of a human-equivalent screenshot review is made. The available build/CSS evidence found no loss of the configured MMS theme output.
+
+Production/main remain untouched.
