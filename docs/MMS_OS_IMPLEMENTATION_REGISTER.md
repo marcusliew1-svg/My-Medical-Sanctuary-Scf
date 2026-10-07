@@ -523,3 +523,34 @@ Remaining operational dependencies:
 - formal risk-acceptance authority;
 - executive/board reporting format if separately required;
 - Production readiness remains subject to separate release/launch/legal/privacy/clinical/licensing/insurance approval.
+
+
+## T6.34 policy-exception/risk-acceptance checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.policy_exceptions` register added;
+- supported types include policy exception, control waiver, risk acceptance, temporary deviation and emergency exception;
+- APPROVED / APPROVED_WITH_CONDITIONS require approval reference, approver role, effective timestamp, expiry timestamp and evidence reference;
+- HIGH / CRITICAL exceptions additionally require compensating controls;
+- expiry must be later than effective time;
+- closure requires closure evidence and timestamp;
+- expired exceptions cannot be treated as continuing approval;
+- emergency exceptions compress timing only and do not remove evidence/ownership/expiry requirements;
+- protected internal policy-exception endpoint added;
+- working-draft Policy Exceptions, Waivers & Risk Acceptance Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 024: PASS / rollback confirmed;
+- retained synthetic exception rows: 0;
+- T6.34 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- named exception/risk-acceptance authority;
+- approved risk-acceptance thresholds and approval matrix;
+- real exception evidence and compensating-control monitoring;
+- exception expiry/review operating process;
+- formal retrospective review for emergency exceptions;
+- external legal/regulatory/privacy/security/clinical requirements remain non-waivable unless the competent authority permits otherwise.

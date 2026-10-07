@@ -111,6 +111,9 @@ jobs:
       - name: T6.33 management review assurance tests
         run: npm run test:t6-33
 
+      - name: T6.34 policy exception risk acceptance tests
+        run: npm run test:t6-34
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
