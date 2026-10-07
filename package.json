@@ -63,7 +63,8 @@
     "test:t6-32": "node --test tests/t6-32-regulatory-obligations.test.mjs",
     "test:t6-33": "node --test tests/t6-33-management-review-assurance.test.mjs",
     "test:t6-34": "node --test tests/t6-34-policy-exception-risk-acceptance.test.mjs",
-    "test:t6-35": "node --test tests/t6-35-evidence-integrity-lineage.test.mjs"
+    "test:t6-35": "node --test tests/t6-35-evidence-integrity-lineage.test.mjs",
+    "test:t6-36": "node --test tests/t6-36-metrics-control-performance.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
