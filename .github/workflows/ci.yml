@@ -60,6 +60,9 @@ jobs:
       - name: T6.18 operational closure tests
         run: npm run test:t6-18
 
+      - name: T6.19 governance review workflow tests
+        run: npm run test:t6-19
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
