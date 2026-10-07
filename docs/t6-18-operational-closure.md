@@ -60,12 +60,15 @@ This flag may only be set after the connected Zoho organization has been verifie
 
 T6.18 was merged into `mms/integration-next16-foundation` as merge commit `94c936c8e7b571bf654e24328360487bffb92ad6`.
 
-The remaining machine-verifiable blockers were rechecked after merge:
+The remaining machine-verifiable blockers were rechecked after merge.
 
 ### Supabase operator identity
-- Dedicated MMS Supabase project: `MMS` / `ywbqfkhrshmpilgzytpl`.
-- Project health: `ACTIVE_HEALTHY`.
-- Supported read-only inspection of `auth.users`: **0 users**.
+- Parent MMS Supabase project: `MMS` / `ywbqfkhrshmpilgzytpl`.
+- Dedicated Preview branch: `mms-preview-auth` / `tfwnlmmdrkkfrtmawpma`.
+- Preview branch health: `ACTIVE_HEALTHY`.
+- Supported read-only inspection of Preview `auth.users`: **4 synthetic QA users**.
+- Users with trusted `operator_id` app metadata: **0**.
+- Users with trusted `operator_roles` app metadata: **0**.
 - Therefore no trusted Preview operator identity currently exists.
 - Direct SQL insertion/update of `auth.users` remains prohibited.
 - The connected Supabase tooling available in this execution context does not expose a supported Auth-admin create/invite action, so T6.18 must not manufacture an operator user by database mutation.
