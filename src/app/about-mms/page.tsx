@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EditorialHero, EditorialStatement, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
 import { ClinicalGovernance } from "@/components/ClinicalGovernance";
+import { HealthierTomorrowStory } from "@/components/PreventiveJourneyExpanded";
 
 export const metadata: Metadata = {
   title: "About MMS",
@@ -38,6 +39,8 @@ export default function AboutMMSPage() {
         title="People should not have to wait for fear, symptoms or confusion before getting clarity."
         lead="MMS brings screening, doctor review, education, wellness programmes and care coordination into one quieter relationship."
       />
+
+      <HealthierTomorrowStory />
 
       <SplitStory
         eyebrow="How MMS thinks"
