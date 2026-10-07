@@ -2,13 +2,13 @@ export type AuditStatus = "PLANNED" | "IN_PROGRESS" | "REPORTING" | "COMPLETE" |
 export type AuditRating = "COMPLIANT" | "PARTIALLY_COMPLIANT" | "NON_COMPLIANT" | "NOT_APPLICABLE";
 export type ControlEffectiveness = "EFFECTIVE" | "NEEDS_IMPROVEMENT" | "INEFFECTIVE" | "NOT_TESTED";
 
-export const auditLifecycle = Object.freeze({
+export const auditLifecycle: Readonly<Record<AuditStatus, readonly AuditStatus[]>> = Object.freeze({
   PLANNED: ["IN_PROGRESS", "CANCELLED"],
   IN_PROGRESS: ["REPORTING", "CANCELLED"],
   REPORTING: ["COMPLETE", "IN_PROGRESS"],
   COMPLETE: [],
   CANCELLED: [],
-} satisfies Record<AuditStatus, readonly AuditStatus[]>);
+});
 
 export const auditEvidenceChecklist = Object.freeze([
   "Audit scope and objective are documented.",
