@@ -618,3 +618,36 @@ Remaining operational dependencies:
 - management review of material trends;
 - Production metric collection, scheduling and alerting require separate authorization;
 - metric status does not replace control testing, legal/regulatory review, clinical approval or Production-release authority.
+
+
+## T6.37 data-quality/reconciliation checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- append-only `mms_governance.data_quality_assessments` register added;
+- freshness, completeness, duplicate, reconciliation and lineage dimensions governed explicitly;
+- PASS requires CURRENT freshness, COMPLETE completeness, CLEAR duplicates, RECONCILED/NOT_APPLICABLE reconciliation, COMPLETE lineage and evidence linkage;
+- PASS_WITH_LIMITATIONS requires explicit limitations;
+- reconciliation VARIANCE requires a variance summary;
+- assessment history is immutable; reassessment creates a new record;
+- metric output and source-data trust remain distinct;
+- existing commercial lead duplicate review and Sales Partner registry reconciliation remain domain-specific and unchanged;
+- protected internal data-quality policy endpoint added;
+- working-draft Data Quality, Reconciliation & Source-Trust Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 027: PASS / rollback confirmed;
+- retained synthetic assessments: 0;
+- T6.37 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- approved dataset inventory and accountable owners;
+- source-by-source freshness/completeness expectations;
+- reconciliation procedures and tolerances;
+- duplicate/uniqueness controls by data domain;
+- real lineage/evidence capture;
+- data-quality issue remediation ownership;
+- Production data-quality jobs/alerts require separate authorization;
+- a data-quality PASS does not replace control testing, legal/regulatory review, clinical approval or Production-release authority.
