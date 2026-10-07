@@ -24,6 +24,18 @@ begin
     when check_violation then null;
   end;
 
+  begin
+    insert into mms_governance.consent_events (
+      event_id,consent_authorization_id,event_type,event_summary,actor_role,occurred_at
+    ) values (
+      'MMS-CONS-EVT-SYNTHETIC-BAD',consent_uuid,'GRANTED',
+      'Synthetic evidence-free grant','Synthetic Consent Reviewer',now()
+    );
+    raise exception 'T6.41 expected material-event evidence constraint failure';
+  exception
+    when check_violation then null;
+  end;
+
   insert into mms_governance.evidence_artifacts (
     evidence_id,evidence_type,subject_type,subject_reference,source_system,
     source_reference,storage_location,content_digest_sha256,captured_by_role,captured_at
