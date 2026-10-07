@@ -55,7 +55,8 @@
     "test:t6-24": "node --test tests/t6-24-backup-recovery-continuity.test.mjs",
     "test:t6-25": "node --test tests/t6-25-data-retention-privacy-lifecycle.test.mjs",
     "test:t6-26": "node --test tests/t6-26-access-governance-sod.test.mjs",
-    "test:t6-27": "node --test tests/t6-27-change-release-governance.test.mjs"
+    "test:t6-27": "node --test tests/t6-27-change-release-governance.test.mjs",
+    "test:t6-28": "node --test tests/t6-28-third-party-vendor-risk.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
