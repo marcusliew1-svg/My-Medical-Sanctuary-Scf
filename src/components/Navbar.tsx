@@ -32,7 +32,7 @@ export function Navbar() {
             Meet Ling
           </Link>
           <Link href="/health-discovery" className="rounded-full bg-gold px-5 py-2.5 text-xs font-semibold text-navy transition hover:-translate-y-0.5 hover:bg-gold-light">
-            Start assessment
+            Start Health Discovery
           </Link>
         </div>
         <MobileNav />
