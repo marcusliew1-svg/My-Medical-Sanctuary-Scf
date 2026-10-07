@@ -50,30 +50,33 @@ export async function persistBookingToZoho(
   const reference = `MMS-ENQ-${new Date(consentTimestamp).toISOString().slice(0, 10).replaceAll("-", "")}-${randomUUID().slice(0, 8).toUpperCase()}`;
   const { firstName, lastName } = splitName(submission.fullName);
   const fields = availability.fieldMapping;
-  const record: ZohoRecord = {
-    [fields.firstName]: firstName || undefined,
-    [fields.lastName]: lastName,
-    [fields.email]: submission.email,
-    [fields.mobile]: submission.mobileNumber.slice(0, 30),
-    [fields.country]: submission.country,
-    [fields.preferredLanguage]: submission.preferredLanguage,
-    [fields.source]: availability.leadSource,
-    [fields.utmSource]: campaign.utm_source || undefined,
-    [fields.utmMedium]: campaign.utm_medium || undefined,
-    [fields.utmCampaign]: campaign.utm_campaign || undefined,
-    [fields.partnerId]: partnerId || undefined,
-    [fields.landingPage]: submission.sourcePath,
-    [fields.broadInterestCategory]: submission.interestedIn,
-    [fields.programmeInterest]: submission.preferredMembership,
-    [fields.preferredContactChannel]: submission.preferredContactMethod,
-    [fields.assignedOwner]: { id: availability.ownerId },
-    [fields.nextAction]: "Clinic Manager administrative review",
-    [fields.leadStatus]: "New Enquiry",
-    [fields.contactConsentTimestamp]: consentTimestamp,
-    [fields.contactConsentVersion]: submission.consentVersion,
-    [fields.doNotContact]: false,
-    [fields.idempotencyKey]: reference,
-  };
+  const values: Array<[string | undefined, unknown]> = [
+    [fields.firstName, firstName || undefined],
+    [fields.lastName, lastName],
+    [fields.email, submission.email],
+    [fields.mobile, submission.mobileNumber.slice(0, 30)],
+    [fields.country, submission.country],
+    [fields.preferredLanguage, submission.preferredLanguage],
+    [fields.source, availability.leadSource],
+    [fields.utmSource, campaign.utm_source || undefined],
+    [fields.utmMedium, campaign.utm_medium || undefined],
+    [fields.utmCampaign, campaign.utm_campaign || undefined],
+    [fields.partnerId, partnerId || undefined],
+    [fields.landingPage, submission.sourcePath],
+    [fields.broadInterestCategory, submission.interestedIn],
+    [fields.programmeInterest, submission.preferredMembership],
+    [fields.preferredContactChannel, submission.preferredContactMethod],
+    [fields.assignedOwner, { id: availability.ownerId }],
+    [fields.nextAction, "Clinic Manager administrative review"],
+    [fields.leadStatus, "New Enquiry"],
+    [fields.contactConsentTimestamp, consentTimestamp],
+    [fields.contactConsentVersion, submission.consentVersion],
+    [fields.doNotContact, false],
+    [fields.idempotencyKey, reference],
+  ];
+  const record: ZohoRecord = Object.fromEntries(
+    values.filter(([fieldApiName, fieldValue]): fieldApiName is string => Boolean(fieldApiName) && fieldValue !== undefined),
+  );
 
   await writer(availability.moduleApiName, record);
 
