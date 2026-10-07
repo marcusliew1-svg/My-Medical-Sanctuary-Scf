@@ -458,7 +458,7 @@ on conflict (document_id) do nothing;
 
 insert into mms_governance.launch_capabilities (capability_key,capability_name,owner_role,readiness,production_gate_enabled,blocker_summary)
 values
-  ('public_informational_site','Public informational site','Operations','LIVE',true,'Controlled informational launch only; operational/clinical features remain gated.'),
+  ('public_informational_site','Public informational site','Operations','LIVE',true,'T6.11-controlled-public-launch','Controlled informational launch only; operational/clinical features remain gated.'),
   ('zoho_crm','Zoho CRM','Commercial Operations','AMBER',false,'Live tenant credentials/mapping and Preview E2E closure required.'),
   ('clinic_manager_queue','Clinic Manager Queue','Operations','AMBER',false,'Authenticated operator pilot and Production approval required.'),
   ('management_intelligence','Management Intelligence','Management','AMBER',false,'Production data-source and access approval required.'),
