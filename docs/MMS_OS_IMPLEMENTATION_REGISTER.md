@@ -273,3 +273,29 @@ Evidence/approval still required:
 - tested disposal/anonymisation procedures;
 - approved clinical-record retention/destruction policy if clinical systems are activated;
 - Production automation approval before any purge/TTL/deletion job is enabled.
+
+
+## T6.26 access-governance/segregation checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- privileged operator roles formally identified as admin and finance;
+- auditor role formally treated as exclusive/read-only;
+- trusted operator metadata now rejects any auditor role combined with operations, finance or admin;
+- privileged-access review requires independent reviewer identity and evidence reference;
+- retained privileged access requires documented business justification;
+- joiner/mover/leaver principles documented;
+- protected internal access-governance policy endpoint added;
+- working-draft Access Governance & Segregation of Duties Runbook added;
+- existing Finance step-up, short-lived session and same-origin mutation controls preserved;
+- T6.26, operator-security and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched.
+
+Remaining operational dependencies:
+- supported creation of the first trusted MMS operator identity;
+- named access reviewer / approver assignment;
+- actual privileged-access review evidence;
+- formal joiner/mover/leaver operating process;
+- approved automated deprovisioning, if later selected;
+- branch/environment access administration remains outside this phase.

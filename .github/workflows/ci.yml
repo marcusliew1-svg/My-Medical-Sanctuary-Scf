@@ -87,6 +87,9 @@ jobs:
       - name: T6.25 data retention privacy lifecycle tests
         run: npm run test:t6-25
 
+      - name: T6.26 access governance and segregation tests
+        run: npm run test:t6-26
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
