@@ -719,3 +719,40 @@ Remaining operational dependencies:
 - source-record closure remains independent;
 - dedicated MMS Zoho tenant remains unresolved for CAPA-T618-ZOHO-TENANT;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.40 privacy-rights/human-review checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.privacy_rights_requests` register added;
+- workflow categories cover access, correction, deletion/erasure, withdrawal, objection, restriction, portability, complaint and other;
+- workflow category does not assert universal legal applicability;
+- substantive review/action requires identity-verification evidence and jurisdiction/applicability assessment;
+- fulfilled/partially fulfilled/denied requests require decision reference, response reference and completion timestamp;
+- denial requires explicit reason;
+- deletion/erasure fulfilment requires confirmed-clear legal hold and documented retention assessment;
+- immutable `mms_governance.privacy_rights_request_actions` history added;
+- material actions require immutable evidence linkage;
+- pseudonymous/internal subject reference is preferred over unnecessary personal data;
+- T6.25 legal-hold and retention boundaries remain controlling;
+- protected internal privacy-rights policy endpoint added;
+- working-draft Privacy Rights Requests & Human Review Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 030: PASS / rollback confirmed;
+- retained synthetic privacy-rights requests: 0;
+- T6.40 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- verified MMS controller identity and privacy contact;
+- named accountable privacy owner/DPO if legally required;
+- jurisdiction-specific rights/applicability analysis;
+- approved identity-verification process;
+- system-of-record search/reconciliation procedure;
+- approved statutory/operational response timelines;
+- Production intake channel and secure response-delivery process;
+- deletion/export/correction automation requires separate explicit authorization;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.

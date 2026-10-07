@@ -67,7 +67,8 @@
     "test:t6-36": "node --test tests/t6-36-metrics-control-performance.test.mjs",
     "test:t6-37": "node --test tests/t6-37-data-quality-reconciliation.test.mjs",
     "test:t6-38": "node --test tests/t6-38-ai-model-governance.test.mjs",
-    "test:t6-39": "node --test tests/t6-39-capa-effectiveness.test.mjs"
+    "test:t6-39": "node --test tests/t6-39-capa-effectiveness.test.mjs",
+    "test:t6-40": "node --test tests/t6-40-privacy-rights-requests.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
