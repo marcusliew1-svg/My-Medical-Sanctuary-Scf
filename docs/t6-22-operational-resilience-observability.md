@@ -1,6 +1,6 @@
 # T6.22 — Operational Resilience & Observability
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -50,3 +50,25 @@ No clinical service is made active by this phase.
 - public `/api/status` returns no secret/configuration detail;
 - internal readiness remains bearer protected;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- T6.22 regression tests: PASS;
+- Production dependency security audit: PASS;
+- dev/build dependency baseline: PASS;
+- existing security/commerce/governance regression suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Operational boundaries remain intact:
+- public liveness exposes no database, feature-gate, Zoho or credential detail;
+- detailed readiness remains bearer protected;
+- request IDs are bounded and generated when absent/invalid;
+- structured operational logs redact likely credential-bearing keys;
+- Production/main remain untouched;
+- no clinical capability is activated.
