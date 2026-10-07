@@ -90,7 +90,7 @@ export function EditorialHero({
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-gold-light">
             {eyebrow}
           </p>
-          <h1 className="text-balance font-serif text-[3.2rem] leading-[0.96] sm:text-6xl md:text-7xl lg:text-[5.25rem] xl:text-[5.8rem]">
+          <h1 className="text-balance font-serif text-[2.85rem] leading-[0.98] sm:text-6xl md:text-7xl lg:text-[5.25rem] xl:text-[5.8rem]">
             {title}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-ivory/78 sm:text-lg sm:leading-8 md:text-xl">{lead}</p>
@@ -163,7 +163,7 @@ export function EditorialHero({
         ) : null}
       </div>
       <div className="relative z-10 mx-auto max-w-7xl border-t border-gold-light/25 bg-navy/80 shadow-[0_-18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md">
-        <div className="grid gap-px md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-px md:grid-cols-4">
           {trustItems.map((item) => (
             <div key={item.title} className="border-b border-ivory/10 px-4 py-4 sm:px-5 sm:py-5 md:border-b-0 md:border-r md:border-ivory/10">
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold-light">
@@ -320,8 +320,8 @@ export function FinalInvitation({
           <p className="mt-5 max-w-2xl text-lg leading-8 text-ivory/72">{lead}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <ButtonLink href="/contact">Speak with MMS</ButtonLink>
-          <ButtonLink href="/ling" variant="light">Start with Ling</ButtonLink>
+          <ButtonLink href="/health-discovery">Start Health Discovery</ButtonLink>
+          <ButtonLink href="/ling" variant="light">Ask Ling</ButtonLink>
         </div>
       </div>
     </section>
