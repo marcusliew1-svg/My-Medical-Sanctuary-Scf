@@ -53,7 +53,8 @@
     "test:t6-22": "node --test tests/t6-22-operational-resilience.test.mjs",
     "test:t6-23": "node --test tests/t6-23-incident-reliability-controls.test.mjs",
     "test:t6-24": "node --test tests/t6-24-backup-recovery-continuity.test.mjs",
-    "test:t6-25": "node --test tests/t6-25-data-retention-privacy-lifecycle.test.mjs"
+    "test:t6-25": "node --test tests/t6-25-data-retention-privacy-lifecycle.test.mjs",
+    "test:t6-26": "node --test tests/t6-26-access-governance-sod.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
