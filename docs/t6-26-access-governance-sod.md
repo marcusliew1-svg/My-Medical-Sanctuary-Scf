@@ -1,6 +1,6 @@
 # T6.26 — Access Governance, Privileged Review & Segregation of Duties
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -47,4 +47,28 @@ T6.26 does **not**:
 - dev/build baseline remains bounded;
 - TypeScript/lint/build PASS;
 - Vercel Preview READY;
+- Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- T6.26 access-governance tests: PASS;
+- existing operator-security suite: PASS;
+- Production dependency audit: PASS;
+- dev/build security baseline: PASS;
+- prior T6 controls: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Access boundaries remain intact:
+- auditor mixed-role assignments fail closed at trusted metadata parsing;
+- Finance-sensitive step-up controls remain unchanged;
+- no trusted operator identity was created;
+- no named reviewer or access approval was fabricated;
+- no Production role assignment was changed;
+- no automatic deprovisioning was enabled;
 - Production/main remain untouched.
