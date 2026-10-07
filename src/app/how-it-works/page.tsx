@@ -3,7 +3,7 @@ import { EditorialHero, FinalInvitation, ImagePanel, JourneyLine, SplitStory } f
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
-  title: "Our Approach | My Medical Sanctuary",
+  title: "Our Approach",
   description: "The MMS journey from discovery to assessment, doctor review, personalised planning and continuity.",
 };
 
