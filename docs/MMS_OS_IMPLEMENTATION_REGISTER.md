@@ -299,3 +299,32 @@ Remaining operational dependencies:
 - formal joiner/mover/leaver operating process;
 - approved automated deprovisioning, if later selected;
 - branch/environment access administration remains outside this phase.
+
+
+## T6.27 change/release governance checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- STANDARD, NORMAL and EMERGENCY change classes defined;
+- exact source commit SHA required for release evidence;
+- target environment must be explicitly identified;
+- rollback plan and post-deploy verification plan required;
+- Production release requires explicit approval reference;
+- release-evidence and rollback-readiness checklists added;
+- Preview-vs-Production boundary formalized;
+- protected internal release-governance policy endpoint added;
+- working-draft Change Management, Release Governance & Rollback Runbook added;
+- existing `mms_governance.change_requests` remains canonical;
+- fail-closed Production preflight remains unchanged;
+- T6.27 and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- named change/release approver assignment;
+- actual Production approval evidence;
+- branch/environment protection administration;
+- tested Production rollback/failover evidence;
+- formal emergency-change retrospective process;
+- Production release remains a separate explicit authorization.
