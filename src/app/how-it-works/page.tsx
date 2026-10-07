@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { EditorialHero, FinalInvitation, ImagePanel, JourneyLine, SplitStory } from "@/components/Editorial";
+import Image from "next/image";
+import { EditorialHero, FinalInvitation, JourneyLine, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip, RevealCardGrid } from "@/components/ExperienceCards";
 
 export const metadata: Metadata = {
@@ -75,7 +76,36 @@ export default function HowItWorksPage() {
               It should help them discover, measure, understand, optimise and monitor.
             </p>
           </div>
-          <ImagePanel priority src="/mms-service-collage.webp" alt="The connected MMS care journey across discovery, diagnostics, physician review and continuity." className="min-h-[420px] rounded-[1.6rem] shadow-premium" objectPosition="50% center" />
+          <div className="grid min-h-[420px] grid-cols-2 grid-rows-2 gap-2 overflow-hidden rounded-[1.6rem] bg-[#e8e1d5] p-2 shadow-premium">
+            <div className="relative overflow-hidden rounded-[1.15rem]">
+              <Image
+                src="/mms-doctor-results-review.png"
+                alt="Doctor reviewing health results with a patient."
+                fill
+                priority
+                className="object-cover"
+                sizes="(min-width: 1024px) 28vw, 50vw"
+              />
+            </div>
+            <div className="relative overflow-hidden rounded-[1.15rem]">
+              <Image
+                src="/mms-doctor-couple-consult.png"
+                alt="Doctor discussing a personalised care plan with a couple."
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 28vw, 50vw"
+              />
+            </div>
+            <div className="relative col-span-2 overflow-hidden rounded-[1.15rem]">
+              <Image
+                src="/mms-concierge-lounge.png"
+                alt="MMS concierge support and continuity of care."
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 56vw, 100vw"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

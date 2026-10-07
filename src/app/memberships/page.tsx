@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
+import Image from "next/image";
+import { EditorialHero, FinalInvitation, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip } from "@/components/ExperienceCards";
 import { MembershipComparison } from "@/components/MembershipComparison";
 import { ContinuityOfCareStory } from "@/components/PreventiveJourneyExpanded";
@@ -39,8 +40,35 @@ export default function MembershipsPage() {
               support screening, doctor review, Health Relationship Manager coordination and long-term follow-up.
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ImagePanel priority src="/mms-membership-journey.webp" alt="MMS membership journey from baseline understanding to long-term health continuity." className="col-span-3 min-h-[320px] rounded-[1.6rem] shadow-premium" objectPosition="50% center" />
+          <div className="grid min-h-[340px] grid-cols-[1.15fr_0.85fr] grid-rows-2 gap-2 overflow-hidden rounded-[1.6rem] bg-[#e8e1d5] p-2 shadow-premium">
+            <div className="relative row-span-2 overflow-hidden rounded-[1.15rem]">
+              <Image
+                src="/mms-doctor-results-review.png"
+                alt="Doctor reviewing health results before a membership pathway is considered."
+                fill
+                priority
+                className="object-cover"
+                sizes="(min-width: 1024px) 34vw, 60vw"
+              />
+            </div>
+            <div className="relative overflow-hidden rounded-[1.15rem]">
+              <Image
+                src="/mms-concierge-lounge.png"
+                alt="Concierge support for ongoing health coordination."
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 24vw, 40vw"
+              />
+            </div>
+            <div className="relative overflow-hidden rounded-[1.15rem]">
+              <Image
+                src="/mms-diagnostics-screening.png"
+                alt="Preventive screening supporting long-term health continuity."
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 24vw, 40vw"
+              />
+            </div>
           </div>
         </div>
       </section>

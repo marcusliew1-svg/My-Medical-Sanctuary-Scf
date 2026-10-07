@@ -89,7 +89,7 @@ export default function InsightsPage() {
             </Link>
           </div>
           <div className="relative overflow-hidden rounded-[1.5rem] bg-navy p-4 shadow-premium">
-            <ImagePanel src="/mms-medicine-intelligence.webp" alt="MMS health intelligence visual connecting medical context, evidence and patient understanding." className="min-h-[520px] rounded-[1rem]" objectPosition="50% center" />
+            <ImagePanel src="/mms-health-screening-hero.png" alt="High-resolution MMS health intelligence visual showing preventive screening and clinical context." className="min-h-[520px] rounded-[1rem]" objectPosition="50% center" />
           </div>
         </div>
       </section>
