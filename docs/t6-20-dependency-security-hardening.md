@@ -1,6 +1,6 @@
 # T6.20 — Dependency & Security Hardening
 
-**Status:** IN PROGRESS — PRODUCTION DEPENDENCY RISK REMEDIATED / DEV-TOOLING REMEDIATION SEPARATE  
+**Status:** PASS — PRODUCTION DEPENDENCY RISK REMEDIATED / DEV-TOOLING REMEDIATION SEPARATE  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Trigger
@@ -55,3 +55,22 @@ CI must fail if a future high/critical vulnerability enters the production depen
 - No clinical capability or Production gate is activated.
 - No security finding is suppressed or relabelled.
 - Dev/build findings remain tracked until separately remediated.
+
+
+## Final validation — 2026-10-07
+
+Final cleaned PR state:
+
+- `npm ci`: PASS
+- production dependency security audit: **0 vulnerabilities**
+- existing operator/security regression tests: PASS
+- existing Next 16 baseline tests, updated for 16.4.0: PASS
+- T6.20 dependency-security tests: PASS
+- TypeScript: PASS
+- lint: PASS
+- full GitHub build: PASS
+- Vercel Preview: READY
+
+Aggregate development/build audit remains at **10 findings (2 moderate, 8 high)** after production-transitive remediation. These findings remain explicit and are not treated as Production-runtime findings. The remaining Tailwind/ESLint toolchain remediation is deferred to a separate controlled major/tooling upgrade rather than being forced into T6.20.
+
+The temporary lockfile-refresh workflow used to safely regenerate the lockfile was removed before merge.
