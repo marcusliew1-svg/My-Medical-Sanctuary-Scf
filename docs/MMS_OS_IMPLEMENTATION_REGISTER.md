@@ -130,3 +130,21 @@ Preview validation:
 
 Remaining operational dependency:
 - real accountable owners/reviewers/approvers must be assigned by management before controlled documents can progress beyond WORKING_DRAFT.
+
+
+## T6.20 dependency/security checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- Next.js and matching ESLint configuration advanced from 16.3.4 to 16.4.0 within the existing major line;
+- critical direct Next.js audit finding removed;
+- vulnerable Production transitives `sharp` and `source-map-js` refreshed in the lockfile;
+- Production dependency CI gate added: `npm audit --omit=dev --audit-level=high`;
+- final Production dependency audit: **0 vulnerabilities**;
+- T6.20 regression suite, TypeScript, lint and full build: PASS;
+- Vercel Preview: READY;
+- temporary lockfile-generation workflow removed before integration.
+
+Remaining:
+- aggregate dev/build tooling audit contains 10 findings (2 moderate, 8 high), primarily in Tailwind 3 / ESLint dependency trees;
+- Tailwind 4 and broader tooling migration require separate controlled change and visual-regression validation;
+- Production/main remain untouched.
