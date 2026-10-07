@@ -12,8 +12,8 @@ function read(relativePath) {
 test("T1 pins the supported Next 16 active line with matching React and lint tooling", () => {
   const pkg = JSON.parse(read("package.json"));
 
-  assert.equal(pkg.dependencies.next, "^16.3.4");
-  assert.equal(pkg.devDependencies["eslint-config-next"], "^16.3.4");
+  assert.equal(pkg.dependencies.next, "16.4.0");
+  assert.equal(pkg.devDependencies["eslint-config-next"], "16.4.0");
   assert.equal(pkg.dependencies.react, "^19.2.8");
   assert.equal(pkg.dependencies["react-dom"], "^19.2.8");
   assert.equal(pkg.devDependencies.eslint, "^9.39.5");
