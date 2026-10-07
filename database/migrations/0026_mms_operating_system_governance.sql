@@ -456,18 +456,18 @@ insert into mms_governance.governance_documents (
 )
 on conflict (document_id) do nothing;
 
-insert into mms_governance.launch_capabilities (capability_key,capability_name,owner_role,readiness,production_gate_enabled,blocker_summary)
+insert into mms_governance.launch_capabilities (capability_key,capability_name,owner_role,readiness,production_gate_enabled,approval_reference,blocker_summary)
 values
   ('public_informational_site','Public informational site','Operations','LIVE',true,'T6.11-controlled-public-launch','Controlled informational launch only; operational/clinical features remain gated.'),
-  ('zoho_crm','Zoho CRM','Commercial Operations','AMBER',false,'Live tenant credentials/mapping and Preview E2E closure required.'),
-  ('clinic_manager_queue','Clinic Manager Queue','Operations','AMBER',false,'Authenticated operator pilot and Production approval required.'),
-  ('management_intelligence','Management Intelligence','Management','AMBER',false,'Production data-source and access approval required.'),
-  ('ai_operations','AI Operations','Technology / Operations','AMBER',false,'Provider/privacy/use-case approvals required.'),
-  ('ling','Ling public concierge','Technology / Clinical Governance','AMBER',false,'Approved corpus and governance approval required.'),
-  ('booking_persistence','Booking persistence','Operations','RED',false,'Production persistence/owner/failure-handling approval required.'),
-  ('my_sanctuary','My Sanctuary','Patient Operations','RED',false,'Production patient-auth and operational readiness required.'),
-  ('partner_hub','Partner Hub','Partner Operations','RED',false,'Production Partner auth/provisioning and approval required.'),
-  ('online_doctor','Online Doctor','Clinical Governance','RED',false,'Jurisdiction, clinician, privacy and telemedicine approval required.')
+  ('zoho_crm','Zoho CRM','Commercial Operations','AMBER',false,null,'Live tenant credentials/mapping and Preview E2E closure required.'),
+  ('clinic_manager_queue','Clinic Manager Queue','Operations','AMBER',false,null,'Authenticated operator pilot and Production approval required.'),
+  ('management_intelligence','Management Intelligence','Management','AMBER',false,null,'Production data-source and access approval required.'),
+  ('ai_operations','AI Operations','Technology / Operations','AMBER',false,null,'Provider/privacy/use-case approvals required.'),
+  ('ling','Ling public concierge','Technology / Clinical Governance','AMBER',false,null,'Approved corpus and governance approval required.'),
+  ('booking_persistence','Booking persistence','Operations','RED',false,null,'Production persistence/owner/failure-handling approval required.'),
+  ('my_sanctuary','My Sanctuary','Patient Operations','RED',false,null,'Production patient-auth and operational readiness required.'),
+  ('partner_hub','Partner Hub','Partner Operations','RED',false,null,'Production Partner auth/provisioning and approval required.'),
+  ('online_doctor','Online Doctor','Clinical Governance','RED',false,null,'Jurisdiction, clinician, privacy and telemedicine approval required.')
 on conflict (capability_key) do nothing;
 
 commit;
