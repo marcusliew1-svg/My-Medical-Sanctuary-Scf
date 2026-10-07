@@ -25,6 +25,9 @@ jobs:
       - name: Production dependency security audit
         run: npm run security:prod
 
+      - name: Dev/build dependency security baseline
+        run: npm run security:dev-baseline
+
       - name: Operator security tests
         run: npm run test:operator-security
 
@@ -68,6 +71,9 @@ jobs:
 
       - name: T6.20 dependency security hardening tests
         run: npm run test:t6-20
+
+      - name: T6.21 dev toolchain hardening tests
+        run: npm run test:t6-21
 
       - name: Typecheck
         run: npx tsc --noEmit --pretty false

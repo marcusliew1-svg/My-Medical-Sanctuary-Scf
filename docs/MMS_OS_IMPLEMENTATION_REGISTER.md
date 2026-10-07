@@ -148,3 +148,26 @@ Remaining:
 - aggregate dev/build tooling audit contains 10 findings (2 moderate, 8 high), primarily in Tailwind 3 / ESLint dependency trees;
 - Tailwind 4 and broader tooling migration require separate controlled change and visual-regression validation;
 - Production/main remain untouched.
+
+
+## T6.21 dev/build toolchain checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- Tailwind CSS migrated from 3.4.x to 4.3.3;
+- PostCSS moved to `@tailwindcss/postcss`;
+- existing MMS theme configuration retained through Tailwind 4 `@config`;
+- standalone `autoprefixer` removed from the obsolete Tailwind 3 pipeline;
+- patched `brace-expansion` dependency lines enforced with npm overrides;
+- aggregate dev/build audit reduced from 10 findings to 5 high findings;
+- Production dependency audit remains **0 vulnerabilities**;
+- dev/build CI guard now rejects unexpected vulnerable packages or regression above the five-item tracked residual;
+- T6.20, T6.21, Next 16 baseline, TypeScript, lint and full build: PASS;
+- Vercel Preview: READY;
+- compiled CSS smoke confirms MMS theme values remain emitted after migration;
+- temporary lockfile workflow removed before integration.
+
+Residual:
+- five high dev-only findings remain in the current Next.js ESLint dependency chain: `eslint-config-next`, `@next/eslint-plugin-next`, `fast-glob`, `micromatch`, `braces`;
+- no patched `braces` release is currently available to that dependency chain in the tested package graph;
+- residual remains visible and bounded; it is not treated as Production-runtime exposure;
+- Production/main remain untouched.
