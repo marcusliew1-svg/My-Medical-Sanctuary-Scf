@@ -218,3 +218,30 @@ Remaining operational dependencies:
 - named incident responders/on-call roster require management assignment;
 - external alert-routing/log-drain/paging provider requires separate infrastructure approval;
 - statutory privacy/regulatory/clinical reporting decisions remain with the appropriate human authority.
+
+
+## T6.24 backup/recovery/continuity checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- four-tier RTO/RPO engineering target framework added;
+- application, commercial database, governance data, Auth and Zoho dependencies classified for continuity planning;
+- restore-evidence checklist added;
+- recovery completion requires integrity verification, reconciliation and zero unresolved discrepancies;
+- READ_ONLY, FAIL_CLOSED and MANUAL_RECONCILIATION continuity modes defined;
+- protected internal continuity-policy endpoint added;
+- working-draft Backup, Recovery & Business Continuity Runbook added;
+- T6.24 and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Evidence still required before any operational backup/recovery claim:
+- actual backup schedule and retention evidence;
+- isolated restore execution;
+- restore point/reference evidence;
+- data-integrity reconciliation results;
+- RTO/RPO measurement from an executed exercise;
+- named accountable continuity owners;
+- approved disaster-declaration/failover authority;
+- external DR provider evidence if one is selected.
