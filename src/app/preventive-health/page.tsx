@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Preventive Health | My Medical Sanctuary",
+  title: "Preventive Health",
   description:
     "Understand why preventive health focuses on useful baselines, meaningful trends, appropriate screening and doctor-guided action before symptoms become the only signal.",
 };
