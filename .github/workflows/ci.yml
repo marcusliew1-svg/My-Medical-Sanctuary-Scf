@@ -99,6 +99,9 @@ jobs:
       - name: T6.29 audit control assurance tests
         run: npm run test:t6-29
 
+      - name: T6.30 training competency attestation tests
+        run: npm run test:t6-30
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

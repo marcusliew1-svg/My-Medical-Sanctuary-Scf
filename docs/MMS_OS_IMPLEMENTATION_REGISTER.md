@@ -392,3 +392,37 @@ Remaining operational dependencies:
 - actual control-test execution;
 - CAPA/risk linkage for future material findings;
 - external certification or regulator-facing conclusions require independent evidence and authority.
+
+
+## T6.30 training/competency/attestation checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- existing `mms_governance.training_records` hardened with competency evidence reference, policy-attestation reference, verification timestamp and refresh-required state;
+- COMPETENT / COMPETENT_WITH_CONDITIONS now require competency method, assessor role, completion timestamp, evidence reference, verification timestamp and no outstanding refresh requirement;
+- expiry date must be later than completion when both are present;
+- generic training lifecycle and current-competency evaluator added;
+- attendance alone explicitly cannot establish competency;
+- policy acknowledgement remains distinct from skills assessment;
+- clinical competency remains separate from clinical privilege/licensure/Medical Director authority;
+- existing Sales Partner 10-module training engine remains separate and unchanged;
+- protected internal training/competency policy endpoint added;
+- working-draft Training, Competency & Policy Attestation Runbook added;
+- Preview migration: PASS;
+- transactional QA 020: PASS / rollback confirmed;
+- retained synthetic training rows: 0;
+- initial strict-TypeScript lifecycle inference issue detected and corrected before integration;
+- T6.30 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- role-by-role training matrix;
+- named accountable training owners and assessors;
+- approved module content/versioning;
+- real competency assessment evidence;
+- policy acknowledgement programme;
+- refresher/expiry schedules;
+- joiner/mover/leaver linkage to training requirements;
+- clinical workforce competency remains subject to separate credential/privilege/Medical Director governance.
