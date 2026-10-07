@@ -57,6 +57,9 @@ jobs:
       - name: T6.3 partner and patient access tests
         run: npm run test:t6-3
 
+      - name: T6.18 operational closure tests
+        run: npm run test:t6-18
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
