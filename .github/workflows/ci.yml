@@ -123,6 +123,9 @@ jobs:
       - name: T6.37 data quality reconciliation tests
         run: npm run test:t6-37
 
+      - name: T6.38 AI model governance tests
+        run: npm run test:t6-38
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

@@ -651,3 +651,38 @@ Remaining operational dependencies:
 - data-quality issue remediation ownership;
 - Production data-quality jobs/alerts require separate authorization;
 - a data-quality PASS does not replace control testing, legal/regulatory review, clinical approval or Production-release authority.
+
+
+## T6.38 AI/model-governance checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- canonical `mms_governance.ai_use_cases` register hardened rather than duplicated;
+- APPROVED/ACTIVE AI use cases require provider, model identifier/version, controlled system-policy reference, human-review control, human-oversight evidence, privacy-review evidence, validation reference, monitoring reference, disable/rollback reference, approval evidence and validation timestamp;
+- clinical-governance-required AI additionally requires explicit clinical-governance evidence;
+- immutable `mms_governance.ai_validation_assessments` register added;
+- validation types cover safety, accuracy, refusal boundaries, human oversight, privacy, security, fairness, robustness and grounding;
+- validation PASS is explicitly limited to the tested scope and does not constitute universal safety, legality, regulatory approval or clinical fitness;
+- material provider/model/version/system-policy/intended-use changes require reassessment;
+- AI must not silently mutate authoritative systems or become sole basis for clinical/legal/regulatory/financial/access-control decisions without separate governance;
+- existing AI Operations Assistant remains administrative/advisory with human approval;
+- existing Ling safety/refusal and approved-content controls remain intact;
+- Preview schema execution: PASS;
+- transactional QA 028: PASS / rollback confirmed;
+- retained synthetic AI use cases: 0;
+- retained synthetic AI validations: 0;
+- AI-OPS-001 and AI-LING-001 remain REVIEW;
+- T6.38 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical AI or service activated.
+
+Remaining operational dependencies:
+- approved AI provider/model/version selection;
+- privacy/security/vendor due diligence;
+- controlled system prompt/policy approval;
+- real validation evidence and accountable assessor roles;
+- monitoring thresholds and rollback/disable procedures;
+- clinical governance/Medical Director evidence for any clinically governed AI use;
+- Production AI feature activation requires separate explicit authorization;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.
