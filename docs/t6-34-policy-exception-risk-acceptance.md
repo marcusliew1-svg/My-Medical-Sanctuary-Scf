@@ -1,6 +1,6 @@
 # T6.34 — Policy Exceptions, Waivers & Risk Acceptance
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -60,3 +60,29 @@ T6.34 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 024: PASS / rolled back;
+- retained synthetic exception rows: **0**;
+- T6.34 exception/risk-acceptance tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Exception-governance boundaries remain intact:
+- no real exception was approved;
+- no real risk was accepted;
+- no real control was waived;
+- no Production override or bypass was created;
+- no legal, regulatory, privacy, security, licensing or clinical prohibition was waived;
+- Production/main remain untouched;
+- no clinical capability was activated.
