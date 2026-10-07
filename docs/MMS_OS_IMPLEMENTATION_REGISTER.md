@@ -792,3 +792,40 @@ Remaining operational dependencies:
 - retention/legal-hold handling on withdrawal;
 - Production e-signature/preference-centre/capture integrations require separate explicit authorization;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.41 consent/authorization/withdrawal checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.consent_authorizations` register added;
+- consent categories cover treatment, data processing, marketing, communications, research, image/media, third-party sharing and other;
+- exact consent document reference, document version and scope/purpose are mandatory;
+- ACTIVE requires capture method, capture role, grant timestamp and immutable evidence;
+- WITHDRAWN requires withdrawal reference, timestamp and effective scope;
+- REVOKED requires revocation reference and timestamp;
+- expiry must be later than grant timestamp when both are present;
+- immutable `mms_governance.consent_events` lifecycle history added;
+- material GRANTED/DECLINED/WITHDRAWN/EXPIRED/REVOKED/SUPERSEDED events require immutable evidence;
+- appointment, enquiry, payment, CRM record or service reference is explicitly not treatment consent;
+- consent is not declared to be the universal legal basis for privacy/clinical/operational processing;
+- withdrawal does not automatically erase historical records or bypass T6.25 retention/legal-hold requirements;
+- protected internal consent-governance policy endpoint added;
+- working-draft Consent, Authorization & Withdrawal Governance Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 031: PASS / rollback confirmed;
+- retained synthetic consent records: 0;
+- T6.41 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- approved jurisdiction-specific consent/legal-basis analysis;
+- approved consent document templates and version control;
+- named capture/review roles;
+- real evidence capture process;
+- clinical consent content requires Medical Director/clinical/legal approval where applicable;
+- identity verification/e-signature provider only if separately selected and approved;
+- Production preference/withdrawal propagation requires explicit authorization;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.
