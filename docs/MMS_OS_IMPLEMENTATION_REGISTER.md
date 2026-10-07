@@ -362,3 +362,33 @@ Remaining operational dependencies:
 - periodic reassessment schedule and accountable owner;
 - dedicated MMS Zoho tenant remains unresolved;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.29 audit/control-assurance checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- audit lifecycle formalized from PLANNED through COMPLETE with controlled cancellation;
+- audit completion requires report reference, overall rating and completion timestamp;
+- control-effectiveness conclusions require evidence reference, test timestamp and documented test method;
+- NOT_TESTED remains the default until real testing evidence exists;
+- absence of observed failure is explicitly not treated as proof of effectiveness;
+- audit evidence checklist and finding/remediation linkage expectations added;
+- testing-independence principle documented;
+- protected internal audit-assurance policy endpoint added;
+- working-draft Audit, Control Testing & Assurance Evidence Runbook added;
+- existing audits, controls, CAPA, risks and immutable governance-audit-event records remain canonical;
+- no new database migration required;
+- initial typecheck issue identified by CI/Vercel and corrected before integration;
+- T6.29 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- named audit/control-testing owners and independent reviewers;
+- real test plans, samples and evidence references;
+- scheduled audit programme;
+- actual control-test execution;
+- CAPA/risk linkage for future material findings;
+- external certification or regulator-facing conclusions require independent evidence and authority.
