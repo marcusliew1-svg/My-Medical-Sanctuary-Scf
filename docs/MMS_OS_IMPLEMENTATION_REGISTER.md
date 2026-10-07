@@ -10,8 +10,8 @@ This register tracks the transition from conceptual framework to controlled oper
 | Workstream | Implementation artifact | Current status | Production authority |
 | --- | --- | --- | --- |
 | Master governance | MMS-GOV-FRM-001 | Implemented in repo as Working Draft | None |
-| Structured governance data | database/migrations/0026_mms_operating_system_governance.sql | Implemented in branch; not applied | None |
-| Master documents | governance_documents table | Schema ready | None |
+| Structured governance data | database/migrations/0026_mms_operating_system_governance.sql | Applied successfully to dedicated MMS Preview branch | None |
+| Master documents | governance_documents table | Preview live; 1 master document seed | None |
 | Decisions | governance_decisions table | Schema ready | None |
 | Risks | risks table | Schema ready | None |
 | Controls | controls + risk_control_links | Schema ready | None |
@@ -24,7 +24,7 @@ This register tracks the transition from conceptual framework to controlled oper
 | Products | products table | Schema ready | None |
 | Diagnostic partners | diagnostic_partners table | Schema ready | None |
 | AI use cases | ai_use_cases table | Schema ready | None |
-| Launch control | launch_capabilities table | Schema ready | None |
+| Launch control | launch_capabilities table | Preview live; 10 capability seeds | None |
 | Change control | change_requests table | Schema ready | None |
 | Audit | audits table | Schema ready | None |
 | Incidents | incidents table | Schema ready | None |
@@ -43,10 +43,10 @@ This register tracks the transition from conceptual framework to controlled oper
 
 ## Next controlled implementation sequence
 
-1. Review migration in Preview only.
-2. Apply to the dedicated MMS Preview project only after explicit approval.
-3. Run QA assertions and verify zero patient-clinical payloads.
-4. Seed only synthetic governance records.
+1. Preview migration applied successfully to dedicated MMS Preview branch.
+2. Transactional QA 017 passed with rollback and forced-RLS/direct-grant assertions.
+3. Foreign-key index hardening applied successfully.
+4. Seeded governance records contain only framework/capability metadata; no patient-clinical payloads.
 5. Build operator-only governance APIs / dashboard behind existing operator auth.
 6. Assign named owners in the registers.
 7. Move documents from WORKING DRAFT to REVIEW only with human approver evidence.
@@ -65,3 +65,15 @@ The OS foundation is considered implemented when:
 - management can see RED/AMBER/GREEN capability state and overdue governance actions.
 
 Until those checks are complete, status remains **IMPLEMENTED IN CODE / NOT OPERATIONALLY ACTIVATED**.
+
+## Preview execution evidence — 2026-10-07
+
+- Dedicated Preview branch: `mms-preview-auth` / `tfwnlmmdrkkfrtmawpma`.
+- Migration `mms_operating_system_governance`: PASS.
+- QA `017_mms_operating_system_governance.sql`: PASS.
+- Migration `mms_governance_fk_index_hardening`: PASS.
+- 20 governance tables present with RLS enabled.
+- Seed state: 1 master framework document; 10 launch capability records; zero clinical service records activated.
+- Security advisor reports RLS enabled with no policies on governance tables. This is intentional fail-closed behavior at this stage because direct `public`, `anon`, and `authenticated` grants are revoked. Operator access must be added later through an explicitly approved server-side access path.
+- Existing Preview Auth leaked-password-protection warning remains unresolved and is outside this migration.
+- No Production project, iPivot project, Production deployment, Production gate or Production credential was changed.
