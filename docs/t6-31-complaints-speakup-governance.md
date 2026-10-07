@@ -1,6 +1,6 @@
 # T6.31 — Complaints, Concerns & Speak-Up Governance
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -55,4 +55,30 @@ T6.31 does **not**:
 - dev/build baseline remains bounded;
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
+- Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview migration `mms_complaints_speakup_governance`: PASS;
+- transactional QA 021: PASS / rolled back;
+- retained synthetic complaint/speak-up rows: **0**;
+- T6.31 complaints/speak-up tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Governance boundaries remain intact:
+- no real complaint or speak-up case was created;
+- no named investigator was appointed;
+- no anonymous hotline or intake channel was configured;
+- no regulator notification was claimed;
+- no Production case intake was activated;
+- no clinical capability was activated;
 - Production/main remain untouched.
