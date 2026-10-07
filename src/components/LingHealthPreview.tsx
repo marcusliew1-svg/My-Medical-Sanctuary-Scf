@@ -17,7 +17,7 @@ export function LingHealthPreview() {
             Technology helps you understand. Doctors help you decide.
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-8 text-warm-gray">
-            Ling helps organise information, explain health concepts in understandable language, prepare you for meaningful conversations and support follow-through between visits. Clinical assessment, diagnosis, prescribing and treatment decisions remain with qualified medical professionals.
+            Ling helps organise your health information, explain concepts clearly and prepare useful questions for your next conversation. Clinical assessment, diagnosis, prescribing and treatment decisions remain with qualified medical professionals.
           </p>
           <div className="mt-8 flex flex-wrap gap-6 border-t border-gold/35 pt-6 text-sm text-deep-green">
             <span>Ask questions</span>
