@@ -33,6 +33,6 @@ test("T6.21 keeps Production audit independent and fail-closed",()=>{
   assert.match(pkg.scripts["security:prod"],/npm audit --omit=dev --audit-level=high/);
   assert.match(pkg.scripts["security:dev-baseline"],/t6-21-dev-toolchain-audit/);
   const doc=read("docs/t6-21-dev-toolchain-hardening.md");
-  assert.match(doc,/Production dependency audit remains 0 vulnerabilities/);
+  assert.match(doc,/Production dependency audit remains \*\*0 vulnerabilities\*\*/);
   assert.match(doc,/Production\/main remain untouched/);
 });
