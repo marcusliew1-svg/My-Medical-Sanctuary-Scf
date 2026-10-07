@@ -74,8 +74,8 @@ export function mapAdministrativeLeadToZoho(
   };
   return Object.fromEntries(
     Object.entries(values)
-      .filter(([, fieldValue]) => fieldValue !== undefined)
-      .map(([canonical, fieldValue]) => [fields[canonical as keyof ZohoCommercialFieldMapping], fieldValue]),
+      .map(([canonical, fieldValue]) => [fields[canonical as keyof ZohoCommercialFieldMapping], fieldValue] as const)
+      .filter(([fieldApiName, fieldValue]) => Boolean(fieldApiName) && fieldValue !== undefined),
   );
 }
 
@@ -131,9 +131,8 @@ export class CrmZohoAdapter {
         return { crmLeadId: duplicateId, action: "updated", idempotencyKey };
       }
 
-      const createdId = await this.retry(() => transport.create(moduleName, record, [
-        fieldMapping.idempotencyKey, fieldMapping.email, fieldMapping.mobile,
-      ]));
+      const duplicateCheckFields = [fieldMapping.email, fieldMapping.mobile].filter((field): field is string => Boolean(field));
+      const createdId = await this.retry(() => transport.create(moduleName, record, duplicateCheckFields));
       store.record(idempotencyKey, createdId);
       this.log({ event: "lead_created", idempotencyKey, crmLeadId: createdId, outcome: "success" });
       return { crmLeadId: createdId, action: "created", idempotencyKey };
