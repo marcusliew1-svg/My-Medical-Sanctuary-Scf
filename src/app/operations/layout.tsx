@@ -14,6 +14,7 @@ const nav = [
   { href: "/operations/memberships", label: "Memberships" },
   { href: "/operations/commissions", label: "Commissions" },
   { href: "/operations/crm", label: "Clinic Manager" },
+  { href: "/operations/governance", label: "Governance" },
 ];
 
 export default function OperationsLayout({ children }: { children: ReactNode }) {
