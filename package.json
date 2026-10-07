@@ -50,7 +50,8 @@
     "test:t6-20": "node --test tests/t6-20-dependency-security-hardening.test.mjs",
     "security:dev-baseline": "node scripts/t6-21-dev-toolchain-audit.mjs",
     "test:t6-21": "node --test tests/t6-21-dev-toolchain-hardening.test.mjs",
-    "test:t6-22": "node --test tests/t6-22-operational-resilience.test.mjs"
+    "test:t6-22": "node --test tests/t6-22-operational-resilience.test.mjs",
+    "test:t6-23": "node --test tests/t6-23-incident-reliability-controls.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
