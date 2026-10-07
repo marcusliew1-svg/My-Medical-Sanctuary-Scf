@@ -1,6 +1,6 @@
 # T6.25 — Data Retention, Privacy Lifecycle & Records Disposal Controls
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED / RETENTION PERIODS STILL UNAPPROVED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -46,3 +46,27 @@ The existing public privacy page already identifies approved retention periods a
 - Vercel Preview READY;
 - Production/main remain untouched;
 - no clinical activation.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- T6.25 privacy-retention regression tests: PASS;
+- Production dependency audit: PASS;
+- dev/build security baseline: PASS;
+- prior security/governance/observability/incident/continuity suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Privacy boundaries remain intact:
+- every actual retention period remains **UNAPPROVED**;
+- legal hold overrides disposal;
+- disposal fails closed if hold state is not confirmed clear;
+- no Production purge/TTL/deletion automation is configured;
+- no privacy officer/controller identity is fabricated;
+- no clinical-record retention/destruction period is approved;
+- Production/main remain untouched;
+- no clinical capability is activated.
