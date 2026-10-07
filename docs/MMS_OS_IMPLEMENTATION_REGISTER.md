@@ -554,3 +554,33 @@ Remaining operational dependencies:
 - exception expiry/review operating process;
 - formal retrospective review for emergency exceptions;
 - external legal/regulatory/privacy/security/clinical requirements remain non-waivable unless the competent authority permits otherwise.
+
+
+## T6.35 records-integrity/evidence-lineage checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- immutable `mms_governance.evidence_artifacts` register added;
+- artifact metadata includes evidence type, governed subject, source system/reference, storage location, SHA-256 digest, capture role/time, optional verifier role/time/method and confidentiality;
+- evidence artifact UPDATE/DELETE is rejected by immutable-governance trigger;
+- SHA-256 digest must be lowercase 64-character hexadecimal;
+- immutable `governance_audit_events` can optionally link to an immutable evidence artifact by foreign key;
+- corrections/superseding evidence must be appended as new artifacts rather than overwriting history;
+- digest semantics documented as byte-level integrity only, not truth/authorship/legal/regulatory proof;
+- protected internal evidence-integrity policy endpoint added;
+- working-draft Records Integrity, Evidence Lineage & Tamper-Evidence Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 025: PASS / rollback confirmed;
+- retained synthetic evidence artifacts: 0;
+- T6.35 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- approved evidence storage location(s) and retention;
+- real capture/verification roles;
+- actual artifact-generation workflow;
+- digital signing / trusted timestamping only if separately selected and approved;
+- legal/regulatory admissibility or authenticity conclusions require appropriate external authority;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.
