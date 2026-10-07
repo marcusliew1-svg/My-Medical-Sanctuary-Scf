@@ -52,9 +52,6 @@ export default function HomePage() {
 
       <LingHealthPreview />
 
-
-
-
       <MembershipDepth />
 
       <SanctuaryExperience />
