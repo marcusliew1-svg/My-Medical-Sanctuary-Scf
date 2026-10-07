@@ -1,6 +1,6 @@
 # T6.35 — Records Integrity, Evidence Lineage & Tamper-Evidence Controls
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -58,3 +58,31 @@ T6.35 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 025: PASS / rolled back;
+- retained synthetic evidence artifacts: **0**;
+- immutable UPDATE rejection: PASS;
+- immutable DELETE rejection: PASS;
+- T6.35 evidence-integrity tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Evidence-integrity boundaries remain intact:
+- no evidence artifact was claimed to be digitally signed;
+- no external timestamp authority was configured;
+- no legal admissibility or regulatory authenticity claim was made;
+- no Production evidence was migrated;
+- no patient/clinical payload was introduced into governance metadata;
+- Production/main remain untouched;
+- no clinical capability was activated.
