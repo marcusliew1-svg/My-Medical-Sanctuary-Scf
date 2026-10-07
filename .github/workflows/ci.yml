@@ -117,6 +117,9 @@ jobs:
       - name: T6.35 evidence integrity lineage tests
         run: npm run test:t6-35
 
+      - name: T6.36 metrics control performance tests
+        run: npm run test:t6-36
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
