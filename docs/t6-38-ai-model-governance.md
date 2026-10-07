@@ -1,6 +1,6 @@
 # T6.38 — AI/Model Governance, Human Oversight & Validation
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -60,4 +60,36 @@ T6.38 does **not**:
 - dev/build baseline remains bounded;
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
+- Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 028: PASS / rolled back;
+- retained synthetic AI use cases: **0**;
+- retained synthetic AI validation rows: **0**;
+- ACTIVE transition without required evidence rejected: PASS;
+- immutable validation mutation rejection: PASS;
+- existing AI-OPS-001 and AI-LING-001 remain REVIEW;
+- no provider/model/version/approval populated for either real Preview AI use case;
+- T6.38 AI/model-governance tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+AI-governance boundaries remain intact:
+- no AI use case was activated;
+- no provider/model was approved;
+- no clinical AI was approved;
+- no autonomous decisioning was enabled;
+- no authoritative-system mutation was enabled;
+- no Production AI capability was enabled;
+- existing AI Operations and Ling safety/refusal controls remain unchanged;
 - Production/main remain untouched.
