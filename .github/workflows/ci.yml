@@ -84,6 +84,9 @@ jobs:
       - name: T6.24 backup recovery continuity tests
         run: npm run test:t6-24
 
+      - name: T6.25 data retention privacy lifecycle tests
+        run: npm run test:t6-25
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
