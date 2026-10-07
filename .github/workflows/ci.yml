@@ -90,6 +90,9 @@ jobs:
       - name: T6.26 access governance and segregation tests
         run: npm run test:t6-26
 
+      - name: T6.27 change release governance tests
+        run: npm run test:t6-27
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
