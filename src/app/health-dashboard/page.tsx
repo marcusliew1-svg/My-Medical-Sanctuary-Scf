@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel } from "@/components/Editorial";
 
 export const metadata: Metadata = {
-  title: "Health Dashboard | My Medical Sanctuary",
+  title: "Health Dashboard",
   description:
     "See how MMS organises baselines, trends, health categories and follow-up into a clearer longitudinal health view.",
 };
