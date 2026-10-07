@@ -39,10 +39,7 @@ export function MobileNav() {
         <div id="mms-mobile-navigation" className="absolute inset-x-3 top-[4.8rem] max-h-[calc(100vh-6rem)] overflow-y-auto rounded-[1.75rem] border border-white/12 bg-[#07151d]/[0.985] text-white shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
           <div className="border-b border-white/10 px-5 py-5">
             <p className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-light">My Medical Sanctuary</p>
-            <p className="mt-2 max-w-xs font-serif text-2xl leading-tight">Know earlier. Live better.</p>
-            <div className="mt-3 flex flex-wrap gap-2 text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-ivory/50">
-              <span>Physician-led</span><span>•</span><span>Evidence-aware</span><span>•</span><span>Ling-guided</span>
-            </div>
+            <p className="mt-2 max-w-xs font-serif text-2xl leading-tight">Know earlier. Act sooner. Live fuller.</p>
           </div>
 
           <nav aria-label="Mobile navigation" className="grid px-3 py-3">
@@ -65,14 +62,14 @@ export function MobileNav() {
               onClick={() => setOpen(false)}
               className="rounded-full bg-gold px-4 py-3.5 text-center text-sm font-semibold text-navy"
             >
-              Start my health assessment
+              Start Health Discovery
             </Link>
             <Link
               href="/ling"
               onClick={() => setOpen(false)}
               className="rounded-full border border-white/15 bg-white/[0.05] px-4 py-3.5 text-center text-sm font-semibold text-white"
             >
-              Meet Ling
+              Ask Ling
             </Link>
           </div>
         </div>
