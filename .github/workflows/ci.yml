@@ -81,6 +81,9 @@ jobs:
       - name: T6.23 incident reliability tests
         run: npm run test:t6-23
 
+      - name: T6.24 backup recovery continuity tests
+        run: npm run test:t6-24
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
