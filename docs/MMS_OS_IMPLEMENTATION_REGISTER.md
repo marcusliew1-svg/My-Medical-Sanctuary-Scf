@@ -171,3 +171,24 @@ Residual:
 - no patched `braces` release is currently available to that dependency chain in the tested package graph;
 - residual remains visible and bounded; it is not treated as Production-runtime exposure;
 - Production/main remain untouched.
+
+
+## T6.22 operational resilience/observability checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- minimal non-secret public liveness endpoint at `/api/status`;
+- protected aggregate readiness endpoint at `/api/internal/operations/readiness`;
+- existing internal bearer-token control retained for detailed readiness;
+- commercial database structural readiness aggregated without exposing connection details;
+- Zoho readiness exposed only as configured/blocked plus blocker count;
+- feature configuration visibility available only on the protected readiness surface;
+- bounded `X-Request-Id` correlation added;
+- structured JSON operational logging added with automatic sensitive-key redaction;
+- T6.22 regression suite and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit: 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Next operational dependency:
+- external alert routing / log-drain provider selection remains a separate infrastructure decision; T6.22 does not fabricate or silently configure a monitoring vendor.
