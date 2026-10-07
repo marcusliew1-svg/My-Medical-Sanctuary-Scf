@@ -328,3 +328,37 @@ Remaining operational dependencies:
 - tested Production rollback/failover evidence;
 - formal emergency-change retrospective process;
 - Production release remains a separate explicit authorization.
+
+
+## T6.28 third-party/vendor-risk checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- generic `mms_governance.third_party_assessments` register added for technology, cloud, SaaS, CRM, payments, data processors, AI providers, clinical suppliers, diagnostic partners and professional services;
+- LOW, MODERATE, HIGH and CRITICAL risk tiers defined;
+- NONE, BUSINESS, PERSONAL, SENSITIVE and CLINICAL data-access classes defined;
+- APPROVED/CONDITIONAL status requires due-diligence reference, approval reference and assessment timestamp;
+- CRITICAL approval additionally requires continuity evidence and exit plan;
+- SENSITIVE/CLINICAL approval additionally requires privacy/data-processing terms evidence;
+- forced RLS enabled and direct public/anon/authenticated grants revoked;
+- existing `suppliers` and `diagnostic_partners` registers remain domain-specific and unchanged;
+- protected internal third-party-risk policy endpoint added;
+- working-draft Third-Party Risk, Supplier Assurance & Dependency Governance Runbook added;
+- Preview migration: PASS;
+- transactional QA 019: PASS / rollback confirmed;
+- retained third-party rows after QA: 0;
+- T6.28 and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no named vendor or clinical service activated.
+
+Remaining operational dependencies:
+- named third-party owners and assessors;
+- real due-diligence evidence for each material vendor;
+- approved contracts/privacy terms where applicable;
+- verified security/quality/regulatory evidence;
+- subprocessor/dependency registers where applicable;
+- continuity and exit evidence for critical vendors;
+- periodic reassessment schedule and accountable owner;
+- dedicated MMS Zoho tenant remains unresolved;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.
