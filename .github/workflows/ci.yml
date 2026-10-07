@@ -75,6 +75,9 @@ jobs:
       - name: T6.21 dev toolchain hardening tests
         run: npm run test:t6-21
 
+      - name: T6.22 operational resilience tests
+        run: npm run test:t6-22
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
