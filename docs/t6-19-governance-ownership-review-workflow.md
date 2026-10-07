@@ -1,6 +1,6 @@
 # T6.19 — Governance Ownership & Controlled Document Review Workflow
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PREVIEW DATABASE VALIDATED / APPLICATION BUILD PENDING  
 **Scope:** Preview only. Production/main remain untouched.
 
 ## Objective
@@ -48,3 +48,21 @@ Required before T6.19 is considered Preview-complete:
 ## Production boundary
 
 This phase grants no Production authority, changes no Production gate, activates no clinical service and does not itself approve any governance document.
+
+
+## Preview database validation — 2026-10-07
+
+Migration `mms_governance_document_review_workflow` was applied successfully to the dedicated MMS Preview branch `mms-preview-auth` / `tfwnlmmdrkkfrtmawpma`.
+
+Post-migration state:
+- governance documents: **32**
+- `WORKING_DRAFT`: **32**
+- `REVIEW`: **0**
+- `APPROVED` / `EFFECTIVE`: **0**
+- rows with fabricated named owner/reviewer/approver identities: **0**
+
+The migration therefore changed the control structure without manufacturing governance evidence or changing any existing document status.
+
+Supabase security advisor continues to report RLS-enabled/no-policy informational findings on the governance schema. This is the existing intentional fail-closed design: direct public/anon/authenticated grants remain revoked. The existing leaked-password-protection Auth warning also remains outstanding and is not introduced by T6.19.
+
+Performance advisor reports the two new ownership/reviewer indexes as unused, which is expected immediately after creation and before live operator workflow traffic.
