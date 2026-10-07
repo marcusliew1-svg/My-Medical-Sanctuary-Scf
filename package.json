@@ -44,7 +44,8 @@
     "test:t6-15": "node --test tests/t6-15-operator-zoho-live-preview-closure.test.mjs",
     "test:t6-16": "node --test tests/t6-16-mms-os-governance-foundation.test.mjs",
     "test:t6-17": "node --test tests/t6-17-mms-os-console.test.mjs",
-    "test:t6-18": "node --test tests/t6-18-operational-closure.test.mjs"
+    "test:t6-18": "node --test tests/t6-18-operational-closure.test.mjs",
+    "test:t6-19": "node --test tests/t6-19-governance-review-workflow.test.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
