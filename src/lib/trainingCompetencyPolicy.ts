@@ -7,7 +7,7 @@ export type TrainingStatus =
   | "EXPIRED"
   | "SUSPENDED";
 
-export const trainingLifecycle = Object.freeze({
+export const trainingLifecycle: Readonly<Record<TrainingStatus, readonly TrainingStatus[]>> = Object.freeze({
   NOT_STARTED: ["IN_PROGRESS"],
   IN_PROGRESS: ["SUPERVISED_PRACTICE", "COMPETENT", "COMPETENT_WITH_CONDITIONS", "SUSPENDED"],
   SUPERVISED_PRACTICE: ["COMPETENT", "COMPETENT_WITH_CONDITIONS", "SUSPENDED"],
@@ -15,7 +15,7 @@ export const trainingLifecycle = Object.freeze({
   COMPETENT_WITH_CONDITIONS: ["IN_PROGRESS", "EXPIRED", "SUSPENDED"],
   EXPIRED: ["IN_PROGRESS"],
   SUSPENDED: ["IN_PROGRESS"],
-} satisfies Record<TrainingStatus, readonly TrainingStatus[]>);
+});
 
 export const competencyEvidenceChecklist = Object.freeze([
   "Subject identity and role are uniquely identified.",
