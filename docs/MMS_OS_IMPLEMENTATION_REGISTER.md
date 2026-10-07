@@ -245,3 +245,31 @@ Evidence still required before any operational backup/recovery claim:
 - named accountable continuity owners;
 - approved disaster-declaration/failover authority;
 - external DR provider evidence if one is selected.
+
+
+## T6.25 data-retention/privacy-lifecycle checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- six retention classes defined: TRANSIENT, OPERATIONAL, GOVERNANCE, FINANCIAL, IDENTITY_ACCESS, CLINICAL_RESTRICTED;
+- all actual retention periods explicitly remain UNAPPROVED;
+- privacy lifecycle states defined from COLLECTED through DISPOSED;
+- legal-hold rules added and override ordinary disposal;
+- disposal eligibility fails closed unless retention authority is approved, legal hold is confirmed clear, authority evidence exists, linked records are reviewed, and disposal method is specified;
+- data-minimisation rules added;
+- protected internal privacy-retention policy endpoint added;
+- working-draft Data Retention, Privacy Lifecycle & Records Disposal Runbook added;
+- T6.25 and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Evidence/approval still required:
+- verified controller/legal entity and privacy contact;
+- jurisdiction-specific retention periods;
+- legal/privacy approval of retention schedule;
+- named accountable privacy/records owner;
+- approved legal-hold authority/release process;
+- tested disposal/anonymisation procedures;
+- approved clinical-record retention/destruction policy if clinical systems are activated;
+- Production automation approval before any purge/TTL/deletion job is enabled.
