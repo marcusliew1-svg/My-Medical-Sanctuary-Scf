@@ -32,25 +32,54 @@ export default function PreventiveHealthPage() {
         imagePosition="58% center"
       />
 
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+      <section className="relative overflow-hidden bg-ivory px-4 py-20 md:py-28">
+        <div className="pointer-events-none absolute -right-24 top-10 h-80 w-80 rounded-full border border-gold/15" />
+        <div className="pointer-events-none absolute -left-28 bottom-0 h-72 w-72 rounded-full border border-deep-green/10" />
+
+        <div className="relative mx-auto max-w-7xl">
+          <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
             <div>
               <p className="editorial-kicker mb-5 text-deep-green">Silent change</p>
               <h2 className="text-balance font-serif text-5xl leading-[1.02] text-navy md:text-7xl">
                 Feeling well is valuable. It is not the same as knowing your risk.
               </h2>
               <p className="mt-6 text-lg leading-8 text-warm-gray">
-                Some risk factors and health changes can develop before symptoms appear. The purpose of preventive care is to decide what deserves measurement, what needs context and what should simply be monitored.
+                Some risk factors and health changes can develop before symptoms appear. Preventive care is about deciding what deserves measurement, what needs context and what should simply be monitored.
               </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {quietChanges.map(([title, text]) => (
-                <div key={title} className="rounded-[1.4rem] border border-gold/20 bg-white/70 p-5 shadow-[0_18px_50px_rgba(11,26,46,0.05)]">
-                  <h3 className="font-serif text-2xl text-navy">{title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-warm-gray">{text}</p>
+
+            <div className="relative min-h-[620px] rounded-[2rem] border border-gold/20 bg-white/65 p-5 shadow-[0_30px_90px_rgba(11,26,46,0.08)] md:p-8">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(197,164,101,0.11),transparent_34%)]" />
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/12" />
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/18" />
+
+              <div className="absolute left-1/2 top-1/2 z-10 grid h-44 w-44 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-gold/35 bg-[#fbf8f1] text-center shadow-[0_22px_60px_rgba(11,26,46,0.10)]">
+                <div className="px-5">
+                  <svg viewBox="0 0 48 48" className="mx-auto h-8 w-8 text-gold" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M24 8v32M8 24h32" />
+                    <circle cx="24" cy="24" r="14" />
+                  </svg>
+                  <p className="mt-3 font-serif text-2xl leading-tight text-navy">Preventive context</p>
+                  <p className="mt-2 text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-deep-green/55">Signals before symptoms</p>
                 </div>
-              ))}
+              </div>
+
+              <div className="relative z-20 grid h-full grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
+                {quietChanges.map(([title, text], index) => (
+                  <article
+                    key={title}
+                    className={`self-start rounded-[1.35rem] border border-gold/18 bg-[#fffdf8]/92 p-4 shadow-[0_16px_44px_rgba(11,26,46,0.06)] backdrop-blur-sm md:p-5 ${index === 1 || index === 4 ? "md:translate-y-20" : ""}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-8 w-8 place-items-center rounded-full border border-gold/25 bg-[#f8f1e4] text-[0.56rem] font-semibold text-deep-green">
+                        0{index + 1}
+                      </span>
+                      <h3 className="font-serif text-xl leading-tight text-navy">{title}</h3>
+                    </div>
+                    <p className="mt-3 text-xs leading-5 text-warm-gray">{text}</p>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </div>
