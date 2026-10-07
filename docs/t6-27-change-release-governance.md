@@ -1,6 +1,6 @@
 # T6.27 — Change Management, Release Governance & Rollback Controls
 
-**Status:** IMPLEMENTED IN CODE / PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -42,3 +42,26 @@ T6.27 does **not** authorize or perform a Production deployment, change branch p
 - TypeScript/lint/build PASS;
 - Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- T6.27 release-governance tests: PASS;
+- Production dependency audit: PASS;
+- dev/build security baseline: PASS;
+- all prior governance/reliability/access suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Release boundaries remain intact:
+- Preview validation does not grant Production authority;
+- exact commit SHA, rollback plan and post-deploy verification plan are required;
+- Production requires an explicit approval reference;
+- no Production deployment was performed;
+- no branch protection or Production feature gate was changed;
+- no change approver was fabricated;
+- no clinical capability was activated.
