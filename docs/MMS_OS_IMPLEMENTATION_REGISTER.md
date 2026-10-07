@@ -459,3 +459,36 @@ Remaining operational dependencies:
 - regulator notification authority and evidence;
 - anonymous hotline/channel only if separately selected and approved;
 - staff training and non-retaliation operating procedure.
+
+
+## T6.32 regulatory-obligations/compliance-calendar checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.regulatory_obligations` register added;
+- obligation types cover licence, registration, filing, reporting, notification, renewal, attestation, recordkeeping, inspection and other;
+- lifecycle supports DRAFT, UNDER_REVIEW, ACTIVE, NOT_APPLICABLE, SUSPENDED and RETIRED;
+- recurrence model supports event-driven, one-time, monthly, quarterly, semi-annual, annual and custom obligations;
+- ACTIVE status requires authoritative source reference, accountable owner role, approval reference and applicability rationale;
+- completed obligations require completion evidence;
+- NOT_APPLICABLE requires documented applicability rationale;
+- due-soon / overdue / blocked / escalated state model added;
+- protected internal regulatory-obligations policy endpoint added;
+- working-draft Regulatory Obligations & Compliance Calendar Runbook added;
+- Preview migration: PASS;
+- transactional QA 022: PASS / rollback confirmed;
+- retained synthetic obligation rows: 0;
+- T6.32 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- authoritative jurisdiction-by-jurisdiction legal/regulatory source review;
+- verified MMS legal entity/facility/service applicability;
+- named obligation owners and approvers;
+- actual licence/registration/filing/reporting evidence;
+- approved due-date and recurrence records from primary sources;
+- reminder/escalation operating process;
+- Production automation approval before any calendar/reminder job is enabled;
+- external legal/privacy/Medical Director/regulatory/licensing/insurance approvals remain separate blockers.

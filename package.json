@@ -59,7 +59,8 @@
     "test:t6-28": "node --test tests/t6-28-third-party-vendor-risk.test.mjs",
     "test:t6-29": "node --test tests/t6-29-audit-control-assurance.test.mjs",
     "test:t6-30": "node --test tests/t6-30-training-competency-attestation.test.mjs",
-    "test:t6-31": "node --test tests/t6-31-complaints-speakup-governance.test.mjs"
+    "test:t6-31": "node --test tests/t6-31-complaints-speakup-governance.test.mjs",
+    "test:t6-32": "node --test tests/t6-32-regulatory-obligations.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",

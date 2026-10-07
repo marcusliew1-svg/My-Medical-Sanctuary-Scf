@@ -105,6 +105,9 @@ jobs:
       - name: T6.31 complaints speak-up governance tests
         run: npm run test:t6-31
 
+      - name: T6.32 regulatory obligations governance tests
+        run: npm run test:t6-32
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
