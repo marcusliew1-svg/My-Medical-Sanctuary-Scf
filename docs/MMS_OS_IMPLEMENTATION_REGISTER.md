@@ -192,3 +192,29 @@ Implemented and validated in Preview/integration:
 
 Next operational dependency:
 - external alert routing / log-drain provider selection remains a separate infrastructure decision; T6.22 does not fabricate or silently configure a monitoring vendor.
+
+
+## T6.23 incident/reliability checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- incident severity policy for P1, P2, P3, P4 and CLINICAL_SAFETY;
+- acknowledgement and containment targets by severity;
+- explicit lifecycle controls from OPEN through CLOSED;
+- closure requires documented root cause;
+- P1/P2/CLINICAL_SAFETY closure requires external-reporting assessment;
+- fail-closed degraded-service actions documented;
+- recovery verification criteria documented;
+- machine-readable runbook catalogue added;
+- protected internal incident-policy endpoint added;
+- working-draft human incident response runbook added;
+- existing `mms_governance.incidents` schema reused; no new database migration required;
+- T6.23 and full CI: PASS;
+- Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- named incident responders/on-call roster require management assignment;
+- external alert-routing/log-drain/paging provider requires separate infrastructure approval;
+- statutory privacy/regulatory/clinical reporting decisions remain with the appropriate human authority.
