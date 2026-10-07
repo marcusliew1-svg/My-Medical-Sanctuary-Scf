@@ -57,23 +57,47 @@ export default function LingPage() {
         spokespersonMessage="You can start with me. I’ll help you make sense of the journey, organise your questions and show you when your MMS doctor needs to take over."
       />
 
-      <section className="bg-ivory px-4 py-20 md:py-28">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-          <div>
-            <p className="editorial-kicker mb-4 text-deep-green">What brings you here?</p>
-            <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-              Start with the question, not the programme.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-warm-gray">
-              Ling is best for orientation. Personal medical advice belongs with an MMS doctor.
-            </p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {lingOptions.slice(0, 6).map((option) => (
-              <div key={option} className="rounded-[1rem] border border-gold-light/45 bg-white/80 p-5 text-lg text-charcoal shadow-[0_18px_44px_rgba(11,26,46,0.06)]">
-                {option}
+      <section className="relative overflow-hidden bg-ivory px-4 py-20 md:py-28">
+        <div className="relative mx-auto max-w-6xl">
+          <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
+            <div>
+              <p className="editorial-kicker mb-4 text-deep-green">What brings you here?</p>
+              <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
+                Start with the question, not the programme.
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-warm-gray">
+                Ling is best for orientation. Personal medical advice belongs with an MMS doctor.
+              </p>
+            </div>
+
+            <div className="relative rounded-[2rem] border border-gold/20 bg-white/72 p-5 shadow-[0_28px_80px_rgba(11,26,46,0.08)] md:p-7">
+              <div className="pointer-events-none absolute left-[11%] right-[11%] top-12 hidden h-px bg-gradient-to-r from-transparent via-gold/45 to-transparent sm:block" />
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  ["01", "Ask", "Tell Ling what you want to understand."],
+                  ["02", "Organise", "Ling helps frame the question and useful context."],
+                  ["03", "Escalate", "Doctor-led care begins when clinical judgement is needed."],
+                ].map(([number, title, text]) => (
+                  <article key={title} className="relative rounded-[1.4rem] border border-gold/18 bg-[#fffdf8] p-5 text-center">
+                    <span className="mx-auto grid h-10 w-10 place-items-center rounded-full border border-gold/30 bg-[#f8f1e4] text-[0.58rem] font-semibold tracking-[0.12em] text-deep-green">
+                      {number}
+                    </span>
+                    <h3 className="mt-4 font-serif text-2xl text-navy">{title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-warm-gray">{text}</p>
+                  </article>
+                ))}
               </div>
-            ))}
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {lingOptions.slice(0, 6).map((option) => (
+                  <div key={option} className="flex items-center gap-3 rounded-[1rem] border border-gold-light/30 bg-[#fbf8f2] p-4 text-sm text-charcoal">
+                    <span className="h-2 w-2 shrink-0 rounded-full bg-gold" />
+                    {option}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
