@@ -78,6 +78,9 @@ jobs:
       - name: T6.22 operational resilience tests
         run: npm run test:t6-22
 
+      - name: T6.23 incident reliability tests
+        run: npm run test:t6-23
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
