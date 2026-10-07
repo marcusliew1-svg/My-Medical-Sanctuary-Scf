@@ -93,6 +93,9 @@ jobs:
       - name: T6.27 change release governance tests
         run: npm run test:t6-27
 
+      - name: T6.28 third-party vendor risk tests
+        run: npm run test:t6-28
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
