@@ -35,7 +35,12 @@ function mapRow(row: GovernanceRow): GovernanceRow {
 }
 
 export function governanceConsoleEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  return env.MMS_GOVERNANCE_CONSOLE_ENABLED?.trim().toLowerCase() === "true";
+  const explicit = env.MMS_GOVERNANCE_CONSOLE_ENABLED?.trim().toLowerCase();
+  if (env.VERCEL_ENV === "production") {
+    return explicit === "true" && env.MMS_GOVERNANCE_CONSOLE_PRODUCTION_APPROVED?.trim().toLowerCase() === "true";
+  }
+  if (explicit === "false") return false;
+  return true;
 }
 
 export async function governanceSnapshot() {
