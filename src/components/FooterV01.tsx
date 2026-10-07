@@ -30,7 +30,7 @@ export function FooterV01() {
             </div>
 
             <h2 className="mt-9 max-w-3xl text-balance font-serif text-4xl leading-tight md:text-6xl">
-              Know earlier. Live better.
+              Know earlier. Act sooner. Live fuller.
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-ivory/60">
               Preventive care, personalised longevity and physician-led health intelligence—designed as one continuous relationship.
@@ -41,7 +41,7 @@ export function FooterV01() {
                 href="/health-discovery"
                 className="rounded-full bg-gold px-5 py-3 text-sm font-semibold text-navy transition hover:-translate-y-0.5 hover:bg-gold-light"
               >
-                Start my health assessment
+                Start Health Discovery
               </Link>
               <Link
                 href="/ling"
