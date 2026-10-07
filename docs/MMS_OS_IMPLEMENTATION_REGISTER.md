@@ -584,3 +584,37 @@ Remaining operational dependencies:
 - digital signing / trusted timestamping only if separately selected and approved;
 - legal/regulatory admissibility or authenticity conclusions require appropriate external authority;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.36 metrics/KPI-KRI/control-performance checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.metric_definitions` register added;
+- metric types support KPI, KRI, control effectiveness, SLA, SLO, quality, compliance and other indicators;
+- metric definition requires stable calculation method, source system, unit, direction, frequency and accountable owner role;
+- non-informational APPROVED/ACTIVE metrics require explicit GREEN/AMBER/RED threshold definitions and approval evidence;
+- `mms_governance.metric_observations` append-only register added;
+- assessed GREEN/AMBER/RED observations require immutable evidence-artifact linkage;
+- corrections/restatements require new observations rather than overwriting history;
+- existing operations/dashboard counters remain operational indicators and are not silently promoted to approved KPIs;
+- protected internal metric-governance policy endpoint added;
+- working-draft Metrics, KPI/KRI & Control-Performance Monitoring Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 026: PASS / rollback confirmed;
+- retained synthetic metric definitions: 0;
+- retained synthetic metric observations: 0;
+- T6.36 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- approved KPI/KRI catalogue and ownership;
+- real calculation definitions and source-system lineage;
+- approved traffic-light thresholds;
+- data-quality controls and reconciliation;
+- actual observation/evidence-generation process;
+- management review of material trends;
+- Production metric collection, scheduling and alerting require separate authorization;
+- metric status does not replace control testing, legal/regulatory review, clinical approval or Production-release authority.
