@@ -1,6 +1,6 @@
 # T6.32 — Regulatory Obligations, Compliance Calendar & Evidence Tracking
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -55,3 +55,29 @@ T6.32 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview migration `mms_regulatory_obligations`: PASS;
+- transactional QA 022: PASS / rolled back;
+- retained synthetic obligation rows: **0**;
+- T6.32 regulatory-obligations tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Regulatory-evidence boundaries remain intact:
+- no jurisdiction-specific statutory obligation was seeded or asserted;
+- no licence was marked verified;
+- no statutory deadline was invented;
+- no regulator filing/report was marked completed;
+- no Production reminder/calendar automation was configured;
+- Production/main remain untouched;
+- no clinical capability was activated.
