@@ -756,3 +756,39 @@ Remaining operational dependencies:
 - Production intake channel and secure response-delivery process;
 - deletion/export/correction automation requires separate explicit authorization;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.41 consent/authorization/withdrawal checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.consent_authorizations` register added;
+- consent categories include treatment, data processing, marketing, communications, research, image/media, third-party sharing and other;
+- exact consent document reference/version and explicit scope are mandatory metadata;
+- ACTIVE requires capture method, capture role, grant timestamp and immutable evidence;
+- WITHDRAWN requires withdrawal reference, timestamp and effective scope;
+- REVOKED requires revocation reference and timestamp;
+- material consent lifecycle events require immutable evidence linkage;
+- immutable `mms_governance.consent_events` history preserves grant/withdrawal/revocation evidence;
+- withdrawal does not automatically erase history or override T6.25 retention/legal-hold controls;
+- service/enquiry/appointment/payment/CRM presence is not treated as treatment consent;
+- consent is not asserted as the universal legal basis for privacy/clinical/operational activity;
+- protected internal consent-governance policy endpoint added;
+- working-draft Consent, Authorization & Withdrawal Governance Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 031: PASS / rollback confirmed;
+- retained synthetic consent authorizations: 0;
+- T6.41 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- approved jurisdiction-specific consent forms and versions;
+- clinical/Medical Director review for treatment consent;
+- approved capture/identity/signature process;
+- real withdrawal propagation procedure;
+- consent-to-system mapping by purpose;
+- retention/legal-hold handling on withdrawal;
+- Production e-signature/preference-centre/capture integrations require separate explicit authorization;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.

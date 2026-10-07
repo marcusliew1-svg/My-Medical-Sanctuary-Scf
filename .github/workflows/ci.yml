@@ -132,6 +132,9 @@ jobs:
       - name: T6.40 privacy rights request tests
         run: npm run test:t6-40
 
+      - name: T6.41 consent authorization withdrawal tests
+        run: npm run test:t6-41
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
