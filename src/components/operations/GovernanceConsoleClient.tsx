@@ -101,6 +101,11 @@ export default function GovernanceConsoleClient() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [status, setStatus] = useState("Loading governance state…");
   const [tab, setTab] = useState<Tab>("overview");
+  const [actionType, setActionType] = useState<"risk" | "control" | "capability" | "document" | "service">("risk");
+  const [actionKey, setActionKey] = useState("");
+  const [actionState, setActionState] = useState("");
+  const [actionReason, setActionReason] = useState("");
+  const [actionMessage, setActionMessage] = useState("");
 
   const load = useCallback(async () => {
     setStatus("Loading governance state…");
@@ -125,6 +130,52 @@ export default function GovernanceConsoleClient() {
       residual_score: Number(risk.residual_likelihood || 0) * Number(risk.residual_impact || 0),
     }));
   }, [snapshot]);
+
+  const actionOptions = useMemo(() => {
+    if (actionType === "risk") return ["OPEN","MITIGATING","ACCEPTED","CLOSED"];
+    if (actionType === "control") return ["EFFECTIVE","NEEDS_IMPROVEMENT","INEFFECTIVE","NOT_TESTED"];
+    if (actionType === "capability") return ["RED","AMBER","GREEN","SUSPENDED"];
+    if (actionType === "document") return ["WORKING_DRAFT","REVIEW","APPROVED","EFFECTIVE","SUPERSEDED","RETIRED"];
+    return ["PROPOSED","CLINICAL_REVIEW","REGULATORY_REVIEW","OPERATIONAL_REVIEW","APPROVED","SUSPENDED","RETIRED"];
+  }, [actionType]);
+
+  const recordKeys = useMemo(() => {
+    if (!snapshot) return [];
+    if (actionType === "risk") return snapshot.risks.map((row) => String(row.risk_id));
+    if (actionType === "control") return snapshot.controls.map((row) => String(row.control_id));
+    if (actionType === "capability") return snapshot.capabilities.map((row) => String(row.capability_key));
+    if (actionType === "document") return snapshot.documents.map((row) => String(row.document_id));
+    return snapshot.services.map((row) => String(row.service_id));
+  }, [actionType, snapshot]);
+
+  async function submitQuickAction() {
+    if (!actionKey || !actionState || !actionReason.trim()) {
+      setActionMessage("Select a record and state, and enter a reason.");
+      return;
+    }
+    const body: Record<string, unknown> = { type: actionType, key: actionKey, reason: actionReason.trim() };
+    if (actionType === "risk") body.status = actionState;
+    if (actionType === "control") body.effectiveness = actionState;
+    if (actionType === "capability") body.readiness = actionState;
+    if (actionType === "document") body.status = actionState;
+    if (actionType === "service") body.clinicalStatus = actionState;
+
+    setActionMessage("Submitting…");
+    try {
+      const response = await fetch("/api/operations/governance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const payload = await response.json();
+      if (!response.ok || payload.status !== "ok") throw new Error(payload.message || "Governance update failed.");
+      setActionMessage("Recorded with governance audit evidence.");
+      setActionReason("");
+      await load();
+    } catch (error) {
+      setActionMessage(error instanceof Error ? error.message : "Governance update failed.");
+    }
+  }
 
   if (!snapshot) {
     return <div className="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-600">{status}</div>;
@@ -211,6 +262,36 @@ export default function GovernanceConsoleClient() {
         { key: "clinical_governance_required", label: "Clinical governance" }, { key: "privacy_review_required", label: "Privacy review" },
         { key: "status", label: "Status", badge: true },
       ]} /> : null}
+
+      <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold">Controlled quick action</h2>
+          <p className="text-sm text-slate-600">Requires a recent operator step-up. Production gate activation and clinical-service activation are deliberately unavailable here.</p>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-4">
+          <select value={actionType} onChange={(event) => { setActionType(event.target.value as typeof actionType); setActionKey(""); setActionState(""); setActionMessage(""); }} className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+            <option value="risk">Risk</option>
+            <option value="control">Control effectiveness</option>
+            <option value="capability">Launch readiness</option>
+            <option value="document">Document status</option>
+            <option value="service">Clinical service review state</option>
+          </select>
+          <select value={actionKey} onChange={(event) => setActionKey(event.target.value)} className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+            <option value="">Select record</option>
+            {recordKeys.map((key) => <option key={key} value={key}>{key}</option>)}
+          </select>
+          <select value={actionState} onChange={(event) => setActionState(event.target.value)} className="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+            <option value="">Select new state</option>
+            {actionOptions.map((value) => <option key={value} value={value}>{value}</option>)}
+          </select>
+          <input value={actionReason} onChange={(event) => setActionReason(event.target.value)} placeholder="Reason / evidence reference" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button onClick={() => void submitQuickAction()} className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Record action</button>
+          <a href="/operations/step-up" className="text-sm font-medium text-slate-600 underline decoration-slate-300 underline-offset-4">Step-up authentication</a>
+          {actionMessage ? <span className="text-sm text-slate-600">{actionMessage}</span> : null}
+        </div>
+      </div>
     </div>
   );
 }
