@@ -1,6 +1,6 @@
 # T6.36 — Metrics, KPI/KRI & Control-Performance Monitoring
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -59,3 +59,34 @@ T6.36 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 026: PASS / rolled back;
+- retained synthetic metric definitions: **0**;
+- retained synthetic metric observations: **0**;
+- unapproved metric activation rejection: PASS;
+- assessed observation without evidence rejection: PASS;
+- immutable observation mutation rejection: PASS;
+- T6.36 metrics/control-performance tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Metrics-governance boundaries remain intact:
+- no real KPI/KRI target was approved;
+- no real metric was activated;
+- no performance observation was fabricated;
+- no existing operations-dashboard counter was reclassified as an approved KPI;
+- no dashboard or system was declared GREEN by this phase;
+- no Production monitoring or scheduled metric job was configured;
+- Production/main remain untouched;
+- no clinical capability was activated.
