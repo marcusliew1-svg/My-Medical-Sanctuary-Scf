@@ -108,3 +108,25 @@ Validation:
 - Supabase Auth currently has 0 users with trusted `operator_id` app metadata. A synthetic operator must be created through supported Supabase Auth admin tooling; direct SQL mutation of `auth.users` is prohibited.
 
 Status: **OS CODE + PREVIEW DATABASE FOUNDATION COMPLETE; LIVE OPERATOR PILOT BLOCKED ONLY BY AUTH/ENVIRONMENT CONFIGURATION AND EXTERNAL APPROVALS.**
+
+
+## T6.19 governance ownership/review checkpoint — 2026-10-07
+
+Implemented in Preview:
+- explicit named owner, reviewer and approver identity fields for controlled governance documents;
+- approval evidence reference and lifecycle timestamps;
+- sequential document-state guard: `WORKING_DRAFT -> REVIEW -> APPROVED -> EFFECTIVE`;
+- direct draft-to-approved/effective shortcuts rejected in application logic;
+- database constraints fail closed when REVIEW/APPROVED/EFFECTIVE evidence is incomplete;
+- Governance Console inputs added for named review/approval evidence;
+- no person, approver or approval evidence was fabricated.
+
+Preview validation:
+- migration `mms_governance_document_review_workflow`: PASS;
+- 32/32 documents remain `WORKING_DRAFT`;
+- 0 documents moved to REVIEW/APPROVED/EFFECTIVE;
+- 0 rows contain named owner/reviewer/approver identities;
+- Production/main untouched.
+
+Remaining operational dependency:
+- real accountable owners/reviewers/approvers must be assigned by management before controlled documents can progress beyond WORKING_DRAFT.

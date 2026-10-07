@@ -1,6 +1,7 @@
 import "server-only";
 
 import { mmsCommercialDatabaseClient, mmsCommercialDatabaseClientAvailable, type MmsCommercialTransaction } from "@/lib/mmsCommercialDatabaseClient";
+import { assertGovernanceDocumentTransition } from "@/lib/governanceDocumentWorkflow";
 
 export type GovernanceSummary = {
   documents: number;
@@ -61,7 +62,7 @@ export async function governanceSnapshot() {
         (select count(*) from mms_governance.launch_capabilities where readiness = 'AMBER') amber_capabilities,
         (select count(*) from mms_governance.launch_capabilities where readiness = 'LIVE') live_capabilities
     `),
-    db.query<GovernanceRow>(`select document_id,title,domain,owner_role,approver_role,version,status,confidentiality,effective_at,review_due_at,evidence_location from mms_governance.governance_documents order by document_id limit 100`),
+    db.query<GovernanceRow>(`select document_id,title,domain,owner_role,owner_id,reviewer_id,approver_role,approver_id,approval_reference,version,status,confidentiality,review_requested_at,approved_at,effective_at,review_due_at,evidence_location from mms_governance.governance_documents order by document_id limit 100`),
     db.query<GovernanceRow>(`select risk_id,domain,title,owner_role,inherent_likelihood,inherent_impact,residual_likelihood,residual_impact,response,status,action_summary,action_due_at,review_due_at from mms_governance.risks order by residual_likelihood * residual_impact desc, risk_id limit 100`),
     db.query<GovernanceRow>(`select control_id,domain,name,control_type,owner_role,frequency,automation_level,system_name,effectiveness,status,last_tested_at,next_test_due_at from mms_governance.controls order by case effectiveness when 'INEFFECTIVE' then 1 when 'NEEDS_IMPROVEMENT' then 2 when 'NOT_TESTED' then 3 else 4 end, control_id limit 150`),
     db.query<GovernanceRow>(`select capa_id,source_type,source_reference,finding,severity,owner_role,action,status,due_at,implemented_at,verified_by_role,closed_at from mms_governance.capa_actions order by case status when 'OPEN' then 1 when 'IN_PROGRESS' then 2 when 'IMPLEMENTED' then 3 when 'EFFECTIVENESS_REVIEW' then 4 else 5 end, due_at nulls last limit 100`),
@@ -159,7 +160,7 @@ export type GovernanceMutation =
   | { type: "capa_create"; key: string; sourceType: string; sourceReference: string; finding: string; severity: string; ownerRole: string; action: string; dueAt?: string | null; reason: string }
   | { type: "capa"; key: string; status: string; effectivenessEvidence?: string | null; verifiedByRole?: string | null; reason: string }
   | { type: "capability"; key: string; readiness?: string; blockerSummary?: string | null; approvalReference?: string | null; reviewDueAt?: string | null; reason: string }
-  | { type: "document"; key: string; status?: string; approverRole?: string | null; reviewDueAt?: string | null; reason: string }
+  | { type: "document"; key: string; status?: string; ownerId?: string | null; reviewerId?: string | null; approverRole?: string | null; approverId?: string | null; approvalReference?: string | null; reviewDueAt?: string | null; reason: string }
   | { type: "service"; key: string; clinicalStatus?: string; publicExposureStatus?: string; reviewDueAt?: string | null; reason: string };
 
 export async function mutateGovernance(input: GovernanceMutation, actor: { operatorId: string; roles: string[] }) {
@@ -255,18 +256,45 @@ export async function mutateGovernance(input: GovernanceMutation, actor: { opera
         [input.key,input.readiness || null,Object.hasOwn(input,"blockerSummary"),textOrNull(input.blockerSummary),Object.hasOwn(input,"approvalReference"),requestedApproval,Object.hasOwn(input,"reviewDueAt"),timestampOrNull(input.reviewDueAt)],
       );
     } else if (input.type === "document") {
-      const statuses = new Set(["WORKING_DRAFT","REVIEW","APPROVED","EFFECTIVE","SUPERSEDED","RETIRED"]);
-      if (input.status && !statuses.has(input.status)) throw new Error("Document status is invalid.");
-      if (input.status && ["APPROVED","EFFECTIVE"].includes(input.status) && !(textOrNull(input.approverRole) || previous.approver_role)) {
-        throw new Error("Approved/effective documents require an approver role.");
-      }
+      const ownerId = Object.hasOwn(input,"ownerId") ? textOrNull(input.ownerId,160) : (previous.owner_id ? String(previous.owner_id) : null);
+      const reviewerId = Object.hasOwn(input,"reviewerId") ? textOrNull(input.reviewerId,160) : (previous.reviewer_id ? String(previous.reviewer_id) : null);
+      const approverRole = Object.hasOwn(input,"approverRole") ? textOrNull(input.approverRole,160) : (previous.approver_role ? String(previous.approver_role) : null);
+      const approverId = Object.hasOwn(input,"approverId") ? textOrNull(input.approverId,160) : (previous.approver_id ? String(previous.approver_id) : null);
+      const approvalReference = Object.hasOwn(input,"approvalReference") ? textOrNull(input.approvalReference,300) : (previous.approval_reference ? String(previous.approval_reference) : null);
+
+      assertGovernanceDocumentTransition({
+        currentStatus: String(previous.status),
+        requestedStatus: input.status,
+        ownerId,
+        reviewerId,
+        approverId,
+        approverRole,
+        approvalReference,
+      });
+
       result = await tx.query<GovernanceRow>(
         `update mms_governance.governance_documents set
           status=coalesce($2,status),
-          approver_role=case when $3::boolean then $4 else approver_role end,
-          review_due_at=case when $5::boolean then $6::timestamptz else review_due_at end
+          owner_id=case when $3::boolean then $4 else owner_id end,
+          reviewer_id=case when $5::boolean then $6 else reviewer_id end,
+          approver_role=case when $7::boolean then $8 else approver_role end,
+          approver_id=case when $9::boolean then $10 else approver_id end,
+          approval_reference=case when $11::boolean then $12 else approval_reference end,
+          review_due_at=case when $13::boolean then $14::timestamptz else review_due_at end,
+          review_requested_at=case when $2='REVIEW' and status <> 'REVIEW' then now() else review_requested_at end,
+          approved_at=case when $2='APPROVED' and status <> 'APPROVED' then now() else approved_at end,
+          effective_at=case when $2='EFFECTIVE' and status <> 'EFFECTIVE' then now() else effective_at end,
+          retired_at=case when $2='RETIRED' and status <> 'RETIRED' then now() else retired_at end
          where document_id=$1 returning *`,
-        [input.key,input.status || null,Object.hasOwn(input,"approverRole"),textOrNull(input.approverRole,160),Object.hasOwn(input,"reviewDueAt"),timestampOrNull(input.reviewDueAt)],
+        [
+          input.key,input.status || null,
+          Object.hasOwn(input,"ownerId"),textOrNull(input.ownerId,160),
+          Object.hasOwn(input,"reviewerId"),textOrNull(input.reviewerId,160),
+          Object.hasOwn(input,"approverRole"),textOrNull(input.approverRole,160),
+          Object.hasOwn(input,"approverId"),textOrNull(input.approverId,160),
+          Object.hasOwn(input,"approvalReference"),textOrNull(input.approvalReference,300),
+          Object.hasOwn(input,"reviewDueAt"),timestampOrNull(input.reviewDueAt),
+        ],
       );
     } else {
       const statuses = new Set(["PROPOSED","CLINICAL_REVIEW","REGULATORY_REVIEW","OPERATIONAL_REVIEW","APPROVED","SUSPENDED","RETIRED"]);

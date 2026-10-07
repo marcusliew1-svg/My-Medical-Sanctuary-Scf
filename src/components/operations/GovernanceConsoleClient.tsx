@@ -105,6 +105,11 @@ export default function GovernanceConsoleClient() {
   const [actionKey, setActionKey] = useState("");
   const [actionState, setActionState] = useState("");
   const [actionReason, setActionReason] = useState("");
+  const [documentOwnerId, setDocumentOwnerId] = useState("");
+  const [documentReviewerId, setDocumentReviewerId] = useState("");
+  const [documentApproverId, setDocumentApproverId] = useState("");
+  const [documentApproverRole, setDocumentApproverRole] = useState("");
+  const [documentApprovalReference, setDocumentApprovalReference] = useState("");
   const [actionMessage, setActionMessage] = useState("");
 
   const load = useCallback(async () => {
@@ -157,7 +162,14 @@ export default function GovernanceConsoleClient() {
     if (actionType === "risk") body.status = actionState;
     if (actionType === "control") body.effectiveness = actionState;
     if (actionType === "capability") body.readiness = actionState;
-    if (actionType === "document") body.status = actionState;
+    if (actionType === "document") {
+      body.status = actionState;
+      if (documentOwnerId.trim()) body.ownerId = documentOwnerId.trim();
+      if (documentReviewerId.trim()) body.reviewerId = documentReviewerId.trim();
+      if (documentApproverId.trim()) body.approverId = documentApproverId.trim();
+      if (documentApproverRole.trim()) body.approverRole = documentApproverRole.trim();
+      if (documentApprovalReference.trim()) body.approvalReference = documentApprovalReference.trim();
+    }
     if (actionType === "service") body.clinicalStatus = actionState;
 
     setActionMessage("Submitting…");
@@ -171,6 +183,10 @@ export default function GovernanceConsoleClient() {
       if (!response.ok || payload.status !== "ok") throw new Error(payload.message || "Governance update failed.");
       setActionMessage("Recorded with governance audit evidence.");
       setActionReason("");
+      if (actionType === "document") {
+        setDocumentOwnerId(""); setDocumentReviewerId(""); setDocumentApproverId("");
+        setDocumentApproverRole(""); setDocumentApprovalReference("");
+      }
       await load();
     } catch (error) {
       setActionMessage(error instanceof Error ? error.message : "Governance update failed.");
@@ -252,7 +268,7 @@ export default function GovernanceConsoleClient() {
 
       {tab === "documents" ? <Table rows={snapshot.documents} columns={[
         { key: "document_id", label: "Document" }, { key: "title", label: "Title" }, { key: "domain", label: "Domain" },
-        { key: "owner_role", label: "Owner" }, { key: "approver_role", label: "Approver" }, { key: "version", label: "Version" },
+        { key: "owner_role", label: "Owner role" }, { key: "owner_id", label: "Named owner" }, { key: "reviewer_id", label: "Reviewer" }, { key: "approver_id", label: "Approver" }, { key: "approver_role", label: "Approver role" }, { key: "version", label: "Version" },
         { key: "status", label: "Status", badge: true }, { key: "review_due_at", label: "Review due", date: true },
       ]} /> : null}
 
@@ -286,6 +302,15 @@ export default function GovernanceConsoleClient() {
           </select>
           <input value={actionReason} onChange={(event) => setActionReason(event.target.value)} placeholder="Reason / evidence reference" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
         </div>
+        {actionType === "document" ? (
+          <div className="mt-3 grid gap-3 md:grid-cols-5">
+            <input value={documentOwnerId} onChange={(event) => setDocumentOwnerId(event.target.value)} placeholder="Named owner ID" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            <input value={documentReviewerId} onChange={(event) => setDocumentReviewerId(event.target.value)} placeholder="Named reviewer ID" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            <input value={documentApproverId} onChange={(event) => setDocumentApproverId(event.target.value)} placeholder="Named approver ID" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            <input value={documentApproverRole} onChange={(event) => setDocumentApproverRole(event.target.value)} placeholder="Approver role" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            <input value={documentApprovalReference} onChange={(event) => setDocumentApprovalReference(event.target.value)} placeholder="Approval evidence reference" className="rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+        ) : null}
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <button onClick={() => void submitQuickAction()} className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Record action</button>
           <a href="/operations/step-up" className="text-sm font-medium text-slate-600 underline decoration-slate-300 underline-offset-4">Step-up authentication</a>
