@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export function JourneyVisual() {
   return (
@@ -52,6 +53,12 @@ export function HealthTrendsVisual() {
                 </span>
               ))}
             </div>
+            <Link
+              href="/health-dashboard"
+              className="mt-8 inline-flex text-sm font-semibold text-gold-light underline decoration-gold/40 underline-offset-8"
+            >
+              See how health trends are organised
+            </Link>
           </div>
 
           <div className="mms-cinematic-frame relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_42px_120px_rgba(0,0,0,0.28)] md:aspect-[16/9]">

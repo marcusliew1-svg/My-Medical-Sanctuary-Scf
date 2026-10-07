@@ -12,17 +12,18 @@ export function LingHealthPreview() {
     <section className="overflow-hidden bg-[#f3eee4] px-4 py-20 md:py-28">
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
         <div>
-          <p className="editorial-kicker mb-4 text-deep-green">Ling • Your virtual health guide</p>
+          <p className="editorial-kicker mb-4 text-deep-green">Ling + doctor + you</p>
           <h2 className="text-balance font-serif text-4xl leading-tight text-navy md:text-6xl">
-            Understand what changed. Know what to ask next.
+            Technology helps you understand. Doctors help you decide.
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-8 text-warm-gray">
-            Ling organises the signals. Your doctor decides what matters.
+            Ling helps organise your health information, explain concepts clearly and prepare useful questions for your next conversation. Clinical assessment, diagnosis, prescribing and treatment decisions remain with qualified medical professionals.
           </p>
           <div className="mt-8 flex flex-wrap gap-6 border-t border-gold/35 pt-6 text-sm text-deep-green">
-            <span>Explain plainly</span>
-            <span>Track context</span>
+            <span>Ask questions</span>
+            <span>Understand results</span>
             <span>Prepare for review</span>
+            <span>Stay engaged</span>
           </div>
           <Link
             href="/ling"

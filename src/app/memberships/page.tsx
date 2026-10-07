@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EditorialHero, FinalInvitation, ImagePanel, SplitStory } from "@/components/Editorial";
 import { CareTeamStrip } from "@/components/ExperienceCards";
 import { MembershipComparison } from "@/components/MembershipComparison";
+import { ContinuityOfCareStory } from "@/components/PreventiveJourneyExpanded";
 
 export const metadata: Metadata = {
   title: "Memberships",
@@ -43,6 +44,8 @@ export default function MembershipsPage() {
           </div>
         </div>
       </section>
+
+      <ContinuityOfCareStory />
 
       <MembershipComparison />
 

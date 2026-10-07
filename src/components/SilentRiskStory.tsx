@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export function SilentRiskStory() {
   return (
@@ -10,15 +11,26 @@ export function SilentRiskStory() {
             You can feel well while your health is already changing.
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-8 text-warm-gray">
-            Some health risks develop quietly. The point is to know what to watch before a health scare forces the conversation.
+            Some health risks develop quietly. Blood pressure can rise without obvious symptoms. Glucose regulation,
+            lipid patterns, liver health and body composition can also change gradually before they affect how you feel.
+          </p>
+          <p className="mt-4 max-w-xl text-base leading-7 text-warm-gray/85">
+            Preventive care does not try to predict every illness. It creates a clearer baseline, helps identify
+            meaningful change and gives you more useful information to discuss with a qualified medical professional.
           </p>
           <div className="mt-7 flex flex-wrap gap-2">
-            {["Blood pressure", "Glucose", "Lipids", "Body composition"].map((item) => (
+            {["Blood pressure", "Glucose", "Lipids", "Liver health", "Body composition"].map((item) => (
               <span key={item} className="rounded-full border border-gold/30 bg-white/65 px-3 py-2 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-deep-green">
                 {item}
               </span>
             ))}
           </div>
+          <Link
+            href="/preventive-health"
+            className="mt-8 inline-flex text-sm font-semibold text-deep-green underline decoration-gold/50 underline-offset-8"
+          >
+            Why preventive health matters
+          </Link>
         </div>
 
         <div className="mms-cinematic-frame relative aspect-[16/10] overflow-hidden rounded-[2rem] shadow-[0_36px_110px_rgba(11,26,46,0.18)] md:aspect-[16/9]">

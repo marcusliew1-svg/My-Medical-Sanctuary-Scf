@@ -8,6 +8,7 @@ import { MembershipDepth } from "@/components/MembershipDepth";
 import { SanctuaryExperience } from "@/components/SanctuaryExperience";
 import { EvidenceStandard } from "@/components/EvidenceStandard";
 import { JourneyVisual, HealthTrendsVisual } from "@/components/CinematicHealthStories";
+import { WholeBodyConnectedView } from "@/components/PreventiveJourneyExpanded";
 
 export const metadata: Metadata = {
   title: "Preventive Care • Personalised Longevity",
@@ -20,12 +21,12 @@ export default function HomePage() {
     <main>
       <EditorialHero
         eyebrow="Preventive care • Personalised longevity"
-        title="Know earlier. Act sooner."
-        lead="MMS helps you understand and monitor your health before silent changes become serious problems."
+        title="Know earlier. Act sooner. Live fuller."
+        lead="A personalised plan to check, understand and monitor your health — before small risks become bigger, more disruptive problems."
         image="/ling-mms-guide.png"
         imageAlt="Ling, the MMS virtual health spokesperson, introducing the preventive health journey."
         imagePosition="72% center"
-        primaryLabel="Check my health"
+        primaryLabel="Start your health discovery"
         primaryHref="/health-discovery"
         secondaryLabel="See how MMS works"
         secondaryHref="/how-it-works"
@@ -41,21 +42,14 @@ export default function HomePage() {
       />
 
       <SilentRiskStory />
-
       <EarlyVsLateStory />
-
       <PatientFirstFilm />
-
       <JourneyVisual />
-
       <HealthTrendsVisual />
-
+      <WholeBodyConnectedView />
       <LingHealthPreview />
-
       <MembershipDepth />
-
       <SanctuaryExperience />
-
       <EvidenceStandard />
 
       <FinalInvitation
