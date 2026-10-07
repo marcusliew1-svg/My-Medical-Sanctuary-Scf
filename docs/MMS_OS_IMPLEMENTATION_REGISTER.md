@@ -686,3 +686,36 @@ Remaining operational dependencies:
 - clinical governance/Medical Director evidence for any clinically governed AI use;
 - Production AI feature activation requires separate explicit authorization;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.39 CAPA/remediation-effectiveness checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- canonical `mms_governance.capa_actions` register hardened rather than replaced;
+- IMPLEMENTED now requires root-cause/causal-analysis reference, implementation timestamp and implementation evidence;
+- EFFECTIVENESS_REVIEW requires effectiveness evidence, verifier role, verification timestamp and a non-NOT_ASSESSED result;
+- CLOSED requires EFFECTIVE outcome, closure evidence and closure timestamp;
+- PARTIALLY_EFFECTIVE and INEFFECTIVE outcomes cannot satisfy closure;
+- immutable `mms_governance.capa_effectiveness_reviews` history added;
+- failed/limited effectiveness results remain visible and require follow-up where applicable;
+- CAPA closure does not auto-close the originating incident, complaint, audit finding, risk or supplier issue;
+- existing CAPA-T618-ZOHO-TENANT remains IN_PROGRESS with no fabricated evidence;
+- protected internal CAPA-effectiveness policy endpoint added;
+- working-draft CAPA, Remediation & Effectiveness Assurance Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 029: PASS / rollback confirmed;
+- retained synthetic CAPA rows: 0;
+- T6.39 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- real root-cause/causal-analysis evidence for open CAPA;
+- implementation evidence and accountable remediation owner;
+- independent effectiveness-review method/role appropriate to severity;
+- follow-up process for ineffective/partially effective remediation;
+- source-record closure remains independent;
+- dedicated MMS Zoho tenant remains unresolved for CAPA-T618-ZOHO-TENANT;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.
