@@ -2,9 +2,9 @@ name: T6.20 lockfile refresh
 # Single-writer branch utility; remove after T6.20 merges.
 
 on:
-  push:
+  pull_request:
     branches:
-      - mms/t6-20-dependency-security-hardening
+      - mms/integration-next16-foundation
     paths:
       - package.json
       - .github/workflows/t6-20-lockfile-refresh.yml
