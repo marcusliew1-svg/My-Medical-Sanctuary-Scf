@@ -492,3 +492,34 @@ Remaining operational dependencies:
 - reminder/escalation operating process;
 - Production automation approval before any calendar/reminder job is enabled;
 - external legal/privacy/Medical Director/regulatory/licensing/insurance approvals remain separate blockers.
+
+
+## T6.33 management-review/executive-assurance checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.management_reviews` register added;
+- monthly, quarterly, annual, extraordinary, pre-launch and post-incident review types supported;
+- lifecycle controlled from PLANNED through COMPLETE;
+- COMPLETE requires evidence-pack reference, minutes reference, action-register reference, non-NOT_ASSESSED assurance conclusion, completion timestamp and approval reference;
+- unresolved critical/major issue counters retained explicitly;
+- evidence-pack expectations cover risks, controls, incidents, CAPA, complaints, audits, regulatory obligations, training, access, vendors, continuity and launch readiness;
+- completed management review does not auto-close underlying governance records;
+- protected internal management-review policy endpoint added;
+- working-draft Management Review, Governance Reporting & Executive Assurance Runbook added;
+- Preview migration: PASS;
+- transactional QA 023: PASS / rollback confirmed;
+- retained synthetic management-review rows: 0;
+- T6.33 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- named accountable management-review chair/recorder;
+- approved review cadence;
+- real evidence packs and minutes;
+- actual management decisions/action registers;
+- formal risk-acceptance authority;
+- executive/board reporting format if separately required;
+- Production readiness remains subject to separate release/launch/legal/privacy/clinical/licensing/insurance approval.
