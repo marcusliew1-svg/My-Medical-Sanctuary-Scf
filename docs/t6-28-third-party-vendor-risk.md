@@ -1,6 +1,6 @@
 # T6.28 — Third-Party/Vendor Risk, Supplier Assurance & Dependency Governance
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -60,4 +60,33 @@ T6.28 does **not**:
 - dev/build baseline remains bounded;
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
+- Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview migration `mms_third_party_assurance`: PASS;
+- transactional QA 019: PASS / rolled back;
+- retained synthetic third-party rows: **0**;
+- T6.28 third-party vendor-risk tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 governance/security/reliability/access/release suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Supabase security review:
+- governance `rls_enabled_no_policy` notices remain intentional fail-closed INFO because direct public/anon/authenticated grants are revoked;
+- pre-existing leaked-password-protection warning remains unresolved;
+- no new public-access policy or client grant was added.
+
+Third-party assurance boundaries remain intact:
+- no named vendor is marked APPROVED or CONDITIONAL;
+- no contract, DPA, certification, continuity evidence or regulatory status was fabricated;
+- the iPivot Zoho tenant remains prohibited for MMS use;
+- no Production integration, payment flow, clinical supplier, diagnostic partner or AI provider was activated;
 - Production/main remain untouched.
