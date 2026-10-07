@@ -126,6 +126,9 @@ jobs:
       - name: T6.38 AI model governance tests
         run: npm run test:t6-38
 
+      - name: T6.39 CAPA effectiveness tests
+        run: npm run test:t6-39
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
