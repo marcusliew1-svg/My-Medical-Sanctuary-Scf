@@ -102,6 +102,9 @@ jobs:
       - name: T6.30 training competency attestation tests
         run: npm run test:t6-30
 
+      - name: T6.31 complaints speak-up governance tests
+        run: npm run test:t6-31
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

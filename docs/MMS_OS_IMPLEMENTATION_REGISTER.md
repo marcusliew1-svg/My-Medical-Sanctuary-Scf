@@ -426,3 +426,36 @@ Remaining operational dependencies:
 - refresher/expiry schedules;
 - joiner/mover/leaver linkage to training requirements;
 - clinical workforce competency remains subject to separate credential/privilege/Medical Director governance.
+
+
+## T6.31 complaints/concerns/speak-up checkpoint — 2026-10-07
+
+Implemented and validated in Preview/integration:
+- `mms_governance.complaints_and_concerns` register added;
+- case types cover customer, partner, workforce, privacy, security, clinical-safety, speak-up and other concerns;
+- severity and confidentiality classification added;
+- lifecycle controlled from OPEN through CLOSED;
+- RESOLVED requires resolution summary, evidence reference and resolution timestamp;
+- CLOSED additionally requires closure timestamp and external/regulatory reporting assessment;
+- non-retaliation and conflict-management principles documented;
+- evidence preservation and complaint-to-incident/CAPA/privacy/clinical escalation expectations documented;
+- protected internal complaints/speak-up policy endpoint added;
+- working-draft Complaints, Concerns & Speak-Up Governance Runbook added;
+- Preview migration: PASS;
+- transactional QA 021: PASS / rollback confirmed;
+- retained synthetic complaint/speak-up rows: 0;
+- T6.31 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- approved complaint/speak-up policy and ownership;
+- named independent investigators/reviewers;
+- approved intake channels and confidentiality process;
+- response-time/service standards;
+- legal/privacy/clinical/regulatory escalation criteria;
+- regulator notification authority and evidence;
+- anonymous hotline/channel only if separately selected and approved;
+- staff training and non-retaliation operating procedure.
