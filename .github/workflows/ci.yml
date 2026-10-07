@@ -108,6 +108,9 @@ jobs:
       - name: T6.32 regulatory obligations governance tests
         run: npm run test:t6-32
 
+      - name: T6.33 management review assurance tests
+        run: npm run test:t6-33
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
