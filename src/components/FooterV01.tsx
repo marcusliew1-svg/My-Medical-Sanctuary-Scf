@@ -4,8 +4,10 @@ import { navigation } from "@/lib/content";
 
 const links = [
   ...navigation.map((item) => [item.label, item.href] as const),
+  ["Preventive Health", "/preventive-health"] as const,
+  ["Health Dashboard", "/health-dashboard"] as const,
+  ["Whole-Body Health", "/whole-body-health"] as const,
   ["Ling", "/ling"] as const,
-  ["Science & Evidence", "/science-evidence"] as const,
   ["Contact", "/contact"] as const,
 ];
 
