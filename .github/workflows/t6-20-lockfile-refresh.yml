@@ -7,6 +7,12 @@ on:
     paths:
       - package.json
       - .github/workflows/t6-20-lockfile-refresh.yml
+  pull_request:
+    branches:
+      - mms/integration-next16-foundation
+    paths:
+      - package.json
+      - .github/workflows/t6-20-lockfile-refresh.yml
 
 permissions:
   contents: write
