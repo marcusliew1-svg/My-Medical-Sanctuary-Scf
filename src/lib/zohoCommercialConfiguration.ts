@@ -107,6 +107,9 @@ export function zohoDayOneCommercialReadiness(env: NodeJS.ProcessEnv = process.e
   if (value(env, "ZOHO_DAY_ONE_COMMERCIAL_CRM_APPROVED") !== "true") {
     blockers.push("ZOHO_DAY_ONE_COMMERCIAL_CRM_APPROVED must be true.");
   }
+  if (value(env, "ZOHO_TENANT_IDENTITY_VERIFIED") !== "true") {
+    blockers.push("ZOHO_TENANT_IDENTITY_VERIFIED must be true after verifying the connected organization is the dedicated MMS tenant.");
+  }
 
   const fieldMapping = parseApprovedZohoCommercialFieldMapping(env, blockers);
   parseStringArray(env, "ZOHO_LEAD_SOURCE_TAXONOMY_JSON", blockers);
