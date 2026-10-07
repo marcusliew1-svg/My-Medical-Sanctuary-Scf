@@ -1,6 +1,6 @@
 # T6.41 — Consent, Authorization & Withdrawal Governance
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -63,3 +63,35 @@ T6.41 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- corrected material-event evidence constraint: PASS;
+- transactional QA 031: PASS / rolled back;
+- retained synthetic consent authorizations: **0**;
+- ACTIVE transition without evidence rejection: PASS;
+- material GRANTED event without evidence rejection: PASS;
+- WITHDRAWN transition without withdrawal evidence/scope rejection: PASS;
+- immutable consent-event mutation rejection: PASS;
+- T6.41 consent-governance tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Consent-governance boundaries remain intact:
+- no real consent was created;
+- no clinical consent document was approved;
+- no service/appointment/enquiry/payment/CRM record was treated as implicit consent;
+- no Production consent capture/e-signature/preference centre was enabled;
+- no automated withdrawal propagation was enabled;
+- no legal/clinical basis was fabricated;
+- Production/main remain untouched;
+- no clinical capability was activated.
