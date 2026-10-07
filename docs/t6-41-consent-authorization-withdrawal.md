@@ -95,3 +95,36 @@ Consent-governance boundaries remain intact:
 - no legal/clinical basis was fabricated;
 - Production/main remain untouched;
 - no clinical capability was activated.
+
+
+## Final validation — 2026-10-07
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- corrected material-event evidence constraint: PASS;
+- transactional QA 031: PASS / rolled back;
+- retained synthetic consent authorizations: **0**;
+- ACTIVE transition without capture/evidence rejection: PASS;
+- material GRANTED event without evidence rejection: PASS;
+- WITHDRAWN transition without withdrawal reference/timestamp/scope rejection: PASS;
+- immutable consent-event mutation rejection: PASS;
+- T6.41 consent-governance tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Consent-governance boundaries remain intact:
+- no real consent was created;
+- no clinical consent document was approved;
+- no treatment consent was inferred from an appointment, enquiry, payment, CRM record or service reference;
+- no universal legal basis was asserted;
+- no Production consent capture/e-signature/preference-centre workflow was enabled;
+- no automated withdrawal propagation was enabled;
+- T6.25 retention/legal-hold controls remain unaffected;
+- Production/main remain untouched;
+- no clinical capability was activated.
