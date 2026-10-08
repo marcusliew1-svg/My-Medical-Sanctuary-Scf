@@ -792,3 +792,37 @@ Remaining operational dependencies:
 - retention/legal-hold handling on withdrawal;
 - Production e-signature/preference-centre/capture integrations require separate explicit authorization;
 - pre-existing Supabase leaked-password-protection warning remains unresolved.
+
+
+## T6.42 privacy/security breach-assessment checkpoint — 2026-10-08
+
+Implemented and validated in Preview/integration:
+- immutable `mms_governance.privacy_security_assessments` register added;
+- every assessment links to an existing incident and jurisdiction;
+- assessment tracks affected data classes, estimated affected-subject count, exposure scope and risk to individuals;
+- notification applicability is governed separately from incident severity;
+- any REQUIRED / NOT_REQUIRED / PENDING_AUTHORITY_REVIEW conclusion requires legal/privacy review reference, decision reference and immutable evidence;
+- authority-notification and data-subject-notification states are tracked independently;
+- COMPLETED notification states require stable notification references;
+- no statutory deadline is created by the framework; authoritative jurisdiction-specific obligations remain governed through T6.32;
+- assessment history is immutable and superseding conclusions require new records;
+- existing incident lifecycle remains independent;
+- protected internal privacy/security assessment policy endpoint added;
+- working-draft Privacy/Security Incident Assessment & Notification-Decision Runbook added;
+- Preview schema execution: PASS;
+- transactional QA 032: PASS / rollback confirmed;
+- retained synthetic assessments: 0;
+- T6.42 and full CI: PASS;
+- matching Vercel Preview: READY;
+- Production dependency audit remains 0 vulnerabilities;
+- Production/main remain untouched;
+- no clinical service activated.
+
+Remaining operational dependencies:
+- verified jurisdiction-specific privacy/security breach criteria;
+- named legal/privacy review authority;
+- authoritative statutory notification timelines;
+- approved regulator/data-subject notification procedures;
+- real incident facts and evidence;
+- Production notification integrations require separate explicit authorization;
+- pre-existing Supabase leaked-password-protection warning remains unresolved.

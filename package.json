@@ -69,7 +69,8 @@
     "test:t6-38": "node --test tests/t6-38-ai-model-governance.test.mjs",
     "test:t6-39": "node --test tests/t6-39-capa-effectiveness.test.mjs",
     "test:t6-40": "node --test tests/t6-40-privacy-rights-requests.test.mjs",
-    "test:t6-41": "node --test tests/t6-41-consent-authorization-withdrawal.test.mjs"
+    "test:t6-41": "node --test tests/t6-41-consent-authorization-withdrawal.test.mjs",
+    "test:t6-42": "node --test tests/t6-42-privacy-security-assessment.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",

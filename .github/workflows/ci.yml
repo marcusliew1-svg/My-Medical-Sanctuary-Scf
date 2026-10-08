@@ -135,6 +135,9 @@ jobs:
       - name: T6.41 consent authorization withdrawal tests
         run: npm run test:t6-41
 
+      - name: T6.42 privacy security assessment tests
+        run: npm run test:t6-42
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
