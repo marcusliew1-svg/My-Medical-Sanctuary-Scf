@@ -11,6 +11,7 @@ const links = [
   ["Leads", "/partner-hub/leads"],
   ["Applications", "/partner-hub/commercial-status"],
   ["Academy", "/partner-hub/academy"],
+  ["Package Comparison", "/partner-hub/package-comparison"],
   ["Presentation Centre", "/partner-hub/presentation-centre"],
   ["Commission Wallet", "/partner-hub/commission-wallet"],
   ["Referral Tools", "/partner-hub/referral"],
