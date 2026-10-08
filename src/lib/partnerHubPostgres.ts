@@ -393,7 +393,8 @@ export function postgresPartnerHubStore(client: MmsCommercialDatabaseClient): Pa
           `select id::text, title, category, version, effective_from, effective_to,
                   content_url, approved_by, approved_at
              from mms_commercial.presentation_assets
-            where effective_from <= now()
+            where approval_status = 'APPROVED'
+              and effective_from <= now()
               and (effective_to is null or effective_to > now())
             order by category, title, effective_from desc`,
         );
