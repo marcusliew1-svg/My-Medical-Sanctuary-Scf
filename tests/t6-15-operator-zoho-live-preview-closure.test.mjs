@@ -100,3 +100,11 @@ test("adapter refuses execution when tenant-approved mapping is missing", async 
     },
   }), /Approved tenant Zoho field mapping is required/);
 });
+
+
+test("T6.46 operations readiness cannot report ready with Zoho blocked", () => {
+  const source = read("src/app/api/internal/operations/readiness/route.ts");
+  assert.match(source, /const ready = databaseReady && zoho\.ready;/);
+  assert.match(source, /status: ready \? "ready" : "degraded"/);
+  assert.match(source, /zohoCommercial: \{/);
+});
