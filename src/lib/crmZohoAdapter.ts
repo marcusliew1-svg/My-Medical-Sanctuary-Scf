@@ -3,6 +3,7 @@ import { validateCrmAdministrativeLead } from "@/lib/crmDomain";
 import { crmIdempotencyKey, SyntheticCrmIdempotencyStore } from "@/lib/crmIdempotency";
 import {
   parseApprovedZohoCommercialFieldMapping,
+  zohoDayOneCommercialReadiness,
   type ZohoCommercialFieldMapping,
 } from "@/lib/zohoCommercialConfiguration";
 import {
@@ -116,12 +117,18 @@ export class CrmZohoAdapter {
     }
 
     try {
-      this.log({ event: "dedupe_started", idempotencyKey, outcome: "started" });
-      const duplicates = await this.retry(() => transport.findDuplicates(moduleName, input.lead.email || "", input.lead.mobile || ""));
+      // Never contact an external CRM until the tenant's authorization and mapping are validated.
+      // Synthetic injected transports can test mapping logic without live credentials.
+      if (!this.options.transport) {
+        const readiness = zohoDayOneCommercialReadiness();
+        if (!readiness.ready) throw new Error(`MMS Zoho tenant readiness is blocked: ${readiness.blockers.join(" ")}`);
+      }
       const mappingBlockers: string[] = [];
       const fieldMapping = this.options.fieldMapping || parseApprovedZohoCommercialFieldMapping(process.env, mappingBlockers);
       if (!fieldMapping) throw new Error(`Approved tenant Zoho field mapping is required. ${mappingBlockers.join(" ")}`);
       const record = mapAdministrativeLeadToZoho(input, idempotencyKey, fieldMapping);
+      this.log({ event: "dedupe_started", idempotencyKey, outcome: "started" });
+      const duplicates = await this.retry(() => transport.findDuplicates(moduleName, input.lead.email || "", input.lead.mobile || ""));
       const duplicateId = [...duplicates.recordIds].sort()[0];
       if (duplicateId) {
         this.log({ event: "duplicate_found", idempotencyKey, crmLeadId: duplicateId, outcome: "success" });
