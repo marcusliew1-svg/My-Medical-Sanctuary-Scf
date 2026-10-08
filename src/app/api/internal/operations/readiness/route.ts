@@ -42,7 +42,8 @@ export async function GET(request: NextRequest) {
   );
 
   const databaseReady = databaseConfig.readyForAdapters && databaseProbe.status === "ready";
-  const ready = databaseReady;
+  // Database health alone does not authorize Day-1 MMS commercial operations.
+  const ready = databaseReady && zoho.ready;
 
   const response = {
     status: ready ? "ready" : "degraded",
@@ -62,7 +63,7 @@ export async function GET(request: NextRequest) {
       },
     },
     features,
-    note: "No credentials, tokens, database URLs, SQL text or Zoho secret values are returned by this endpoint.",
+    note: "Ready requires both a healthy commercial database and approved MMS Zoho configuration. This does not certify operator access or external clinical/regulatory approvals. No credentials, tokens, database URLs, SQL text or Zoho secret values are returned.",
   };
 
   operationalLog(ready ? "info" : "warn", "readiness_checked", {
