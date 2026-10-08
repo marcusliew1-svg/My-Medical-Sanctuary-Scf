@@ -1,6 +1,6 @@
 # T6.42 — Privacy/Security Incident Assessment & Notification Decision
 
-**Status:** IMPLEMENTED IN CODE + PREVIEW DATABASE / FULL PREVIEW VALIDATION REQUIRED  
+**Status:** PASS — PREVIEW VALIDATED  
 **Scope:** Preview/integration only. Production/main remain untouched.
 
 ## Objective
@@ -60,3 +60,32 @@ T6.42 does **not**:
 - TypeScript/lint/build PASS;
 - matching Vercel Preview READY;
 - Production/main remain untouched.
+
+
+## Final validation — 2026-10-08
+
+Final branch evidence:
+
+- Preview schema execution: PASS;
+- transactional QA 032: PASS / rolled back;
+- retained synthetic privacy/security assessments: **0**;
+- notification decision without legal/privacy review/evidence rejection: PASS;
+- immutable assessment mutation rejection: PASS;
+- T6.42 privacy/security assessment tests: PASS;
+- Production dependency audit: PASS / 0 vulnerabilities;
+- dev/build security baseline: PASS;
+- all prior T6 suites: PASS;
+- TypeScript: PASS;
+- lint: PASS;
+- full GitHub build: PASS;
+- matching Vercel Preview: **READY**.
+
+Privacy/security assessment boundaries remain intact:
+- no real breach was declared;
+- no notification requirement/non-requirement was asserted;
+- no statutory deadline was invented;
+- no authority or data-subject notification was marked completed;
+- no notification automation was enabled;
+- existing incident lifecycle remains controlling;
+- Production/main remain untouched;
+- no clinical capability was activated.
