@@ -138,6 +138,9 @@ jobs:
       - name: T6.42 privacy security assessment tests
         run: npm run test:t6-42
 
+      - name: T6.44 Presentation Centre lifecycle tests
+        run: npm run test:t6-44
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
