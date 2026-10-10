@@ -144,6 +144,9 @@ jobs:
       - name: T6.47 cross-workflow assurance tests
         run: npm run test:t6-47
 
+      - name: T6.49 Preview Auth Admin provisioning guards
+        run: npm run test:t6-49
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
