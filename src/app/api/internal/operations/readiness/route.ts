@@ -6,6 +6,7 @@ import { probeMmsCommercialDatabase } from "@/lib/mmsCommercialDatabaseProbe";
 import { getDeploymentEnvironment, mmsFeatureRules, featureFlagValue } from "@/lib/featureGates";
 import { operationalLog, operationalRequestId } from "@/lib/operationalObservability";
 import { zohoDayOneCommercialReadiness } from "@/lib/zohoCommercialConfiguration";
+import { operatorSessionProviderAvailable } from "@/lib/operatorSecurity";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +44,8 @@ export async function GET(request: NextRequest) {
 
   const databaseReady = databaseConfig.readyForAdapters && databaseProbe.status === "ready";
   // Database health alone does not authorize Day-1 MMS commercial operations.
-  const ready = databaseReady && zoho.ready;
+  const operatorConfigured = operatorSessionProviderAvailable();
+  const ready = databaseReady && zoho.ready && operatorConfigured;
 
   const response = {
     status: ready ? "ready" : "degraded",
@@ -57,13 +59,14 @@ export async function GET(request: NextRequest) {
         enabled: databaseConfig.enabled,
         structuralStatus: databaseProbe.status,
       },
+      operatorSession: { status: operatorConfigured ? "configured" : "blocked" },
       zohoCommercial: {
         status: zoho.ready ? "configured" : "blocked",
         blockerCount: zoho.blockers.length,
       },
     },
     features,
-    note: "Ready requires both a healthy commercial database and approved MMS Zoho configuration. This does not certify operator access or external clinical/regulatory approvals. No credentials, tokens, database URLs, SQL text or Zoho secret values are returned.",
+    note: "Ready requires healthy commercial DB, approved MMS Zoho configuration and configured operator session verification. This does not certify a real operator login, external clinical or regulatory approvals. No credentials, tokens, database URLs, SQL text or Zoho secret values are returned.",
   };
 
   operationalLog(ready ? "info" : "warn", "readiness_checked", {
