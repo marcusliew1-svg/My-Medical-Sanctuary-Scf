@@ -54,5 +54,5 @@ test("Zoho calls are blocked unless MMS identity and mapping are verified", () =
 });
 test("Readiness cannot be true based only on healthy commercial database", () => {
   const route = read("src/app/api/internal/operations/readiness/route.ts");
-  assert.match(route, /const ready = databaseReady && zoho\.ready;/);
+  assert.match(route, /const ready = databaseReady && zoho\.ready && operatorConfigured;/);
 });
