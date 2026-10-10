@@ -141,6 +141,9 @@ jobs:
       - name: T6.44 Presentation Centre lifecycle tests
         run: npm run test:t6-44
 
+      - name: T6.47 cross-workflow assurance tests
+        run: npm run test:t6-47
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
