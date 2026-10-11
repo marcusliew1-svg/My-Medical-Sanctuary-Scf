@@ -153,6 +153,9 @@ jobs:
       - name: T6.53 Owner portal privacy and access tests
         run: npm run test:t6-53
 
+      - name: T6.54 MMS staff onboarding tests
+        run: npm run test:t6-54
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
