@@ -8,6 +8,8 @@ import {
   safeOperatorNext,
   signInOperatorIdentity,
 } from "@/lib/operatorIdentity";
+import { bodyTooLarge, publicRequestClientKey, readPublicForm } from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
@@ -15,17 +17,28 @@ function redirectWithError(request: NextRequest, next: string, error: string) {
   const url = new URL("/operations/login", request.url);
   url.searchParams.set("next", next);
   url.searchParams.set("error", error);
-  return NextResponse.redirect(url, 303);
+  const response = NextResponse.redirect(url, 303);
+  response.headers.set("Cache-Control", "private, no-store, max-age=0");
+  response.headers.set("Pragma", "no-cache");
+  return response;
 }
 
 export async function POST(request: NextRequest) {
-  if (!operatorRequestOriginAllowed(request)) {
+  if (bodyTooLarge(request) || !operatorRequestOriginAllowed(request)) {
     return NextResponse.json({ status: "forbidden", message: "Operator sign-in origin is not permitted." }, { status: 403 });
   }
-  const form = await request.formData();
-  const email = String(form.get("email") || "").trim().toLowerCase();
-  const password = String(form.get("password") || "");
-  const next = safeOperatorNext(String(form.get("next") || ""));
+  const rate = checkInMemoryRateLimit(`operator-login:${publicRequestClientKey(request)}`, { limit: 8, windowMs: 15 * 60 * 1000 });
+  if (!rate.allowed) {
+    const response = redirectWithError(request, "/operations", "invalid_credentials");
+    response.headers.set("Retry-After", String(Math.ceil((rate.resetAt - Date.now()) / 1000)));
+    return response;
+  }
+
+  let form: Record<string, string>;
+  try { form = await readPublicForm(request); } catch { return redirectWithError(request, "/operations", "invalid_credentials"); }
+  const email = String(form.email || "").trim().toLowerCase();
+  const password = String(form.password || "");
+  const next = safeOperatorNext(form.next);
 
   if (!operatorIdentityConfigured()) return redirectWithError(request, next, "auth_unavailable");
   if (!email || !password || email.length > 320 || password.length > 512) {

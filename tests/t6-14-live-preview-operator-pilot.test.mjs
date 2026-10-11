@@ -70,7 +70,7 @@ test("operator access keeps trusted metadata, least roles and expiring sessions"
   assert.match(identity, /Math\.min\(Math\.max\(Math\.floor\(raw\), 300\), 3600\)/);
   assert.match(security, /Operator session has expired/);
   assert.match(security, /Auditor access is read-only/);
-  assert.match(security, /roles\.includes\("admin"\)/);
+  assert.doesNotMatch(security, /if \(claims\.roles\.includes\("admin"\)\) return true/);
   assert.doesNotMatch(identity, /user_metadata\?\.operator/);
 });
 

@@ -14,6 +14,6 @@ test("owner is exclusive, never combined with admin or finance",()=>{
   assert.match(governance,/Private owner role must be exclusive/);
 });
 test("owner is not silently made an all-access operator",()=>{
-  assert.match(security,/if \(claims\.roles\.includes\("admin"\)\) return true;/);
+  assert.doesNotMatch(security,/if \(claims\.roles\.includes\("admin"\)\) return true;/);
   assert.doesNotMatch(security,/if \(claims\.roles\.includes\("owner"\)\) return true;/);
 });

@@ -12,7 +12,8 @@ test("Wave 2 Operations Console inherits the Wave 1 operator security model", ()
   const readGuard = read("src/lib/operatorReadSecurity.ts");
   const mutationGuard = read("src/lib/operatorSecurity.ts");
   assert.match(readGuard, /authenticateOperatorRequest/);
-  assert.match(readGuard, /claims\.roles\.includes\("admin"\)/);
+  assert.doesNotMatch(readGuard, /if \(claims\.roles\.includes\("admin"\)\) return true/);
+  assert.match(readGuard, /allowedRoles\.some\(\(role\) => claims\.roles\.includes\(role\)\)/);
   assert.match(mutationGuard, /Auditor access is read-only/);
   assert.match(mutationGuard, /operatorRequestOriginAllowed/);
   assert.match(mutationGuard, /Recent step-up authentication is required/);

@@ -162,6 +162,9 @@ jobs:
       - name: T6.56 operations page auth gate
         run: npm run test:t6-56
 
+      - name: T6.57 staging authentication security gate
+        run: npm run test:t6-57
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
