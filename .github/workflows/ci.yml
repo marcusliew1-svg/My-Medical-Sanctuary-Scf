@@ -147,6 +147,9 @@ jobs:
       - name: T6.49 Preview Auth Admin provisioning guards
         run: npm run test:t6-49
 
+      - name: T6.52 private owner role regression checks
+        run: npm run test:t6-52
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
