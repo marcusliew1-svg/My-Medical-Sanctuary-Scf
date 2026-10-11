@@ -8,9 +8,9 @@ This layer secures internal commercial mutations for My Medical Sanctuary. It is
 - Operator login is backed by the MMS Supabase Auth tenant through server-only `MMS_OPERATOR_SUPABASE_URL` and `MMS_OPERATOR_SUPABASE_PUBLISHABLE_KEY` configuration.
 - Operator authorization is derived only from server-controlled `app_metadata.operator_id` and `app_metadata.operator_roles`.
 - Partner `app_metadata.partner_id` does not grant Operations, Finance, Admin or Auditor access.
-- Supported operator roles are `operations`, `finance`, `admin`, and `auditor`.
+- Supported operator roles are `operations`, `finance`, `admin`, `auditor`, and the exclusive private `owner` role.
 - `auditor` is read-only.
-- `admin` may satisfy role checks but does not bypass step-up requirements.
+- `admin` must be paired with `operations` for the executive administrator. It does not bypass route role checks and never grants Finance access by itself.
 - Operator identity and audit timestamps are derived by the server and are never accepted from JSON request bodies.
 - Every protected operator request verifies both the signed `mms_operator_session` cookie and the backing Supabase operator identity/access token. A removed operator identity, removed operator metadata or changed role set fails closed and requires a fresh sign-in.
 - Operator authorization sessions are short-lived. `MMS_OPERATOR_SESSION_MAX_AGE_SECONDS` defaults to 900 seconds and is capped at 3600 seconds.

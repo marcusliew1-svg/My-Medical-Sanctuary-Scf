@@ -1,15 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { operatorIdentityConfigured } from "@/lib/operatorIdentity";
+import { operatorRequestOriginAllowed } from "@/lib/operatorSecurity";
+import { bodyTooLarge, publicRequestClientKey, readPublicForm } from "@/lib/publicSubmission";
+import { checkInMemoryRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 const cookieName = "mms_operator_invite_token";
+
+function clearInviteCookie(response: NextResponse) {
+  response.cookies.set({ name: cookieName, value: "", httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/api/operations/setup", maxAge: 0 });
+}
+
 export async function POST(request: NextRequest) {
-  const origin = request.headers.get("origin");
-  if (!origin || origin !== request.nextUrl.origin) return NextResponse.json({ status: "forbidden" }, { status: 403 });
+  if (bodyTooLarge(request) || !operatorRequestOriginAllowed(request)) return NextResponse.json({ status: "forbidden" }, { status: 403 });
+  const rate = checkInMemoryRateLimit(`operator-setup:${publicRequestClientKey(request)}`, { limit: 8, windowMs: 15 * 60 * 1000 });
+  if (!rate.allowed) return NextResponse.json({ status: "rate_limited" }, { status: 429, headers: { "Retry-After": String(Math.ceil((rate.resetAt - Date.now()) / 1000)) } });
   const token = request.cookies.get(cookieName)?.value;
-  const body = await request.formData();
-  const password = String(body.get("password") || "");
-  const confirm = String(body.get("confirm") || "");
+  let body: Record<string, string>;
+  try { body = await readPublicForm(request); } catch { body = {}; }
+  const password = String(body.password || "");
+  const confirm = String(body.confirm || "");
   const location = new URL("/operations/setup", request.url);
   if (!token || !operatorIdentityConfigured() || password.length < 12 || password.length > 128 || password !== confirm) {
     location.searchParams.set("error", "invalid_request");
@@ -26,7 +36,7 @@ export async function POST(request: NextRequest) {
     });
     const destination = new URL(result.ok ? "/operations/login?setup=1" : "/operations/setup?error=unable_to_set_password", request.url);
     const response = NextResponse.redirect(destination, 303);
-    response.cookies.delete(cookieName);
+    clearInviteCookie(response);
     response.headers.set("Cache-Control", "no-store");
     return response;
   } catch { return NextResponse.json({ status: "unavailable" }, { status: 503 }); }

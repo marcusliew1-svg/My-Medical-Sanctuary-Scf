@@ -14,7 +14,6 @@ export type OperatorReadResult =
   | { status: "unavailable"; reason: string };
 
 function hasRequiredRole(claims: OperatorSessionClaims, allowedRoles: readonly OperatorRole[]): boolean {
-  if (claims.roles.includes("admin")) return true;
   return allowedRoles.some((role) => claims.roles.includes(role));
 }
 

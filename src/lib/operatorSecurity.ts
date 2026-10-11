@@ -160,7 +160,6 @@ export async function authenticateOperatorRequest(request: NextRequest): Promise
 }
 
 function hasRequiredRole(claims: OperatorSessionClaims, allowedRoles: readonly OperatorRole[]): boolean {
-  if (claims.roles.includes("admin")) return true;
   return allowedRoles.some((role) => claims.roles.includes(role));
 }
 

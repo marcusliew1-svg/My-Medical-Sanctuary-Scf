@@ -45,6 +45,9 @@ export function assertOperatorRoleCombination(roles: readonly OperatorRole[]) {
   if (unique.includes("auditor") && unique.length > 1) {
     throw new Error("Auditor role must not be combined with mutation-capable operator roles.");
   }
+  if (unique.includes("admin") && !unique.includes("operations")) {
+    throw new Error("Administrator role requires the operations role and does not grant Finance access.");
+  }
 }
 
 export function assertAccessReviewEvidence(input: {
