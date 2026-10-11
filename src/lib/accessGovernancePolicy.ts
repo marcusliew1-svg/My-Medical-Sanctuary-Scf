@@ -1,12 +1,12 @@
 import type { OperatorRole } from "@/lib/operatorSecurity";
 
-export const privilegedRoles = Object.freeze(["admin", "finance"] satisfies readonly OperatorRole[]);
+export const privilegedRoles = Object.freeze(["admin", "finance", "owner"] satisfies readonly OperatorRole[]);
 
 export const segregationRules = Object.freeze([
   {
     key: "AUDITOR_EXCLUSIVE",
     description: "Auditor is an independent read-only role and must not coexist with mutation-capable operator roles.",
-    incompatibleRoles: ["operations", "finance", "admin"] as const,
+    incompatibleRoles: ["operations", "finance", "admin", "owner"] as const,
   },
   {
     key: "FINANCE_STEP_UP",
@@ -41,6 +41,7 @@ export type AccessReviewDecision = "RETAIN" | "REDUCE" | "REVOKE" | "ESCALATE";
 export function assertOperatorRoleCombination(roles: readonly OperatorRole[]) {
   const unique = [...new Set(roles)];
   if (!unique.length) throw new Error("At least one operator role is required.");
+  if (unique.includes("owner") && unique.length > 1) { throw new Error("Private owner role must be exclusive."); }
   if (unique.includes("auditor") && unique.length > 1) {
     throw new Error("Auditor role must not be combined with mutation-capable operator roles.");
   }
