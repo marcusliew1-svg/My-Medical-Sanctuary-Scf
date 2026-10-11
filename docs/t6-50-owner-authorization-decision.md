@@ -18,3 +18,6 @@ An appropriate reviewer should determine whether the MMS entity permits a founde
 
 ## Open decision
 Is a documented owner approval legally and operationally sufficient for the initial privileged user under the MMS governance policy? Pending formal disposition; T6.49 stays unchanged.
+
+## User attestation — 11 October 2026
+The requesting user states their capacity is **Ultimate Beneficial Owner (UBO)** and explicitly approves assignment of `admin` and `operations` roles to the existing MMS Preview identity `marcusliew1@gmail.com`. This records a user assertion and consent, **not** independently verified legal authority, a completed exception, or a live role grant. The existing independent-approval gate remains effective until reviewed and lawfully amended. Never substitute a fabricated approver.
