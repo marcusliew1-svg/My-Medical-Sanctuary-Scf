@@ -6,7 +6,7 @@ import { assertOperatorRoleCombination } from "@/lib/accessGovernancePolicy";
 
 export const MMS_OPERATOR_ACCESS_TOKEN_COOKIE = "mms_operator_access_token";
 
-const OPERATOR_ROLE_SET = new Set<OperatorRole>(["operations", "finance", "admin", "auditor"]);
+const OPERATOR_ROLE_SET = new Set<OperatorRole>(["operations", "finance", "admin", "auditor", "owner"]);
 const DEFAULT_OPERATOR_SESSION_SECONDS = 15 * 60;
 
 export type OperatorIdentityUser = {
