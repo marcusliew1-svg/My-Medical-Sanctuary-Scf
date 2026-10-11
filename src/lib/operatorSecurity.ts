@@ -10,7 +10,7 @@ import {
 
 export const MMS_OPERATOR_SESSION_COOKIE = "mms_operator_session";
 
-export type OperatorRole = "operations" | "finance" | "admin" | "auditor";
+export type OperatorRole = "operations" | "finance" | "admin" | "auditor" | "owner";
 
 export type OperatorSessionClaims = {
   sessionId: string;
@@ -34,7 +34,7 @@ export type OperatorMutationResult =
   | { status: "forbidden"; reason: string }
   | { status: "unavailable"; reason: string };
 
-const ROLE_SET = new Set<OperatorRole>(["operations", "finance", "admin", "auditor"]);
+const ROLE_SET = new Set<OperatorRole>(["operations", "finance", "admin", "auditor", "owner"]);
 const DEFAULT_STEP_UP_MAX_AGE_SECONDS = 10 * 60;
 
 function base64urlDecode(value: string): Buffer {
