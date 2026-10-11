@@ -35,10 +35,10 @@ test("Wave 2 read APIs are authenticated and role-scoped", () => {
 
 test("Wave 2 converts dynamic Operations routes and pages to Next 16 async params", () => {
   const apiDetail = read("src/app/api/operations/applications/[applicationId]/route.ts");
-  const pageDetail = read("src/app/operations/applications/[applicationId]/page.tsx");
-  const applications = read("src/app/operations/applications/page.tsx");
-  const finance = read("src/app/operations/finance/page.tsx");
-  const memberships = read("src/app/operations/memberships/page.tsx");
+  const pageDetail = read("src/app/operations/(protected)/applications/[applicationId]/page.tsx");
+  const applications = read("src/app/operations/(protected)/applications/page.tsx");
+  const finance = read("src/app/operations/(protected)/finance/page.tsx");
+  const memberships = read("src/app/operations/(protected)/memberships/page.tsx");
   assert.match(apiDetail, /params:\s*Promise</);
   assert.match(apiDetail, /await context\.params/);
   assert.match(pageDetail, /params:\s*Promise</);

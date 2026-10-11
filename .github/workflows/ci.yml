@@ -159,6 +159,9 @@ jobs:
       - name: T6.55 staging API exposure audit
         run: npm run test:t6-55
 
+      - name: T6.56 operations page auth gate
+        run: npm run test:t6-56
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

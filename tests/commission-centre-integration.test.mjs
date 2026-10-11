@@ -187,7 +187,7 @@ test("disabled operator feature gate fails Commission Centre closed", () => {
 
 test("Commission Centre dynamic params use Next 16 asynchronous APIs", () => {
   const api = read("src/app/api/operations/commissions/[transactionId]/route.ts");
-  const page = read("src/app/operations/commissions/[transactionId]/page.tsx");
+  const page = read("src/app/operations/(protected)/commissions/[transactionId]/page.tsx");
   assert.match(api, /params:\s*Promise/);
   assert.match(api, /await context\.params/);
   assert.match(page, /params:\s*Promise/);
