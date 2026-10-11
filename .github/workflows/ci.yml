@@ -156,6 +156,9 @@ jobs:
       - name: T6.54 MMS staff onboarding tests
         run: npm run test:t6-54
 
+      - name: T6.55 staging API exposure audit
+        run: npm run test:t6-55
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 

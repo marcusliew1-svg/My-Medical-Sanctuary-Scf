@@ -76,7 +76,8 @@
     "test:t6-49": "node --test tests/t6-49-preview-operator-provisioning.test.mjs",
     "test:t6-52": "node --test tests/t6-52-private-owner-role.test.mjs",
     "test:t6-53": "node --test tests/t6-53-owner-portal.test.mjs",
-    "test:t6-54": "node --test tests/t6-54-invite-onboarding.test.mjs"
+    "test:t6-54": "node --test tests/t6-54-invite-onboarding.test.mjs",
+    "test:t6-55": "node --test tests/t6-55-staging-exposure-audit.test.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
