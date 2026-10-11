@@ -150,6 +150,9 @@ jobs:
       - name: T6.52 private owner role regression checks
         run: npm run test:t6-52
 
+      - name: T6.53 Owner portal privacy and access tests
+        run: npm run test:t6-53
+
       - name: Typecheck
         run: npx tsc --noEmit --pretty false
 
