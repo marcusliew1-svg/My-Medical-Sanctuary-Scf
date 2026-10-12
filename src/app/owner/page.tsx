@@ -16,12 +16,12 @@ export default async function OwnerPage() {
   const jar = await cookies();
   const session = jar.get(MMS_OPERATOR_SESSION_COOKIE)?.value;
   const accessToken = jar.get(MMS_OPERATOR_ACCESS_TOKEN_COOKIE)?.value;
-  if (!session || !accessToken) redirect("/operations/login");
+  if (!session || !accessToken) redirect("/operations/login?next=/owner");
   const requestHeaders = new Headers(await headers());
   requestHeaders.set("cookie", [MMS_OPERATOR_SESSION_COOKIE + "=" + session, MMS_OPERATOR_ACCESS_TOKEN_COOKIE + "=" + accessToken].join("; "));
   const request = new NextRequest("https://mms-owner.internal/owner", { headers: requestHeaders });
   const auth = await authenticateOperatorRequest(request);
-  if (auth.status !== "authenticated") redirect("/operations/login");
+  if (auth.status !== "authenticated") redirect("/operations/login?next=/owner");
   if (auth.claims.roles.length !== 1 || auth.claims.roles[0] !== "owner") {
     // Do not disclose owner-only content to admin, finance, audit or operations accounts.
     redirect("/operations");

@@ -31,7 +31,6 @@ export async function POST(request: NextRequest) {
   const email = String(form.email || "").trim().toLowerCase();
   if (partnerIdentityConfigured() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254) {
     const callback = new URL("/api/partner-auth/callback", request.url);
-    callback.searchParams.set("next", "/partner-password-update");
     await requestPartnerPasswordRecovery(email, callback.toString());
   }
   return genericResponse(request);

@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   try { form = await readPublicForm(request); } catch { return generic(); }
   const email = String(form.email || "").trim().toLowerCase();
   if (!form.website && patientIdentityConfigured() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254) {
-    await requestPatientPasswordRecovery(email, new URL("/api/patient-auth/callback?next=/patient-password-update", request.url).toString());
+    await requestPatientPasswordRecovery(email, new URL("/api/patient-auth/callback", request.url).toString());
   }
   return generic();
 }

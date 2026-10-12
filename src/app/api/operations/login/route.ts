@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
   let form: Record<string, string>;
   try { form = await readPublicForm(request); } catch { return redirectWithError(request, "/operations", "invalid_credentials"); }
-  const email = String(form.email || "").trim().toLowerCase();
+  const email = String(form.username || form.email || "").trim().toLowerCase();
   const password = String(form.password || "");
   const next = safeOperatorNext(form.next);
 
