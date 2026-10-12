@@ -5,6 +5,7 @@ import type { OperatorRole, OperatorSessionClaims } from "@/lib/operatorSecurity
 import { assertOperatorRoleCombination } from "@/lib/accessGovernancePolicy";
 
 export const MMS_OPERATOR_ACCESS_TOKEN_COOKIE = "mms_operator_access_token";
+export const MMS_OWNER_RECOVERY_TOKEN_COOKIE = "mms_owner_recovery_token";
 
 const OPERATOR_ROLE_SET = new Set<OperatorRole>(["operations", "finance", "admin", "auditor", "owner"]);
 const DEFAULT_OPERATOR_SESSION_SECONDS = 15 * 60;
@@ -81,6 +82,57 @@ export async function signOutOperatorIdentity(accessToken: string) {
   }).catch(() => undefined);
 }
 
+export async function requestOwnerPasswordRecovery(email: string, redirectTo: string): Promise<boolean> {
+  const { url } = config();
+  if (!operatorIdentityConfigured()) return false;
+  try {
+    const response = await fetch(`${url}/auth/v1/recover?redirect_to=${encodeURIComponent(redirectTo)}`, {
+      method: "POST",
+      headers: headers(),
+      body: JSON.stringify({ email }),
+      cache: "no-store",
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function verifyOwnerRecoveryToken(tokenHash: string): Promise<OperatorIdentitySession | null> {
+  const { url } = config();
+  if (!operatorIdentityConfigured()) return null;
+  try {
+    const response = await fetch(`${url}/auth/v1/verify`, {
+      method: "POST",
+      headers: headers(),
+      body: JSON.stringify({ token_hash: tokenHash, type: "recovery" }),
+      cache: "no-store",
+    });
+    if (!response.ok) return null;
+    return (await response.json()) as OperatorIdentitySession;
+  } catch {
+    return null;
+  }
+}
+
+export async function updateOwnerPassword(accessToken: string, password: string): Promise<"ok" | "invalid_session" | "rejected" | "unavailable"> {
+  const { url } = config();
+  if (!operatorIdentityConfigured() || !accessToken) return "unavailable";
+  try {
+    const response = await fetch(`${url}/auth/v1/user`, {
+      method: "PUT",
+      headers: headers(accessToken),
+      body: JSON.stringify({ password }),
+      cache: "no-store",
+    });
+    if (response.ok) return "ok";
+    if (response.status === 401 || response.status === 403) return "invalid_session";
+    return "rejected";
+  } catch {
+    return "unavailable";
+  }
+}
+
 export function operatorMetadataFromUser(user: OperatorIdentityUser) {
   const operatorId = typeof user.app_metadata?.operator_id === "string" ? user.app_metadata.operator_id.trim() : "";
   const rawRoles = Array.isArray(user.app_metadata?.operator_roles) ? user.app_metadata?.operator_roles : [];
@@ -138,6 +190,6 @@ export function operatorIdentityCookieOptions(maxAge: number) {
 
 export function safeOperatorNext(value: string | null | undefined, fallback = "/operations") {
   if (!value || !value.startsWith("/") || value.startsWith("//")) return fallback;
-  if (!(value === "/operations" || value.startsWith("/operations/"))) return fallback;
+  if (!(value === "/owner" || value === "/operations" || value.startsWith("/operations/"))) return fallback;
   return value;
 }

@@ -1,9 +1,10 @@
 import { safeOperatorNext } from "@/lib/operatorIdentity";
+import Link from "next/link";
 
 export default async function OperationsLoginPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ error?: string; next?: string }>;
+  searchParams?: Promise<{ error?: string; next?: string; reset?: string; setup?: string }>;
 }) {
   const query = await searchParams;
   const next = safeOperatorNext(query?.next);
@@ -28,14 +29,24 @@ export default async function OperationsLoginPage({
           </div>
         ) : null}
 
+        {query?.reset === "1" ? (
+          <div role="status" className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+            Your password was updated. Sign in with the new password to continue to Owner Oversight.
+          </div>
+        ) : query?.setup === "1" ? (
+          <div role="status" className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+            Your password was created. Sign in to continue.
+          </div>
+        ) : null}
+
         <form action="/api/operations/login" method="post" className="mt-7 space-y-5">
           <input type="hidden" name="next" value={next} />
           <label className="block text-sm font-medium text-slate-800">
             Email
             <input
-              name="email"
+              name="username"
               type="email"
-              autoComplete="email"
+              autoComplete="username"
               required
               className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-700"
             />
@@ -54,6 +65,12 @@ export default async function OperationsLoginPage({
             Sign in to Operations
           </button>
         </form>
+
+        <p className="mt-5 text-sm">
+          <Link href="/operations/password-recovery" className="font-semibold text-slate-800 underline underline-offset-4">
+            Owner forgot password?
+          </Link>
+        </p>
 
         <p className="mt-7 text-xs leading-5 text-slate-500">
           Partner Hub accounts do not automatically receive Operations or Finance access.
