@@ -98,6 +98,9 @@ Do not use `{{ .ConfirmationURL }}` for this flow because it routes through Supa
 | TypeScript | PASS |
 | ESLint | PASS with 7 pre-existing warnings and 0 errors |
 | Next.js production build | PASS; six expected routes added (three pages and three APIs) |
+| GitHub draft PR CI | PASS at implementation commit `aa69ec5` |
+| Vercel feature-branch build | READY at deployment `dpl_jRmXd6B4PiJc25kE8Jzxds8D8Ehp`; Deployment Protection was retained and authenticated verification succeeded |
+| Vercel feature-branch runtime | BLOCKED — `/operations/password-recovery`, `/operations/recovery`, and `/owner` fail closed with `404` and `x-mms-feature: operatorAccess` because the branch Preview does not have the operator feature gate enabled |
 | Production dependency audit | PASS — 0 vulnerabilities |
 | Tracked dev-tool baseline | PASS within the existing T6.21 ceiling — 5 known high-severity build-tool findings, no unexpected package |
 | Full retained suite | FAIL — 474/479; the same five inherited failures documented by T6.57 remain outside this change (framework-version contract, Zoho readiness fixture, governance wording/path assertions, and booking readiness fixture) |
@@ -105,11 +108,11 @@ Do not use `{{ .ConfirmationURL }}` for this flow because it routes through Supa
 ## Remaining live gate
 
 1. An authorized Preview project owner applies and verifies the shared recovery template above.
-2. Preview Vercel environment is confirmed to use `MMS_SITE_URL=https://staging.scf.center` and the `tfwnlmmdrkkfrtmawpma` operator Auth endpoint with Preview-only keys.
+2. Preview Vercel environment is confirmed to use `MMS_SITE_URL=https://staging.scf.center` and the `tfwnlmmdrkkfrtmawpma` operator Auth endpoint with Preview-only keys. Enable `MMS_OPERATOR_ACCESS_ENABLED=true` only in the approved Preview/staging scope; the current feature-branch deployment fails closed because that gate is absent or false.
 3. A fresh receivable synthetic Owner account is provisioned through supported Auth administration, with trusted exclusive `owner` app metadata. Do not alter a real account.
 4. Delivered email, staging landing, deliberate token acceptance, new-password creation, old-password rejection, new-password sign-in, `/owner` authorization, logout, expiry, and link replay are captured.
 5. The synthetic user and evidence-only records are removed safely after verification.
-6. CI and the protected Vercel feature-branch Preview are green.
+6. CI and deployment build are green; rerun the protected Preview runtime checks after the Preview-only operator feature gate is configured.
 
 Until these checks pass, T6.58 remains **NO-GO** and no real Owner recovery should be attempted.
 
