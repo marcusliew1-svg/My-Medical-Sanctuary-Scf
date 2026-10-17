@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Certification = {
@@ -152,6 +153,14 @@ export function PartnerHubDashboardClient() {
               : "Your authenticated Partner session has expired or is not present. Sign in again through the approved MMS Partner login when it is available."}
           </p>
           {session?.message ? <p className="mt-4 rounded-xl bg-stone-100 px-4 py-3 text-sm text-stone-600">{session.message}</p> : null}
+          {!unavailable ? (
+            <Link
+              href="/partner-login"
+              className="mt-6 inline-flex rounded-full bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-800"
+            >
+              Partner sign in
+            </Link>
+          ) : null}
         </div>
       </main>
     );
